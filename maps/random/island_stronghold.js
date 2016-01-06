@@ -128,6 +128,9 @@ for (var i = 0; i < numPlayers; i++)
 
 RMS.SetProgress(50);
 
+var shoreRadius = 6;
+var elevation = 3;
+
 for(var i = 0; i < 9; i++) {
 	// we found a team
 	if(teams[i] != null) {
@@ -157,13 +160,13 @@ for(var i = 0; i < 9; i++) {
 			// create an island
 			var placer = new ChainPlacer(2, floor(scaleByMapSize(5, 11)), floor(scaleByMapSize(60, 250)), 1, ix, iz, 0, [floor(mapSize * 0.01)]);
 			var terrainPainter = new LayeredPainter(
-				[tMainTerrain, tMainTerrain],       // terrains
-				[3]     // widths
+				[tMainTerrain, tMainTerrain, tMainTerrain],       // terrains
+				[1, shoreRadius]     // widths
 			);
 			var elevationPainter = new SmoothElevationPainter(
 				ELEVATION_SET,          // type
-				5,              // elevation
-				5               // blend radius
+				elevation,              // elevation
+				shoreRadius               // blend radius
 			);
 			createArea(placer, [terrainPainter, elevationPainter, paintClass(clLand)], null);
 
@@ -343,6 +346,27 @@ paintTerrainBasedOnHeight(-8, 1, 2, tWater);
 
 RMS.SetProgress(85);
 
+function decayErrodeHeightmap(strength, heightmap)
+{
+	strength = (strength || 0.9); // 0 to 1
+	heightmap = (heightmap || g_Map.height);
+	
+	var referenceHeightmap = deepcopy(heightmap);
+	// var map = [[1, 0], [0, 1], [-1, 0], [0, -1]]; // faster
+	var map = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]]; // smoother
+	var max_x = heightmap.length;
+	var max_y = heightmap[0].length;
+	for (var x = 0; x < max_x; x++)
+		for (var y = 0; y < max_y; y++)
+			for (var i = 0; i < map.length; i++)
+				heightmap[x][y] += strength / map.length * (referenceHeightmap[(x + map[i][0] + max_x) % max_x][(y + map[i][1] + max_y) % max_y] - referenceHeightmap[x][y]); // Not entirely sure if scaling with map.length is perfect but tested values seam to indicate it is
+}
+
+for (var i = 0; i < 5; i++)
+	decayErrodeHeightmap(0.5);
+
+
+
 // create bumps
 createBumps();
 
@@ -355,9 +379,60 @@ createForests(
  random_terrain
 );
 
+// create hills
+log("Creating hills...");
+placer = new ChainPlacer(1, floor(scaleByMapSize(4, 6)), floor(scaleByMapSize(16, 40)), 0.5);
+terrainPainter = new LayeredPainter(
+	[tCliff, tHill],		// terrains
+	[2]								// widths
+);
+elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 18, 2);
+createAreas(
+	placer,
+	[terrainPainter, elevationPainter, paintClass(clHill)], 
+	[avoidClasses(clBaseResource, 20, clHill, 15), stayClasses(clLand, 0)],
+	scaleByMapSize(4, 13)
+);
+
 // create straggeler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
 createStragglerTrees(types, [avoidClasses(clWater, 5, clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1),stayClasses(clLand, 10)]);
+
+// create dirt patches
+log("Creating dirt patches...");
+var sizes = [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)];
+var numb = 1;
+if (random_terrain == 6)
+	numb = 3
+for (var i = 0; i < sizes.length; i++)
+{
+	placer = new ChainPlacer(1, floor(scaleByMapSize(3, 5)), sizes[i], 0.5);
+	var painter = new LayeredPainter(
+		[[tMainTerrain,tTier1Terrain],[tTier1Terrain,tTier2Terrain], [tTier2Terrain,tTier3Terrain]], 		// terrains
+		[1,1]															// widths
+	);
+	createAreas(
+		placer,
+		[painter, paintClass(clDirt)],
+		[avoidClasses(clForest, 0, clHill, 0, clDirt, 5, clPlayer, 0), stayClasses(clLand, 6)],
+		numb*scaleByMapSize(15, 45)
+	);
+}
+
+// create grass patches
+log("Creating grass patches...");
+var sizes = [scaleByMapSize(2, 4), scaleByMapSize(3, 7), scaleByMapSize(5, 15)];
+for (var i = 0; i < sizes.length; i++)
+{
+	placer = new ChainPlacer(1, floor(scaleByMapSize(3, 5)), sizes[i], 0.5);
+	var painter = new TerrainPainter(tTier4Terrain);
+	createAreas(
+		placer,
+		painter,
+		[avoidClasses(clForest, 0, clHill, 0, clDirt, 5, clPlayer, 0), stayClasses(clLand, 6)],
+		numb*scaleByMapSize(15, 45)
+	);
+}
 
 // create stone quarries
 createMines(
@@ -378,6 +453,32 @@ createMines(
 clMetal
 )
 
+
+// create small decorative rocks
+log("Creating small decorative rocks...");
+group = new SimpleGroup(
+	[new SimpleObject(aRockMedium, 1,3, 0,1)],
+	true
+);
+createObjectGroups(
+	group, 0,
+	[avoidClasses(clWater, 0, clForest, 0, clHill, 0), stayClasses(clLand, 5)],
+	scaleByMapSize(16, 262), 50
+);
+
+
+// create large decorative rocks
+log("Creating large decorative rocks...");
+group = new SimpleGroup(
+	[new SimpleObject(aRockLarge, 1,2, 0,1), new SimpleObject(aRockMedium, 1,3, 0,2)],
+	true
+);
+createObjectGroups(
+	group, 0,
+	[avoidClasses(clWater, 0, clForest, 0, clHill, 0), stayClasses(clLand, 5)],
+	scaleByMapSize(8, 131), 50
+);
+
 // create fish
 log("Creating fish...");
 group = new SimpleGroup(
@@ -391,10 +492,49 @@ createObjectGroups(group, 0,
 
 // create decoration
 var planetm = 1;
-
 if (random_terrain==7)
+{
 	planetm = 8;
+}
 
+// create grass tufts
+var num = hillSize / 250;
+for (var j = 0; j < num; j++)
+{
+	var gAngle = randFloat(0, TWO_PI);
+	var gDist = radius - (5 + randInt(7));
+	var gX = round(fx + gDist * cos(gAngle));
+	var gZ = round(fz + gDist * sin(gAngle));
+	group = new SimpleGroup(
+		[new SimpleObject(aGrassShort, 2,5, 0,1, -PI/8,PI/8)],
+		false, clBaseResource, gX, gZ
+	);
+	createObjectGroup(group, 0, [stayClasses(clLand,5)]);
+}
+
+
+//create small grass tufts
+log("Creating small grass tufts...");
+group = new SimpleGroup(
+	[new SimpleObject(aGrassShort, 1,2, 0,1, -PI/8,PI/8)]
+);
+createObjectGroups(group, 0,
+	[avoidClasses(clWater, 2, clHill, 2, clPlayer, 2, clDirt, 0), stayClasses(clLand, 6)],
+	planetm * scaleByMapSize(13, 200)
+);
+
+RMS.SetProgress(90);
+
+// create large grass tufts
+log("Creating large grass tufts...");
+group = new SimpleGroup(
+	[new SimpleObject(aGrass, 2,4, 0,1.8, -PI/8,PI/8), new SimpleObject(aGrassShort, 3,6, 1.2,2.5, -PI/8,PI/8)]
+);
+createObjectGroups(group, 0,
+	[avoidClasses(clWater, 3, clHill, 2, clPlayer, 2, clDirt, 1, clForest, 0), stayClasses(clLand, 5)],
+	planetm * scaleByMapSize(13, 200)
+);
+/*
 createDecoration
 (
  [[new SimpleObject(aRockMedium, 1,3, 0,1)],
@@ -412,6 +552,20 @@ createDecoration
  ],
  [avoidClasses(clForest, 2, clPlayer, 20, clHill, 5, clWater, 1, clFood, 1, clBaseResource, 2), stayClasses(clLand, 15)]
 );
+*/
+random_terrain = randInt(1,3)
+if (random_terrain==1){
+	setSkySet("cirrus");
+}
+else if (random_terrain ==2){
+	setSkySet("cumulus");
+}
+else if (random_terrain ==3){
+	setSkySet("sunny");
+}
+setSunRotation(randFloat(0, TWO_PI));
+setSunElevation(randFloat(PI/ 5, PI / 3));
+setWaterWaviness(2);
 
 // Export map data
 
