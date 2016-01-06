@@ -1,0 +1,10 @@
+{
+  "settings" : {
+    "Name" : "Lion's Den",
+    "Script" : "lions_den.js",
+    "Description" : "High cliffs protect a player's main base. Venturing into the exposed plain can be risky, but necessary.",
+    "BaseTerrain" : ["medit_sea_depths"],
+    "BaseHeight" : 25,
+    "CircularMap" : true
+  }
+}

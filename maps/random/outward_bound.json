@@ -1,0 +1,10 @@
+{
+  "settings" : {
+    "Name" : "Outward Bound",
+    "Script" : "outward_bound.js",
+    "Description" : "Players start on a bleak, indefensible plateau with plenty of expansion opportunities in the lower valley.",
+    "BaseTerrain" : ["medit_sea_depths"],
+    "BaseHeight" : 4,
+    "CircularMap" : true
+  }
+}

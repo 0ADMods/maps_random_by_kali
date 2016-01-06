@@ -1,0 +1,9 @@
+{
+    "name": "maps_random_by_kali",
+    "version": "0.0.19",
+    "label": "Several Random Maps",
+    "url": "N/A",
+    "description": "Created by kali",
+    "dependencies": ["0ad"],
+    "type": "map"
+}

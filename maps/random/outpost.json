@@ -1,0 +1,10 @@
+{
+  "settings" : {
+    "Name" : "Outpost",
+    "Script" : "outpost.js",
+    "Description" : "A resource-rich middle intices, but danger from the high ground awaits.",
+    "BaseTerrain" : ["medit_sea_depths"],
+    "BaseHeight" : 20,
+    "CircularMap" : true
+  }
+}

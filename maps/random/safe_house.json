@@ -1,0 +1,10 @@
+{
+  "settings" : {
+    "Name" : "Safe House",
+    "Script" : "safe_house.js",
+    "Description" : "Strong walls keep players completely isolated at the start. Will you keep the walls for protection or destroy your safety net to defeat your enemies?",
+    "BaseTerrain" : ["medit_sea_depths"],
+    "BaseHeight" : 2,
+    "CircularMap" : true
+  }
+}
