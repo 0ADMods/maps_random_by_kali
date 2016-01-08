@@ -93,19 +93,10 @@ var fz = fractionToTiles(0.5);
 ix = round(fx);
 iz = round(fz);
 
-var teamNo = 0;
-
 var startAngle = randFloat(0, TWO_PI);
 
-// randomize player order
-var playerIDs = [];
-for (var i = 0; i < numPlayers; i++)
-{
-	playerIDs.push(i+1);
-}
-playerIDs = sortPlayers(playerIDs);
-
-// Group teams
+// Group teams, creates a 2D array where i is used to mark the team ID. Free For All Players (FFA) get a team ID starting with the highest possible team number
+// This only works as expected when there are no empty teams between filled teams
 var ffaPlayers = 0;
 var teams = new Array(9);
 var numTeams = 0;
@@ -131,13 +122,14 @@ RMS.SetProgress(50);
 var shoreRadius = 6;
 var elevation = 3;
 
+var teamNo = 0;
 for(var i = 0; i < 9; i++) {
 	// we found a team
 	if(teams[i] != null) {
 		teamNo++;
 		var teamAngle = startAngle + teamNo*TWO_PI/numTeams;
-		var fractionX = 0.5 + 0.3*cos(teamAngle);
-		var fractionZ = 0.5 + 0.3*sin(teamAngle);
+		var fractionX = 0.5 + 0.3 * cos(teamAngle);
+		var fractionZ = 0.5 + 0.3 * sin(teamAngle);
 		var teamX = fractionToTiles(fractionX);
 		var teamZ = fractionToTiles(fractionZ);
 
