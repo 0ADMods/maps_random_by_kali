@@ -49,9 +49,7 @@ const pForest2 = [tForestFloor1 + TERRAIN_SEPARATOR + oTree4, tForestFloor1 + TE
 const BUILDING_ANGlE = -PI/4;
 
 // initialize map
-
 log("Initializing map...");
-
 InitMap();
 
 const numPlayers = getNumPlayers();
@@ -121,102 +119,105 @@ RMS.SetProgress(50);
 
 var shoreRadius = 6;
 var elevation = 3;
-
 var teamNo = 0;
+
 for(var i = 0; i < 9; i++) {
-	// we found a team
-	if(teams[i] != null) {
-		teamNo++;
-		var teamAngle = startAngle + teamNo*TWO_PI/numTeams;
-		var fractionX = 0.5 + 0.3 * cos(teamAngle);
-		var fractionZ = 0.5 + 0.3 * sin(teamAngle);
-		var teamX = fractionToTiles(fractionX);
-		var teamZ = fractionToTiles(fractionZ);
+	// we didn't find a team so try with next i
+	if(teams[i] == null) 
+		continue;
 
-		for(var p = 0; p < teams[i].length; p++) {
-			log("Creating base for player " + teams[i][p] + " on team " + i + "...");
+	teamNo++;
+	var teamAngle = startAngle + teamNo*TWO_PI/numTeams;
+	var fractionX = 0.5 + 0.3 * cos(teamAngle);
+	var fractionZ = 0.5 + 0.3 * sin(teamAngle);
+	var teamX = fractionToTiles(fractionX);
+	var teamZ = fractionToTiles(fractionZ);
 
-			var playerAngle = startAngle + (p+1)*TWO_PI/teams[i].length;
+	for(var p = 0; p < teams[i].length; p++) {
+		log("Creating base for player " + teams[i][p] + " on team " + i + "...");
 
-			// get the x and z in tiles
-			var fx = fractionToTiles(fractionX + 0.05*cos(playerAngle));
-			var fz = fractionToTiles(fractionZ + 0.05*sin(playerAngle));
-			var ix = round(fx);
-			var iz = round(fz);
-			addToClass(ix, iz, clPlayer);
-			addToClass(ix+5, iz, clPlayer);
-			addToClass(ix, iz+5, clPlayer);
-			addToClass(ix-5, iz, clPlayer);
-			addToClass(ix, iz-5, clPlayer);
+		var playerAngle = startAngle + (p+1)*TWO_PI/teams[i].length;
 
-			// create an island
-			var placer = new ChainPlacer(2, floor(scaleByMapSize(5, 11)), floor(scaleByMapSize(60, 250)), 1, ix, iz, 0, [floor(mapSize * 0.01)]);
-			var terrainPainter = new LayeredPainter(
-				[tMainTerrain, tMainTerrain, tMainTerrain],       // terrains
-				[1, shoreRadius]     // widths
-			);
-			var elevationPainter = new SmoothElevationPainter(
-				ELEVATION_SET,          // type
-				elevation,              // elevation
-				shoreRadius               // blend radius
-			);
-			createArea(placer, [terrainPainter, elevationPainter, paintClass(clLand)], null);
+		// get the x and z in tiles
+		var fx = fractionToTiles(fractionX + 0.05*cos(playerAngle));
+		var fz = fractionToTiles(fractionZ + 0.05*sin(playerAngle));
+		var ix = round(fx);
+		var iz = round(fz);
 
-			// create starting units
-			placeCivDefaultEntities(fx, fz, teams[i][p], BUILDING_ANGlE, {'iberWall': false});
+		// mark a small area around the player's starting coördinates with the clPlayer class
+		addToClass(ix, iz, clPlayer);
+		addToClass(ix+5, iz, clPlayer);
+		addToClass(ix, iz+5, clPlayer);
+		addToClass(ix-5, iz, clPlayer);
+		addToClass(ix, iz-5, clPlayer);
 
-			// create animals
-			for (var j = 0; j < 2; ++j)
-			{
-				var aAngle = randFloat(0, TWO_PI);
-				var aDist = 7;
-				var aX = round(fx + aDist * cos(aAngle));
-				var aZ = round(fz + aDist * sin(aAngle));
-				var group = new SimpleGroup(
-					[new SimpleObject(oChicken, 5,5, 0,2)],
-					true, clBaseResource, aX, aZ
-				);
-				createObjectGroup(group, 0, [stayClasses(clLand,5)]);
-			}
+		// create an island
+		var placer = new ChainPlacer(2, floor(scaleByMapSize(5, 11)), floor(scaleByMapSize(60, 250)), 1, ix, iz, 0, [floor(mapSize * 0.01)]);
+		var terrainPainter = new LayeredPainter(
+			[tMainTerrain, tMainTerrain, tMainTerrain],       // terrains
+			[1, shoreRadius]     // widths
+		);
+		var elevationPainter = new SmoothElevationPainter(
+			ELEVATION_SET,          // type
+			elevation,              // elevation
+			shoreRadius               // blend radius
+		);
+		createArea(placer, [terrainPainter, elevationPainter, paintClass(clLand)], null);
 
-			// create berry bushes
-			var bbAngle = randFloat(0, TWO_PI);
-			var bbDist = 12;
-			var bbX = round(fx + bbDist * cos(bbAngle));
-			var bbZ = round(fz + bbDist * sin(bbAngle));
-			group = new SimpleGroup(
-				[new SimpleObject(oFruitBush, 5,5, 0,3)],
-				true, clBaseResource, bbX, bbZ
+		// create starting units
+		placeCivDefaultEntities(fx, fz, teams[i][p], BUILDING_ANGlE, {'iberWall': false});
+
+		// create animals
+		for (var j = 0; j < 2; ++j)
+		{
+			var aAngle = randFloat(0, TWO_PI);
+			var aDist = 7;
+			var aX = round(fx + aDist * cos(aAngle));
+			var aZ = round(fz + aDist * sin(aAngle));
+			var group = new SimpleGroup(
+				[new SimpleObject(oChicken, 5,5, 0,2)],
+				true, clBaseResource, aX, aZ
 			);
 			createObjectGroup(group, 0, [stayClasses(clLand,5)]);
+		}
 
-			var hillSize = PI * radius * radius;
-			// create starting trees
-			var num = 5;
-			var tAngle = randFloat(0, TWO_PI);
-			var tDist = randFloat(12, 13);
-			var tX = round(fx + tDist * cos(tAngle));
-			var tZ = round(fz + tDist * sin(tAngle));
+		// create berry bushes
+		var bbAngle = randFloat(0, TWO_PI);
+		var bbDist = 12;
+		var bbX = round(fx + bbDist * cos(bbAngle));
+		var bbZ = round(fz + bbDist * sin(bbAngle));
+		group = new SimpleGroup(
+			[new SimpleObject(oFruitBush, 5,5, 0,3)],
+			true, clBaseResource, bbX, bbZ
+		);
+		createObjectGroup(group, 0, [stayClasses(clLand,5)]);
+
+		var hillSize = PI * radius * radius;
+		// create starting trees
+		var num = 5;
+		var tAngle = randFloat(0, TWO_PI);
+		var tDist = randFloat(12, 13);
+		var tX = round(fx + tDist * cos(tAngle));
+		var tZ = round(fz + tDist * sin(tAngle));
+		group = new SimpleGroup(
+			[new SimpleObject(oTree1, num, num, 0,3)],
+			false, clBaseResource, tX, tZ
+		);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource,2), stayClasses(clLand,5)]);
+
+		// create grass tufts
+		var num = hillSize / 250;
+		for (var j = 0; j < num; j++)
+		{
+			var gAngle = randFloat(0, TWO_PI);
+			var gDist = radius - (5 + randInt(7));
+			var gX = round(fx + gDist * cos(gAngle));
+			var gZ = round(fz + gDist * sin(gAngle));
 			group = new SimpleGroup(
-				[new SimpleObject(oTree1, num, num, 0,3)],
-				false, clBaseResource, tX, tZ
+				[new SimpleObject(aGrassShort, 2,5, 0,1, -PI/8,PI/8)],
+				false, clBaseResource, gX, gZ
 			);
-			createObjectGroup(group, 0, [avoidClasses(clBaseResource,2), stayClasses(clLand,5)]);
-
-			// create grass tufts
-			var num = hillSize / 250;
-			for (var j = 0; j < num; j++)
-			{
-				var gAngle = randFloat(0, TWO_PI);
-				var gDist = radius - (5 + randInt(7));
-				var gX = round(fx + gDist * cos(gAngle));
-				var gZ = round(fz + gDist * sin(gAngle));
-				group = new SimpleGroup(
-					[new SimpleObject(aGrassShort, 2,5, 0,1, -PI/8,PI/8)],
-					false, clBaseResource, gX, gZ
-				);
-				createObjectGroup(group, 0, [stayClasses(clLand,5)]);
-			}
+			createObjectGroup(group, 0, [stayClasses(clLand,5)]);
 		}
 
 		// create team bounty
@@ -338,6 +339,7 @@ paintTerrainBasedOnHeight(-8, 1, 2, tWater);
 
 RMS.SetProgress(85);
 
+// smooth Heightmap
 function decayErrodeHeightmap(strength, heightmap)
 {
 	strength = (strength || 0.9); // 0 to 1
@@ -357,12 +359,12 @@ function decayErrodeHeightmap(strength, heightmap)
 for (var i = 0; i < 5; i++)
 	decayErrodeHeightmap(0.5);
 
-
-
 // create bumps
+log("Creating terrain bumps...");
 createBumps();
 
 // create forests
+log("Creating forests...");
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
  [avoidClasses(clPlayer, 10, clForest, 20, clHill, 30, clWater, 10),stayClasses(clLand,12)],
@@ -445,7 +447,6 @@ createMines(
 clMetal
 )
 
-
 // create small decorative rocks
 log("Creating small decorative rocks...");
 group = new SimpleGroup(
@@ -457,7 +458,6 @@ createObjectGroups(
 	[avoidClasses(clWater, 0, clForest, 0, clHill, 0), stayClasses(clLand, 5)],
 	scaleByMapSize(16, 262), 50
 );
-
 
 // create large decorative rocks
 log("Creating large decorative rocks...");
@@ -482,7 +482,8 @@ createObjectGroups(group, 0,
 	25 * numPlayers, 60
 );
 
-// create decoration
+// create decoration 
+
 var planetm = 1;
 if (random_terrain==7)
 {
@@ -503,7 +504,6 @@ for (var j = 0; j < num; j++)
 	);
 	createObjectGroup(group, 0, [stayClasses(clLand,5)]);
 }
-
 
 //create small grass tufts
 log("Creating small grass tufts...");
@@ -526,25 +526,8 @@ createObjectGroups(group, 0,
 	[avoidClasses(clWater, 3, clHill, 2, clPlayer, 2, clDirt, 1, clForest, 0), stayClasses(clLand, 5)],
 	planetm * scaleByMapSize(13, 200)
 );
-/*
-createDecoration
-(
- [[new SimpleObject(aRockMedium, 1,3, 0,1)],
-  [new SimpleObject(aRockLarge, 1,2, 0,1), new SimpleObject(aRockMedium, 1,3, 0,2)],
-  [new SimpleObject(aGrassShort, 2,15, 0,1, -PI/8,PI/8)],
-  [new SimpleObject(aGrass, 2,10, 0,1.8, -PI/8,PI/8), new SimpleObject(aGrassShort, 3,10, 1.2,2.5, -PI/8,PI/8)],
-  [new SimpleObject(aBushMedium, 1,5, 0,2), new SimpleObject(aBushSmall, 2,4, 0,2)]
- ],
- [
-  scaleByMapSize(16, 262),
-  scaleByMapSize(8, 131),
-  planetm * scaleByMapSize(13, 200),
-  planetm * scaleByMapSize(13, 200),
-  planetm * scaleByMapSize(13, 200)
- ],
- [avoidClasses(clForest, 2, clPlayer, 20, clHill, 5, clWater, 1, clFood, 1, clBaseResource, 2), stayClasses(clLand, 15)]
-);
-*/
+
+// do some environment randomization
 random_terrain = randInt(1,3)
 if (random_terrain==1){
 	setSkySet("cirrus");
