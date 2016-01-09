@@ -1,3 +1,7 @@
+/* TODO:
+// Alter position and amount and clean up team bounty 
+*/
+
 RMS.LoadLibrary("rmgen");
 
 //random terrain textures
@@ -115,7 +119,7 @@ for (var i = 0; i < numPlayers; i++)
 	}
 }
 
-RMS.SetProgress(50);
+RMS.SetProgress(10);
 
 var shoreRadius = 6;
 var elevation = 3;
@@ -244,6 +248,8 @@ for(var i = 0; i < 9; i++) {
 	}
 }
 
+RMS.SetProgress(40);
+
 // create expansion islands
 
 var landAreas = [];
@@ -298,7 +304,6 @@ for (var i = 0; i < numIslands; ++i)
 playerConstraint = new AvoidTileClassConstraint(clPlayer, floor(scaleByMapSize(9,12)));
 landConstraint = new AvoidTileClassConstraint(clLand, floor(scaleByMapSize(9,12)));
 
-RMS.SetProgress(75);
 
 log("Creating small islands...");
 numIslands = scaleByMapSize(6, 18)*scaleByMapSize(1,3)
@@ -337,7 +342,7 @@ for (var i = 0; i < numIslands; ++i)
 paintTerrainBasedOnHeight(1, 3, 0, tShore);
 paintTerrainBasedOnHeight(-8, 1, 2, tWater);
 
-RMS.SetProgress(85);
+RMS.SetProgress(70);
 
 // smooth Heightmap
 function decayErrodeHeightmap(strength, heightmap)
@@ -358,6 +363,8 @@ function decayErrodeHeightmap(strength, heightmap)
 
 for (var i = 0; i < 5; i++)
 	decayErrodeHeightmap(0.5);
+
+RMS.SetProgress(85);
 
 // create bumps
 log("Creating terrain bumps...");
@@ -515,7 +522,7 @@ createObjectGroups(group, 0,
 	planetm * scaleByMapSize(13, 200)
 );
 
-RMS.SetProgress(90);
+RMS.SetProgress(95);
 
 // create large grass tufts
 log("Creating large grass tufts...");
@@ -542,6 +549,7 @@ setSunRotation(randFloat(0, TWO_PI));
 setSunElevation(randFloat(PI/ 5, PI / 3));
 setWaterWaviness(2);
 
-// Export map data
+RMS.SetProgress(100);
 
+// Export map data
 ExportMap();
