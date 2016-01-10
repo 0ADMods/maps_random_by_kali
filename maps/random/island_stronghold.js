@@ -223,17 +223,18 @@ for(var i = 0; i < 9; i++) {
 			createObjectGroup(group, 0, [stayClasses(clLand,5)]);
 		}
 
+		var amounts = 2;
 		// create team bounty
 		group = new SimpleGroup(
-			[new SimpleObject(oMetalLarge, numPlayers / numTeams, numPlayers / numTeams, 0, floor(mapSize * 0.2))],
+			[new SimpleObject(oMetalLarge, (numPlayers / numTeams) / amounts, (numPlayers / numTeams) / amounts, 0, floor(mapSize * 0.2))],
 			true, clBaseResource, teamX, teamZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 10, clWater, 2), stayClasses(clLand, 5)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 20, clWater, 2), stayClasses(clLand, 5)]);
 		group = new SimpleGroup(
-			[new SimpleObject(oStoneLarge, numPlayers / numTeams, numPlayers / numTeams, 0, floor(mapSize * 0.2))],
+			[new SimpleObject(oStoneLarge, (numPlayers / numTeams) / amounts, (numPlayers / numTeams) / amounts, 0, floor(mapSize * 0.2))],
 			true, clBaseResource, teamX, teamZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 10, clWater, 2), stayClasses(clLand, 5)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 20, clWater, 2), stayClasses(clLand, 10)]);
 		group = new SimpleGroup(
 			[new SimpleObject(oMainHuntableAnimal, 2 * numPlayers / numTeams, 2 * numPlayers / numTeams, 0, floor(mapSize * 0.2))],
 			true, clBaseResource, teamX, teamZ
@@ -536,13 +537,13 @@ createObjectGroups(group, 0,
 // do some environment randomization
 random_terrain = randInt(1, 3);
 if (random_terrain == 1){
-	setSkySet("cirrus");
+	setSkySet("cloudless");
 }
 else if (random_terrain == 2){
 	setSkySet("cumulus");
 }
 else if (random_terrain == 3){
-	setSkySet("sunny");
+	setSkySet("overcast");
 }
 setSunRotation(randFloat(0, TWO_PI));
 setSunElevation(randFloat(PI / 5, PI / 3));
