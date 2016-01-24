@@ -197,13 +197,13 @@ for(var i = 0; i < 9; i++) {
 
 		var hillSize = PI * radius * radius;
 		// create starting trees
-		var num = 5;
+		var num = 50;
 		var tAngle = randFloat(0, TWO_PI);
 		var tDist = randFloat(12, 13);
 		var tX = round(fx + tDist * cos(tAngle));
 		var tZ = round(fz + tDist * sin(tAngle));
 		group = new SimpleGroup(
-			[new SimpleObject(oTree1, num, num, 0,3)],
+			[new SimpleObject(oTree1, num, num, 0,5)],
 			false, clBaseResource, tX, tZ
 		);
 		createObjectGroup(group, 0, [avoidClasses(clBaseResource,2), stayClasses(clLand,5)]);
