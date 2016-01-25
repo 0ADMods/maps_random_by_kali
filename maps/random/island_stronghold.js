@@ -178,10 +178,10 @@ for(var i = 0; i < 9; i++) {
 			var aX = round(fx + aDist * cos(aAngle));
 			var aZ = round(fz + aDist * sin(aAngle));
 			var group = new SimpleGroup(
-				[new SimpleObject(oChicken, 5,5, 0,2)],
+				[new SimpleObject(oChicken, 5, 5, 0, 2)],
 				true, clBaseResource, aX, aZ
 			);
-			createObjectGroup(group, 0, [stayClasses(clLand,5)]);
+			createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 		}
 
 		// create berry bushes
@@ -190,25 +190,25 @@ for(var i = 0; i < 9; i++) {
 		var bbX = round(fx + bbDist * cos(bbAngle));
 		var bbZ = round(fz + bbDist * sin(bbAngle));
 		group = new SimpleGroup(
-			[new SimpleObject(oFruitBush, 5,5, 0,3)],
+			[new SimpleObject(oFruitBush, 5, 5, 0, 3)],
 			true, clBaseResource, bbX, bbZ
 		);
-		createObjectGroup(group, 0, [stayClasses(clLand,5)]);
+		createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 
-		var hillSize = PI * radius * radius;
 		// create starting trees
 		var num = 50;
 		var tAngle = randFloat(0, TWO_PI);
-		var tDist = randFloat(12, 13);
+		var tDist = 12;
 		var tX = round(fx + tDist * cos(tAngle));
 		var tZ = round(fz + tDist * sin(tAngle));
 		group = new SimpleGroup(
-			[new SimpleObject(oTree1, num, num, 0,5)],
-			false, clBaseResource, tX, tZ
+			[new SimpleObject(oTree2, num, num, 0, 7)],
+			true, clBaseResource, tX, tZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource,2), stayClasses(clLand,5)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2), stayClasses(clLand, 2)]);
 
 		// create grass tufts
+		var hillSize = PI * radius * radius;
 		var num = hillSize / 250;
 		for (var j = 0; j < num; j++)
 		{
@@ -217,10 +217,10 @@ for(var i = 0; i < 9; i++) {
 			var gX = round(fx + gDist * cos(gAngle));
 			var gZ = round(fz + gDist * sin(gAngle));
 			group = new SimpleGroup(
-				[new SimpleObject(aGrassShort, 2,5, 0,1, -PI/8,PI/8)],
+				[new SimpleObject(aGrassShort, 2, 5, 0, 1, -PI/8, PI/8)],
 				false, clBaseResource, gX, gZ
 			);
-			createObjectGroup(group, 0, [stayClasses(clLand,5)]);
+			createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 		}
 
 		var amounts = 2;
@@ -374,7 +374,7 @@ createBumps();
 log("Creating forests...");
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
- [avoidClasses(clPlayer, 10, clForest, 20, clHill, 30, clWater, 10), stayClasses(clLand, 12)],
+ [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clWater, 10), stayClasses(clLand, 5)],
  clForest,
  1.0,
  random_terrain
