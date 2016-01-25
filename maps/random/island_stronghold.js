@@ -184,6 +184,23 @@ for(var i = 0; i < 9; i++) {
 			createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 		}
 
+		var mAngle = randFloat(0, TWO_PI);
+		var mDist = 16;
+		var mX = round(fx + mDist * cos(mAngle));
+		var mZ = round(fz + mDist * sin(mAngle));
+		var sX = round(fx + mDist * cos(mAngle + PI/4));
+		var sZ = round(fz + mDist * sin(mAngle + PI/4));
+		group = new SimpleGroup(
+			[new SimpleObject(oMetalLarge, 1, 1, 0, 4)],
+			true, clBaseResource, mX, mZ
+		);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2, clWater, 2), stayClasses(clLand, 2)]);
+		group = new SimpleGroup(
+			[new SimpleObject(oStoneLarge, 1, 1, 0, 4)],
+			true, clBaseResource, sX, sZ
+		);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2, clWater, 2), stayClasses(clLand, 2)]);
+
 		// create berry bushes
 		var bbAngle = randFloat(0, TWO_PI);
 		var bbDist = 12;
@@ -205,7 +222,7 @@ for(var i = 0; i < 9; i++) {
 			[new SimpleObject(oTree2, num, num, 0, 7)],
 			true, clBaseResource, tX, tZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2), stayClasses(clLand, 2)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2), stayClasses(clLand, 4)]);
 
 		// create grass tufts
 		var hillSize = PI * radius * radius;
@@ -223,18 +240,7 @@ for(var i = 0; i < 9; i++) {
 			createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 		}
 
-		var amounts = 2;
 		// create team bounty
-		group = new SimpleGroup(
-			[new SimpleObject(oMetalLarge, (numPlayers / numTeams) / amounts, (numPlayers / numTeams) / amounts, 0, floor(mapSize * 0.2))],
-			true, clBaseResource, teamX, teamZ
-		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 20, clWater, 2), stayClasses(clLand, 5)]);
-		group = new SimpleGroup(
-			[new SimpleObject(oStoneLarge, (numPlayers / numTeams) / amounts, (numPlayers / numTeams) / amounts, 0, floor(mapSize * 0.2))],
-			true, clBaseResource, teamX, teamZ
-		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 20, clWater, 2), stayClasses(clLand, 10)]);
 		group = new SimpleGroup(
 			[new SimpleObject(oMainHuntableAnimal, 2 * numPlayers / numTeams, 2 * numPlayers / numTeams, 0, floor(mapSize * 0.2))],
 			true, clBaseResource, teamX, teamZ
@@ -367,11 +373,9 @@ for (var i = 0; i < 5; i++)
 RMS.SetProgress(85);
 
 // create bumps
-log("Creating terrain bumps...");
 createBumps();
 
 // create forests
-log("Creating forests...");
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
  [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clWater, 10), stayClasses(clLand, 5)],
@@ -381,7 +385,6 @@ createForests(
 );
 
 // create hills
-log("Creating hills...");
 placer = new ChainPlacer(1, floor(scaleByMapSize(4, 6)), floor(scaleByMapSize(16, 40)), 0.5);
 terrainPainter = new LayeredPainter(
 	[tCliff, tHill],		// terrains
@@ -436,23 +439,23 @@ for (var i = 0; i < sizes.length; i++)
 }
 
 // create stone quarries
-createMines(
-[
-	[new SimpleObject(oStoneLarge, 1, 1, 3, numPlayers * 2)], [new SimpleObject(oStoneSmall, 2, 2, 2, numPlayers * 2)]
-],
-[avoidClasses(clWater, 1, clForest, 1, clPlayer, 50, clRock, 30, clHill, 5), stayClasses(clLand, 5)],
-clRock
-)
-
-log("Creating metal mines...");
+log("Creating mines...");
 // create large metal quarries
 createMines(
 [
 	[new SimpleObject(oMetalLarge, 1, 1, 3, numPlayers * 2)]
 ],
-[avoidClasses(clWater, 1, clForest, 1, clPlayer, 50, clMetal, 30, clHill, 5), stayClasses(clLand, 5)],
+[avoidClasses(clWater, 1, clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 5)],
 clMetal
-)
+);
+
+createMines(
+[
+	[new SimpleObject(oStoneLarge, 1, 1, 3, numPlayers * 2)], [new SimpleObject(oStoneSmall, 2, 2, 2, numPlayers * 2)]
+],
+[avoidClasses(clWater, 1, clForest, 1, clPlayer, 40, clMetal, 20, clHill, 5), stayClasses(clLand, 5)],
+clRock
+);
 
 // create small decorative rocks
 log("Creating small decorative rocks...");
