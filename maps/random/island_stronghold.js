@@ -173,7 +173,7 @@ for (var i = 0; i < 9; ++i)
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(clLand)], null);
 
 		// create starting units
-		placeCivDefaultEntities(fx, fz, teams[i][p], BUILDING_ANGlE, {'iberWall': false});
+		placeCivDefaultEntities(fx, fz, teams[i][p], BUILDING_ANGlE, { "iberWall": false });
 
 		// create animals
 		for (let j = 0; j < 2; ++j)
@@ -189,6 +189,7 @@ for (var i = 0; i < 9; ++i)
 			createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 		}
 
+		// create initial metal and stone mines
 		let mAngle = randFloat(PI, TWO_PI);
 		let mDist = 16;
 		let mX = round(fx + mDist * cos(mAngle));
@@ -206,7 +207,7 @@ for (var i = 0; i < 9; ++i)
 		);
 		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2, clWater, 2), stayClasses(clLand, 2)]);
 
-		// create berry bushes
+		// create berry bushes, should avoid mines
 		let bbAngle = randFloat(PI, PI*1.5);
 		let bbDist = 10;
 		let bbX = round(fx + bbDist * cos(bbAngle));
@@ -215,9 +216,9 @@ for (var i = 0; i < 9; ++i)
 			[new SimpleObject(oFruitBush, 5, 5, 0, 3)],
 			true, clBaseResource, bbX, bbZ
 		);
-		createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 4, clPlayer, 2), stayClasses(clLand, 5)]);
 
-		// create starting trees
+		// create starting trees, should avoid mines and bushes
 		let tries = 10;
 		let tDist = 16;
 		let num = 50;
@@ -382,10 +383,27 @@ RMS.SetProgress(85);
 // create bumps
 createBumps();
 
+// create mines
+log("Creating mines...");
+createMines(
+[
+	[new SimpleObject(oMetalLarge, 1, 1, 3, numPlayers * 2)]
+],
+[avoidClasses(clWater, 1, clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 5)],
+clMetal
+);
+createMines(
+[
+	[new SimpleObject(oStoneLarge, 1, 1, 3, numPlayers * 2)], [new SimpleObject(oStoneSmall, 2, 2, 2, numPlayers * 2)]
+],
+[avoidClasses(clWater, 1, clForest, 1, clPlayer, 40, clMetal, 20, clHill, 5), stayClasses(clLand, 5)],
+clRock
+);
+
 // create forests
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
- [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clWater, 10, clBaseResource, 5), stayClasses(clLand, 5)],
+ [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clWater, 10, clBaseResource, 5, clRock, 4, clMetal, 4), stayClasses(clLand, 5)],
  clForest,
  1.0,
  random_terrain
@@ -401,9 +419,12 @@ var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 18, 2);
 createAreas(
 	placer,
 	[painter, elevationPainter, paintClass(clHill)], 
-	[avoidClasses(clBaseResource, 20, clHill, 15), stayClasses(clLand, 0)],
+	[avoidClasses(clBaseResource, 20, clHill, 15, clRock, 4, clMetal, 4), stayClasses(clLand, 0)],
 	scaleByMapSize(4, 13)
 );
+
+for (let i = 0; i < 3; ++i)
+	decayErrodeHeightmap(0.2);
 
 // create straggler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
@@ -445,25 +466,6 @@ for (let i = 0; i < sizes.length; ++i)
 		numb*scaleByMapSize(15, 45)
 	);
 }
-
-// create stone quarries
-log("Creating mines...");
-// create large metal quarries
-createMines(
-[
-	[new SimpleObject(oMetalLarge, 1, 1, 3, numPlayers * 2)]
-],
-[avoidClasses(clWater, 1, clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 5)],
-clMetal
-);
-
-createMines(
-[
-	[new SimpleObject(oStoneLarge, 1, 1, 3, numPlayers * 2)], [new SimpleObject(oStoneSmall, 2, 2, 2, numPlayers * 2)]
-],
-[avoidClasses(clWater, 1, clForest, 1, clPlayer, 40, clMetal, 20, clHill, 5), stayClasses(clLand, 5)],
-clRock
-);
 
 // create small decorative rocks
 log("Creating small decorative rocks...");
