@@ -36,6 +36,9 @@ const oSecondaryHuntableAnimal = rBiomeE10();
 const oStoneLarge = rBiomeE11();
 const oStoneSmall = rBiomeE12();
 const oMetalLarge = rBiomeE13();
+const oWhale = "gaia/fauna_whale_humpback";
+const oShipwreck = "other/special_treasure_shipwreck";
+const oShipDebris = "other/special_treasure_shipwreck_debris";
 
 // decorative props
 const aGrass = rBiomeA1();
@@ -63,13 +66,11 @@ const mapArea = mapSize*mapSize;
 var clPlayer = createTileClass();
 var clHill = createTileClass();
 var clForest = createTileClass();
-var clWater = createTileClass();
 var clDirt = createTileClass();
 var clRock = createTileClass();
 var clMetal = createTileClass();
 var clFood = createTileClass();
 var clBaseResource = createTileClass();
-var clSettlement = createTileClass();
 var clLand = createTileClass();
 
 for (let ix = 0; ix < mapSize; ++ix)
@@ -200,12 +201,12 @@ for (var i = 0; i < 9; ++i)
 			[new SimpleObject(oMetalLarge, 1, 1, 0, 4)],
 			true, clBaseResource, mX, mZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2, clWater, 2), stayClasses(clLand, 2)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2), stayClasses(clLand, 2)]);
 		group = new SimpleGroup(
 			[new SimpleObject(oStoneLarge, 1, 1, 0, 4)],
 			true, clBaseResource, sX, sZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2, clWater, 2), stayClasses(clLand, 2)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2), stayClasses(clLand, 2)]);
 
 		// create berry bushes, should avoid mines
 		let bbAngle = randFloat(PI, PI*1.5);
@@ -255,12 +256,12 @@ for (var i = 0; i < 9; ++i)
 			[new SimpleObject(oMainHuntableAnimal, 2 * numPlayers / numTeams, 2 * numPlayers / numTeams, 0, floor(mapSize * 0.2))],
 			true, clBaseResource, teamX, teamZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 10, clWater, 2), stayClasses(clLand, 5)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 10), stayClasses(clLand, 5)]);
 		group = new SimpleGroup(
 			[new SimpleObject(oSecondaryHuntableAnimal, 4 * numPlayers / numTeams, 4 * numPlayers / numTeams, 0, floor(mapSize * 0.2))],
 			true, clBaseResource, teamX, teamZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 10, clWater, 2), stayClasses(clLand, 5)]);
+		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clHill, 1, clPlayer, 10), stayClasses(clLand, 5)]);
 	}
 }
 
@@ -389,21 +390,21 @@ createMines(
 [
 	[new SimpleObject(oMetalLarge, 1, 1, 3, numPlayers * 2)]
 ],
-[avoidClasses(clWater, 1, clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 5)],
+[avoidClasses(clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 5)],
 clMetal
 );
 createMines(
 [
 	[new SimpleObject(oStoneLarge, 1, 1, 3, numPlayers * 2)], [new SimpleObject(oStoneSmall, 2, 2, 2, numPlayers * 2)]
 ],
-[avoidClasses(clWater, 1, clForest, 1, clPlayer, 40, clMetal, 20, clHill, 5), stayClasses(clLand, 5)],
+[avoidClasses(clForest, 1, clPlayer, 40, clMetal, 20, clHill, 5), stayClasses(clLand, 5)],
 clRock
 );
 
 // create forests
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
- [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clWater, 10, clBaseResource, 5, clRock, 4, clMetal, 4), stayClasses(clLand, 5)],
+ [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clBaseResource, 5, clRock, 4, clMetal, 4), stayClasses(clLand, 5)],
  clForest,
  1.0,
  random_terrain
@@ -428,7 +429,7 @@ for (let i = 0; i < 3; ++i)
 
 // create straggler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
-createStragglerTrees(types, [avoidClasses(clWater, 5, clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1), stayClasses(clLand, 10)]);
+createStragglerTrees(types, [avoidClasses(clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1), stayClasses(clLand, 10)]);
 
 // create dirt patches
 log("Creating dirt patches...");
@@ -463,7 +464,7 @@ for (let i = 0; i < sizes.length; ++i)
 		placer,
 		painter,
 		[avoidClasses(clForest, 0, clHill, 0, clDirt, 5, clPlayer, 0), stayClasses(clLand, 6)],
-		numb*scaleByMapSize(15, 45)
+		numb * scaleByMapSize(15, 45)
 	);
 }
 
@@ -475,7 +476,7 @@ var group = new SimpleGroup(
 );
 createObjectGroups(
 	group, 0,
-	[avoidClasses(clWater, 0, clForest, 0, clHill, 0), stayClasses(clLand, 5)],
+	[avoidClasses(clForest, 0, clHill, 0), stayClasses(clLand, 5)],
 	scaleByMapSize(16, 262), 50
 );
 
@@ -487,7 +488,7 @@ group = new SimpleGroup(
 );
 createObjectGroups(
 	group, 0,
-	[avoidClasses(clWater, 0, clForest, 0, clHill, 0), stayClasses(clLand, 5)],
+	[avoidClasses(clForest, 0, clHill, 0), stayClasses(clLand, 5)],
 	scaleByMapSize(8, 131), 50
 );
 
@@ -498,8 +499,41 @@ group = new SimpleGroup(
 	true, clFood
 );
 createObjectGroups(group, 0,
-	avoidClasses(clLand, 4, clForest, 0, clPlayer, 0, clHill, 0, clFood, 20),
+	avoidClasses(clLand, 4, clFood, 20),
 	25 * numPlayers, 60
+);
+
+log("Creating Whales...");
+// create Whales
+group = new SimpleGroup(
+	[new SimpleObject(oWhale, 1, 1, 0, 3)], 
+	true, clFood
+);
+createObjectGroups(group, 0,
+	[avoidClasses(clLand, 4),avoidClasses(clFood, 8)],
+	scaleByMapSize(5, 20), 100
+);
+
+log("Creating shipwrecks...");
+// create shipwreck
+group = new SimpleGroup(
+	[new SimpleObject(oShipwreck, 1, 1, 0, 3)], 
+	true, clFood
+);
+createObjectGroups(group, 0,
+	[avoidClasses(clLand, 4),avoidClasses(clFood, 8)],
+	scaleByMapSize(3, 6), 100
+);
+
+log("Creating shipwreck debris...");
+// create shipwreck debris
+group = new SimpleGroup(
+	[new SimpleObject(oShipDebris, 1, 2, 0, 4)], 
+	true, clFood
+);
+createObjectGroups(group, 0,
+	[avoidClasses(clLand, 4),avoidClasses(clFood, 8)],
+	scaleByMapSize(5, 10), 100
 );
 
 // create decoration 
@@ -531,7 +565,7 @@ group = new SimpleGroup(
 	[new SimpleObject(aGrassShort, 1, 2, 0, 1, -PI / 8, PI / 8)]
 );
 createObjectGroups(group, 0,
-	[avoidClasses(clWater, 2, clHill, 2, clPlayer, 2, clDirt, 0), stayClasses(clLand, 6)],
+	[avoidClasses(clHill, 2, clPlayer, 2, clDirt, 0), stayClasses(clLand, 6)],
 	planetm * scaleByMapSize(13, 200)
 );
 
@@ -543,7 +577,7 @@ group = new SimpleGroup(
 	[new SimpleObject(aGrass, 2, 4, 0, 1.8, -PI / 8, PI / 8), new SimpleObject(aGrassShort, 3, 6, 1.2,2.5, -PI / 8, PI / 8)]
 );
 createObjectGroups(group, 0,
-	[avoidClasses(clWater, 3, clHill, 2, clPlayer, 2, clDirt, 1, clForest, 0), stayClasses(clLand, 5)],
+	[avoidClasses(clHill, 2, clPlayer, 2, clDirt, 1, clForest, 0), stayClasses(clLand, 5)],
 	planetm * scaleByMapSize(13, 200)
 );
 
