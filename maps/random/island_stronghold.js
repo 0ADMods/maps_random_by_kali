@@ -231,7 +231,7 @@ for (var i = 0; i < 9; ++i)
 				[new SimpleObject(oTree2, num, num, 0, 7)],
 				true, clBaseResource, tX, tZ
 			);
-			if( createObjectGroup(group, 0, [avoidClasses(clBaseResource, 4, clPlayer, 2), stayClasses(clLand, 4)]) )
+			if( createObjectGroup(group, 0, [avoidClasses(clBaseResource, 6, clPlayer, 2), stayClasses(clLand, 4)]) )
 				break;
 		};
 
