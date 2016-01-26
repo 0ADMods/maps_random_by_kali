@@ -388,14 +388,14 @@ createBumps();
 log("Creating mines...");
 createMines(
 [
-	[new SimpleObject(oMetalLarge, 1, 1, 3, numPlayers * 2)]
+	[new SimpleObject(oMetalLarge, 1, 1, 3, (numPlayers * 2) + 1)]
 ],
 [avoidClasses(clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 5)],
 clMetal
 );
 createMines(
 [
-	[new SimpleObject(oStoneLarge, 1, 1, 3, numPlayers * 2)], [new SimpleObject(oStoneSmall, 2, 2, 2, numPlayers * 2)]
+	[new SimpleObject(oStoneLarge, 1, 1, 3, (numPlayers * 2) + 1)], [new SimpleObject(oStoneSmall, 2, 2, 2, (numPlayers * 2) + 1)]
 ],
 [avoidClasses(clForest, 1, clPlayer, 40, clMetal, 20, clHill, 5), stayClasses(clLand, 5)],
 clRock
