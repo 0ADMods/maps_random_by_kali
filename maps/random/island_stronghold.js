@@ -1,10 +1,11 @@
-//TODO: Alter position and amount and clean up team bounty
-
-
 RMS.LoadLibrary("rmgen");
 
 //random terrain textures
 var random_terrain = randomizeBiome();
+// Exclude African Biome
+while(random_terrain == 6) {
+	var random_terrain = randomizeBiome();
+}
 
 const tMainTerrain = rBiomeT1();
 const tForestFloor1 = rBiomeT2();
@@ -60,7 +61,6 @@ const mapSize = getMapSize();
 const mapArea = mapSize*mapSize;
 
 // create tile classes
-
 var clPlayer = createTileClass();
 var clHill = createTileClass();
 var clForest = createTileClass();
@@ -184,7 +184,7 @@ for(var i = 0; i < 9; i++) {
 			createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 		}
 
-		var mAngle = randFloat(0, TWO_PI);
+		var mAngle = randFloat(PI, TWO_PI);
 		var mDist = 16;
 		var mX = round(fx + mDist * cos(mAngle));
 		var mZ = round(fz + mDist * sin(mAngle));
@@ -202,8 +202,8 @@ for(var i = 0; i < 9; i++) {
 		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2, clWater, 2), stayClasses(clLand, 2)]);
 
 		// create berry bushes
-		var bbAngle = randFloat(0, TWO_PI);
-		var bbDist = 12;
+		var bbAngle = randFloat( PI, PI*1.5);
+		var bbDist = 10;
 		var bbX = round(fx + bbDist * cos(bbAngle));
 		var bbZ = round(fz + bbDist * sin(bbAngle));
 		group = new SimpleGroup(
@@ -213,17 +213,24 @@ for(var i = 0; i < 9; i++) {
 		createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 
 		// create starting trees
+		var tries = 10;
+		var tDist = 16;
 		var num = 50;
-		var tAngle = randFloat(0, TWO_PI);
-		var tDist = 12;
-		var tX = round(fx + tDist * cos(tAngle));
-		var tZ = round(fz + tDist * sin(tAngle));
-		group = new SimpleGroup(
-			[new SimpleObject(oTree2, num, num, 0, 7)],
-			true, clBaseResource, tX, tZ
-		);
-		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2), stayClasses(clLand, 4)]);
-
+		var succes = false;
+		for (let x = 0; x < tries; x++) {
+			var tAngle = randFloat(0, TWO_PI);
+			var tX = round(fx + tDist * cos(tAngle));
+			var tZ = round(fz + tDist * sin(tAngle));
+			group = new SimpleGroup(
+				[new SimpleObject(oTree2, num, num, 0, 7)],
+				true, clBaseResource, tX, tZ
+			);
+			var succes = createObjectGroup(group, 0, [avoidClasses(clBaseResource, 4, clPlayer, 2), stayClasses(clLand, 4)]);
+			warn(uneval(succes));
+			if (succes)
+				break;
+		};
+		
 		// create grass tufts
 		var hillSize = PI * radius * radius;
 		var num = hillSize / 250;
@@ -378,7 +385,7 @@ createBumps();
 // create forests
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
- [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clWater, 10), stayClasses(clLand, 5)],
+ [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clWater, 10, clBaseResource, 5), stayClasses(clLand, 5)],
  clForest,
  1.0,
  random_terrain
@@ -398,7 +405,7 @@ createAreas(
 	scaleByMapSize(4, 13)
 );
 
-// create straggeler trees
+// create straggler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
 createStragglerTrees(types, [avoidClasses(clWater, 5, clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1), stayClasses(clLand, 10)]);
 
@@ -407,7 +414,8 @@ log("Creating dirt patches...");
 var sizes = [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)];
 var numb = 1;
 if (random_terrain == 6)
-	numb = 3
+	numb = 3;
+
 for (var i = 0; i < sizes.length; i++)
 {
 	placer = new ChainPlacer(1, floor(scaleByMapSize(3, 5)), sizes[i], 0.5);
@@ -538,14 +546,14 @@ createObjectGroups(group, 0,
 );
 
 // do some environment randomization
-random_terrain = randInt(1, 3);
-if (random_terrain == 1){
+var random_sky = randInt(1, 3);
+if (random_sky == 1){
 	setSkySet("cloudless");
 }
-else if (random_terrain == 2){
+else if (random_sky == 2){
 	setSkySet("cumulus");
 }
-else if (random_terrain == 3){
+else if (random_sky == 3){
 	setSkySet("overcast");
 }
 setSunRotation(randFloat(0, TWO_PI));
