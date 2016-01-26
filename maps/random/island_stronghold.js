@@ -3,8 +3,9 @@ RMS.LoadLibrary("rmgen");
 //random terrain textures
 var random_terrain = randomizeBiome();
 // Exclude African Biome
-while(random_terrain == 6) {
-	var random_terrain = randomizeBiome();
+while(random_terrain == 6) 
+{
+	random_terrain = randomizeBiome();
 }
 
 const tMainTerrain = rBiomeT1();
@@ -84,7 +85,7 @@ for (var ix = 0; ix < mapSize; ix++)
 }
 
 // some constants
-var radius = scaleByMapSize(15,25);
+var radius = scaleByMapSize(15, 25);
 var cliffRadius = 2;
 var elevation = 20;
 var centerOfMap = mapSize / 2;
@@ -101,12 +102,12 @@ var startAngle = randFloat(0, TWO_PI);
 var ffaPlayers = 0;
 var teams = new Array(9);
 var numTeams = 0;
-for (var i = 0; i < numPlayers; i++)
+for (var i = 0; i < numPlayers; ++i)
 {
 	var team = getPlayerTeam(i);
 	if(team == -1) {
 		teams[8 - ffaPlayers] = new Array();
-		teams[8 - ffaPlayers].push(i+1);
+		teams[8 - ffaPlayers].push(i + 1);
 		ffaPlayers++;
 		numTeams++;
 	} else {
@@ -124,7 +125,8 @@ var shoreRadius = 6;
 var elevation = 3;
 var teamNo = 0;
 
-for(var i = 0; i < 9; i++) {
+for(var i = 0; i < 9; ++i) 
+{
 	// we didn't find a team so try with next i
 	if(teams[i] == null) 
 		continue;
@@ -217,7 +219,8 @@ for(var i = 0; i < 9; i++) {
 		var tDist = 16;
 		var num = 50;
 		var succes = false;
-		for (let x = 0; x < tries; x++) {
+		for (let x = 0; x < tries; ++x) 
+		{
 			var tAngle = randFloat(0, TWO_PI);
 			var tX = round(fx + tDist * cos(tAngle));
 			var tZ = round(fz + tDist * sin(tAngle));
@@ -225,16 +228,14 @@ for(var i = 0; i < 9; i++) {
 				[new SimpleObject(oTree2, num, num, 0, 7)],
 				true, clBaseResource, tX, tZ
 			);
-			var succes = createObjectGroup(group, 0, [avoidClasses(clBaseResource, 4, clPlayer, 2), stayClasses(clLand, 4)]);
-			warn(uneval(succes));
-			if (succes)
+			if( createObjectGroup(group, 0, [avoidClasses(clBaseResource, 4, clPlayer, 2), stayClasses(clLand, 4)]) )
 				break;
 		};
-		
+
 		// create grass tufts
 		var hillSize = PI * radius * radius;
 		var num = hillSize / 250;
-		for (var j = 0; j < num; j++)
+		for (var j = 0; j < num; ++j)
 		{
 			var gAngle = randFloat(0, TWO_PI);
 			var gDist = radius - (5 + randInt(7));
@@ -368,13 +369,13 @@ function decayErrodeHeightmap(strength, heightmap)
 	var map = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]]; // smoother
 	var max_x = heightmap.length;
 	var max_y = heightmap[0].length;
-	for (var x = 0; x < max_x; x++)
-		for (var y = 0; y < max_y; y++)
-			for (var i = 0; i < map.length; i++)
+	for (var x = 0; x < max_x; ++x)
+		for (var y = 0; y < max_y; ++y)
+			for (var i = 0; i < map.length; ++i)
 				heightmap[x][y] += strength / map.length * (referenceHeightmap[(x + map[i][0] + max_x) % max_x][(y + map[i][1] + max_y) % max_y] - referenceHeightmap[x][y]); // Not entirely sure if scaling with map.length is perfect but tested values seam to indicate it is
 }
 
-for (var i = 0; i < 5; i++)
+for (var i = 0; i < 5; ++i)
 	decayErrodeHeightmap(0.5);
 
 RMS.SetProgress(85);
@@ -416,7 +417,7 @@ var numb = 1;
 if (random_terrain == 6)
 	numb = 3;
 
-for (var i = 0; i < sizes.length; i++)
+for (var i = 0; i < sizes.length; ++i)
 {
 	placer = new ChainPlacer(1, floor(scaleByMapSize(3, 5)), sizes[i], 0.5);
 	var painter = new LayeredPainter(
@@ -434,7 +435,7 @@ for (var i = 0; i < sizes.length; i++)
 // create grass patches
 log("Creating grass patches...");
 var sizes = [scaleByMapSize(2, 4), scaleByMapSize(3, 7), scaleByMapSize(5, 15)];
-for (var i = 0; i < sizes.length; i++)
+for (var i = 0; i < sizes.length; ++i)
 {
 	placer = new ChainPlacer(1, floor(scaleByMapSize(3, 5)), sizes[i], 0.5);
 	var painter = new TerrainPainter(tTier4Terrain);
@@ -503,14 +504,14 @@ createObjectGroups(group, 0,
 // create decoration 
 
 var planetm = 1;
-if (random_terrain==7)
+if (random_terrain == 7)
 {
 	planetm = 8;
 }
 
 // create grass tufts
 var num = hillSize / 250;
-for (var j = 0; j < num; j++)
+for (var j = 0; j < num; ++j)
 {
 	var gAngle = randFloat(0, TWO_PI);
 	var gDist = radius - (5 + randInt(7));
@@ -557,7 +558,7 @@ else if (random_sky == 3){
 	setSkySet("overcast");
 }
 setSunRotation(randFloat(0, TWO_PI));
-setSunElevation(randFloat(PI / 5, PI / 3));
+setSunElevation(randFloat(PI/5, PI/3));
 setWaterWaviness(2);
 
 RMS.SetProgress(100);
