@@ -4,9 +4,7 @@ RMS.LoadLibrary("rmgen");
 var random_terrain = randomizeBiome();
 // Exclude African Biome
 while(random_terrain == 6) 
-{
 	random_terrain = randomizeBiome();
-}
 
 const tMainTerrain = rBiomeT1();
 const tForestFloor1 = rBiomeT2();
@@ -80,7 +78,7 @@ for (var ix = 0; ix < mapSize; ix++)
 	{
 		var x = ix / (mapSize + 1.0);
 		var z = iz / (mapSize + 1.0);
-			placeTerrain(ix, iz, tWater);
+		placeTerrain(ix, iz, tWater);
 	}
 }
 
@@ -138,14 +136,14 @@ for(var i = 0; i < 9; ++i)
 	var teamX = fractionToTiles(fractionX);
 	var teamZ = fractionToTiles(fractionZ);
 
-	for(var p = 0; p < teams[i].length; p++) {
+	for(var p = 0; p < teams[i].length; ++p) {
 		log("Creating base for player " + teams[i][p] + " on team " + i + "...");
 
 		var playerAngle = startAngle + (p+1)*TWO_PI/teams[i].length;
 
 		// get the x and z in tiles
-		var fx = fractionToTiles(fractionX + 0.05*cos(playerAngle));
-		var fz = fractionToTiles(fractionZ + 0.05*sin(playerAngle));
+		var fx = fractionToTiles(fractionX + 0.05 * cos(playerAngle));
+		var fz = fractionToTiles(fractionZ + 0.05 * sin(playerAngle));
 		var ix = round(fx);
 		var iz = round(fz);
 
@@ -204,7 +202,7 @@ for(var i = 0; i < 9; ++i)
 		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2, clWater, 2), stayClasses(clLand, 2)]);
 
 		// create berry bushes
-		var bbAngle = randFloat( PI, PI*1.5);
+		var bbAngle = randFloat(PI, PI*1.5);
 		var bbDist = 10;
 		var bbX = round(fx + bbDist * cos(bbAngle));
 		var bbZ = round(fz + bbDist * sin(bbAngle));
@@ -218,7 +216,6 @@ for(var i = 0; i < 9; ++i)
 		var tries = 10;
 		var tDist = 16;
 		var num = 50;
-		var succes = false;
 		for (let x = 0; x < tries; ++x) 
 		{
 			var tAngle = randFloat(0, TWO_PI);
@@ -233,8 +230,7 @@ for(var i = 0; i < 9; ++i)
 		};
 
 		// create grass tufts
-		var hillSize = PI * radius * radius;
-		var num = hillSize / 250;
+		var num = (PI * radius * radius) / 250;
 		for (var j = 0; j < num; ++j)
 		{
 			var gAngle = randFloat(0, TWO_PI);
@@ -317,7 +313,6 @@ for (var i = 0; i < numIslands; ++i)
 
 playerConstraint = new AvoidTileClassConstraint(clPlayer, floor(scaleByMapSize(9, 12)));
 landConstraint = new AvoidTileClassConstraint(clLand, floor(scaleByMapSize(9, 12)));
-
 
 log("Creating small islands...");
 numIslands = scaleByMapSize(6, 18) * scaleByMapSize(1, 3)
