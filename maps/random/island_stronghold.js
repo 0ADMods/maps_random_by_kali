@@ -517,23 +517,23 @@ createObjectGroups(group, 0,
 log("Creating shipwrecks...");
 // create shipwreck
 group = new SimpleGroup(
-	[new SimpleObject(oShipwreck, 1, 1, 0, 3)], 
+	[new SimpleObject(oShipwreck, 1, 1, 0, 1)], 
 	true, clFood
 );
 createObjectGroups(group, 0,
 	[avoidClasses(clLand, 4),avoidClasses(clFood, 8)],
-	scaleByMapSize(3, 6), 100
+	scaleByMapSize(12, 16), 100
 );
 
 log("Creating shipwreck debris...");
 // create shipwreck debris
 group = new SimpleGroup(
-	[new SimpleObject(oShipDebris, 1, 2, 0, 4)], 
+	[new SimpleObject(oShipDebris, 1, 1, 0, 1)], 
 	true, clFood
 );
 createObjectGroups(group, 0,
 	[avoidClasses(clLand, 4),avoidClasses(clFood, 8)],
-	scaleByMapSize(5, 10), 100
+	scaleByMapSize(10, 20), 100
 );
 
 // create decoration 
