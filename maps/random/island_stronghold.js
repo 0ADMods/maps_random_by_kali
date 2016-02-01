@@ -431,6 +431,25 @@ for (let i = 0; i < 3; ++i)
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
 createStragglerTrees(types, [avoidClasses(clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1), stayClasses(clLand, 10)]);
 
+// create animals
+createFood(
+ 	[ 
+ 		[new SimpleObject(oMainHuntableAnimal, 5, 7, 0, 4)], 
+ 		[new SimpleObject(oSecondaryHuntableAnimal, 2, 3, 0, 2)] 
+ 	], 
+ 	[3 * numPlayers, 3 * numPlayers],
+ 	[avoidClasses(clForest, 0, clPlayer, 20, clHill, 1, clRock, 4, clMetal, 4), stayClasses(clLand, 4)]
+);
+
+// create fruits
+createFood(
+ 	[
+  		[new SimpleObject(oFruitBush, 5, 7, 0, 4)]
+ 	], 
+ 	[3 * numPlayers],
+ 	[avoidClasses(clForest, 0, clPlayer, 15, clHill, 1, clFood, 4, clRock, 4, clMetal, 4), stayClasses(clLand, 4)]
+);
+
 // create dirt patches
 log("Creating dirt patches...");
 var sizes = [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)];
