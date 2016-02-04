@@ -291,34 +291,36 @@ for (var i = 0; i < numPlayers; ++i)
 	}
 }
 
-RMS.SetProgress(20);
+RMS.SetProgress(40);
 
 // create bumps
 createBumps();
 
-log("Creating stone mines...");
-// create stone quarries
-createMines(
-	[
-		[new SimpleObject(oStoneLarge, 1, 1, 3, (numPlayers * 2) + 1)], [new SimpleObject(oStoneSmall, 2, 2, 2, (numPlayers * 2) + 1)]
-	],
-	[avoidClasses(clWater, 1, clForest, 1, clPlayer, 20, clRock, 10, clHill, 1), stayClasses(clLand, 6)]
-);
-
-log("Creating metal mines...");
-// create large metal quarries
-createMines(
- 	[
-  		[new SimpleObject(oMetalLarge, 1, 1, 0, 4)]
- 	],
- 	avoidClasses(clWater, 1, clForest, 1, clPlayer, 20, clMetal, 10, clRock, 5, clHill, 1),
- 	clMetal
-);
+log("Creating stone mines...");		
+// create stone quarries		
+createMines(		
+ 	[		
+  		[new SimpleObject(oStoneSmall, 0,2, 0,4), new SimpleObject(oStoneLarge, 1,1, 0,4)],		
+  		[new SimpleObject(oStoneSmall, 2,5, 1,3)]		
+ 	],		
+ 	[avoidClasses(clWater, 1, clForest, 1, clPlayer, 25, clRock, 10, clHill, 1), stayClasses(clLand, 6)],
+ 	clRock		
+)		
+		
+log("Creating metal mines...");		
+// create large metal quarries		
+createMines(		
+ 	[		
+  		[new SimpleObject(oMetalLarge, 1,1, 0,4)]		
+ 	],		
+ 	[avoidClasses(clWater, 1, clForest, 1, clPlayer, 25, clMetal, 10, clRock, 5, clHill, 1)],		
+ 	clMetal		
+)
 
 // create forests
 createForests(
 	[tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
-	avoidClasses(clPlayer, 2, clForest, 10, clHill, 1, clWater, 5),
+	avoidClasses(clPlayer, 25, clForest, 10, clHill, 1, clWater, 5, clBaseResource, 15),
 	clForest,
 	1.0,
 	random_terrain
