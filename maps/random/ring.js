@@ -58,7 +58,6 @@ const mapSize = getMapSize();
 const mapArea = mapSize*mapSize;
 
 // create tile classes
-
 var clPlayer = createTileClass();
 var clHill = createTileClass();
 var clForest = createTileClass();
@@ -300,8 +299,8 @@ log("Creating stone mines...");
 // create stone quarries		
 createMines(		
  	[		
-  		[new SimpleObject(oStoneSmall, 0,2, 0,4), new SimpleObject(oStoneLarge, 1,1, 0,4)],		
-  		[new SimpleObject(oStoneSmall, 2,5, 1,3)]		
+  		[new SimpleObject(oStoneSmall, 0, 2, 0, 4), new SimpleObject(oStoneLarge, 1, 1, 0, 4)],		
+  		[new SimpleObject(oStoneSmall, 2, 5, 1, 3)]		
  	],		
  	[avoidClasses(clWater, 1, clForest, 1, clPlayer, 25, clRock, 10, clHill, 1), stayClasses(clLand, 6)],
  	clRock		
@@ -311,7 +310,7 @@ log("Creating metal mines...");
 // create large metal quarries		
 createMines(		
  	[		
-  		[new SimpleObject(oMetalLarge, 1,1, 0,4)]		
+  		[new SimpleObject(oMetalLarge, 1, 1, 0, 4)]		
  	],		
  	[avoidClasses(clWater, 1, clForest, 1, clPlayer, 25, clMetal, 10, clRock, 5, clHill, 1)],		
  	clMetal		
@@ -320,9 +319,9 @@ createMines(
 // create forests
 createForests(
 	[tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
-	avoidClasses(clPlayer, 25, clForest, 10, clHill, 1, clWater, 5, clBaseResource, 15),
+	avoidClasses(clPlayer, 25, clForest, 10, clHill, 1, clWater, 5, clBaseResource, 16, clMetal, 4, clRock, 4),
 	clForest,
-	1.0,
+	0.7,
 	random_terrain
 );
 
@@ -356,7 +355,7 @@ createFood
   		[new SimpleObject(oMainHuntableAnimal, 5, 7, 0, 4)], [new SimpleObject(oSecondaryHuntableAnimal, 2, 3, 0, 2)]
  	],
  	[3 * numPlayers, 3 * numPlayers],
- 	avoidClasses(clWater, 3, clForest, 0, clPlayer, 20, clHill, 1, clFood, 20)
+ 	avoidClasses(clWater, 3, clForest, 3, clPlayer, 20, clHill, 1, clFood, 20, clRock, 4, clMetal, 4)
 );
 
 RMS.SetProgress(75);
@@ -375,7 +374,7 @@ RMS.SetProgress(85);
 
 // create straggler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
-createStragglerTrees(types, avoidClasses(clWater, 5, clForest, 7, clHill, 1, clPlayer, 12, clMetal, 1, clRock, 1));
+createStragglerTrees(types, avoidClasses(clWater, 5, clForest, 7, clHill, 1, clPlayer, 30, clMetal, 1, clRock, 1));
 
 // create decoration
 var planetm = 1;
