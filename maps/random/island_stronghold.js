@@ -51,6 +51,7 @@ const oMetalLarge = rBiomeE13();
 const oWhale = "gaia/fauna_whale_humpback";
 const oShipwreck = "other/special_treasure_shipwreck";
 const oShipDebris = "other/special_treasure_shipwreck_debris";
+const oObelisk = "other/obelisk";
 
 // decorative props
 const aGrass = rBiomeA1();
@@ -67,7 +68,6 @@ InitMap();
 
 const numPlayers = getNumPlayers();
 const mapSize = getMapSize();
-const mapArea = mapSize*mapSize;
 
 // create tile classes
 let clPlayer = createTileClass();
@@ -86,12 +86,9 @@ for (let ix = 0; ix < mapSize; ++ix)
 
 // some constants
 let radius = scaleByMapSize(15, 25);
-let centerOfMap = mapSize / 2;
 
 let fx = fractionToTiles(0.5);
 let fz = fractionToTiles(0.5);
-let ix = round(fx);
-let iz = round(fz);
 
 let startAngle = randFloat(0, TWO_PI);
 
@@ -427,6 +424,20 @@ createFood(
 	[3 * numPlayers],
 	[avoidClasses(clForest, 0, clPlayer, 15, clHill, 1, clFood, 4, clRock, 4, clMetal, 4), stayClasses(clLand, 2)]
 );
+
+if (random_terrain == 3)
+{
+	log("Creating obelisks");
+	let group = new SimpleGroup(
+		[new SimpleObject(oObelisk, 1, 1, 0, 1)],
+		true
+	);
+	createObjectGroups(
+		group, 0,
+		[avoidClasses(clBaseResource, 0, clHill, 0, clRock, 0, clMetal, 0, clFood, 0), stayClasses(clLand, 1)],
+		scaleByMapSize(3, 8), 1000
+	);
+}
 
 log("Creating dirt patches...");
 let sizes = [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)];
