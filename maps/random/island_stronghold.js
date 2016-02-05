@@ -46,7 +46,6 @@ const pForest1 = [tForestFloor2 + TERRAIN_SEPARATOR + oTree1, tForestFloor2 + TE
 const pForest2 = [tForestFloor1 + TERRAIN_SEPARATOR + oTree4, tForestFloor1 + TERRAIN_SEPARATOR + oTree5, tForestFloor1];
 const BUILDING_ANGlE = -PI/4;
 
-// initialize map
 log("Initializing map...");
 InitMap();
 
@@ -109,7 +108,7 @@ for (let i = 0; i < numPlayers; ++i)
 		teams.push([i+1]);
 }
 
-// Count number of used team IDs
+// Get number of used team IDs
 let numTeams = teams.filter(team => team).length;
 
 RMS.SetProgress(10);
@@ -123,7 +122,7 @@ for (let i = 0; i < teams.length; ++i)
 	if (!teams[i])
 		continue;
 
-	teamNo++;
+	++teamNo;
 	let teamAngle = startAngle + teamNo*TWO_PI/numTeams;
 	let fractionX = 0.5 + 0.3 * cos(teamAngle);
 	let fractionZ = 0.5 + 0.3 * sin(teamAngle);
@@ -142,7 +141,7 @@ for (let i = 0; i < teams.length; ++i)
 		let ix = round(fx);
 		let iz = round(fz);
 
-		// mark a small area around the player's starting coördinates with the clPlayer class
+		// mark a small area around the player's starting coordinates with the clPlayer class
 		addToClass(ix, iz, clPlayer);
 		addToClass(ix+5, iz, clPlayer);
 		addToClass(ix, iz+5, clPlayer);
@@ -165,7 +164,7 @@ for (let i = 0; i < teams.length; ++i)
 		// create starting units
 		placeCivDefaultEntities(fx, fz, teams[i][p], BUILDING_ANGlE, { "iberWall": false });
 
-		// create animals
+		// create initial chicken
 		for (let j = 0; j < 2; ++j)
 		{
 			let aAngle = randFloat(0, TWO_PI);
@@ -198,7 +197,7 @@ for (let i = 0; i < teams.length; ++i)
 		);
 		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clPlayer, 2), stayClasses(clLand, 2)]);
 
-		// create berry bushes
+		// create initial berry bushes
 		let bbAngle = randFloat(PI, PI*1.5);
 		let bbDist = 10;
 		let bbX = round(fx + bbDist * cos(bbAngle));
@@ -209,7 +208,7 @@ for (let i = 0; i < teams.length; ++i)
 		);
 		createObjectGroup(group, 0, [avoidClasses(clBaseResource, 4, clPlayer, 2), stayClasses(clLand, 5)]);
 
-		// create starting trees, should avoid mines and bushes
+		// create initial trees
 		let tries = 10;
 		let tDist = 16;
 		let num = 50;
@@ -226,22 +225,7 @@ for (let i = 0; i < teams.length; ++i)
 				break;
 		}
 
-		// create grass tufts
-		num = (PI * radius * radius) / 250;
-		for (let j = 0; j < num; ++j)
-		{
-			let gAngle = randFloat(0, TWO_PI);
-			let gDist = radius - (5 + randInt(7));
-			let gX = round(fx + gDist * cos(gAngle));
-			let gZ = round(fz + gDist * sin(gAngle));
-			group = new SimpleGroup(
-				[new SimpleObject(aGrassShort, 2, 5, 0, 1, -PI/8, PI/8)],
-				false, clBaseResource, gX, gZ
-			);
-			createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
-		}
-
-		// create team bounty
+		// create huntable animals
 		group = new SimpleGroup(
 			[new SimpleObject(oMainHuntableAnimal, 2 * numPlayers / numTeams, 2 * numPlayers / numTeams, 0, floor(mapSize * 0.2))],
 			true, clBaseResource, teamX, teamZ
@@ -257,8 +241,7 @@ for (let i = 0; i < teams.length; ++i)
 
 RMS.SetProgress(40);
 
-// create expansion islands
-
+log("Creating expansion islands...");
 let landAreas = [];
 let playerConstraint = new AvoidTileClassConstraint(clPlayer, floor(scaleByMapSize(12, 16)));
 let landConstraint = new AvoidTileClassConstraint(clLand, floor(scaleByMapSize(12, 16)));
@@ -268,10 +251,9 @@ for (let x = 0; x < mapSize; ++x)
 		if (playerConstraint.allows(x, z) && landConstraint.allows(x, z))
 			landAreas.push([x, z]);
 
+log("Creating big islands...");
 let chosenPoint;
 let landAreaLen;
-
-log("Creating big islands...");
 let numIslands = scaleByMapSize(4, 14);
 for (let i = 0; i < numIslands; ++i)
 {
@@ -302,7 +284,9 @@ for (let i = 0; i < numIslands; ++i)
 	let n = 0;
 	for (let j = 0; j < landAreaLen; ++j)
 	{
-		let x = landAreas[j][0], z = landAreas[j][1];
+		let x = landAreas[j][0];
+		let z = landAreas[j][1];
+
 		if (playerConstraint.allows(x, z) && landConstraint.allows(x, z))
 			landAreas[n++] = landAreas[j];
 	}
@@ -342,20 +326,21 @@ for (let i = 0; i < numIslands; ++i)
 	let temp = [];
 	for (let j = 0; j < landAreaLen; ++j)
 	{
-		let x = landAreas[j][0], z = landAreas[j][1];
+		let x = landAreas[j][0];
+		let z = landAreas[j][1];
+
 		if (playerConstraint.allows(x, z) && landConstraint.allows(x, z))
-				temp.push([x, z]);
+			temp.push([x, z]);
 	}
 	landAreas = temp;
 }
 
 RMS.SetProgress(70);
 
-// smooth Heightmap
 function decayErrodeHeightmap(strength, heightmap)
 {
-	strength = (strength || 0.9); // 0 to 1
-	heightmap = (heightmap || g_Map.height);
+	strength = strength || 0.9; // 0 to 1
+	heightmap = heightmap || g_Map.height;
 
 	let referenceHeightmap = deepcopy(heightmap);
 	// let map = [[1, 0], [0, 1], [-1, 0], [0, -1]]; // faster
@@ -368,6 +353,7 @@ function decayErrodeHeightmap(strength, heightmap)
 				heightmap[x][y] += strength / map.length * (referenceHeightmap[(x + map[i][0] + max_x) % max_x][(y + map[i][1] + max_y) % max_y] - referenceHeightmap[x][y]); // Not entirely sure if scaling with map.length is perfect but tested values seam to indicate it is
 }
 
+log("Smoothing heightmap...");
 for (let i = 0; i < 5; ++i)
 	decayErrodeHeightmap(0.5);
 
@@ -377,11 +363,8 @@ paintTileClassBasedOnHeight(0, 5, 3, clLand);
 
 RMS.SetProgress(85);
 
-// create bumps
 createBumps();
 
-// create mines
-log("Creating mines...");
 createMines(
 [
 	[new SimpleObject(oMetalLarge, 1, 1, 3, (numPlayers * 2) + 1)]
@@ -389,6 +372,7 @@ createMines(
 [avoidClasses(clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 4)],
 clMetal
 );
+
 createMines(
 [
 	[new SimpleObject(oStoneLarge, 1, 1, 3, (numPlayers * 2) + 1)], [new SimpleObject(oStoneSmall, 2, 2, 2, (numPlayers * 2) + 1)]
@@ -397,7 +381,6 @@ createMines(
 clRock
 );
 
-// create forests
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
  [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clBaseResource, 5, clRock, 4, clMetal, 4), stayClasses(clLand, 3)],
@@ -406,7 +389,7 @@ createForests(
  random_terrain
 );
 
-// create hills
+log("Creating hills...");
 let placer = new ChainPlacer(1, floor(scaleByMapSize(4, 6)), floor(scaleByMapSize(16, 40)), 0.5);
 let painter = new LayeredPainter(
 	[tCliff, tHill],		// terrains
@@ -419,15 +402,15 @@ createAreas(
 	[avoidClasses(clBaseResource, 20, clHill, 15, clRock, 4, clMetal, 4), stayClasses(clLand, 0)],
 	scaleByMapSize(4, 13)
 );
-
 for (let i = 0; i < 3; ++i)
 	decayErrodeHeightmap(0.2);
 
-// create straggler trees
-let types = [oTree1, oTree2, oTree4, oTree3];	// some variation
-createStragglerTrees(types, [avoidClasses(clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1), stayClasses(clLand, 4)]);
+createStragglerTrees(
+		[oTree1, oTree2, oTree4, oTree3],
+		[avoidClasses(clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1),
+		 stayClasses(clLand, 4)]
+);
 
-// create animals
 createFood(
 	[
 		[new SimpleObject(oMainHuntableAnimal, 5, 7, 0, 4)],
@@ -437,7 +420,6 @@ createFood(
 	[avoidClasses(clForest, 0, clPlayer, 20, clHill, 1, clRock, 4, clMetal, 4), stayClasses(clLand, 2)]
 );
 
-// create fruits
 createFood(
 	[
 		[new SimpleObject(oFruitBush, 5, 7, 0, 4)]
@@ -446,7 +428,6 @@ createFood(
 	[avoidClasses(clForest, 0, clPlayer, 15, clHill, 1, clFood, 4, clRock, 4, clMetal, 4), stayClasses(clLand, 2)]
 );
 
-// create dirt patches
 log("Creating dirt patches...");
 let sizes = [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)];
 let numb = random_terrain == 6 ? 3 : 1;
@@ -466,7 +447,6 @@ for (let i = 0; i < sizes.length; ++i)
 	);
 }
 
-// create grass patches
 log("Creating grass patches...");
 sizes = [scaleByMapSize(2, 4), scaleByMapSize(3, 7), scaleByMapSize(5, 15)];
 for (let i = 0; i < sizes.length; ++i)
@@ -481,7 +461,6 @@ for (let i = 0; i < sizes.length; ++i)
 	);
 }
 
-// create small decorative rocks
 log("Creating small decorative rocks...");
 let group = new SimpleGroup(
 	[new SimpleObject(aRockMedium, 1, 3, 0, 1)],
@@ -493,7 +472,6 @@ createObjectGroups(
 	scaleByMapSize(16, 262), 50
 );
 
-// create large decorative rocks
 log("Creating large decorative rocks...");
 group = new SimpleGroup(
 	[new SimpleObject(aRockLarge, 1, 2, 0, 1), new SimpleObject(aRockMedium, 1, 3, 0, 2)],
@@ -505,7 +483,6 @@ createObjectGroups(
 	scaleByMapSize(8, 131), 50
 );
 
-// create fish
 log("Creating fish...");
 group = new SimpleGroup(
 	[new SimpleObject(oFish, 2, 3, 0, 2)],
@@ -517,7 +494,6 @@ createObjectGroups(group, 0,
 );
 
 log("Creating Whales...");
-// create Whales
 group = new SimpleGroup(
 	[new SimpleObject(oWhale, 1, 1, 0, 3)],
 	true, clFood
@@ -528,7 +504,6 @@ createObjectGroups(group, 0,
 );
 
 log("Creating shipwrecks...");
-// create shipwreck
 group = new SimpleGroup(
 	[new SimpleObject(oShipwreck, 1, 1, 0, 1)],
 	true, clFood
@@ -539,7 +514,6 @@ createObjectGroups(group, 0,
 );
 
 log("Creating shipwreck debris...");
-// create shipwreck debris
 group = new SimpleGroup(
 	[new SimpleObject(oShipDebris, 1, 1, 0, 1)],
 	true, clFood
@@ -549,13 +523,7 @@ createObjectGroups(group, 0,
 	scaleByMapSize(10, 20), 100
 );
 
-// create decoration
-
-let planetm = 1;
-if (random_terrain == 7)
-	planetm = 8;
-
-// create grass tufts
+log("Creating grass tufts...");
 let num = (PI * radius * radius) / 250;
 for (let j = 0; j < num; ++j)
 {
@@ -570,8 +538,8 @@ for (let j = 0; j < num; ++j)
 	createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
 }
 
-//create small grass tufts
 log("Creating small grass tufts...");
+let planetm = random_terrain == 7 ? 8 : 1;
 group = new SimpleGroup(
 	[new SimpleObject(aGrassShort, 1, 2, 0, 1, -PI / 8, PI / 8)]
 );
@@ -582,7 +550,6 @@ createObjectGroups(group, 0,
 
 RMS.SetProgress(95);
 
-// create large grass tufts
 log("Creating large grass tufts...");
 group = new SimpleGroup(
 	[new SimpleObject(aGrass, 2, 4, 0, 1.8, -PI / 8, PI / 8), new SimpleObject(aGrassShort, 3, 6, 1.2,2.5, -PI / 8, PI / 8)]
@@ -595,17 +562,8 @@ createObjectGroups(group, 0,
 paintTerrainBasedOnHeight(1, 2, 0, tShore);
 paintTerrainBasedOnHeight(-8, 1, 2, tWater);
 
-// do some environment randomization
-let random_sky = randInt(1, 3);
-if (random_sky == 1){
-	setSkySet("cloudless");
-}
-else if (random_sky == 2){
-	setSkySet("cumulus");
-}
-else if (random_sky == 3){
-	setSkySet("overcast");
-}
+setSkySet(shuffleArray(["cloudless", "cumulus", "overcast"])[0]);
+
 setSunRotation(randFloat(0, TWO_PI));
 setSunElevation(randFloat(PI/5, PI/3));
 setWaterWaviness(2);
