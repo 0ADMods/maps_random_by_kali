@@ -1,3 +1,19 @@
+function decayErrodeHeightmap(strength, heightmap)
+{
+	strength = strength || 0.9; // 0 to 1
+	heightmap = heightmap || g_Map.height;
+
+	let referenceHeightmap = deepcopy(heightmap);
+	// let map = [[1, 0], [0, 1], [-1, 0], [0, -1]]; // faster
+	let map = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]]; // smoother
+	let max_x = heightmap.length;
+	let max_y = heightmap[0].length;
+	for (let x = 0; x < max_x; ++x)
+		for (let y = 0; y < max_y; ++y)
+			for (let i = 0; i < map.length; ++i)
+				heightmap[x][y] += strength / map.length * (referenceHeightmap[(x + map[i][0] + max_x) % max_x][(y + map[i][1] + max_y) % max_y] - referenceHeightmap[x][y]); // Not entirely sure if scaling with map.length is perfect but tested values seam to indicate it is
+}
+
 RMS.LoadLibrary("rmgen");
 
 // Random terrain textures, exclude african biome
@@ -336,22 +352,6 @@ for (let i = 0; i < numIslands; ++i)
 }
 
 RMS.SetProgress(70);
-
-function decayErrodeHeightmap(strength, heightmap)
-{
-	strength = strength || 0.9; // 0 to 1
-	heightmap = heightmap || g_Map.height;
-
-	let referenceHeightmap = deepcopy(heightmap);
-	// let map = [[1, 0], [0, 1], [-1, 0], [0, -1]]; // faster
-	let map = [[1, 0], [1, 1], [0, 1], [-1, 1], [-1, 0], [-1, -1], [0, -1], [1, -1]]; // smoother
-	let max_x = heightmap.length;
-	let max_y = heightmap[0].length;
-	for (let x = 0; x < max_x; ++x)
-		for (let y = 0; y < max_y; ++y)
-			for (let i = 0; i < map.length; ++i)
-				heightmap[x][y] += strength / map.length * (referenceHeightmap[(x + map[i][0] + max_x) % max_x][(y + map[i][1] + max_y) % max_y] - referenceHeightmap[x][y]); // Not entirely sure if scaling with map.length is perfect but tested values seam to indicate it is
-}
 
 log("Smoothing heightmap...");
 for (let i = 0; i < 5; ++i)
