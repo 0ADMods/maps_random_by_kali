@@ -106,7 +106,7 @@ for (var i = 0; i < numPlayers; ++i)
 	var team = getPlayerTeam(i);
 	if (team == -1) 
 	{
-		teams[8 - ffaPlayers] = new Array();
+		teams[8 - ffaPlayers] = [];
 		teams[8 - ffaPlayers].push(i + 1);
 		ffaPlayers++;
 		numTeams++;
@@ -115,7 +115,7 @@ for (var i = 0; i < numPlayers; ++i)
 	{
 		if (teams[team] == null) 
 		{
-			teams[team] = new Array();
+			teams[team] = [];
 			numTeams++;
 		}
 		teams[team].push(i+1);
@@ -234,7 +234,7 @@ for (var i = 0; i < 9; ++i)
 			);
 			if( createObjectGroup(group, 0, [avoidClasses(clBaseResource, 6, clPlayer, 2), stayClasses(clLand, 4)]) )
 				break;
-		};
+		}
 
 		// create grass tufts
 		num = (PI * radius * radius) / 250;
@@ -282,7 +282,7 @@ var chosenPoint;
 var landAreaLen;
 
 log("Creating big islands...");
-var numIslands = scaleByMapSize(4, 14)
+var numIslands = scaleByMapSize(4, 14);
 for (let i = 0; i < numIslands; ++i)
 {
 	landAreaLen = landAreas.length;
@@ -321,7 +321,7 @@ playerConstraint = new AvoidTileClassConstraint(clPlayer, floor(scaleByMapSize(9
 landConstraint = new AvoidTileClassConstraint(clLand, floor(scaleByMapSize(9, 12)));
 
 log("Creating small islands...");
-numIslands = scaleByMapSize(6, 18) * scaleByMapSize(1, 3)
+numIslands = scaleByMapSize(6, 18) * scaleByMapSize(1, 3);
 for (let i = 0; i < numIslands; ++i)
 {
 	landAreaLen = landAreas.length;
@@ -344,7 +344,7 @@ for (let i = 0; i < numIslands; ++i)
 	);
 	if (newIsland !== undefined)
 	{
-		let temp = []
+		let temp = [];
 		for (let j = 0; j < landAreaLen; ++j)
 		{
 			let x = landAreas[j][0], z = landAreas[j][1];
