@@ -348,8 +348,6 @@ for (let i = 0; i < numIslands; ++i)
 	}
 	landAreas = temp;
 }
-paintTerrainBasedOnHeight(1, 3, 0, tShore);
-paintTerrainBasedOnHeight(-8, 1, 2, tWater);
 
 RMS.SetProgress(70);
 
@@ -373,6 +371,10 @@ function decayErrodeHeightmap(strength, heightmap)
 for (let i = 0; i < 5; ++i)
 	decayErrodeHeightmap(0.5);
 
+// repaint clLand to compensate for smoothing
+unPaintTileClassBasedOnHeight(-10, 10, 3, clLand);
+paintTileClassBasedOnHeight(0, 5, 3, clLand);
+
 RMS.SetProgress(85);
 
 // create bumps
@@ -384,21 +386,21 @@ createMines(
 [
 	[new SimpleObject(oMetalLarge, 1, 1, 3, (numPlayers * 2) + 1)]
 ],
-[avoidClasses(clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 5)],
+[avoidClasses(clForest, 1, clPlayer, 40, clRock, 20, clHill, 5), stayClasses(clLand, 4)],
 clMetal
 );
 createMines(
 [
 	[new SimpleObject(oStoneLarge, 1, 1, 3, (numPlayers * 2) + 1)], [new SimpleObject(oStoneSmall, 2, 2, 2, (numPlayers * 2) + 1)]
 ],
-[avoidClasses(clForest, 1, clPlayer, 40, clMetal, 20, clHill, 5), stayClasses(clLand, 5)],
+[avoidClasses(clForest, 1, clPlayer, 40, clMetal, 20, clHill, 5), stayClasses(clLand, 4)],
 clRock
 );
 
 // create forests
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
- [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clBaseResource, 5, clRock, 4, clMetal, 4), stayClasses(clLand, 5)],
+ [avoidClasses(clPlayer, 10, clForest, 20, clHill, 10, clBaseResource, 5, clRock, 4, clMetal, 4), stayClasses(clLand, 3)],
  clForest,
  1.0,
  random_terrain
@@ -423,7 +425,7 @@ for (let i = 0; i < 3; ++i)
 
 // create straggler trees
 let types = [oTree1, oTree2, oTree4, oTree3];	// some variation
-createStragglerTrees(types, [avoidClasses(clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1), stayClasses(clLand, 10)]);
+createStragglerTrees(types, [avoidClasses(clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1), stayClasses(clLand, 4)]);
 
 // create animals
 createFood(
@@ -432,7 +434,7 @@ createFood(
 		[new SimpleObject(oSecondaryHuntableAnimal, 2, 3, 0, 2)]
 	],
 	[3 * numPlayers, 3 * numPlayers],
-	[avoidClasses(clForest, 0, clPlayer, 20, clHill, 1, clRock, 4, clMetal, 4), stayClasses(clLand, 4)]
+	[avoidClasses(clForest, 0, clPlayer, 20, clHill, 1, clRock, 4, clMetal, 4), stayClasses(clLand, 2)]
 );
 
 // create fruits
@@ -441,7 +443,7 @@ createFood(
 		[new SimpleObject(oFruitBush, 5, 7, 0, 4)]
 	],
 	[3 * numPlayers],
-	[avoidClasses(clForest, 0, clPlayer, 15, clHill, 1, clFood, 4, clRock, 4, clMetal, 4), stayClasses(clLand, 4)]
+	[avoidClasses(clForest, 0, clPlayer, 15, clHill, 1, clFood, 4, clRock, 4, clMetal, 4), stayClasses(clLand, 2)]
 );
 
 // create dirt patches
@@ -459,7 +461,7 @@ for (let i = 0; i < sizes.length; ++i)
 	createAreas(
 		placer,
 		[painter, paintClass(clDirt)],
-		[avoidClasses(clForest, 0, clHill, 0, clDirt, 5, clPlayer, 0), stayClasses(clLand, 6)],
+		[avoidClasses(clForest, 0, clHill, 0, clDirt, 5, clPlayer, 0), stayClasses(clLand, 4)],
 		numb*scaleByMapSize(15, 45)
 	);
 }
@@ -474,7 +476,7 @@ for (let i = 0; i < sizes.length; ++i)
 	createAreas(
 		placer,
 		painter,
-		[avoidClasses(clForest, 0, clHill, 0, clDirt, 5, clPlayer, 0), stayClasses(clLand, 6)],
+		[avoidClasses(clForest, 0, clHill, 0, clDirt, 5, clPlayer, 0), stayClasses(clLand, 4)],
 		numb * scaleByMapSize(15, 45)
 	);
 }
@@ -487,7 +489,7 @@ let group = new SimpleGroup(
 );
 createObjectGroups(
 	group, 0,
-	[avoidClasses(clForest, 0, clHill, 0), stayClasses(clLand, 5)],
+	[avoidClasses(clForest, 0, clHill, 0), stayClasses(clLand, 2)],
 	scaleByMapSize(16, 262), 50
 );
 
@@ -499,7 +501,7 @@ group = new SimpleGroup(
 );
 createObjectGroups(
 	group, 0,
-	[avoidClasses(clForest, 0, clHill, 0), stayClasses(clLand, 5)],
+	[avoidClasses(clForest, 0, clHill, 0), stayClasses(clLand, 2)],
 	scaleByMapSize(8, 131), 50
 );
 
@@ -562,7 +564,7 @@ for (let j = 0; j < num; ++j)
 	let gX = round(fx + gDist * cos(gAngle));
 	let gZ = round(fz + gDist * sin(gAngle));
 	group = new SimpleGroup(
-		[new SimpleObject(aGrassShort, 2, 5, 0,1, -PI / 8, PI / 8)],
+		[new SimpleObject(aGrassShort, 2, 5, 0, 1, -PI / 8, PI / 8)],
 		false, clBaseResource, gX, gZ
 	);
 	createObjectGroup(group, 0, [stayClasses(clLand, 5)]);
@@ -574,7 +576,7 @@ group = new SimpleGroup(
 	[new SimpleObject(aGrassShort, 1, 2, 0, 1, -PI / 8, PI / 8)]
 );
 createObjectGroups(group, 0,
-	[avoidClasses(clHill, 2, clPlayer, 2, clDirt, 0), stayClasses(clLand, 6)],
+	[avoidClasses(clHill, 2, clPlayer, 2, clDirt, 0), stayClasses(clLand, 3)],
 	planetm * scaleByMapSize(13, 200)
 );
 
@@ -589,6 +591,9 @@ createObjectGroups(group, 0,
 	[avoidClasses(clHill, 2, clPlayer, 2, clDirt, 1, clForest, 0), stayClasses(clLand, 5)],
 	planetm * scaleByMapSize(13, 200)
 );
+
+paintTerrainBasedOnHeight(1, 2, 0, tShore);
+paintTerrainBasedOnHeight(-8, 1, 2, tWater);
 
 // do some environment randomization
 let random_sky = randInt(1, 3);
