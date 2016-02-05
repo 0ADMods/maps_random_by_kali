@@ -14,11 +14,7 @@ const tTier1Terrain = rBiomeT5();
 const tTier2Terrain = rBiomeT6();
 const tTier3Terrain = rBiomeT7();
 const tHill = rBiomeT8();
-const tDirt = rBiomeT9();
-const tRoad = rBiomeT10();
-const tRoadWild = rBiomeT11();
 const tTier4Terrain = rBiomeT12();
-const tShoreBlend = rBiomeT13();
 const tShore = rBiomeT14();
 const tWater = rBiomeT15();
 
@@ -43,12 +39,8 @@ const oShipDebris = "other/special_treasure_shipwreck_debris";
 // decorative props
 const aGrass = rBiomeA1();
 const aGrassShort = rBiomeA2();
-const aReeds = rBiomeA3();
-const aLillies = rBiomeA4();
 const aRockLarge = rBiomeA5();
 const aRockMedium = rBiomeA6();
-const aBushMedium = rBiomeA7();
-const aBushSmall = rBiomeA8();
 
 const pForest1 = [tForestFloor2 + TERRAIN_SEPARATOR + oTree1, tForestFloor2 + TERRAIN_SEPARATOR + oTree2, tForestFloor2];
 const pForest2 = [tForestFloor1 + TERRAIN_SEPARATOR + oTree4, tForestFloor1 + TERRAIN_SEPARATOR + oTree5, tForestFloor1];
@@ -60,7 +52,6 @@ InitMap();
 
 const numPlayers = getNumPlayers();
 const mapSize = getMapSize();
-const mapArea = mapSize*mapSize;
 
 // create tile classes
 var clPlayer = createTileClass();
@@ -77,22 +68,16 @@ for (let ix = 0; ix < mapSize; ++ix)
 {
 	for (let iz = 0; iz < mapSize; ++iz)
 	{
-		let x = ix / (mapSize + 1.0);
-		let z = iz / (mapSize + 1.0);
 		placeTerrain(ix, iz, tWater);
 	}
 }
 
 // some constants
 var radius = scaleByMapSize(15, 25);
-var cliffRadius = 2;
 var elevation = 20;
-var centerOfMap = mapSize / 2;
 
 var fx = fractionToTiles(0.5);
 var fz = fractionToTiles(0.5);
-var ix = round(fx);
-var iz = round(fz);
 
 var startAngle = randFloat(0, TWO_PI);
 
