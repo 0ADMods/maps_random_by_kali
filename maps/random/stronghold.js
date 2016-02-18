@@ -27,11 +27,9 @@ const tTier1Terrain = rBiomeT5();
 const tTier2Terrain = rBiomeT6();
 const tTier3Terrain = rBiomeT7();
 const tHill = rBiomeT8();
-const tDirt = rBiomeT9();
 const tRoad = rBiomeT10();
 const tRoadWild = rBiomeT11();
 const tTier4Terrain = rBiomeT12();
-const tShoreBlend = rBiomeT13();
 const tShore = rBiomeT14();
 const tWater = rBiomeT15();
 
@@ -53,8 +51,6 @@ const oMetalLarge = rBiomeE13();
 // decorative props
 const aGrass = rBiomeA1();
 const aGrassShort = rBiomeA2();
-const aReeds = rBiomeA3();
-const aLillies = rBiomeA4();
 const aRockLarge = rBiomeA5();
 const aRockMedium = rBiomeA6();
 const aBushMedium = rBiomeA7();
@@ -69,7 +65,6 @@ InitMap();
 
 const numPlayers = getNumPlayers();
 const mapSize = getMapSize();
-const mapArea = mapSize*mapSize;
 
 // create tile classes
 var clPlayer = createTileClass();
@@ -81,7 +76,6 @@ var clRock = createTileClass();
 var clMetal = createTileClass();
 var clFood = createTileClass();
 var clBaseResource = createTileClass();
-var clSettlement = createTileClass();
 var clLand = createTileClass();
 
 for (var ix = 0; ix < mapSize; ++ix)
@@ -90,8 +84,6 @@ for (var ix = 0; ix < mapSize; ++ix)
 
 // some constants
 var radius = scaleByMapSize(15,25);
-var cliffRadius = 2;
-var elevation = 20;
 var centerOfMap = mapSize / 2;
 
 var fx = fractionToTiles(0.5);
@@ -141,13 +133,11 @@ for(var i = 0; i < 9; i++) {
 		var teamAngle = startAngle + teamNo*TWO_PI/numTeams;
 		var fractionX = 0.5 + 0.3*cos(teamAngle);
 		var fractionZ = 0.5 + 0.3*sin(teamAngle);
-		var teamX = fractionToTiles(fractionX);
-		var teamZ = fractionToTiles(fractionZ);
 
-		for(var p = 0; p < teams[i].length; p++) {
+		for(var p = 0; p < teams[i].length; ++p) {
 			log("Creating base for player " + teams[i][p] + " on team " + i + "...");
 
-			var playerAngle = startAngle + (p+1)*TWO_PI/teams[i].length;
+			var playerAngle = startAngle + (p + 1) * TWO_PI / teams[i].length;
 
 			// get the x and z in tiles
 			var fx = fractionToTiles(fractionX + 0.05*cos(playerAngle));
@@ -256,7 +246,6 @@ if(mapSize <= 192)
 else
 	var r = randInt(1,5);
 
-
 var makeForests = true;
 var makeMinerals = true;
 
@@ -304,7 +293,7 @@ switch(r) {
 			[tCliff, tTier1Terrain, tTier2Terrain, tTier3Terrain],       // terrains
 			[3, 5, 10]     // widths
 		);
-		var elevRand = 25 + randInt(35)
+		var elevRand = 25 + randInt(35);
 		var elevationPainter = new SmoothElevationPainter(
 			ELEVATION_SET,          // type
 			elevRand,              // elevation
@@ -346,7 +335,7 @@ switch(r) {
 				[tCliff, tTier1Terrain, tTier2Terrain, tTier3Terrain],       // terrains
 				[3, 5, 10]     // widths
 			);
-			var elevRand = 25 + randInt(35)
+			var elevRand = 25 + randInt(35);
 			var elevationPainter = new SmoothElevationPainter(
 				ELEVATION_SET,          // type
 				elevRand,              // elevation
@@ -422,7 +411,7 @@ if(makeMinerals) {
 	],
 	avoidClasses(clWater, 2, clForest, 1, clPlayer, 20, clMetal, 10, clRock, 20, clHill, 2),
 	clRock
-	)
+	);
 
 	log("Creating metal mines...");
 	// create large metal quarries
@@ -432,7 +421,7 @@ if(makeMinerals) {
 	],
 	avoidClasses(clWater, 2, clForest, 1, clPlayer, 20, clMetal, 20, clRock, 10, clHill, 2),
 	clMetal
-	)
+	);
 }
 
 // create animals
@@ -446,7 +435,7 @@ for(var a = 0; a < numTeams * 4; ++a) {
 	var a3y = fractionToTiles(0.5 + 0.35 * sin(tang));
 	group = new SimpleGroup(
 		[new SimpleObject(oMainHuntableAnimal, 1, 2, 4, 20)],
-		true, clBaseResource, a1x, a1x
+		true, clBaseResource, a1x, a1y
 	);
 	createObjectGroup(group, 0, avoidClasses(clBaseResource, 2, clHill, 2, clPlayer, 20, clWater, 2));
 	group = new SimpleGroup(
