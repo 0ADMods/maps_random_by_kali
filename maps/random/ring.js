@@ -340,11 +340,18 @@ RMS.SetProgress(55);
 
 // create grass patches
 log("Creating grass patches...");
-createPatches(
-	[scaleByMapSize(2, 4), scaleByMapSize(3, 7), scaleByMapSize(5, 15)],
-	tTier4Terrain,
-	avoidClasses(clWater, 3, clForest, 0, clHill, 0, clDirt, 5, clPlayer, 12)
-);
+var sizes = [scaleByMapSize(2, 32), scaleByMapSize(3, 48), scaleByMapSize(5, 80)];
+for (var i = 0; i < sizes.length; i++)
+{
+	placer = new ClumpPlacer(sizes[i], 0.3, 0.06, 0.5);
+	painter = new LayeredPainter([tTier4Terrain, tTier2Terrain], [2]);
+	createAreas(
+		placer,
+		painter,
+		avoidClasses(clWater, 1, clForest, 0, clHill, 0, clDirt, 5, clPlayer, 4),
+		scaleByMapSize(30, 45)
+	);
+}
 
 RMS.SetProgress(65);
 
