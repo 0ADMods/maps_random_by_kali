@@ -24,35 +24,40 @@ RMS.SetProgress(20);
 ///////////
 // add players
 ///////////
-var players = addBases("stronghold", 0.3, 0.05);
+
+// randomize the starting positions
+var starting = getStartingPositions();
+var players = addBases(starting.setup, starting.distance, starting.separation);
 RMS.SetProgress(40);
 
 ///////////
 // customize the map
 ///////////
+var tRand = randomizeElements(["hills", "lakes", "mountains", "plateaus"], 0.5, 3, 0.1, 0.5, 0, 2);
+var gRand = randomizeElements(["animals", "berries", "fish", "forests", "metal", "stone", "trees"], 1, 1, 0, 0, 0.5, 2);
 RMS.SetProgress(60);
 
 ///////////
-// decorate the terrain
+// add terrain
 ///////////
-addHills(avoidClasses(tc.hill, 15, tc.player, 20, tc.water, 5));
-addMountains(avoidClasses(tc.mountain, 15, tc.player, 20, tc.water, 5));
-addPlateaus(avoidClasses(tc.mountain, 15, tc.player, 40, tc.water, 5));
-addLakes(avoidClasses(tc.hill, 5, tc.mountain, 5, tc.player, 20, tc.water, 15));
+addHills(avoidClasses(tc.hill, 15, tc.player, 20, tc.water, 5), tRand.hills.qty, tRand.hills.dev, tRand.hills.fill);
+addMountains(avoidClasses(tc.mountain, 15, tc.player, 20, tc.water, 5), tRand.mountains.qty, tRand.mountains.dev, tRand.mountains.fill);
+addPlateaus(avoidClasses(tc.mountain, 15, tc.player, 40, tc.water, 5), tRand.plateaus.qty, tRand.plateaus.dev, tRand.plateaus.fill);
+addLakes(avoidClasses(tc.hill, 5, tc.mountain, 5, tc.player, 20, tc.water, 25), tRand.lakes.qty, tRand.lakes.dev, tRand.lakes.fill);
 addLayeredPatches(avoidClasses(tc.dirt, 5, tc.forest, 0, tc.mountain, 0, tc.player, 12, tc.water, 3));
-addDecoration(avoidClasses(tc.forest, 0, tc.mountain, 0, tc.player, 0, tc.water, 2));
+addDecoration(avoidClasses(tc.forest, 2, tc.mountain, 2, tc.player, 2, tc.water, 2));
 RMS.SetProgress(80);
 
 ///////////
-// add resources
+// add gaia
 ///////////
-addForests(avoidClasses(tc.berries, 5, tc.forest, 18, tc.mountain, 5, tc.player, 20, tc.water, 2));
-addBerries(avoidClasses(tc.berries, 50, tc.forest, 5, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.metal, 10, tc.water, 3));
-addMetal(avoidClasses(tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 30, tc.metal, 40, tc.water, 3));
-addStone(avoidClasses(tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 30, tc.water, 3));
-addAnimals(avoidClasses(tc.animals, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.water, 3));
-addFish([avoidClasses(tc.fish, 20, tc.hill, 5, tc.land, 5, tc.mountain, 5, tc.player, 5), stayClasses(tc.water, 5)]);
-addStragglerTrees(avoidClasses(tc.berries, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5));
+addForests(avoidClasses(tc.berries, 5, tc.forest, 18, tc.mountain, 5, tc.player, 20, tc.water, 2), gRand.forests.qty, gRand.forests.dev, gRand.forests.fill);
+addBerries(avoidClasses(tc.berries, 50, tc.forest, 5, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.metal, 10, tc.water, 3), gRand.berries.qty, gRand.berries.dev, gRand.berries.fill);
+addMetal(avoidClasses(tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 30, tc.metal, 40, tc.water, 3), gRand.metal.qty, gRand.metal.dev, gRand.metal.fill);
+addStone(avoidClasses(tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 30, tc.water, 3), gRand.stone.qty, gRand.stone.dev, gRand.stone.fill);
+addAnimals(avoidClasses(tc.animals, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.water, 3), gRand.animals.qty, gRand.animals.dev, gRand.animals.fill);
+addFish([avoidClasses(tc.fish, 12, tc.hill, 8, tc.land, 8, tc.mountain, 8, tc.player, 8), stayClasses(tc.water, 8)], gRand.fish.qty, gRand.fish.dev, gRand.fish.fill);
+addStragglerTrees(avoidClasses(tc.berries, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5), gRand.trees.qty, gRand.trees.dev, gRand.trees.fill);
 
 ///////////
 // export the map
@@ -157,14 +162,32 @@ function addHills(constraint, size, deviation, fill)
 
 	for(var i = 0; i < count; ++i)
 	{
+		var elevation = 6 + randInt(6);
 		var offset = getRandomDeviation(size, deviation);
-		var elevation = 10 + randInt(8);
 		var smooth = floor(elevation / 1.5);
 		var pMinSize = floor(minSize * offset);
 		var pMaxSize = floor(maxSize * offset);
 		var pSpread = floor(spread * offset);
 		var pSmooth = floor(smooth * offset);
 		var pElevation = floor(elevation * offset);
+
+		// don't let hills grow too tall
+		if(pElevation > elevation)
+		{
+			pElevation = (elevation + pElevation) / 2;
+		}
+
+		// don't let hills grow too big
+		if(pMaxSize > maxSize * 2)
+		{
+			pMaxSize = maxSize;
+		}
+
+		// don't render tiny hills
+		if(pElevation < 5)
+		{
+			continue;
+		}
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([t.mainTerrain, t.mainTerrain], [pSmooth]);
@@ -197,14 +220,38 @@ function addLakes(constraint, size, deviation, fill)
 
 	for(var i = 0; i < count; ++i)
 	{
-		var elevation = -6;
-		var smooth = -1 * floor(elevation / 2);
+		var elevation = -8 - randInt(8);
+		var smooth = -1 * floor(elevation / 3);
 		var offset = getRandomDeviation(size, deviation);
 		var pMinSize = floor(minSize * offset);
 		var pMaxSize = floor(maxSize * offset);
 		var pSpread = floor(spread * offset);
 		var pSmooth = floor(smooth * offset);
 		var pElevation = floor(elevation * offset);
+
+		// don't let lakes get too deep
+		if(pElevation < elevation)
+		{
+			pElevation = (elevation - pElevation) / 2;
+		}
+
+		// don't let lakes grow too big
+		if(pMaxSize > maxSize * 3)
+		{
+			pMaxSize = maxSize;
+		}
+
+		// don't render puddles
+		if(pMinSize < minSize / 2)
+		{
+			continue;
+		}
+
+		// make sure lakes have some negative depth
+		if(pElevation > -6)
+		{
+			pElevation = -6;
+		}
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([t.shore, t.water, t.water], [1, 45]);
@@ -273,17 +320,35 @@ function addMountains(constraint, size, deviation, fill)
 	var minSize = floor(scaleByMapSize(4, 4));
 	var maxSize = floor(scaleByMapSize(10, 10));
 	var spread = floor(scaleByMapSize(10, 10));
-	var elevation = 36;
 	var smooth = 8;
 
 	for(var i = 0; i < count; ++i)
 	{
+		var elevation = 22 + randInt(8);
 		var offset = getRandomDeviation(size, deviation);
 		var pMinSize = floor(minSize * offset);
 		var pMaxSize = floor(maxSize * offset);
 		var pSpread = floor(spread * offset);
 		var pSmooth = floor(smooth * offset);
 		var pElevation = floor(elevation * offset);
+
+		// don't let mountains grow too tall
+		if(pElevation > elevation)
+		{
+			pElevation = (elevation + pElevation) / 2;
+		}
+
+		// don't let mountains grow too big
+		if(pMaxSize > maxSize * 2)
+		{
+			pMaxSize = maxSize;
+		}
+
+		// don't render tiny mountains
+		if(pElevation < 15)
+		{
+			continue;
+		}
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([t.cliff, t.hill], [pSmooth]);
@@ -313,17 +378,35 @@ function addPlateaus(constraint, size, deviation, fill)
 	var minSize = floor(scaleByMapSize(2, 2));
 	var maxSize = floor(scaleByMapSize(5, 8));
 	var spread = floor(scaleByMapSize(20, 40));
-	var elevation = 25;
 	var smooth = 2;
 
 	for(var i = 0; i < count; ++i)
 	{
+		var elevation = 20 + randInt(10);
 		var offset = getRandomDeviation(size, deviation);
 		var pMinSize = floor(minSize * offset);
 		var pMaxSize = floor(maxSize * offset);
 		var pSpread = floor(spread * offset);
 		var pSmooth = floor(smooth * offset);
-		var pElevation = floor(elevation * offset);
+		var pElevation = floor(elevation * (offset / 2));
+
+		// don't let plateaus grow too tall
+		if(pElevation > elevation)
+		{
+			pElevation = (elevation + pElevation) / 2;
+		}
+
+		// don't let mountains grow too big
+		if(pMaxSize > maxSize * 2)
+		{
+			pMaxSize = maxSize;
+		}
+
+		// don't render tiny plateaus
+		if(pElevation < 10)
+		{
+			continue;
+		}
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([t.cliff, t.cliff, t.hill], [1, pSmooth]);
@@ -420,7 +503,7 @@ function addFish(constraint, size, deviation, fill)
 		[new SimpleObject(g.fish, 1 * groupOffset, 2 * groupOffset, 0, 2 * groupOffset)],
 		[new SimpleObject(g.fish, 2 * groupOffset, 4 * groupOffset, 10 * groupOffset, 20 * groupOffset)]
 	];
-	var counts = [3 * m.numPlayers * fill, 3 * m.numPlayers * fill];
+	var counts = [scaleByMapSize(3, 3) * m.numPlayers * fill, scaleByMapSize(3, 3) * m.numPlayers * fill];
 
 	for (var i = 0; i < fish.length; ++i)
 	{
@@ -546,6 +629,11 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	deviation = deviationOrDefault(deviation);
 	fill = fillOrDefault(fill);
 
+	if(m.biome == 6 && fill < 0.8)
+	{
+		fill = 0.8;
+	}
+
 	var trees = [g.tree1, g.tree2, g.tree3, g.tree4];
 
 	var treesPerPlayer = 40;
@@ -560,9 +648,11 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	var minDist = 1 * offset;
 	var maxDist = 5 * offset;
 
+	// render more trees for the african biome
 	if(m.biome == 6)
 	{
 		count = count * 1.25;
+		min = 3 * offset;
 		max = 8 * offset;
 		minDist = 2 * offset;
 		maxDist = 7 * offset;
@@ -593,6 +683,35 @@ function addStragglerTrees(constraint, size, deviation, fill)
 ///////////
 // Generic Helpers
 ///////////
+
+function getRand(min, max, factor)
+{
+	return ((min * factor) + randInt((max - min) * factor)) / factor;
+}
+
+function randomizeElements(types, minSize, maxSize, minDeviation, maxDeviation, minFill, maxFill)
+{
+	var totalFill = ((minFill + maxFill) / 2) * types.length;
+	var els = {};
+	for(var i = 0; i < types.length; ++i)
+	{
+		els[types[i]] = {}
+		var fill = getRand(minFill, maxFill, 100);
+		totalFill = totalFill - fill;
+		els[types[i]]["qty"] = 0;
+		els[types[i]]["dev"] = 0;
+		els[types[i]]["fill"] = 0;
+
+		if(totalFill > 0)
+		{
+			els[types[i]]["qty"] = getRand(minSize, maxSize, 100);
+			els[types[i]]["dev"] = getRand(minDeviation, maxDeviation, 100);
+			els[types[i]]["fill"] = getRand(minFill, maxFill, 100);
+		}
+	}
+
+	return els;
+}
 
 // put some useful map settings into an object
 function getSettings()
@@ -693,6 +812,24 @@ function fillOrDefault(fill)
 ///////////
 // Players
 ///////////
+
+function getStartingPositions()
+{
+	var starting = {};
+	var formats = ["radial"];
+
+	if(m.teams.length >= 2 && m.numPlayers >= 4)
+	{
+		formats.push("stronghold");
+	}
+	var use = randInt(formats.length);
+
+	starting["setup"] = formats[use];
+	starting["distance"] = getRand(0.2, 0.4, 100);
+	starting["separation"] = getRand(0.05, 0.1, 100);
+
+	return starting;
+}
 
 // Group teams
 function getTeams(numPlayers)
