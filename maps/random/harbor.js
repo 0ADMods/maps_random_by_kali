@@ -9,36 +9,32 @@ InitMap();
 ///////////
 // define the map constants
 ///////////
-const randomTerrain = randomizeBiome();
+var m = getSettings();
 const t = constTerrains();
 const g = constGaia();
 const p = constProps();
 const tc = constTileClasses(["spine"]);
 const f = constForests();
-const numPlayers = getNumPlayers();
-const mapSize = getMapSize();
-const mapArea = mapSize * mapSize;
-const centerOfMap = mapSize / 2;
-const startAngle = randFloat(0, TWO_PI);
-const radius = -PI / 4;
 
 ///////////
 // setup the map
 ///////////
-initTerrain(mapSize, t.mainTerrain);
+initTerrain(t.mainTerrain);
 RMS.SetProgress(20);
 
 ///////////
 // add players
 ///////////
-var players = addBases(numPlayers, "radial", 0.35);
+var players = addBases("radial", 0.38);
 RMS.SetProgress(40);
 
 ///////////
 // customize the map
 ///////////
+var tRand = randomizeElements(["hills", "mountains"], 0.5, 2, 0.1, 0.5, 0, 2);
+var gRand = randomizeElements(["animals", "berries", "fish", "forests", "metal", "stone", "trees"], 1, 1, 0, 0, 0.5, 2);
 addLake();
-if(mapSize >= 192) {
+if(m.mapSize >= 192) {
 	addHarbors(players);
 }
 addSpines();
@@ -49,9 +45,9 @@ RMS.SetProgress(60);
 ///////////
 
 // decorate the land
-addHills(avoidClasses(tc.hill, 15, tc.mountain, 15, tc.player, 20, tc.spine, 5, tc.water, 5), 1, 0.1, 1);
+addHills(avoidClasses(tc.hill, 15, tc.mountain, 15, tc.player, 20, tc.spine, 5, tc.water, 5), tRand.hills.qty, tRand.hills.dev, tRand.hills.fill);
 addHills([avoidClasses(tc.hill, 15, tc.mountain, 15, tc.player, 20, tc.spine, 5, tc.water, 5), stayClasses(tc.spine, 5)], 0.5, 0.2, 0.7);
-addMountains(avoidClasses(tc.mountain, 15, tc.player, 20, tc.spine, 15, tc.water, 5), 1, 0.1, 1);
+addMountains(avoidClasses(tc.mountain, 15, tc.player, 20, tc.spine, 15, tc.water, 5), tRand.mountains.qty, tRand.mountains.dev, tRand.mountains.fill);
 addLayeredPatches(avoidClasses(tc.dirt, 5, tc.forest, 0, tc.mountain, 0, tc.player, 12, tc.spine, 5, tc.water, 3), 1, 0.1, 1);
 addDecoration(avoidClasses(tc.forest, 0, tc.mountain, 0, tc.player, 0, tc.spine, 5, tc.water, 0), 1, 0.1, 1);
 
@@ -65,18 +61,18 @@ RMS.SetProgress(80);
 ///////////
 
 // add resources to the land
-addForests(avoidClasses(tc.forest, 18, tc.mountain, 5, tc.player, 20, tc.water, 2 , tc.spine, 5), 1, 0.1, 1);
-
-addMetal(avoidClasses(tc.forest, 5, tc.metal, 40, tc.mountain, 2, tc.player, 50, tc.rock, 10, tc.spine, 5, tc.water, 3), 1, 0.1, 1);
-addStone(avoidClasses(tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.spine, 5, tc.water, 3), 1, 0.1, 1);
-addAnimals(avoidClasses(tc.food, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.spine, 5, tc.water, 3), 1, 0.1, 1);
-addStragglerTrees(avoidClasses(tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.spine, 5, tc.water, 5), 1, 0.1, 1);
+addMetal(avoidClasses(tc.forest, 5, tc.metal, 40, tc.mountain, 2, tc.player, 50, tc.rock, 10, tc.spine, 5, tc.water, 3), gRand.metal.qty, gRand.metal.dev, gRand.metal.fill);
+addStone(avoidClasses(tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.spine, 5, tc.water, 3), gRand.stone.qty, gRand.stone.dev, gRand.stone.fill);
+addForests(avoidClasses(tc.forest, 18, tc.mountain, 5, tc.player, 20, tc.spine, 5, tc.water, 2), gRand.forests.qty, gRand.forests.dev, gRand.forests.fill);
+addBerries(avoidClasses(tc.berries, 50, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.spine, 5, tc.water, 3), gRand.berries.qty, gRand.berries.dev, gRand.berries.fill);
+addAnimals(avoidClasses(tc.food, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.spine, 5, tc.water, 3), gRand.animals.qty, gRand.animals.dev, gRand.animals.fill);
+addStragglerTrees(avoidClasses(tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.spine, 5, tc.water, 5), gRand.trees.qty, gRand.trees.dev, gRand.trees.fill);
 
 // add resources to the spines
-addStone([avoidClasses(tc.forest, 5, tc.land, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 40, tc.water, 3), stayClasses(tc.spine, 5)], 1, 0.3, 3);
-addMetal([avoidClasses(tc.forest, 5, tc.land, 5, tc.metal, 40, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.water, 3), stayClasses(tc.spine, 5)], 1, 0.3, 3);
-addForests([avoidClasses(tc.forest, 8, tc.land, 5, tc.mountain, 5, tc.player, 10, tc.water, 10), stayClasses(tc.spine, 5)], 0.5, 0.3, 1);
-addStragglerTrees([avoidClasses(tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5), stayClasses(tc.spine, 5)], 1, 0.1, 1);
+addStone([avoidClasses(tc.forest, 5, tc.land, 10, tc.metal, 20, tc.mountain, 2, tc.player, 20, tc.rock, 40, tc.water, 3), stayClasses(tc.spine, 8)], gRand.stone.qty, gRand.stone.dev, gRand.stone.fill);
+addMetal([avoidClasses(tc.forest, 5, tc.land, 10, tc.metal, 40, tc.mountain, 2, tc.player, 20, tc.rock, 20, tc.water, 3), stayClasses(tc.spine, 8)], gRand.metal.qty, gRand.metal.dev, gRand.metal.fill);
+addForests([avoidClasses(tc.forest, 8, tc.land, 5, tc.mountain, 5, tc.player, 10, tc.water, 10), stayClasses(tc.spine, 8)], gRand.forests.qty, gRand.forests.dev, gRand.forests.fill);
+addStragglerTrees([avoidClasses(tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5), stayClasses(tc.spine, 8)], gRand.trees.qty, gRand.trees.dev, gRand.trees.fill);
 RMS.SetProgress(80);
 
 ///////////
@@ -93,19 +89,19 @@ ExportMap();
 function addLake() {
 	var lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
-	var placer = new ChainPlacer(2, floor(scaleByMapSize(2, 12)), floor(scaleByMapSize(35, 160)), 1, centerOfMap, centerOfMap, 0, [floor(mapSize * 0.17 * lSize)]);
+	var placer = new ChainPlacer(2, floor(scaleByMapSize(2, 12)), floor(scaleByMapSize(35, 160)), 1, m.centerOfMap, m.centerOfMap, 0, [floor(m.mapSize * 0.17 * lSize)]);
 	var terrainPainter = new LayeredPainter([t.shore, t.water, t.water], [1, 100]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, -18, 10);
 
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.water)], avoidClasses(tc.player, 20));
 
 	var fDist = 50;
-	if(mapSize <= 192) {
+	if(m.mapSize <= 192) {
 		fDist = 20;
 	}
 
 	// create a bunch of fish
-	var group = new SimpleGroup([new SimpleObject(g.fish, 30, 40, 0, fDist)], true, tc.baseResource, centerOfMap, centerOfMap);
+	var group = new SimpleGroup([new SimpleObject(g.fish, 30, 40, 0, fDist)], true, tc.baseResource, m.centerOfMap, m.centerOfMap);
 	createObjectGroup(group, 0, avoidClasses(tc.player, 5, tc.mountain, 10));
 }
 
@@ -115,10 +111,10 @@ function addHarbors(players) {
 		// create player harbors
 		var ix = round(fractionToTiles(players[i].x));
 		var iz = round(fractionToTiles(players[i].z));
-		var playerDistX = centerOfMap - ix;
-		var playerDistZ = centerOfMap - iz;
-		var offsetX = round(playerDistX / 3);
-		var offsetZ = round(playerDistZ / 3);
+		var playerDistX = m.centerOfMap - ix;
+		var playerDistZ = m.centerOfMap - iz;
+		var offsetX = round(playerDistX / 2.5);
+		var offsetZ = round(playerDistZ / 2.5);
 
 		var placer = new ClumpPlacer(scaleByMapSize(1200, 1200), 0.5, 0.5, 1, ix + offsetX, iz + offsetZ)
 		var terrainPainter = new LayeredPainter([t.shore, t.water],	[2]);
@@ -137,12 +133,12 @@ function addHarbors(players) {
 // add mountain spines
 function addSpines() {
 	var split = 1;
-	if(numPlayers <= 3 || (mapSize >= 320 && numPlayers <= 4)) {
+	if(m.numPlayers <= 3 || (m.mapSize >= 320 && m.numPlayers <= 4)) {
 		split = 2;
 	}
 
-	for (var i = 0; i < numPlayers * split; ++i) {
-	  var tang = startAngle + (i + 0.5) * TWO_PI / (numPlayers * split);
+	for (var i = 0; i < m.numPlayers * split; ++i) {
+	  var tang = m.startAngle + (i + 0.5) * TWO_PI / (m.numPlayers * split);
 
 	  var fx = fractionToTiles(0.5);
 	  var fz = fractionToTiles(0.5);
@@ -157,7 +153,7 @@ function addSpines() {
 		var mTaper = -1.5;
 
 		// make small mountain dividers if we're making expansion territories or if there are a lot of players
-		if(split == 2 && i % split == 0 || numPlayers >= 7 && mapSize <= 384) {
+		if(split == 2 && i % split == 0 || m.numPlayers >= 7 && m.mapSize <= 384) {
 			var mStartCo = 0.15
 			var mStopCo = 0.44
 			var mSize = 8;
@@ -166,7 +162,7 @@ function addSpines() {
 			var mTaper = -1.5;
 		}
 
-		if(mapSize <= 192) {
+		if(m.mapSize <= 192) {
 			var mStartCo = 0.15
 			var mStopCo = 0.45
 			var mSize = 0.02;
@@ -181,6 +177,11 @@ function addSpines() {
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.spine)], avoidClasses(tc.player, 5));
 	}
 }
+
+
+///////////
+// RMGEN functions
+///////////
 
 /********************************
  *
@@ -206,36 +207,40 @@ function addSpines() {
 // Function for creating decoration
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addDecoration(constraint, percent, deviation, fillFraction) {
-	var decorations = [[new SimpleObject(p.rockMedium, 1, 3, 0, 1)],
-		[new SimpleObject(p.rockLarge, 1, 2, 0, 1), new SimpleObject(p.rockMedium, 1, 3, 0, 2)],
-		[new SimpleObject(p.grassShort, 1, 2, 0, 1, -PI / 8, PI / 8)],
-		[new SimpleObject(p.grass, 2, 4, 0, 1.8, -PI / 8, PI / 8), new SimpleObject(p.grassShort, 3,6, 1.2, 2.5, -PI / 8, PI / 8)],
-		[new SimpleObject(p.bushMedium, 1, 2, 0, 2), new SimpleObject(p.bushSmall, 2, 4, 0, 2)]
+function addDecoration(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
+	var offset = getRandomDeviation(size, deviation);
+	var decorations = [[new SimpleObject(p.rockMedium, 1 * offset, 3 * offset, 0, 1 * offset)],
+		[new SimpleObject(p.rockLarge, 1 * offset, 2 * offset, 0, 1 * offset), new SimpleObject(p.rockMedium, 1 * offset, 3 * offset, 0, 2 * offset)],
+		[new SimpleObject(p.grassShort, 1 * offset, 2 * offset, 0, 1 * offset, -PI / 8, PI / 8)],
+		[new SimpleObject(p.grass, 2 * offset, 4 * offset, 0, 1.8 * offset, -PI / 8, PI / 8), new SimpleObject(p.grassShort, 3 * offset, 6 * offset, 1.2 * offset, 2.5 * offset, -PI / 8, PI / 8)],
+		[new SimpleObject(p.bushMedium, 1 * offset, 2 * offset, 0, 2 * offset), new SimpleObject(p.bushSmall, 2 * offset, 4 * offset, 0, 2 * offset)]
 	];
 
-	var planetm = 1;
-	if (randomTerrain == 7)
-		planetm = 8;
-
-	var baseCount = planetm * getRandomDeviation(percent, deviation);
+	var baseCount = 1;
+	if (m.biome == 7)
+		baseCount = 8;
 
 	var counts = [
-		scaleByMapSize(16, 262) * fillFraction,
-		scaleByMapSize(8, 131) * fillFraction,
-		baseCount * scaleByMapSize(13, 200) * fillFraction,
-		baseCount * scaleByMapSize(13, 200) * fillFraction,
-		baseCount * scaleByMapSize(13, 200) * fillFraction
+		scaleByMapSize(16, 262),
+		scaleByMapSize(8, 131),
+		baseCount * scaleByMapSize(13, 200),
+		baseCount * scaleByMapSize(13, 200),
+		baseCount * scaleByMapSize(13, 200)
 	];
 
-	for (var i = 0; i < decorations.length; ++i) {
-		var offset = getRandomDeviation(percent, deviation);
-		var decorCount = floor(counts[i] * offset);
+	for (var i = 0; i < decorations.length; ++i)
+	{
+		var decorCount = floor(counts[i] * fill);
 		var group = new SimpleGroup(decorations[i], true);
 		createObjectGroups(group, 0, constraint, decorCount, 5);
 	}
@@ -247,32 +252,55 @@ function addDecoration(constraint, percent, deviation, fillFraction) {
 // Function for creating rolling hills
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addHills(constraint, percent, deviation, fillFraction) {
-	var countOffset = getRandomDeviation(percent, deviation);
-	var playerFactor = numPlayers / 4;
-	if(playerFactor < 1) {
-		playerFactor = 1;
-	}
+function addHills(constraint, size, deviation, fill)
+{
 
-	var count = fillFraction * scaleByMapSize(30, 30) * countOffset / playerFactor;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
+	var count = fill * scaleByMapSize(8, 8);
 	var minSize = floor(scaleByMapSize(5, 5));
 	var maxSize = floor(scaleByMapSize(8, 8));
 	var spread = floor(scaleByMapSize(20, 20));
 
-	for(var i = 0; i < count; ++i) {
-		var elevation = 10 + randInt(8);
-		var smooth = floor(elevation / 2);
-		var offset = getRandomDeviation(percent, deviation);
+	for(var i = 0; i < count; ++i)
+	{
+		var elevation = 6 + randInt(6);
+		var offset = getRandomDeviation(size, deviation);
+		var smooth = floor(elevation / 1.5);
 		var pMinSize = floor(minSize * offset);
 		var pMaxSize = floor(maxSize * offset);
 		var pSpread = floor(spread * offset);
 		var pSmooth = floor(smooth * offset);
 		var pElevation = floor(elevation * offset);
+
+		// don't let hills grow too tall
+		if(pElevation > elevation)
+		{
+			pElevation = (elevation + pElevation) / 2;
+		}
+
+		// don't let hills grow too big
+		if(pMaxSize > maxSize * 1.2)
+		{
+			pMaxSize = floor(maxSize * 1.2);
+		}
+		if(pSpread > spread * 1.2)
+		{
+			pSpread = floor(spread * 1.2);
+		}
+
+		// don't render tiny hills
+		if(pElevation < 5)
+		{
+			continue;
+		}
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([t.mainTerrain, t.mainTerrain], [pSmooth]);
@@ -282,24 +310,98 @@ function addHills(constraint, percent, deviation, fillFraction) {
 }
 
 /////////////////////////////////////////
+// addLakes
+//
+// Function for creating lakes
+//
+// constraint: constraint classes
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
+//
+/////////////////////////////////////////
+function addLakes(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
+	var count = fill * scaleByMapSize(8, 8);
+	var minSize = floor(scaleByMapSize(5, 5));
+	var maxSize = floor(scaleByMapSize(8, 8));
+	var spread = floor(scaleByMapSize(20, 20));
+
+	for(var i = 0; i < count; ++i)
+	{
+		var elevation = -8 - randInt(8);
+		var smooth = -1 * floor(elevation / 3);
+		var offset = getRandomDeviation(size, deviation);
+		var pMinSize = floor(minSize * offset);
+		var pMaxSize = floor(maxSize * offset);
+		var pSpread = floor(spread * offset);
+		var pSmooth = floor(smooth * offset);
+		var pElevation = floor(elevation * offset);
+
+		// don't let lakes get too deep
+		if(pElevation < elevation)
+		{
+			pElevation = (elevation - pElevation) / 2;
+		}
+
+		// don't let lakes grow too big
+		if(pMaxSize > maxSize * 2)
+		{
+			pMaxSize = floor(maxSize * 2);
+		}
+		if(pSpread > spread * 2)
+		{
+			pSpread = floor(spread * 2);
+		}
+
+		// don't render puddles
+		if(pMinSize < minSize / 2)
+		{
+			continue;
+		}
+
+		// make sure lakes have some negative depth
+		if(pElevation > -6)
+		{
+			pElevation = -6;
+		}
+
+		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
+		var terrainPainter = new LayeredPainter([t.shore, t.water, t.water], [1, 45]);
+		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, pElevation, pSmooth);
+		createAreas(placer, [terrainPainter, elevationPainter, paintClass(tc.water)], constraint, 1);
+	}
+}
+
+/////////////////////////////////////////
 // addLayeredPatches
 //
 // Function for creating layered patches
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addLayeredPatches(constraint, percent, deviation, fillFraction) {
+function addLayeredPatches(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
 	var minRadius = 1;
 	var maxRadius = floor(scaleByMapSize(3, 5));
-	var count = fillFraction * scaleByMapSize(15, 45);
+	var count = fill * scaleByMapSize(15, 45);
 	var sizes = [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)];
 
-	for(var i = 0; i < sizes.length; i++) {
-		var offset = getRandomDeviation(percent, deviation);
+	for(var i = 0; i < sizes.length; i++)
+	{
+		var offset = getRandomDeviation(size, deviation);
 		var patchMinRadius = minRadius * offset;
 		var patchMaxRadius = maxRadius * offset;
 		var patchSize = sizes[i] * offset;
@@ -320,32 +422,54 @@ function addLayeredPatches(constraint, percent, deviation, fillFraction) {
 // Function for creating steep mountains
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addMountains(constraint, percent, deviation, fillFraction) {
-	var countOffset = getRandomDeviation(percent, deviation);
-	var playerFactor = numPlayers / 4;
-	if(playerFactor < 1) {
-		playerFactor = 1;
-	}
+function addMountains(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
-	var count = fillFraction * scaleByMapSize(30, 30) * countOffset / playerFactor;
+	var count = fill * scaleByMapSize(8, 8);
 	var minSize = floor(scaleByMapSize(4, 4));
 	var maxSize = floor(scaleByMapSize(10, 10));
 	var spread = floor(scaleByMapSize(10, 10));
-	var elevation = 36;
 	var smooth = 8;
 
-	for(var i = 0; i < count; ++i) {
-		var offset = getRandomDeviation(percent, deviation);
+	for(var i = 0; i < count; ++i)
+	{
+		var elevation = 22 + randInt(8);
+		var offset = getRandomDeviation(size, deviation);
 		var pMinSize = floor(minSize * offset);
 		var pMaxSize = floor(maxSize * offset);
 		var pSpread = floor(spread * offset);
 		var pSmooth = floor(smooth * offset);
 		var pElevation = floor(elevation * offset);
+
+		// don't let mountains grow too tall
+		if(pElevation > elevation)
+		{
+			pElevation = (elevation + pElevation) / 2;
+		}
+
+		// don't let mountains grow too big
+		if(pMaxSize > maxSize * 1.2)
+		{
+			pMaxSize = floor(maxSize * 1.2);
+		}
+		if(pSpread > spread * 1.2)
+		{
+			pSpread = floor(spread * 1.2);
+		}
+
+		// don't render tiny mountains
+		if(pElevation < 15)
+		{
+			continue;
+		}
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([t.cliff, t.hill], [pSmooth]);
@@ -360,32 +484,54 @@ function addMountains(constraint, percent, deviation, fillFraction) {
 // Function for creating plateaus
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addPlateaus(constraint, percent, deviation, fillFraction) {
-	var countOffset = getRandomDeviation(percent, deviation);
-	var playerFactor = numPlayers / 4;
-	if(playerFactor < 1) {
-		playerFactor = 1;
-	}
+function addPlateaus(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
-	var count = fillFraction * scaleByMapSize(30, 30) * countOffset / playerFactor;
+	var count = fill * scaleByMapSize(8, 8);
 	var minSize = floor(scaleByMapSize(2, 2));
 	var maxSize = floor(scaleByMapSize(5, 8));
 	var spread = floor(scaleByMapSize(20, 40));
-	var elevation = 25;
 	var smooth = 2;
 
-	for(var i = 0; i < count; ++i) {
-		var offset = getRandomDeviation(percent, deviation);
+	for(var i = 0; i < count; ++i)
+	{
+		var elevation = 20 + randInt(10);
+		var offset = getRandomDeviation(size, deviation);
 		var pMinSize = floor(minSize * offset);
 		var pMaxSize = floor(maxSize * offset);
 		var pSpread = floor(spread * offset);
 		var pSmooth = floor(smooth * offset);
-		var pElevation = floor(elevation * offset);
+		var pElevation = floor(elevation * (offset / 2));
+
+		// don't let plateaus grow too tall
+		if(pElevation > elevation)
+		{
+			pElevation = (elevation + pElevation) / 2;
+		}
+
+		// don't let plateaus grow too big
+		if(pMaxSize > maxSize * 1.2)
+		{
+			pMaxSize = floor(maxSize * 1.2);
+		}
+		if(pSpread > spread * 1.2)
+		{
+			pSpread = floor(spread * 1.2);
+		}
+
+		// don't render tiny plateaus
+		if(pElevation < 10)
+		{
+			continue;
+		}
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([t.cliff, t.cliff, t.hill], [1, pSmooth]);
@@ -404,26 +550,90 @@ function addPlateaus(constraint, percent, deviation, fillFraction) {
 // Function for creating animals
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addAnimals(constraint, percent, deviation, fillFraction) {
-	var animals = [
-		[new SimpleObject(g.mainHuntableAnimal, 5, 7, 0, 4)],
-		[new SimpleObject(g.secondaryHuntableAnimal, 2, 3, 0, 2)]
-	];
-	var counts = [
-  	3 * numPlayers * fillFraction,
-  	3 * numPlayers * fillFraction
-	];
+function addAnimals(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
-	for (var i = 0; i < animals.length; ++i) {
-		var offset = getRandomDeviation(percent, deviation);
-		var animalCount = floor(counts[i] * offset);
-		var group = new SimpleGroup(animals[i], true, tc.food);
-		createObjectGroups(group, 0, constraint, animalCount, 50);
+	var groupOffset = getRandomDeviation(size, deviation);
+
+	var animals = [
+		[new SimpleObject(g.mainHuntableAnimal, 5 * groupOffset, 7 * groupOffset, 0, 4 * groupOffset)],
+		[new SimpleObject(g.secondaryHuntableAnimal, 2 * groupOffset, 3 * groupOffset, 0, 2 * groupOffset)]
+	];
+	var counts = [3 * m.numPlayers * fill, 3 * m.numPlayers * fill];
+
+	for (var i = 0; i < animals.length; ++i)
+	{
+		var group = new SimpleGroup(animals[i], true, tc.animals);
+		createObjectGroups(group, 0, constraint, floor(counts[i]), 50);
+	}
+}
+
+/////////////////////////////////////////
+// addBerries
+//
+// Function for creating berries
+//
+// constraint: constraint classes
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
+//
+/////////////////////////////////////////
+function addBerries(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
+	var groupOffset = getRandomDeviation(size, deviation);
+
+	var count = scaleByMapSize(30, 30) * fill;
+	var berries = [[new SimpleObject(g.fruitBush, 5 * groupOffset, 5 * groupOffset, 0, 3 * groupOffset)]];
+
+	for (var i = 0; i < berries.length; ++i)
+	{
+		var group = new SimpleGroup(berries[i], true, tc.berries);
+		createObjectGroups(group, 0, constraint, floor(count), 70);
+	}
+}
+
+/////////////////////////////////////////
+// addFish
+//
+// Function for creating fish
+//
+// constraint: constraint classes
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
+//
+/////////////////////////////////////////
+function addFish(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
+	var groupOffset = getRandomDeviation(size, deviation);
+
+	var fish = [
+		[new SimpleObject(g.fish, 1 * groupOffset, 2 * groupOffset, 0, 2 * groupOffset)],
+		[new SimpleObject(g.fish, 2 * groupOffset, 4 * groupOffset, 10 * groupOffset, 20 * groupOffset)]
+	];
+	var counts = [scaleByMapSize(3, 3) * m.numPlayers * fill, scaleByMapSize(3, 3) * m.numPlayers * fill];
+
+	for (var i = 0; i < fish.length; ++i)
+	{
+		var group = new SimpleGroup(fish[i], true, tc.fish);
+		createObjectGroups(group, 0, constraint, floor(counts[i]), 50);
 	}
 }
 
@@ -433,14 +643,20 @@ function addAnimals(constraint, percent, deviation, fillFraction) {
 // Function for creating forests
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addForests(constraint, percent, deviation, fillFraction) {
+function addForests(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
 	// no forests to render in the african biome
-	if(randomTerrain == 6) {
+	if(m.biome == 6)
+	{
 		return;
 	}
 
@@ -451,12 +667,14 @@ function addForests(constraint, percent, deviation, fillFraction) {
 		[[t.forestFloor1, t.mainTerrain, f.forest2], [t.forestFloor1, f.forest2]]
 	];
 
-	for (var i = 0; i < types.length; ++i) {
-		var offset = getRandomDeviation(percent, deviation);
-		var forestSize = scaleByMapSize(50, 50) * offset;
-		var forestCount = scaleByMapSize(10, 10) * offset * fillFraction;
+	for (var i = 0; i < types.length; ++i)
+	{
+		var offset = getRandomDeviation(size, deviation);
+		var minSize = floor(scaleByMapSize(3, 5) * offset);
+		var maxSize = floor(scaleByMapSize(50, 50) * offset);
+		var forestCount = scaleByMapSize(10, 10) * fill;
 
-		var placer = new ChainPlacer(1, floor(scaleByMapSize(3, 5)), forestSize, 0.5);
+		var placer = new ChainPlacer(1, minSize, maxSize, 0.5);
 		var painter = new LayeredPainter(types[i], [2]);
 		createAreas(placer, [painter, paintClass(tc.forest)], constraint, forestCount);
 	}
@@ -468,20 +686,25 @@ function addForests(constraint, percent, deviation, fillFraction) {
 // Function for creating metal mines
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addMetal(constraint, percent, deviation, fillFraction) {
-	var count = scaleByMapSize(4,16);
-	var mines = [[new SimpleObject(g.metalLarge, 1, 1, 0, 4)]];
+function addMetal(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
-	for (var i = 0; i < mines.length; ++i) {
-		var offset = getRandomDeviation(percent, deviation);
-		var mineCount = count * offset;
+	var offset = getRandomDeviation(size, deviation);
+	var count = m.numPlayers * scaleByMapSize(m.numPlayers, m.numPlayers) * fill;
+	var mines = [[new SimpleObject(g.metalLarge, 1 * offset, 1 * offset, 0, 4 * offset)]];
+
+	for (var i = 0; i < mines.length; ++i)
+	{
 		var group = new SimpleGroup(mines[i], true, tc.metal);
-		createObjectGroups(group, 0, constraint, mineCount, 70);
+		createObjectGroups(group, 0, constraint, count, 70);
 	}
 }
 
@@ -491,21 +714,26 @@ function addMetal(constraint, percent, deviation, fillFraction) {
 // Function for creating stone mines
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addStone(constraint, percent, deviation, fillFraction) {
-	var count = scaleByMapSize(4,16);
-	var mines = [[new SimpleObject(g.stoneSmall, 0, 2, 0, 4), new SimpleObject(g.stoneLarge, 1, 1, 0, 4)],
-  [new SimpleObject(g.stoneSmall, 2, 5, 1, 3)]];
+function addStone(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
-	for (var i = 0; i < mines.length; ++i) {
-		var offset = getRandomDeviation(percent, deviation);
-		var mineCount = count * offset * fillFraction;
+	var offset = getRandomDeviation(size, deviation);
+	var count = m.numPlayers * scaleByMapSize(m.numPlayers, m.numPlayers) * fill;
+	var mines = [[new SimpleObject(g.stoneSmall, 0, 2 * offset, 0, 4 * offset), new SimpleObject(g.stoneLarge, 1 * offset, 1 * offset, 0, 4 * offset)],
+  [new SimpleObject(g.stoneSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)]];
+
+	for (var i = 0; i < mines.length; ++i)
+	{
 		var group = new SimpleGroup(mines[i], true, tc.rock);
-		createObjectGroups(group, 0, constraint, mineCount, 70);
+		createObjectGroups(group, 0, constraint, count, 70);
 	}
 }
 
@@ -515,38 +743,55 @@ function addStone(constraint, percent, deviation, fillFraction) {
 // Function for creating straggler trees
 //
 // constraint: constraint classes
-// percent: percent of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined percent (0.2 would be 20% plus/minus deviation)
-// fillFraction: percent of map to fill (1.5 would be 150% of normal)
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
 //
 /////////////////////////////////////////
-function addStragglerTrees(constraint, percent, deviation, fillFraction) {
+function addStragglerTrees(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
+	if(m.biome == 6 && fill < 0.8)
+	{
+		fill = 0.8;
+	}
+
 	var trees = [g.tree1, g.tree2, g.tree3, g.tree4];
 
 	var treesPerPlayer = 40;
 
-	if (deviation > percent) {
-		deviation = percent;
-	}
-
-	var offset = getRandomDeviation(percent, deviation);
-	var treeCount = treesPerPlayer * numPlayers * offset;
+	var offset = getRandomDeviation(size, deviation);
+	var treeCount = treesPerPlayer * m.numPlayers * fill;
 	var totalTrees = scaleByMapSize(treeCount, treeCount);
 
-	var count = floor(totalTrees / trees.length) * fillFraction;
-	var max = 3;
-	var minDist = 1;
-	var maxDist = 5;
+	var count = floor(totalTrees / trees.length) * fill;
+	var min = 1 * offset;
+	var max = 4 * offset;
+	var minDist = 1 * offset;
+	var maxDist = 5 * offset;
 
-	if(randomTerrain == 6) {
+	// render more trees for the african biome
+	if(m.biome == 6)
+	{
 		count = count * 1.25;
-		max = 8;
-		minDist = 2;
-		maxDist = 7;
+		min = 3 * offset;
+		max = 8 * offset;
+		minDist = 2 * offset;
+		maxDist = 7 * offset;
 	}
 
-	for (var i = 0; i < trees.length; ++i) {
-		var group = new SimpleGroup([new SimpleObject(trees[i], 1, max, minDist, maxDist)], true, tc.forest);
+	for (var i = 0; i < trees.length; ++i)
+	{
+		var treesMax = max;
+		// don't clump fruit trees
+		if (i == 2 && (m.biome == 3 || m.biome == 5))
+		{
+			treesMax = 1;
+		}
+		var group = new SimpleGroup([new SimpleObject(trees[i], min, treesMax, minDist, maxDist)], true, tc.forest);
 		createObjectGroups(group, 0, constraint, count);
 	}
 }
@@ -564,22 +809,72 @@ function addStragglerTrees(constraint, percent, deviation, fillFraction) {
 // Generic Helpers
 ///////////
 
+function getRand(min, max, factor)
+{
+	return ((min * factor) + randInt((max - min) * factor)) / factor;
+}
+
+function randomizeElements(types, minSize, maxSize, minDeviation, maxDeviation, minFill, maxFill)
+{
+	var totalFill = ((minFill + maxFill) / 2) * types.length;
+	var els = {};
+	for(var i = 0; i < types.length; ++i)
+	{
+		els[types[i]] = {}
+		var fill = getRand(minFill, maxFill, 100);
+		totalFill = totalFill - fill;
+		els[types[i]]["qty"] = 0;
+		els[types[i]]["dev"] = 0;
+		els[types[i]]["fill"] = 0;
+
+		if(totalFill > 0)
+		{
+			els[types[i]]["qty"] = getRand(minSize, maxSize, 100);
+			els[types[i]]["dev"] = getRand(minDeviation, maxDeviation, 100);
+			els[types[i]]["fill"] = getRand(minFill, maxFill, 100);
+		}
+	}
+
+	return els;
+}
+
+// put some useful map settings into an object
+function getSettings()
+{
+	var m = {}
+	m["biome"] = randomizeBiome();
+	m["numPlayers"] = getNumPlayers();
+	m["mapSize"] = getMapSize();
+	m["mapArea"] = m["mapSize"] * m["mapSize"];
+	m["centerOfMap"] = m["mapSize"] / 2;
+	m["mapRadius"] = -PI / 4;
+	m["teams"] = getTeams(m["numPlayers"]);
+	m["startAngle"] = randFloat(0, TWO_PI);
+	return m;
+}
+
 // paints the entire map with a single tile type
-function initTerrain(mapSize, terrain) {
-	for (var ix = 0; ix < mapSize; ix++) {
-		for (var iz = 0; iz < mapSize; iz++) {
-			var x = ix / (mapSize + 1.0);
-			var z = iz / (mapSize + 1.0);
+function initTerrain(terrain)
+{
+	for (var ix = 0; ix < m.mapSize; ix++)
+	{
+		for (var iz = 0; iz < m.mapSize; iz++)
+		{
+			var x = ix / (m.mapSize + 1.0);
+			var z = iz / (m.mapSize + 1.0);
 			placeTerrain(ix, iz, terrain);
 		}
 	}
 }
 
 // randomize player order
-function randomizePlayers(numPlayers) {
+function randomizePlayers()
+{
 	var playerIDs = [];
-	for (var i = 0; i < numPlayers; i++)
+	for (var i = 0; i < m.numPlayers; i++)
+	{
 		playerIDs.push(i + 1);
+	}
 
 	playerIDs = sortPlayers(playerIDs);
 
@@ -587,8 +882,10 @@ function randomizePlayers(numPlayers) {
 }
 
 // gets a number within a random deviation of a base number
-function getRandomDeviation(base, randomness) {
-	if (randomness > base) {
+function getRandomDeviation(base, randomness)
+{
+	if (randomness > base)
+	{
 		randomness = base;
 	}
 
@@ -596,29 +893,302 @@ function getRandomDeviation(base, randomness) {
 	return floor(deviation * 100) / 100;
 }
 
+// return a parameteter or it's default value
+function optionalParam(param, defaultVal)
+{
+	return param || defaultVal;
+}
+
+// default to "radial" placement
+function typeOrDefault(type)
+{
+	return optionalParam(type, "radial");
+}
+
+// default to 0.35 distance
+function distanceOrDefault(distance)
+{
+	return optionalParam(distance, 0.3);
+}
+
+// default to 0.35 distance
+function groupedDistanceOrDefault(groupedDistance)
+{
+	return optionalParam(groupedDistance, 0.05);
+}
+
+// default to 100% of normal size
+function sizeOrDefault(size)
+{
+	return optionalParam(size, 1);
+}
+
+// default to 10% deviation
+function deviationOrDefault(deviation)
+{
+	return optionalParam(deviation, 0.1);
+}
+
+// default to filling 100% of the map
+function fillOrDefault(fill)
+{
+	return optionalParam(fill, 1)
+}
+
 ///////////
-// Bases
+// Players
 ///////////
+
+function getStartingPositions()
+{
+	var starting = {};
+	var formats = ["radial"];
+
+	// enable stronghold if we have a few teams and a big enough map
+	if(m.teams.length >= 2 && m.numPlayers >= 4 && m.mapSize >= 256)
+	{
+		formats.push("stronghold");
+	}
+
+	// enable random if we have enough teams or enough players on a big enough map
+	if(m.mapSize >= 256 && (m.teams.length >= 3 || m.numPlayers > 4))
+	{
+		formats.push("random");
+	}
+
+	// enable line if we have enough teams and players on a big enough map
+	if(m.teams.length >= 2 && m.numPlayers >= 4 && m.mapSize >= 384)
+	{
+		formats.push("line");
+	}
+
+	var use = randInt(formats.length);
+
+	starting["setup"] = formats[use];
+	starting["distance"] = getRand(0.2, 0.4, 100);
+	starting["separation"] = getRand(0.05, 0.1, 100);
+
+	return starting;
+}
+
+// Group teams
+function getTeams(numPlayers)
+{
+	var ffaPlayers = 0;
+	var numTeams = 0;
+	var teams = new Array(9);
+	for (var i = 0; i < numPlayers; ++i)
+	{
+		var team = getPlayerTeam(i) + 1;
+		if(team < 1)
+		{
+			teams[8 - ffaPlayers] = new Array();
+			teams[8 - ffaPlayers].push(i + 1);
+			ffaPlayers++;
+			numTeams++;
+		}
+		else
+		{
+			if(teams[team] == null)
+			{
+				teams[team] = new Array();
+				numTeams++;
+			}
+			teams[team].push(i+1);
+		}
+	}
+
+	// consolidate the array
+	var setTeams = new Array();
+	var currentTeam = 0;
+	for (var i = 1; i < 9; ++i)
+	{
+		if(teams[i] !== undefined)
+		{
+			setTeams[currentTeam] = teams[i];
+			currentTeam++;
+		}
+	}
+
+	return setTeams;
+}
+
+/////////////////////////////////////////
+// placeRandom
+//
+// Function for placing players in a random pattern
+//
+// playerIDs: array of randomized playerIDs
+//
+/////////////////////////////////////////
+function placeRandom(playerIDs)
+{
+	var players = new Array();
+	var placed = new Array();
+
+	for (var i = 0; i < m.numPlayers; ++i)
+	{
+		var playerAngle = randFloat(0, TWO_PI);
+		var distance = randFloat(0, 0.42);
+		var x = 0.5 + distance * cos(playerAngle);
+		var z = 0.5 + distance * sin(playerAngle);
+
+		var tooClose = false;
+		for(var j = 0; j < placed.length; ++j)
+		{
+			var sep = separation(x, z, placed[j].x, placed[j].z);
+			if(sep < 0.25)
+			{
+				tooClose = true;
+				break;
+			}
+		}
+
+		if(tooClose)
+		{
+			--i;
+			continue;
+		}
+
+		players[i] = {"id": playerIDs[i], "angle": playerAngle, "x": x, "z": z};
+		placed.push(players[i])
+
+		createBase(players[i])
+	}
+
+	return players;
+}
+
+function separation(x1, z1, x2, z2)
+{
+	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
+}
+
+/////////////////////////////////////////
+// placeRadial
+//
+// Function for placing players in a radial pattern
+//
+// playerIDs: array of randomized playerIDs
+// distance: radial distance from the center of the map
+//
+/////////////////////////////////////////
+function placeRadial(playerIDs, distance)
+{
+	var players = new Array();
+
+	for (var i = 0; i < m.numPlayers; ++i)
+	{
+		players[i] = {"id": playerIDs[i], "angle": m.startAngle + i * TWO_PI / m.numPlayers};
+		players[i]["x"] = 0.5 + distance * cos(players[i].angle);
+		players[i]["z"] = 0.5 + distance * sin(players[i].angle);
+
+		createBase(players[i])
+	}
+
+	return players;
+}
+
+/////////////////////////////////////////
+// placeLine
+//
+// Function for placing teams in a line pattern
+//
+// playerIDs: array of randomized playerIDs
+// distance: radial distance from the center of the map
+// groupedDistance: distance between teammates
+//
+/////////////////////////////////////////
+function placeLine(playerIDs, distance, groupedDistance)
+{
+	var players = new Array();
+
+	for(var i = 0; i < m.teams.length; ++i) {
+		var safeDist = distance;
+		if(distance + m.teams[i].length * groupedDistance > 0.45)
+		{
+			safeDist = 0.45 - m.teams[i].length * groupedDistance;
+		}
+		var teamAngle = m.startAngle + (i + 1) * TWO_PI / m.teams.length;
+
+		// create player base
+		for(var p = 0; p < m.teams[i].length; ++p)
+		{
+			var player = {"id": m.teams[i][p], "angle": m.startAngle + (p + 1) * TWO_PI / m.teams[i].length};
+			player["x"] = 0.5 + (safeDist + p * groupedDistance) * cos(teamAngle);
+			player["z"] = 0.5 + (safeDist + p * groupedDistance) * sin(teamAngle);
+			players[m.teams[i][p]] = player;
+			createBase(players[m.teams[i][p]], false)
+		}
+	}
+
+	return players;
+}
+
+/////////////////////////////////////////
+// placeStronghold
+//
+// Function for placing teams in a stronghold pattern
+//
+// playerIDs: array of randomized playerIDs
+// distance: radial distance from the center of the map
+// groupedDistance: distance between teammates
+//
+/////////////////////////////////////////
+function placeStronghold(playerIDs, distance, groupedDistance)
+{
+	var players = new Array();
+
+	for(var i = 0; i < m.teams.length; ++i) {
+		var teamAngle = m.startAngle + (i + 1) * TWO_PI / m.teams.length;
+		var fractionX = 0.5 + distance * cos(teamAngle);
+		var fractionZ = 0.5 + distance * sin(teamAngle);
+
+		// create player base
+		for(var p = 0; p < m.teams[i].length; ++p)
+		{
+			var player = {"id": m.teams[i][p], "angle": m.startAngle + (p + 1) * TWO_PI / m.teams[i].length};
+			player["x"] = fractionX + groupedDistance * cos(player.angle);
+			player["z"] = fractionZ + groupedDistance * sin(player.angle);
+			players[m.teams[i][p]] = player;
+			createBase(players[m.teams[i][p]], false)
+		}
+	}
+
+	return players;
+}
 
 /////////////////////////////////////////
 // addBases
 //
 // Function for creating player bases
 //
-// numPlayers: The number of player bases to create
-// positionType: "radial", "stacked", "stronghold", "random"
-// distance: distance from center (radial), or min distance from each other
+// type: "radial", "stacked", "stronghold", "random"
+// distance: radial distance from the center of the map
 //
 /////////////////////////////////////////
-function addBases(numPlayers, positionType, distance) {
-	var playerIDs = randomizePlayers(numPlayers)
-	var players = new Array();
-	for (var i = 0; i < numPlayers; ++i) {
-		players[i] = {"id": playerIDs[i], "angle": startAngle + i * TWO_PI / numPlayers};
-		players[i]["x"] = 0.5 + distance * cos(players[i].angle);
-		players[i]["z"] = 0.5 + distance * sin(players[i].angle);
+function addBases(type, distance, groupedDistance)
+{
+	type = typeOrDefault(type);
+	distance = distanceOrDefault(distance);
+	groupedDistance = groupedDistanceOrDefault(groupedDistance);
+	var playerIDs = randomizePlayers()
+	var players = {};
 
-		createBase(players[i])
+	switch(type)
+	{
+		case "line":
+			players = placeLine(playerIDs, distance, groupedDistance);
+			break;
+		case "radial":
+			players = placeRadial(playerIDs, distance);
+			break;
+		case "random":
+			players = placeRandom(playerIDs);
+			break;
+		case "stronghold":
+			players = placeStronghold(playerIDs, distance, groupedDistance);
+			break;
 	}
 
 	return players;
@@ -630,9 +1200,11 @@ function addBases(numPlayers, positionType, distance) {
 // Function for creating a single player base
 //
 // player: An object with the player's attributes (id, angle, x, z)
+// walls: Iberian walls (true/false)
 //
 /////////////////////////////////////////
-function createBase(player) {
+function createBase(player, walls)
+{
 	// get the x and z in tiles
 	var fx = fractionToTiles(player.x);
 	var fz = fractionToTiles(player.z);
@@ -645,7 +1217,11 @@ function createBase(player) {
 	addToClass(ix, iz - 5, tc.player);
 
 	// create starting units
-	placeCivDefaultEntities(fx, fz, player.id, radius);
+	if(walls || walls == undefined) {
+		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius);
+	} else {
+		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius, {'iberWall': false});
+	}
 
 	// create the city patch
 	var cityRadius = scaleByMapSize(15, 25) / 3;
@@ -686,6 +1262,7 @@ function createBase(player) {
 	{
 		mAngle = randFloat(0, TWO_PI);
 	}
+
 	var mDist = 12;
 	var mX = round(fx + mDist * cos(mAngle));
 	var mZ = round(fz + mDist * sin(mAngle));
@@ -705,13 +1282,15 @@ function createBase(player) {
 	);
 	createObjectGroup(group, 0);
 
-	var hillSize = PI * radius * radius;
+	var hillSize = PI * m.mapRadius * m.mapRadius;
+
 	// create starting trees
 	var num = 5;
 	var tAngle = randFloat(0, TWO_PI);
 	var tDist = randFloat(12, 13);
 	var tX = round(fx + tDist * cos(tAngle));
 	var tZ = round(fz + tDist * sin(tAngle));
+
 	group = new SimpleGroup(
 		[new SimpleObject(g.tree1, num, num, 0, 3)],
 		false, tc.baseResource, tX, tZ
@@ -723,7 +1302,7 @@ function createBase(player) {
 	for (var j = 0; j < num; j++)
 	{
 		var gAngle = randFloat(0, TWO_PI);
-		var gDist = radius - (5 + randInt(7));
+		var gDist = m.mapRadius - (5 + randInt(7));
 		var gX = round(fx + gDist * cos(gAngle));
 		var gZ = round(fz + gDist * sin(gAngle));
 		group = new SimpleGroup(
@@ -739,7 +1318,8 @@ function createBase(player) {
 ///////////
 
 // terrains
-function constTerrains() {
+function constTerrains()
+{
 	var t = {};
 	t["mainTerrain"] = rBiomeT1();
 	t["forestFloor1"] = rBiomeT2();
@@ -760,7 +1340,8 @@ function constTerrains() {
 }
 
 // gaia entities
-function constGaia() {
+function constGaia()
+{
 	var g = {};
 	g["tree1"] = rBiomeE1();
 	g["tree2"] = rBiomeE2();
@@ -779,7 +1360,8 @@ function constGaia() {
 }
 
 // props
-function constProps() {
+function constProps()
+{
 	var p = {};
 	p["grass"] = rBiomeA1();
 	p["grassShort"] = rBiomeA2();
@@ -793,19 +1375,22 @@ function constProps() {
 }
 
 // tile classes
-function constTileClasses(newClasses) {
-	var defaultClasses = ["baseResource", "dirt", "food", "forest", "hill", "land", "metal", "mountain", "player", "rock", "settlement", "water"]
+function constTileClasses(newClasses)
+{
+	var defaultClasses = ["animals", "baseResource", "berries", "dirt", "fish", "food", "forest", "hill", "land", "metal", "mountain", "player", "rock", "settlement", "water"]
 	var classes = defaultClasses.concat(newClasses)
 
 	var tc = {};
-	for(var i = 0; i < classes.length; ++i) {
+	for(var i = 0; i < classes.length; ++i)
+	{
 		tc[classes[i]] = createTileClass();
 	}
 	return tc;
 }
 
 // forests
-function constForests() {
+function constForests()
+{
 	var f = {};
 	f["forest1"] = [t.forestFloor2 + TERRAIN_SEPARATOR + g.tree1, t.forestFloor2 + TERRAIN_SEPARATOR + g.tree2, t.forestFloor2];
 	f["forest2"] = [t.forestFloor1 + TERRAIN_SEPARATOR + g.tree4, t.forestFloor1 + TERRAIN_SEPARATOR + g.tree5, t.forestFloor1];
