@@ -24,8 +24,6 @@ RMS.SetProgress(20);
 ///////////
 // add players
 ///////////
-
-// randomize the starting positions
 var starting = getStartingPositions();
 var players = addBases(starting.setup, starting.distance, starting.separation);
 RMS.SetProgress(40);
@@ -41,8 +39,8 @@ RMS.SetProgress(60);
 // add terrain
 ///////////
 addHills(avoidClasses(tc.hill, 15, tc.player, 20, tc.water, 5), tRand.hills.qty, tRand.hills.dev, tRand.hills.fill);
-addMountains(avoidClasses(tc.mountain, 15, tc.player, 20, tc.water, 5), tRand.mountains.qty, tRand.mountains.dev, tRand.mountains.fill);
 addPlateaus(avoidClasses(tc.mountain, 15, tc.player, 40, tc.water, 5), tRand.plateaus.qty, tRand.plateaus.dev, tRand.plateaus.fill);
+addMountains(avoidClasses(tc.mountain, 15, tc.player, 20, tc.water, 5), tRand.mountains.qty, tRand.mountains.dev, tRand.mountains.fill);
 addLakes(avoidClasses(tc.hill, 5, tc.mountain, 5, tc.player, 20, tc.water, 25), tRand.lakes.qty, tRand.lakes.dev, tRand.lakes.fill);
 addLayeredPatches(avoidClasses(tc.dirt, 5, tc.forest, 0, tc.mountain, 0, tc.player, 12, tc.water, 3));
 addDecoration(avoidClasses(tc.forest, 2, tc.mountain, 2, tc.player, 2, tc.water, 2));
@@ -51,10 +49,10 @@ RMS.SetProgress(80);
 ///////////
 // add gaia
 ///////////
+addMetal(avoidClasses(tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 15, tc.metal, 40, tc.water, 3), gRand.metal.qty, gRand.metal.dev, gRand.metal.fill);
+addStone(avoidClasses(tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 15, tc.water, 3), gRand.stone.qty, gRand.stone.dev, gRand.stone.fill);
 addForests(avoidClasses(tc.berries, 5, tc.forest, 18, tc.mountain, 5, tc.player, 20, tc.water, 2), gRand.forests.qty, gRand.forests.dev, gRand.forests.fill);
 addBerries(avoidClasses(tc.berries, 50, tc.forest, 5, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.metal, 10, tc.water, 3), gRand.berries.qty, gRand.berries.dev, gRand.berries.fill);
-addMetal(avoidClasses(tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 30, tc.metal, 40, tc.water, 3), gRand.metal.qty, gRand.metal.dev, gRand.metal.fill);
-addStone(avoidClasses(tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 30, tc.water, 3), gRand.stone.qty, gRand.stone.dev, gRand.stone.fill);
 addAnimals(avoidClasses(tc.animals, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.water, 3), gRand.animals.qty, gRand.animals.dev, gRand.animals.fill);
 addFish([avoidClasses(tc.fish, 12, tc.hill, 8, tc.land, 8, tc.mountain, 8, tc.player, 8), stayClasses(tc.water, 8)], gRand.fish.qty, gRand.fish.dev, gRand.fish.fill);
 addStragglerTrees(avoidClasses(tc.berries, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5), gRand.trees.qty, gRand.trees.dev, gRand.trees.fill);
@@ -178,9 +176,13 @@ function addHills(constraint, size, deviation, fill)
 		}
 
 		// don't let hills grow too big
-		if(pMaxSize > maxSize * 2)
+		if(pMaxSize > maxSize * 1.2)
 		{
-			pMaxSize = maxSize;
+			pMaxSize = floor(maxSize * 1.2);
+		}
+		if(pSpread > spread * 1.2)
+		{
+			pSpread = floor(spread * 1.2);
 		}
 
 		// don't render tiny hills
@@ -236,9 +238,13 @@ function addLakes(constraint, size, deviation, fill)
 		}
 
 		// don't let lakes grow too big
-		if(pMaxSize > maxSize * 3)
+		if(pMaxSize > maxSize * 2)
 		{
-			pMaxSize = maxSize;
+			pMaxSize = floor(maxSize * 2);
+		}
+		if(pSpread > spread * 2)
+		{
+			pSpread = floor(spread * 2);
 		}
 
 		// don't render puddles
@@ -339,9 +345,13 @@ function addMountains(constraint, size, deviation, fill)
 		}
 
 		// don't let mountains grow too big
-		if(pMaxSize > maxSize * 2)
+		if(pMaxSize > maxSize * 1.2)
 		{
-			pMaxSize = maxSize;
+			pMaxSize = floor(maxSize * 1.2);
+		}
+		if(pSpread > spread * 1.2)
+		{
+			pSpread = floor(spread * 1.2);
 		}
 
 		// don't render tiny mountains
@@ -396,10 +406,14 @@ function addPlateaus(constraint, size, deviation, fill)
 			pElevation = (elevation + pElevation) / 2;
 		}
 
-		// don't let mountains grow too big
-		if(pMaxSize > maxSize * 2)
+		// don't let plateaus grow too big
+		if(pMaxSize > maxSize * 1.2)
 		{
-			pMaxSize = maxSize;
+			pMaxSize = floor(maxSize * 1.2);
+		}
+		if(pSpread > spread * 1.2)
+		{
+			pSpread = floor(spread * 1.2);
 		}
 
 		// don't render tiny plateaus
@@ -573,7 +587,7 @@ function addMetal(constraint, size, deviation, fill)
 	fill = fillOrDefault(fill);
 
 	var offset = getRandomDeviation(size, deviation);
-	var count = scaleByMapSize(4, 16) * fill;
+	var count = m.numPlayers * scaleByMapSize(m.numPlayers, m.numPlayers) * fill;
 	var mines = [[new SimpleObject(g.metalLarge, 1 * offset, 1 * offset, 0, 4 * offset)]];
 
 	for (var i = 0; i < mines.length; ++i)
@@ -601,7 +615,7 @@ function addStone(constraint, size, deviation, fill)
 	fill = fillOrDefault(fill);
 
 	var offset = getRandomDeviation(size, deviation);
-	var count = scaleByMapSize(4, 16) * fill;
+	var count = m.numPlayers * scaleByMapSize(m.numPlayers, m.numPlayers) * fill;
 	var mines = [[new SimpleObject(g.stoneSmall, 0, 2 * offset, 0, 4 * offset), new SimpleObject(g.stoneLarge, 1 * offset, 1 * offset, 0, 4 * offset)],
   [new SimpleObject(g.stoneSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)]];
 
@@ -818,10 +832,24 @@ function getStartingPositions()
 	var starting = {};
 	var formats = ["radial"];
 
-	if(m.teams.length >= 2 && m.numPlayers >= 4)
+	// enable stronghold if we have a few teams and a big enough map
+	if(m.teams.length >= 2 && m.numPlayers >= 4 && m.mapSize >= 256)
 	{
 		formats.push("stronghold");
 	}
+
+	// enable random if we have enough teams or enough players on a big enough map
+	if(m.mapSize >= 256 && (m.teams.length >= 3 || m.numPlayers > 4))
+	{
+		formats.push("random");
+	}
+
+	// enable line if we have enough teams and players on a big enough map
+	if(m.teams.length >= 2 && m.numPlayers >= 4 && m.mapSize >= 384)
+	{
+		formats.push("line");
+	}
+
 	var use = randInt(formats.length);
 
 	starting["setup"] = formats[use];
@@ -874,6 +902,57 @@ function getTeams(numPlayers)
 }
 
 /////////////////////////////////////////
+// placeRandom
+//
+// Function for placing players in a random pattern
+//
+// playerIDs: array of randomized playerIDs
+//
+/////////////////////////////////////////
+function placeRandom(playerIDs)
+{
+	var players = new Array();
+	var placed = new Array();
+
+	for (var i = 0; i < m.numPlayers; ++i)
+	{
+		var startAngle = randFloat(0, TWO_PI);
+		var distance = randFloat(0, 0.42);
+		var x = 0.5 + distance * cos(startAngle);
+		var z = 0.5 + distance * sin(startAngle);
+
+		var tooClose = false;
+		for(var j = 0; j < placed.length; ++j)
+		{
+			var sep = separation(x, z, placed[j].x, placed[j].z);
+			if(sep < 0.25)
+			{
+				tooClose = true;
+				break;
+			}
+		}
+
+		if(tooClose)
+		{
+			--i;
+			continue;
+		}
+
+		players[i] = {"id": playerIDs[i], "angle": startAngle, "x": x, "z": z};
+		placed.push(players[i])
+
+		createBase(players[i])
+	}
+
+	return players;
+}
+
+function separation(x1, z1, x2, z2)
+{
+	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
+}
+
+/////////////////////////////////////////
 // placeRadial
 //
 // Function for placing players in a radial pattern
@@ -895,6 +974,45 @@ function placeRadial(playerIDs, startAngle, distance)
 
 		createBase(players[i])
 	}
+
+	return players;
+}
+
+/////////////////////////////////////////
+// placeLine
+//
+// Function for placing teams in a line pattern
+//
+// playerIDs: array of randomized playerIDs
+// startAngle: the starting angle for the map
+// distance: radial distance from the center of the map
+// groupedDistance: distance between teammates
+//
+/////////////////////////////////////////
+function placeLine(playerIDs, startAngle, distance, groupedDistance)
+{
+	var players = new Array();
+
+	for(var i = 0; i < m.teams.length; ++i) {
+		var safeDist = distance;
+		if(distance + m.teams[i].length * groupedDistance > 0.45)
+		{
+			safeDist = 0.45 - m.teams[i].length * groupedDistance;
+		}
+		var teamAngle = startAngle + (i + 1) * TWO_PI / m.teams.length;
+
+		// create player base
+		for(var p = 0; p < m.teams[i].length; ++p)
+		{
+			var player = {"id": m.teams[i][p], "angle": startAngle + (p + 1) * TWO_PI / m.teams[i].length};
+			player["x"] = 0.5 + (safeDist + p * groupedDistance) * cos(teamAngle);
+			player["z"] = 0.5 + (safeDist + p * groupedDistance) * sin(teamAngle);
+			players[m.teams[i][p]] = player;
+			createBase(players[m.teams[i][p]], false)
+		}
+	}
+
+	return players;
 }
 
 /////////////////////////////////////////
@@ -951,8 +1069,14 @@ function addBases(type, distance, groupedDistance)
 
 	switch(type)
 	{
+		case "line":
+			players = placeLine(playerIDs, startAngle, distance, groupedDistance);
+			break;
 		case "radial":
 			players = placeRadial(playerIDs, startAngle, distance);
+			break;
+		case "random":
+			players = placeRandom(playerIDs);
 			break;
 		case "stronghold":
 			players = placeStronghold(playerIDs, startAngle, distance, groupedDistance);
@@ -986,11 +1110,10 @@ function createBase(player, walls)
 
 	// create starting units
 	if(walls || walls == undefined) {
-		placeCivDefaultEntities(fx, fz, player.id);
+		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius);
 	} else {
 		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius, {'iberWall': false});
 	}
-
 
 	// create the city patch
 	var cityRadius = scaleByMapSize(15, 25) / 3;
