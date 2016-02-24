@@ -31,7 +31,7 @@ RMS.SetProgress(40);
 ///////////
 // customize the map
 ///////////
-var tRand = randomizeElements(["hills", "lakes", "mountains", "plateaus"], 0.5, 3, 0.1, 0.5, 0, 2);
+var tRand = randomizeElements(["hills", "lakes", "mountains", "plateaus"], 0.5, 2, 0.1, 0.5, 0, 2);
 var gRand = randomizeElements(["animals", "berries", "fish", "forests", "metal", "stone", "trees"], 1, 1, 0, 0, 0.5, 2);
 RMS.SetProgress(60);
 
@@ -52,7 +52,7 @@ RMS.SetProgress(80);
 addMetal(avoidClasses(tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 15, tc.metal, 40, tc.water, 3), gRand.metal.qty, gRand.metal.dev, gRand.metal.fill);
 addStone(avoidClasses(tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 15, tc.water, 3), gRand.stone.qty, gRand.stone.dev, gRand.stone.fill);
 addForests(avoidClasses(tc.berries, 5, tc.forest, 18, tc.mountain, 5, tc.player, 20, tc.water, 2), gRand.forests.qty, gRand.forests.dev, gRand.forests.fill);
-addBerries(avoidClasses(tc.berries, 50, tc.forest, 5, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.metal, 10, tc.water, 3), gRand.berries.qty, gRand.berries.dev, gRand.berries.fill);
+addBerries(avoidClasses(tc.berries, 50, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.water, 3), gRand.berries.qty, gRand.berries.dev, gRand.berries.fill);
 addAnimals(avoidClasses(tc.animals, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.water, 3), gRand.animals.qty, gRand.animals.dev, gRand.animals.fill);
 addFish([avoidClasses(tc.fish, 12, tc.hill, 8, tc.land, 8, tc.mountain, 8, tc.player, 8), stayClasses(tc.water, 8)], gRand.fish.qty, gRand.fish.dev, gRand.fish.fill);
 addStragglerTrees(avoidClasses(tc.berries, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5), gRand.trees.qty, gRand.trees.dev, gRand.trees.fill);
@@ -738,6 +738,7 @@ function getSettings()
 	m["centerOfMap"] = m["mapSize"] / 2;
 	m["mapRadius"] = -PI / 4;
 	m["teams"] = getTeams(m["numPlayers"]);
+	m["startAngle"] = randFloat(0, TWO_PI);
 	return m;
 }
 
@@ -756,7 +757,7 @@ function initTerrain(terrain)
 }
 
 // randomize player order
-function randomizePlayers(numPlayers)
+function randomizePlayers()
 {
 	var playerIDs = [];
 	for (var i = 0; i < m.numPlayers; i++)
@@ -916,10 +917,10 @@ function placeRandom(playerIDs)
 
 	for (var i = 0; i < m.numPlayers; ++i)
 	{
-		var startAngle = randFloat(0, TWO_PI);
+		var playerAngle = randFloat(0, TWO_PI);
 		var distance = randFloat(0, 0.42);
-		var x = 0.5 + distance * cos(startAngle);
-		var z = 0.5 + distance * sin(startAngle);
+		var x = 0.5 + distance * cos(playerAngle);
+		var z = 0.5 + distance * sin(playerAngle);
 
 		var tooClose = false;
 		for(var j = 0; j < placed.length; ++j)
@@ -938,7 +939,7 @@ function placeRandom(playerIDs)
 			continue;
 		}
 
-		players[i] = {"id": playerIDs[i], "angle": startAngle, "x": x, "z": z};
+		players[i] = {"id": playerIDs[i], "angle": playerAngle, "x": x, "z": z};
 		placed.push(players[i])
 
 		createBase(players[i])
@@ -958,17 +959,16 @@ function separation(x1, z1, x2, z2)
 // Function for placing players in a radial pattern
 //
 // playerIDs: array of randomized playerIDs
-// startAngle: the starting angle for the map
 // distance: radial distance from the center of the map
 //
 /////////////////////////////////////////
-function placeRadial(playerIDs, startAngle, distance)
+function placeRadial(playerIDs, distance)
 {
 	var players = new Array();
 
 	for (var i = 0; i < m.numPlayers; ++i)
 	{
-		players[i] = {"id": playerIDs[i], "angle": startAngle + i * TWO_PI / m.numPlayers};
+		players[i] = {"id": playerIDs[i], "angle": m.startAngle + i * TWO_PI / m.numPlayers};
 		players[i]["x"] = 0.5 + distance * cos(players[i].angle);
 		players[i]["z"] = 0.5 + distance * sin(players[i].angle);
 
@@ -984,12 +984,11 @@ function placeRadial(playerIDs, startAngle, distance)
 // Function for placing teams in a line pattern
 //
 // playerIDs: array of randomized playerIDs
-// startAngle: the starting angle for the map
 // distance: radial distance from the center of the map
 // groupedDistance: distance between teammates
 //
 /////////////////////////////////////////
-function placeLine(playerIDs, startAngle, distance, groupedDistance)
+function placeLine(playerIDs, distance, groupedDistance)
 {
 	var players = new Array();
 
@@ -999,12 +998,12 @@ function placeLine(playerIDs, startAngle, distance, groupedDistance)
 		{
 			safeDist = 0.45 - m.teams[i].length * groupedDistance;
 		}
-		var teamAngle = startAngle + (i + 1) * TWO_PI / m.teams.length;
+		var teamAngle = m.startAngle + (i + 1) * TWO_PI / m.teams.length;
 
 		// create player base
 		for(var p = 0; p < m.teams[i].length; ++p)
 		{
-			var player = {"id": m.teams[i][p], "angle": startAngle + (p + 1) * TWO_PI / m.teams[i].length};
+			var player = {"id": m.teams[i][p], "angle": m.startAngle + (p + 1) * TWO_PI / m.teams[i].length};
 			player["x"] = 0.5 + (safeDist + p * groupedDistance) * cos(teamAngle);
 			player["z"] = 0.5 + (safeDist + p * groupedDistance) * sin(teamAngle);
 			players[m.teams[i][p]] = player;
@@ -1021,24 +1020,23 @@ function placeLine(playerIDs, startAngle, distance, groupedDistance)
 // Function for placing teams in a stronghold pattern
 //
 // playerIDs: array of randomized playerIDs
-// startAngle: the starting angle for the map
 // distance: radial distance from the center of the map
 // groupedDistance: distance between teammates
 //
 /////////////////////////////////////////
-function placeStronghold(playerIDs, startAngle, distance, groupedDistance)
+function placeStronghold(playerIDs, distance, groupedDistance)
 {
 	var players = new Array();
 
 	for(var i = 0; i < m.teams.length; ++i) {
-		var teamAngle = startAngle + (i + 1) * TWO_PI / m.teams.length;
+		var teamAngle = m.startAngle + (i + 1) * TWO_PI / m.teams.length;
 		var fractionX = 0.5 + distance * cos(teamAngle);
 		var fractionZ = 0.5 + distance * sin(teamAngle);
 
 		// create player base
 		for(var p = 0; p < m.teams[i].length; ++p)
 		{
-			var player = {"id": m.teams[i][p], "angle": startAngle + (p + 1) * TWO_PI / m.teams[i].length};
+			var player = {"id": m.teams[i][p], "angle": m.startAngle + (p + 1) * TWO_PI / m.teams[i].length};
 			player["x"] = fractionX + groupedDistance * cos(player.angle);
 			player["z"] = fractionZ + groupedDistance * sin(player.angle);
 			players[m.teams[i][p]] = player;
@@ -1064,22 +1062,21 @@ function addBases(type, distance, groupedDistance)
 	distance = distanceOrDefault(distance);
 	groupedDistance = groupedDistanceOrDefault(groupedDistance);
 	var playerIDs = randomizePlayers()
-	var startAngle = randFloat(0, TWO_PI);
 	var players = {};
 
 	switch(type)
 	{
 		case "line":
-			players = placeLine(playerIDs, startAngle, distance, groupedDistance);
+			players = placeLine(playerIDs, distance, groupedDistance);
 			break;
 		case "radial":
-			players = placeRadial(playerIDs, startAngle, distance);
+			players = placeRadial(playerIDs, distance);
 			break;
 		case "random":
 			players = placeRandom(playerIDs);
 			break;
 		case "stronghold":
-			players = placeStronghold(playerIDs, startAngle, distance, groupedDistance);
+			players = placeStronghold(playerIDs, distance, groupedDistance);
 			break;
 	}
 
