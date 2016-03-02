@@ -10,14 +10,21 @@ const tCliff = rBiomeT4();
 const tTier1Terrain = rBiomeT5();
 const tTier2Terrain = rBiomeT6();
 const tTier3Terrain = rBiomeT7();
-const tHill = rBiomeT8();
-const tDirt = rBiomeT9();
 const tRoad = rBiomeT10();
 const tRoadWild = rBiomeT11();
 const tTier4Terrain = rBiomeT12();
 const tShoreBlend = rBiomeT13();
 const tShore = rBiomeT14();
 const tWater = rBiomeT15();
+var tHill = rBiomeT8();
+var tDirt = rBiomeT9();
+
+if (random_terrain == 6) 
+	tDirt = ["savanna_dirt_rocks_b", "savanna_dirt_rocks_c"];
+if (random_terrain == 1) {
+	tDirt = ["medit_shrubs_a", "grass_field"];
+	tHill = ["grass_field", "peat_temp"];
+}
 
 // gaia entities
 const oTree1 = rBiomeE1();
@@ -150,7 +157,7 @@ for (var i = 0; i < numPlayers; ++i)
 	addToClass(ix, iz - 5, clPlayer);
 
 	// create starting units
-	placeCivDefaultEntities(fx, fz, id, BUILDING_ANGlE);
+	placeCivDefaultEntities(fx, fz, id, BUILDING_ANGlE, { "iberWall": false });
 
 	// create the city patch
 	var cityRadius = radius/3;
@@ -295,12 +302,12 @@ for (var m = 0; m < randMountains; ++m) {
 var centerOfMap = mapSize / 2;
 // create center bounty
 group = new SimpleGroup(
-	[new SimpleObject(oMetalLarge, 3, 6, 25, floor(mapSize * 0.15))],
+	[new SimpleObject(oMetalLarge, 3, 6, 25, floor(mapSize * 0.25))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, [avoidClasses(clBaseResource, 20, clPlayer, 40, clMountain, 4), stayClasses(clHill, 10)]);
 group = new SimpleGroup(
-	[new SimpleObject(oStoneLarge, 3, 6, 25, floor(mapSize * 0.15))],
+	[new SimpleObject(oStoneLarge, 3, 6, 25, floor(mapSize * 0.25))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, [avoidClasses(clBaseResource, 20, clPlayer, 40, clMountain, 4), stayClasses(clHill, 10)]);
@@ -332,7 +339,7 @@ createForests(
 
 // create straggeler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
-createStragglerTrees(types, [avoidClasses(clBaseResource, 2, clMetal, 1, clRock, 1, clMountain, 2), stayClasses(clHill, 6)]);
+createStragglerTrees(types, [avoidClasses(clBaseResource, 2, clMetal, 3, clRock, 3, clMountain, 2, clPlayer, 25), stayClasses(clHill, 6)]);
 
 RMS.SetProgress(65);
 
@@ -395,7 +402,7 @@ RMS.SetProgress(85);
 
 // create straggler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
-createStragglerTrees(types, avoidClasses(clWater, 5, clForest, 7, clMountain, 1, clPlayer, 30, clMetal, 1, clRock, 1));
+createStragglerTrees(types, avoidClasses(clWater, 5, clForest, 7, clMountain, 1, clPlayer, 30, clMetal, 3, clRock, 3));
 
 // create decoration
 let planetm = random_terrain == 7 ? 8 : 1;
@@ -430,7 +437,7 @@ for (let j = 0; j < num; ++j)
 		[new SimpleObject(aGrassShort, 2, 5, 0, 1, -PI / 8, PI / 8)],
 		false, clBaseResource, gX, gZ
 	);
-	createObjectGroup(group, 0, [avoidClasses(clMountain, 2, clPlayer, 2, clDirt, 0), stayClasses(clHill, 5)]);
+	createObjectGroup(group, 0, [avoidClasses(clMountain, 2, clPlayer, 2, clDirt, 0), stayClasses(clHill, 8)]);
 }
 
 log("Creating small grass tufts...");
@@ -438,7 +445,7 @@ group = new SimpleGroup(
 	[new SimpleObject(aGrassShort, 1, 2, 0, 1, -PI / 8, PI / 8)]
 );
 createObjectGroups(group, 0,
-	[avoidClasses(clMountain, 2, clPlayer, 2, clDirt, 0), stayClasses(clHill, 3)],
+	[avoidClasses(clMountain, 2, clPlayer, 2, clDirt, 0), stayClasses(clHill, 8)],
 	planetm * scaleByMapSize(13, 200)
 );
 
