@@ -13,7 +13,6 @@ const tTier3Terrain = rBiomeT7();
 const tRoad = rBiomeT10();
 const tRoadWild = rBiomeT11();
 const tTier4Terrain = rBiomeT12();
-const tShoreBlend = rBiomeT13();
 const tShore = rBiomeT14();
 const tWater = rBiomeT15();
 let tHill = rBiomeT8();
@@ -39,14 +38,11 @@ const oMainHuntableAnimal = rBiomeE8();
 const oFish = rBiomeE9();
 const oSecondaryHuntableAnimal = rBiomeE10();
 const oStoneLarge = rBiomeE11();
-const oStoneSmall = rBiomeE12();
 const oMetalLarge = rBiomeE13();
 
 // decorative props
 const aGrass = rBiomeA1();
 const aGrassShort = rBiomeA2();
-const aReeds = rBiomeA3();
-const aLillies = rBiomeA4();
 const aRockLarge = rBiomeA5();
 const aRockMedium = rBiomeA6();
 const aBushMedium = rBiomeA7();
@@ -102,8 +98,6 @@ for (let i = 0; i < numPlayers; ++i)
 	playerX[i] = 0.5 + 0.38 * cos(playerAngle[i]);
 	playerZ[i] = 0.5 + 0.38 * sin(playerAngle[i]);
 }
-
-
 
 let fx = fractionToTiles(0.5);
 let fz = fractionToTiles(0.5);
@@ -250,12 +244,12 @@ for (let i = 0; i < numPlayers; ++i)
 RMS.SetProgress(40);
 
 // create central island
-let placer = new ChainPlacer(floor(scaleByMapSize(6, 6)), floor(scaleByMapSize(10, 15)), floor(scaleByMapSize(200, 300)), 1, centerOfMap, centerOfMap, 0, [floor(mapSize * 0.01)]);
-let terrainPainter = new LayeredPainter(
+placer = new ChainPlacer(floor(scaleByMapSize(6, 6)), floor(scaleByMapSize(10, 15)), floor(scaleByMapSize(200, 300)), 1, centerOfMap, centerOfMap, 0, [floor(mapSize * 0.01)]);
+terrainPainter = new LayeredPainter(
 	[tShore, tMainTerrain],     // terrains
 	[shoreRadius,  100]     		// widths
 );
-let elevationPainter = new SmoothElevationPainter(
+elevationPainter = new SmoothElevationPainter(
 	ELEVATION_SET,          // type
 	elevation,              // elevation
 	shoreRadius             // blend radius
@@ -281,7 +275,7 @@ for (let m = 0; m < randMountains; ++m)
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(clHill)], [avoidClasses(clBaseResource, 2, clPlayer, 40), stayClasses(clHill, 6)]);
 }
 
-let randMountains = 8 + randInt(10);
+randMountains = 8 + randInt(10);
 for (let m = 0; m < randMountains; ++m) 
 {
 	let randX = randInt(mapSize);
@@ -399,7 +393,6 @@ createFood
 RMS.SetProgress(85);
 
 log("Creating more straggeler trees...");
-let types = [oTree1, oTree2, oTree4, oTree3];	// some variation
 createStragglerTrees(types, avoidClasses(clWater, 5, clForest, 7, clMountain, 1, clPlayer, 30, clMetal, 3, clRock, 3));
 
 log("Creating decoration...");
