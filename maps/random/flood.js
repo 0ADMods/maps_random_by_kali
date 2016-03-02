@@ -59,9 +59,14 @@ const BUILDING_ANGlE = -PI/4;
 log("Initializing map...");
 InitMap();
 
+// some constants
+const radius = scaleByMapSize(15, 25);
+const elevation = 2;
+const shoreRadius = 6;
 const numPlayers = getNumPlayers();
 const mapSize = getMapSize();
-const mapArea = mapSize*mapSize;
+const mapArea = mapSize * mapSize;
+const centerOfMap = mapSize / 2;
 
 // create tile classes
 let clPlayer = createTileClass();
@@ -86,9 +91,9 @@ for (let i = 0; i < numPlayers; ++i)
 playerIDs = sortPlayers(playerIDs);
 
 // place players
-let playerX = new Array(numPlayers);
-let playerZ = new Array(numPlayers);
-let playerAngle = new Array(numPlayers);
+let playerX = [];
+let playerZ = [];
+let playerAngle = [];
 
 let startAngle = randFloat(0, TWO_PI);
 for (let i = 0; i < numPlayers; ++i)
@@ -98,18 +103,12 @@ for (let i = 0; i < numPlayers; ++i)
 	playerZ[i] = 0.5 + 0.38 * sin(playerAngle[i]);
 }
 
-// some constants
-let radius = scaleByMapSize(15, 25);
-let elevation = 20;
-let centerOfMap = mapSize / 2;
+
 
 let fx = fractionToTiles(0.5);
 let fz = fractionToTiles(0.5);
 let ix = round(fx);
 let iz = round(fz);
-
-let shoreRadius = 6;
-let elevation = 2;
 
 // create the water
 let placer = new ClumpPlacer(mapArea * 1, 1, 1, 1, ix, iz);
@@ -193,10 +192,9 @@ for (let i = 0; i < numPlayers; ++i)
 
 	// create metal mine
 	let mAngle = bbAngle;
-	while(abs(mAngle - bbAngle) < PI/3)
-	{
+	while (abs(mAngle - bbAngle) < PI/3)
 		mAngle = randFloat(0, TWO_PI);
-	}
+
 	let mDist = 12;
 	let mX = round(fx + mDist * cos(mAngle));
 	let mZ = round(fz + mDist * sin(mAngle));
@@ -229,7 +227,7 @@ for (let i = 0; i < numPlayers; ++i)
 			[new SimpleObject(oTree2, num, num, 0, 7)],
 			true, clBaseResource, tX, tZ
 		);
-		if( createObjectGroup(group, 0, avoidClasses(clBaseResource, 5)) )
+		if (createObjectGroup(group, 0, avoidClasses(clBaseResource, 5)))
 			break;
 	}
 
@@ -302,7 +300,6 @@ for (let m = 0; m < randMountains; ++m)
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(clMountain)], [avoidClasses(clBaseResource, 2, clPlayer, 40), stayClasses(clHill, 6)]);
 }
 
-let centerOfMap = mapSize / 2;
 // create center bounty
 let group = new SimpleGroup(
 	[new SimpleObject(oMetalLarge, 3, 6, 25, floor(mapSize * 0.25))],
