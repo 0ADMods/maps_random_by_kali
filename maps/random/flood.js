@@ -1,7 +1,7 @@
 RMS.LoadLibrary("rmgen");
 
 //random terrain textures
-var random_terrain = randomizeBiome();
+let random_terrain = randomizeBiome();
 
 const tMainTerrain = rBiomeT1();
 const tForestFloor1 = rBiomeT2();
@@ -16,12 +16,13 @@ const tTier4Terrain = rBiomeT12();
 const tShoreBlend = rBiomeT13();
 const tShore = rBiomeT14();
 const tWater = rBiomeT15();
-var tHill = rBiomeT8();
-var tDirt = rBiomeT9();
+let tHill = rBiomeT8();
+let tDirt = rBiomeT9();
 
 if (random_terrain == 6) 
 	tDirt = ["savanna_dirt_rocks_b", "savanna_dirt_rocks_c"];
-if (random_terrain == 1) {
+if (random_terrain == 1) 
+{
 	tDirt = ["medit_shrubs_a", "grass_field"];
 	tHill = ["grass_field", "peat_temp"];
 }
@@ -63,34 +64,34 @@ const mapSize = getMapSize();
 const mapArea = mapSize*mapSize;
 
 // create tile classes
-var clPlayer = createTileClass();
-var clHill = createTileClass();
-var clMountain = createTileClass();
-var clForest = createTileClass();
-var clWater = createTileClass();
-var clDirt = createTileClass();
-var clRock = createTileClass();
-var clMetal = createTileClass();
-var clFood = createTileClass();
-var clBaseResource = createTileClass();
+let clPlayer = createTileClass();
+let clHill = createTileClass();
+let clMountain = createTileClass();
+let clForest = createTileClass();
+let clWater = createTileClass();
+let clDirt = createTileClass();
+let clRock = createTileClass();
+let clMetal = createTileClass();
+let clFood = createTileClass();
+let clBaseResource = createTileClass();
 
 for (let ix = 0; ix < mapSize; ++ix)
 	for (let iz = 0; iz < mapSize; ++iz)
 		placeTerrain(ix, iz, tWater);
 
 // randomize player order
-var playerIDs = [];
-for (var i = 0; i < numPlayers; ++i)
+let playerIDs = [];
+for (let i = 0; i < numPlayers; ++i)
 	playerIDs.push(i+1);
 playerIDs = sortPlayers(playerIDs);
 
 // place players
-var playerX = new Array(numPlayers);
-var playerZ = new Array(numPlayers);
-var playerAngle = new Array(numPlayers);
+let playerX = new Array(numPlayers);
+let playerZ = new Array(numPlayers);
+let playerAngle = new Array(numPlayers);
 
-var startAngle = randFloat(0, TWO_PI);
-for (var i = 0; i < numPlayers; ++i)
+let startAngle = randFloat(0, TWO_PI);
+for (let i = 0; i < numPlayers; ++i)
 {
 	playerAngle[i] = startAngle + i * TWO_PI/numPlayers;
 	playerX[i] = 0.5 + 0.38 * cos(playerAngle[i]);
@@ -98,51 +99,51 @@ for (var i = 0; i < numPlayers; ++i)
 }
 
 // some constants
-var radius = scaleByMapSize(15, 25);
-var elevation = 20;
-var centerOfMap = mapSize / 2;
+let radius = scaleByMapSize(15, 25);
+let elevation = 20;
+let centerOfMap = mapSize / 2;
 
-var fx = fractionToTiles(0.5);
-var fz = fractionToTiles(0.5);
-ix = round(fx);
-iz = round(fz);
+let fx = fractionToTiles(0.5);
+let fz = fractionToTiles(0.5);
+let ix = round(fx);
+let iz = round(fz);
 
-var shoreRadius = 6;
-var elevation = 2;
+let shoreRadius = 6;
+let elevation = 2;
 
 // create the water
-var placer = new ClumpPlacer(mapArea * 1, 1, 1, 1, ix, iz);
-var terrainPainter = new LayeredPainter(
+let placer = new ClumpPlacer(mapArea * 1, 1, 1, 1, ix, iz);
+let terrainPainter = new LayeredPainter(
     [tWater, tWater, tShore],       // terrains
     [1, 4]       // widths
 );
-var elevationPainter = new SmoothElevationPainter(
+let elevationPainter = new SmoothElevationPainter(
    ELEVATION_SET,          	// type
    -2,             			// elevation
    2               			// blend radius
 );
 createArea(placer, [terrainPainter, elevationPainter, paintClass(clWater)], avoidClasses(clPlayer, 5));
 
-for (var i = 0; i < numPlayers; ++i)
+for (let i = 0; i < numPlayers; ++i)
 {
-	var id = playerIDs[i];
+	let id = playerIDs[i];
 	log("Creating base for player " + id + "...");
 
 	// get the x and z in tiles
-	var fx = fractionToTiles(playerX[i]);
-	var fz = fractionToTiles(playerZ[i]);
-	var ix = round(fx);
-	var iz = round(fz);
+	let fx = fractionToTiles(playerX[i]);
+	let fz = fractionToTiles(playerZ[i]);
+	let ix = round(fx);
+	let iz = round(fz);
 
-	var hillSize = PI * radius * radius * 2;
+	let hillSize = PI * radius * radius * 2;
 
 	// create the hill
-	var placer = new ClumpPlacer(hillSize, 0.80, 0.1, 10, ix, iz);
-	var terrainPainter = new LayeredPainter(
+	let placer = new ClumpPlacer(hillSize, 0.80, 0.1, 10, ix, iz);
+	let terrainPainter = new LayeredPainter(
 		[tShore, tMainTerrain],		// terrains
 		[shoreRadius]		// widths
 	);
-	var elevationPainter = new SmoothElevationPainter(
+	let elevationPainter = new SmoothElevationPainter(
 		ELEVATION_SET,			// type
 		elevation,				// elevation
 		shoreRadius				// blend radius
@@ -160,19 +161,19 @@ for (var i = 0; i < numPlayers; ++i)
 	placeCivDefaultEntities(fx, fz, id, BUILDING_ANGlE, { "iberWall": false });
 
 	// create the city patch
-	var cityRadius = radius/3;
-	var placer = new ClumpPlacer(PI * cityRadius * cityRadius, 0.6, 0.3, 10, ix, iz);
-	var painter = new LayeredPainter([tRoadWild, tRoad], [1]);
+	let cityRadius = radius/3;
+	placer = new ClumpPlacer(PI * cityRadius * cityRadius, 0.6, 0.3, 10, ix, iz);
+	let painter = new LayeredPainter([tRoadWild, tRoad], [1]);
 	createArea(placer, painter, null);
 
 	// create animals
-	for (var j = 0; j < 2; ++j)
+	for (let j = 0; j < 2; ++j)
 	{
-		var aAngle = randFloat(0, TWO_PI);
-		var aDist = 7;
-		var aX = round(fx + aDist * cos(aAngle));
-		var aZ = round(fz + aDist * sin(aAngle));
-		var group = new SimpleGroup(
+		let aAngle = randFloat(0, TWO_PI);
+		let aDist = 7;
+		let aX = round(fx + aDist * cos(aAngle));
+		let aZ = round(fz + aDist * sin(aAngle));
+		let group = new SimpleGroup(
 			[new SimpleObject(oChicken, 5, 5, 0, 2)],
 			true, clBaseResource, aX, aZ
 		);
@@ -180,25 +181,25 @@ for (var i = 0; i < numPlayers; ++i)
 	}
 
 	// create berry bushes
-	var bbAngle = randFloat(0, TWO_PI);
-	var bbDist = 12;
-	var bbX = round(fx + bbDist * cos(bbAngle));
-	var bbZ = round(fz + bbDist * sin(bbAngle));
-	group = new SimpleGroup(
+	let bbAngle = randFloat(0, TWO_PI);
+	let bbDist = 12;
+	let bbX = round(fx + bbDist * cos(bbAngle));
+	let bbZ = round(fz + bbDist * sin(bbAngle));
+	let group = new SimpleGroup(
 		[new SimpleObject(oFruitBush, 5, 5, 0, 3)],
 		true, clBaseResource, bbX, bbZ
 	);
 	createObjectGroup(group, 0);
 
 	// create metal mine
-	var mAngle = bbAngle;
+	let mAngle = bbAngle;
 	while(abs(mAngle - bbAngle) < PI/3)
 	{
 		mAngle = randFloat(0, TWO_PI);
 	}
-	var mDist = 12;
-	var mX = round(fx + mDist * cos(mAngle));
-	var mZ = round(fz + mDist * sin(mAngle));
+	let mDist = 12;
+	let mX = round(fx + mDist * cos(mAngle));
+	let mZ = round(fz + mDist * sin(mAngle));
 	group = new SimpleGroup(
 		[new SimpleObject(oMetalLarge, 1, 1, 0, 0)],
 		true, clBaseResource, mX, mZ
@@ -234,12 +235,12 @@ for (var i = 0; i < numPlayers; ++i)
 
 	// create grass tufts
 	num = (PI * radius * radius) / 250;
-	for (var j = 0; j < num; ++j)
+	for (let j = 0; j < num; ++j)
 	{
-		var gAngle = randFloat(0, TWO_PI);
-		var gDist = radius - (5 + randInt(7));
-		var gX = round(fx + gDist * cos(gAngle));
-		var gZ = round(fz + gDist * sin(gAngle));
+		let gAngle = randFloat(0, TWO_PI);
+		let gDist = radius - (5 + randInt(7));
+		let gX = round(fx + gDist * cos(gAngle));
+		let gZ = round(fz + gDist * sin(gAngle));
 		group = new SimpleGroup(
 			[new SimpleObject(aGrassShort, 2, 5, 0, 1, -PI/8, PI/8)],
 			false, clBaseResource, gX, gZ
@@ -251,29 +252,30 @@ for (var i = 0; i < numPlayers; ++i)
 RMS.SetProgress(40);
 
 // create central island
-var placer = new ChainPlacer(floor(scaleByMapSize(6, 6)), floor(scaleByMapSize(10, 15)), floor(scaleByMapSize(200, 300)), 1, centerOfMap, centerOfMap, 0, [floor(mapSize * 0.01)]);
-var terrainPainter = new LayeredPainter(
+let placer = new ChainPlacer(floor(scaleByMapSize(6, 6)), floor(scaleByMapSize(10, 15)), floor(scaleByMapSize(200, 300)), 1, centerOfMap, centerOfMap, 0, [floor(mapSize * 0.01)]);
+let terrainPainter = new LayeredPainter(
 	[tShore, tMainTerrain],     // terrains
 	[shoreRadius,  100]     		// widths
 );
-var elevationPainter = new SmoothElevationPainter(
+let elevationPainter = new SmoothElevationPainter(
 	ELEVATION_SET,          // type
 	elevation,              // elevation
 	shoreRadius             // blend radius
 );
 createArea(placer, [terrainPainter, elevationPainter, paintClass(clHill)], avoidClasses(clPlayer, 40));
 
-var randMountains = 20 + randInt(15);
-for (var m = 0; m < randMountains; ++m) {
-	var randX = randInt(mapSize);
-	var randY = randInt(mapSize);
-	var placer = new ChainPlacer(floor(scaleByMapSize(7, 7)), floor(scaleByMapSize(15, 15)), floor(scaleByMapSize(15, 20)), 1, randX, randY, 0, [floor(mapSize * 0.01)]);
-	var elevRand = 6 + randInt(15);
-	var terrainPainter = new LayeredPainter(
+let randMountains = 20 + randInt(15);
+for (let m = 0; m < randMountains; ++m) 
+{
+	let randX = randInt(mapSize);
+	let randY = randInt(mapSize);
+	let placer = new ChainPlacer(floor(scaleByMapSize(7, 7)), floor(scaleByMapSize(15, 15)), floor(scaleByMapSize(15, 20)), 1, randX, randY, 0, [floor(mapSize * 0.01)]);
+	let elevRand = 6 + randInt(15);
+	let terrainPainter = new LayeredPainter(
 		[tDirt, tHill],        // terrains
 		[floor(elevRand / 3), 40]       // widths
 	);
-	var elevationPainter = new SmoothElevationPainter(
+	let elevationPainter = new SmoothElevationPainter(
 		ELEVATION_SET,          		// type
 		elevRand,               		// elevation
 		floor(elevRand / 3)     		// blend radius
@@ -281,17 +283,18 @@ for (var m = 0; m < randMountains; ++m) {
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(clHill)], [avoidClasses(clBaseResource, 2, clPlayer, 40), stayClasses(clHill, 6)]);
 }
 
-var randMountains = 8 + randInt(10);
-for (var m = 0; m < randMountains; ++m) {
-	var randX = randInt(mapSize);
-	var randY = randInt(mapSize);
-	var placer = new ChainPlacer(floor(scaleByMapSize(5, 5)), floor(scaleByMapSize(8, 8)), floor(scaleByMapSize(15, 20)), 1, randX, randY, 0, [floor(mapSize * 0.01)]);
-	var elevRand = 15 + randInt(15);
-	var terrainPainter = new LayeredPainter(
+let randMountains = 8 + randInt(10);
+for (let m = 0; m < randMountains; ++m) 
+{
+	let randX = randInt(mapSize);
+	let randY = randInt(mapSize);
+	let placer = new ChainPlacer(floor(scaleByMapSize(5, 5)), floor(scaleByMapSize(8, 8)), floor(scaleByMapSize(15, 20)), 1, randX, randY, 0, [floor(mapSize * 0.01)]);
+	let elevRand = 15 + randInt(15);
+	let terrainPainter = new LayeredPainter(
 		[tCliff, tForestFloor2],        // terrains
 		[floor(elevRand / 3), 40]       // widths
 	);
-	var elevationPainter = new SmoothElevationPainter(
+	let elevationPainter = new SmoothElevationPainter(
 		ELEVATION_MODIFY,               // type
 		elevRand,              			// elevation
 		floor(elevRand / 3)             // blend radius
@@ -299,9 +302,9 @@ for (var m = 0; m < randMountains; ++m) {
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(clMountain)], [avoidClasses(clBaseResource, 2, clPlayer, 40), stayClasses(clHill, 6)]);
 }
 
-var centerOfMap = mapSize / 2;
+let centerOfMap = mapSize / 2;
 // create center bounty
-group = new SimpleGroup(
+let group = new SimpleGroup(
 	[new SimpleObject(oMetalLarge, 3, 6, 25, floor(mapSize * 0.25))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
@@ -317,7 +320,6 @@ group = new SimpleGroup(
 );
 createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clMountain, 4, clPlayer, 40, clWater, 2), stayClasses(clHill, 10)]);
 
-// create fish
 log("Creating fish...");
 group = new SimpleGroup(
 	[new SimpleObject(oFish, 2,3, 0,2)],
@@ -337,8 +339,8 @@ createForests(
 	random_terrain
 );
 
-// create straggeler trees
-var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
+log("Creating straggeler trees...");
+let types = [oTree1, oTree2, oTree4, oTree3];	// some variation
 createStragglerTrees(types, [avoidClasses(clBaseResource, 2, clMetal, 3, clRock, 3, clMountain, 2, clPlayer, 25), stayClasses(clHill, 6)]);
 
 RMS.SetProgress(65);
@@ -350,7 +352,7 @@ let numb = random_terrain == 6 ? 3 : 1;
 for (let i = 0; i < sizes.length; ++i)
 {
 	placer = new ChainPlacer(1, floor(scaleByMapSize(3, 5)), sizes[i], 0.5);
-	painter = new LayeredPainter(
+	let painter = new LayeredPainter(
 		[[tMainTerrain, tTier1Terrain], [tTier1Terrain, tTier2Terrain], [tTier2Terrain, tTier3Terrain]],		// terrains
 		[1, 1]															// widths
 	);
@@ -367,7 +369,7 @@ sizes = [scaleByMapSize(2, 4), scaleByMapSize(3, 7), scaleByMapSize(5, 15)];
 for (let i = 0; i < sizes.length; ++i)
 {
 	placer = new ChainPlacer(1, floor(scaleByMapSize(3, 5)), sizes[i], 0.5);
-	painter = new TerrainPainter(tTier4Terrain);
+	let painter = new TerrainPainter(tTier4Terrain);
 	createAreas(
 		placer,
 		painter,
@@ -376,7 +378,7 @@ for (let i = 0; i < sizes.length; ++i)
 	);
 }
 
-// create animals
+log("Creating food...");
 createFood
 (
  	[
@@ -388,7 +390,6 @@ createFood
 
 RMS.SetProgress(75);
 
-// create fruits
 createFood
 (
  	[
@@ -400,11 +401,11 @@ createFood
 
 RMS.SetProgress(85);
 
-// create straggler trees
-var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
+log("Creating more straggeler trees...");
+let types = [oTree1, oTree2, oTree4, oTree3];	// some variation
 createStragglerTrees(types, avoidClasses(clWater, 5, clForest, 7, clMountain, 1, clPlayer, 30, clMetal, 3, clRock, 3));
 
-// create decoration
+log("Creating decoration...");
 let planetm = random_terrain == 7 ? 8 : 1;
 createDecoration
 (
@@ -449,10 +450,10 @@ createObjectGroups(group, 0,
 	planetm * scaleByMapSize(13, 200)
 );
 
+log("Painting shorelines...");
 paintTerrainBasedOnHeight(1, 2, 0, tShore);
 paintTerrainBasedOnHeight(getMapBaseHeight(), 1, 3, tWater);
 
 setSkySet(shuffleArray(["cloudless", "cumulus", "overcast"])[0]);
 
-// Export map data
 ExportMap();
