@@ -67,25 +67,16 @@ var clRock = createTileClass();
 var clMetal = createTileClass();
 var clFood = createTileClass();
 var clBaseResource = createTileClass();
-var clSettlement = createTileClass();
 var clLand = createTileClass();
 
 for (let ix = 0; ix < mapSize; ++ix)
-{
 	for (let iz = 0; iz < mapSize; ++iz)
-	{
-		var x = ix / (mapSize + 1.0);
-		var z = iz / (mapSize + 1.0);
-			placeTerrain(ix, iz, tWater);
-	}
-}
+		placeTerrain(ix, iz, tWater);
 
 // randomize player order
 var playerIDs = [];
 for (var i = 0; i < numPlayers; ++i)
-{
 	playerIDs.push(i+1);
-}
 playerIDs = sortPlayers(playerIDs);
 
 // place players
@@ -103,7 +94,6 @@ for (var i = 0; i < numPlayers; ++i)
 
 // some constants
 var radius = scaleByMapSize(15, 25);
-var cliffRadius = 2;
 var elevation = 20;
 var centerOfMap = mapSize / 2;
 
@@ -112,9 +102,6 @@ var fz = fractionToTiles(0.5);
 ix = round(fx);
 iz = round(fz);
 
-const lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
-
-var cDist = 20;
 var shoreRadius = 6;
 var elevation = 2;
 
@@ -238,7 +225,7 @@ for (var i = 0; i < numPlayers; ++i)
 		);
 		if( createObjectGroup(group, 0, avoidClasses(clBaseResource, 5)) )
 			break;
-	};
+	}
 
 	// create grass tufts
 	num = (PI * radius * radius) / 250;
@@ -296,7 +283,7 @@ for(var m=0;m<randMountains;m++) {
 	var randX = randInt(mapSize);
 	var randY = randInt(mapSize);
 	var placer = new ChainPlacer(floor(scaleByMapSize(7, 7)), floor(scaleByMapSize(15, 15)), floor(scaleByMapSize(15, 20)), 1, randX, randY, 0, [floor(mapSize * 0.01)]);
-	var elevRand = 6 + randInt(15)
+	var elevRand = 6 + randInt(15);
 	var terrainPainter = new LayeredPainter(
 		[tCliff, tForestFloor1],       // terrains
 		[floor(elevRand/3), 40]     // widths
@@ -314,7 +301,7 @@ for(var m=0;m<randMountains;m++) {
 	var randX = randInt(mapSize);
 	var randY = randInt(mapSize);
 	var placer = new ChainPlacer(floor(scaleByMapSize(5, 5)), floor(scaleByMapSize(8, 8)), floor(scaleByMapSize(15, 20)), 1, randX, randY, 0, [floor(mapSize * 0.01)]);
-	var elevRand = 15 + randInt(15)
+	var elevRand = 15 + randInt(15);
 	var terrainPainter = new LayeredPainter(
 		[tCliff, tForestFloor2],       // terrains
 		[floor(elevRand/3), 40]     // widths
