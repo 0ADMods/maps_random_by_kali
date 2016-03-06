@@ -314,11 +314,11 @@ createObjectGroup(group, 0, [avoidClasses(clBaseResource, 2, clMountain, 4, clPl
 
 log("Creating fish...");
 group = new SimpleGroup(
-	[new SimpleObject(oFish, 2,3, 0,2)],
+	[new SimpleObject(oFish, 2, 3, 0, 2)],
 	true, clFood
 );
 createObjectGroups(group, 0,
-	avoidClasses(clForest, 0, clHill, 4, clFood, 20),
+	avoidClasses(clHill, 10, clFood, 20),
 	10 * numPlayers, 60
 );
 
@@ -375,24 +375,23 @@ for (let i = 0; i < sizes.length; ++i)
 }
 
 log("Creating food...");
-createFood
-(
- 	[
-  		[new SimpleObject(oMainHuntableAnimal, 5, 7, 0, 4)], [new SimpleObject(oSecondaryHuntableAnimal, 2, 3, 0, 2)]
- 	],
- 	[3 * numPlayers, 3 * numPlayers],
- 	avoidClasses(clWater, 3, clForest, 3, clPlayer, 20, clMountain, 1, clFood, 20, clRock, 4, clMetal, 4)
+createFood(
+	[
+		[new SimpleObject(oMainHuntableAnimal, 5, 7, 0, 4)],
+		[new SimpleObject(oSecondaryHuntableAnimal, 2, 3, 0, 2)]
+	],
+	[3 * numPlayers, 3 * numPlayers],
+	[avoidClasses(clForest, 0, clPlayer, 20, clMountain, 1, clFood, 4, clRock, 4, clMetal, 4), stayClasses(clHill, 2)]
 );
 
 RMS.SetProgress(75);
 
-createFood
-(
- 	[
-  		[new SimpleObject(oFruitBush, 5, 7, 0, 4)]
- 	],
- 	[3 * numPlayers],
- 	avoidClasses(clWater, 3, clForest, 0, clPlayer, 20, clMountain, 1, clFood, 10)
+createFood(
+	[
+		[new SimpleObject(oFruitBush, 5, 7, 0, 4)]
+	],
+	[3 * numPlayers],
+	[avoidClasses(clForest, 0, clPlayer, 15, clMountain, 1, clFood, 4, clRock, 4, clMetal, 4), stayClasses(clHill, 2)]
 );
 
 RMS.SetProgress(85);
@@ -419,6 +418,15 @@ createDecoration
   		planetm * scaleByMapSize(13, 200)
  	],
  	avoidClasses(clForest, 2, clPlayer, 20, clMountain, 5, clFood, 1, clBaseResource, 2)
+);
+
+log("Creating water forests...");
+createForests(
+	[tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
+	avoidClasses(clPlayer, 30, clHill, 10, clFood, 5),
+	clForest,
+	0.1,
+	random_terrain
 );
 
 log("Creating grass tufts...");
