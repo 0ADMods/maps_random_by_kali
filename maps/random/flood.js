@@ -1,7 +1,10 @@
 RMS.LoadLibrary("rmgen");
 
 //random terrain textures
-let random_terrain = randomizeBiome();
+let random_terrain;
+do
+	random_terrain = randomizeBiome();
+while (random_terrain == 6);
 
 const tMainTerrain = rBiomeT1();
 const tForestFloor1 = rBiomeT2();
@@ -18,8 +21,6 @@ const tWater = rBiomeT15();
 let tHill = rBiomeT8();
 let tDirt = rBiomeT9();
 
-if (random_terrain == 6) 
-	tDirt = ["savanna_dirt_rocks_b", "savanna_dirt_rocks_c"];
 if (random_terrain == 1) 
 {
 	tDirt = ["medit_shrubs_a", "grass_field"];
@@ -350,10 +351,14 @@ for (let i = 0; i < sizes.length; ++i)
 	createAreas(
 		placer,
 		[painter, paintClass(clDirt)],
-		[avoidClasses(clForest, 0, clMountain, 0, clDirt, 5, clPlayer, 10), stayClasses(clHill, 4)],
+		avoidClasses(clForest, 0, clMountain, 0, clDirt, 5, clPlayer, 10),
 		numb * scaleByMapSize(15, 45)
 	);
 }
+
+log("Painting shorelines...");
+paintTerrainBasedOnHeight(1, 2, 0, tMainTerrain);
+paintTerrainBasedOnHeight(getMapBaseHeight(), 1, 3, tTier1Terrain);
 
 log("Creating grass patches...");
 sizes = [scaleByMapSize(2, 4), scaleByMapSize(3, 7), scaleByMapSize(5, 15)];
@@ -364,7 +369,7 @@ for (let i = 0; i < sizes.length; ++i)
 	createAreas(
 		placer,
 		painter,
-		[avoidClasses(clForest, 0, clMountain, 0, clDirt, 5, clPlayer, 10), stayClasses(clHill, 4)],
+		avoidClasses(clForest, 0, clMountain, 0, clDirt, 5, clPlayer, 10),
 		numb * scaleByMapSize(15, 45)
 	);
 }
@@ -413,7 +418,7 @@ createDecoration
   		planetm * scaleByMapSize(13, 200),
   		planetm * scaleByMapSize(13, 200)
  	],
- 	avoidClasses(clForest, 2, clPlayer, 20, clMountain, 5, clWater, 1, clFood, 1, clBaseResource, 2)
+ 	avoidClasses(clForest, 2, clPlayer, 20, clMountain, 5, clFood, 1, clBaseResource, 2)
 );
 
 log("Creating grass tufts...");
@@ -440,10 +445,7 @@ createObjectGroups(group, 0,
 	planetm * scaleByMapSize(13, 200)
 );
 
-log("Painting shorelines...");
-paintTerrainBasedOnHeight(1, 2, 0, tShore);
-paintTerrainBasedOnHeight(getMapBaseHeight(), 1, 3, tWater);
-
 setSkySet(shuffleArray(["cloudless", "cumulus", "overcast"])[0]);
+setWaterMurkiness(0.4);
 
 ExportMap();
