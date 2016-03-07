@@ -3,12 +3,12 @@ InitMap();
 
 /*
 TODO:
-- bluffs / sloped terrain
 - rivers (rndRiver)
 - crossings (passageMaker)
 - spines / canyons
 - roads / trails
 - islands
+- setBiome function
 
 - beach access from steep terrain
 - trees around shallow lakes
@@ -39,6 +39,9 @@ const f = constForests();
 const allSizes = ["tiny", "small", "normal", "big", "huge"];
 const allMixes = ["same", "similar", "normal", "varied", "unique"];
 const allAmounts = ["scarce", "few", "normal", "many", "tons"];
+var treeAmounts = ["few", "normal", "many"];
+if (m.biome == 6)
+	treeAmounts = ["many", "tons"];
 
 ///////////
 // setup the map
@@ -47,10 +50,15 @@ const allAmounts = ["scarce", "few", "normal", "many", "tons"];
 // pick a random elevation with a bias towards lower elevations
 var randElevation = randInt(25);
 if (randElevation < 20) {
-	randElevation = randInt(12);
+	randElevation = randInt(6);
 }
 
-initTerrain(t.mainTerrain, tc.map, randElevation);
+var baseTileClass = tc.land;
+
+if(randElevation < 0)
+	baseTileClass = tc.water;
+
+initTerrain(t.mainTerrain, baseTileClass, randElevation);
 var pos = getStartingPositions();
 var players = addBases(pos.setup, pos.distance, pos.separation);
 RMS.SetProgress(20);
@@ -69,15 +77,15 @@ var features = [
 	{
 		"func": addBluff,
 		"tile": "tc.bluff",
-		"avoid": [tc.hill, 15, tc.mountain, 2, tc.player, 20, tc.valley, 2, tc.water, 2],
+		"avoid": [tc.bluff, 20, tc.hill, 5, tc.mountain, 20, tc.player, 30, tc.valley, 5, tc.water, 7],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
-	}/*,
+	},
 	{
 		"func": addHills,
 		"tile": "tc.hill",
-		"avoid": [tc.hill, 15, tc.mountain, 2, tc.player, 20, tc.valley, 2, tc.water, 2],
+		"avoid": [tc.bluff, 5, tc.hill, 15, tc.mountain, 2, tc.player, 20, tc.valley, 2, tc.water, 2],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -85,7 +93,7 @@ var features = [
 	{
 		"func": addLakes,
 		"tile": "tc.water",
-		"avoid": [tc.mountain, 15, tc.player, 20, tc.valley, 10, tc.water, 25],
+		"avoid": [tc.bluff, 7, tc.mountain, 15, tc.player, 20, tc.valley, 10, tc.water, 25],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -93,7 +101,7 @@ var features = [
 	{
 		"func": addMountains,
 		"tile": "tc.mountain",
-		"avoid": [tc.mountain, 25, tc.player, 20, tc.valley, 10, tc.water, 15],
+		"avoid": [tc.bluff, 20, tc.mountain, 25, tc.player, 20, tc.valley, 10, tc.water, 15],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -101,7 +109,7 @@ var features = [
 	{
 		"func": addPlateaus,
 		"tile": "tc.mountain",
-		"avoid": [tc.mountain, 25, tc.player, 40, tc.valley, 10, tc.water, 15],
+		"avoid": [tc.bluff, 20, tc.mountain, 25, tc.player, 40, tc.valley, 10, tc.water, 15],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -109,11 +117,11 @@ var features = [
 	{
 		"func": addValleys,
 		"tile": "tc.valley",
-		"avoid": [tc.hill, 5, tc.mountain, 25, tc.player, 40, tc.valley, 15, tc.water, 10],
+		"avoid": [tc.bluff, 5, tc.hill, 5, tc.mountain, 25, tc.player, 40, tc.valley, 15, tc.water, 10],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
-	}*/
+	}
 ];
 features = randArray(features);
 
@@ -122,7 +130,7 @@ var decoration = [
 	{
 		"func": addLayeredPatches,
 		"tile": "tc.dirt",
-		"avoid": [tc.bluff, 5, tc.dirt, 5, tc.forest, 0, tc.mountain, 0, tc.player, 12, tc.water, 3],
+		"avoid": [tc.bluff, 2, tc.dirt, 5, tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
@@ -130,7 +138,7 @@ var decoration = [
 	{
 		"func": addDecoration,
 		"tile": "tc.dirt",
-		"avoid": [tc.bluff, 5, tc.forest, 2, tc.mountain, 2, tc.player, 2, tc.water, 2],
+		"avoid": [tc.bluff, 2, tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
@@ -176,10 +184,6 @@ var primaryRes = [
 primaryRes = randArray(primaryRes);
 
 // secondary resources
-var treeAmounts = ["few", "normal", "many"];
-if (m.biome == 6)
-	treeAmounts = ["many", "tons"];
-
 var secondaryRes = [
 	{
 		"func": addBerries,
@@ -258,364 +262,200 @@ ExportMap();
 /////////////////////////////////////////
 function addBluff(constraint, size, deviation, fill)
 {
-	var elevation = 25;
-	var placer = new ChainPlacer(20, 20, 3, 0.5);
-	var terrainPainter = new LayeredPainter([t.cliff, t.tier2Terrain, t.tier3Terrain], [2, 2]);
-	var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, elevation, 2);
-	var rendered = createAreas2(placer, [terrainPainter, elevationPainter, paintClass(tc.bluff)], constraint, 1);
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
-	for (var i = 0; i < rendered.length; ++i)
+	var count = fill * 10;
+	var minSize = scaleByMapSize(15, 15);
+	var maxSize = scaleByMapSize(15, 15);
+	var elevation = 30;
+	var spread = scaleByMapSize(5, 5);
+
+	for (var i = 0; i < count; ++i)
 	{
-		if (rendered[i].points !== undefined)
+		var offset = getRandomDeviation(size, deviation);
+
+		var pMinSize = floor(minSize * offset);
+		var pMaxSize = floor(maxSize * offset);
+		var pSpread = floor(spread * offset);
+		var pElevation = floor(elevation * offset);
+
+		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
+		var terrainPainter = new LayeredPainter([t.cliff, t.mainTerrain, t.tier2Terrain], [2, 3]);
+		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, pElevation, 2);
+		var rendered = createAreas2(placer, [terrainPainter, elevationPainter, paintClass(tc.bluff)], constraint, 1);
+
+		// find the bounding box of the bluff
+		if (rendered[0] === undefined)
+			continue;
+
+		var points = rendered[0].points;
+
+		var corners = findCorners(points);
+		var area = points.length;
+
+		// seed an array the size of the bounding box
+		var bb = createBoundingBox(points, corners);
+
+		// get a random starting position for the baseline and the endline
+		var angle = randInt(4);
+		var opAngle = angle - 2;
+		if (angle < 2)
+			opAngle = angle + 2;
+
+		// find the edges of the bluff
+		var baseLine = findClearLine(bb, corners, angle);
+		var endLine = findClearLine(bb, corners, opAngle);
+
+		// if the clear lines are undefined, leave it as a plateau
+		if (baseLine.x1 === undefined || endLine.x1 === undefined)
+			continue;
+
+		var ground = createTerrain(t.mainTerrain);
+
+		var slopeLength = getDistance(baseLine.midX, baseLine.midZ, endLine.midX, endLine.midZ);
+
+		// adjust the height of each point in the bluff
+		for (var p = 0; p < points.length; ++p)
 		{
-			// find the bounding box of the bluff
-			var minX = m.mapSize + 1;
-			var minZ = m.mapSize + 1;
-			var maxX = -1;
-			var maxZ = -1;
-			var area = rendered[i].points.length;
+			var pt = points[p];
+			var dist = distanceOfPointFromLine(baseLine.x1, baseLine.z1, baseLine.x2, baseLine.z2, pt.x, pt.z);
 
-			for (var p = 0; p < area; ++p)
-			{
-				var pt = rendered[i].points[p];
+			var curHeight = g_Map.getHeight(pt.x, pt.z);
+			var newHeight = curHeight - curHeight * (dist / slopeLength);
 
-				if (pt.x < minX)
-					minX = pt.x
+			if (newHeight < endLine.height)
+				newHeight = endLine.height;
 
-				if (pt.z < minZ)
-					minZ = pt.z
+			if (newHeight <= endLine.height + 2 && g_Map.validT(pt.x, pt.z) && g_Map.getTexture(pt.x, pt.z).indexOf('cliff') > -1)
+				ground.place(pt.x, pt.z);
 
-				if (pt.x > maxX)
-					maxX = pt.x
-
-				if (pt.z > maxZ)
-					maxZ = pt.z
-			}
-
-			// TODO:
-			// start at the plateau and move through the plateau until the plateau % is reached
-			// find the height of the middle of the line that doesn't include the plateau to establish the fade to height
-			// define the maximum distance the slope will have to travel
-			// receed the slope's height propotional to distance from ridgeline
-
-			// seed an array the size of the bounding box
-			var bb = [];
-			var width = maxX - minX + 1;
-			var length = maxZ - minZ + 1;
-			for (var w = 0; w < width; ++w)
-			{
-				bb[w] = [];
-				for (var l = 0; l < length; ++l)
-				{
-					var curHeight = g_Map.getHeight(w + minX, l + minZ);
-					bb[w][l] = {"height": curHeight, "isBluff": false};
-				}
-			}
-
-			// define the coordinates that represent the bluff
-			for (var p = 0; p < area; ++p)
-			{
-				var pt = rendered[i].points[p];
-				bb[pt.x - minX][pt.z - minZ].isBluff = true;
-			}
-
-			// get a random starting position for the slope
-			var ridgeAngle = randInt(4);
-
-			var startX = minX;
-			var startZ = minZ;
-			var stopX = maxX;
-			var stopZ = maxZ;
-
-			var covered = 0;
-			var startRidge = 0.4;
-			var shouldSlope = false;
-			var clear = true;
-			var fadeTo = {"x1": stopX, "z1": stopZ, "x2": stopX, "z2": stopZ, "height": g_Map.setHeight(stopX, stopZ) + 2};
-			var distToFade = 0;
-			var slope = 0;
-			var step = 0;
-
-			// TODO:
-			// finish searching the other part of the bounding box for the clear line
-			// get the max height of the clear line, to calculate the slope
-			// get rid of ripples at the edge of the bluff
-			// paint the slope a different class
-
-			// find the end of the plateau
-			for (var x = stopX; x >= startX; --x)
-			{
-				var nextX = x;
-				var nextZ = stopZ;
-
-				while (nextX >= startX && nextX <= stopX && nextZ >= startZ && nextZ <= stopZ)
-				{
-					var bp = bb[nextX - startX][nextZ - startZ];
-					if (bp.isBluff)
-					{
-						clear = false;
-						break;
-					}
-
-					nextX = nextX - 1;
-					nextZ = nextZ + 1;
-				}
-
-				if (clear)
-				{
-					var midX = x + floor((nextX - x) / 2);
-					var midZ = stopZ - floor((stopZ - nextZ) / 2);
-					fadeTo = {"x1": x, "z1": stopZ, "x2": nextX + 1, "z2": nextZ - 1, "height": g_Map.getHeight(midX, midZ)};
-				}
-				else
-					break;
-			}
-
-			warn("Fade to: " + fadeTo.x1 + ", " + fadeTo.z1 + ": " + fadeTo.height);
-
-			var ground = createTerrain(t.mainTerrain);
-
-			// traverse the bounding box
-			for (var x = startX; x < stopX; ++x)
-			{
-				var nextX = x;
-				var nextZ = startZ;
-
-				while (nextX >= startX && nextX <= stopX && nextZ >= startZ && nextZ <= stopZ)
-				{
-					var bp = bb[nextX - startX][nextZ - startZ];
-					if (bp.isBluff)
-						covered++;
-
-					if (shouldSlope && bp.isBluff)
-					{
-						var curHeight = g_Map.getHeight(nextX, nextZ);
-						var newHeight = curHeight - curHeight * (step / distToFade);
-						if (newHeight < fadeTo.height)
-							newHeight = fadeTo.height;
-
-						if (newHeight <= fadeTo.height)
-							ground.place(nextX, nextZ);
-
-						g_Map.setHeight(nextX, nextZ, newHeight);
-					}
-
-					nextX = nextX - 1;
-					nextZ = nextZ + 1;
-				}
-
-				if (covered >= area * startRidge && !shouldSlope)
-				{
-					distToFade = stopX - x + fadeTo.z2 - startZ;
-					slope = (elevation - fadeTo.height) / distToFade;
-					shouldSlope = true;
-				}
-
-				if (shouldSlope)
-					step++;
-			}
-
-			// traverse the bounding box
-			for (var z = startZ; z <= stopZ; ++z)
-			{
-				var nextX = stopX;
-				var nextZ = z;
-
-				while (nextX >= startX && nextX <= stopX && nextZ >= startZ && nextZ <= stopZ)
-				{
-					var bp = bb[nextX - startX][nextZ - startZ];
-					if (bp.isBluff)
-						covered++;
-
-						if (shouldSlope && bp.isBluff)
-						{
-							var curHeight = g_Map.getHeight(nextX, nextZ);
-							var newHeight = curHeight - curHeight * (step / distToFade);
-							if (newHeight < fadeTo.height)
-								newHeight = fadeTo.height;
-
-							if (newHeight <= fadeTo.height + 2)
-								ground.place(nextX, nextZ);
-
-							g_Map.setHeight(nextX, nextZ, newHeight);
-						}
-
-					nextX = nextX - 1;
-					nextZ = nextZ + 1;
-				}
-
-				if (covered >= area * startRidge && !shouldSlope)
-				{
-					distToFade = fadeTo.z2 - startZ;
-					slope = (elevation - fadeTo.height) / distToFade;
-					shouldSlope = true;
-				}
-
-				if (shouldSlope)
-					step++;
-			}
-
-			/*
-			var startX = minX;
-			var startZ = minZ;
-			var stopX = maxX;
-			var stopZ = maxZ;
-
-			if (ridgeAngle > PI / 2)
-			{
-				startZ = maxZ;
-				stopZ = minZ;
-			}
-
-			var slope = (stopZ - startZ) / (stopX - startX);
-
-			var minZBluff = minZ;
-			var maxZBluff = maxZ;
-
-			// traverse the diagonal
-			for (var x = startX; x <= stopX; ++x)
-			{
-				var z = floor(slope * x);
-				var texture = g_Map.getTexture(x, z);
-				warn(texture);
-			}*/
-
-			/*
-			var startRidge = 0.2;
-
-			// find the center of the bounding box
-			var lenX = maxX - minX;
-			var lenZ = maxZ - minZ;
-
-			var north = Math.random() >= 0.5;
-			warn("north: " + north)
-			var flatSection = startRidge - 0.1;
-
-			if (!north)
-			{
-				startRidge = 1 - startRidge;
-				flatSection = startRidge + 0.1;
-			}
-
-			// find the center point of the ridge
-			var ridgeCenterX = minX + floor(lenX * startRidge);
-			var ridgeCenterZ = minZ + floor(lenX * startRidge);
-
-			var flatX = minX + floor(lenX * flatSection);
-			var flatZ = minZ + floor(lenX * flatSection);
-
-			if (ridgeAngle > PI / 2)
-			{
-				warn("updating ridgeCenterZ")
-				ridgeCenterZ = maxZ - floor(lenX * startRidge);
-				flatZ = maxZ - floor(lenX * flatSection);
-			}
-
-			// define two points on our ridgeline
-			var ridgeX1 = ridgeCenterX + floor(lenX / 2) * Math.cos(ridgeAngle);
-			var ridgeZ1 = ridgeCenterZ - floor(lenZ / 2) * Math.sin(ridgeAngle);
-			var ridgeX2 = ridgeCenterX - floor(lenX / 2) * Math.cos(ridgeAngle);
-			var ridgeZ2 = ridgeCenterZ + floor(lenZ / 2) * Math.sin(ridgeAngle);
-
-			// define two points that give us a reference point for our flat section
-			var flatX1 = flatX + floor(lenX / 2) * Math.cos(ridgeAngle);
-			var flatZ1 = flatZ - floor(lenZ / 2) * Math.sin(ridgeAngle);
-			var flatX2 = flatX - floor(lenX / 2) * Math.cos(ridgeAngle);
-			var flatZ2 = flatZ + floor(lenZ / 2) * Math.sin(ridgeAngle);
-
-			// find the distance between the ridge line and safe line
-			var safeDist = distanceOfPointFromLine(flatX1, flatZ1, flatX2, flatZ2, ridgeX1, ridgeZ1);
-
-			var ground = createTerrain(t.mainTerrain);
-			var maxDist = 15;
-
-			for (var p = 0; p < rendered[i].points.length; ++p)
-			{
-				var pt = rendered[i].points[p];
-				var distToRidge = distanceOfPointFromLine(ridgeX1, ridgeZ1, ridgeX2, ridgeZ2, pt.x, pt.z);
-				var distToSafeline = distanceOfPointFromLine(flatX1, flatZ1, flatX2, flatZ2, pt.x, pt.z);
-
-				// check that we're on the right side of the ridgeline
-				if (distToSafeline > distToRidge && distToSafeline > safeDist)
-				{
-					var curHeight = g_Map.getHeight(pt.x, pt.z);
-					var newHeight = curHeight - (curHeight * (distToRidge / maxDist));
-					if (newHeight < m.mapHeight + 1)
-						newHeight = m.mapHeight - 10;
-
-					if (newHeight <= m.mapHeight + 2)
-						ground.place(pt.x, pt.z);
-
-					g_Map.setHeight(pt.x, pt.z, newHeight);
-				}
-			}*/
+			g_Map.setHeight(pt.x, pt.z, newHeight);
 		}
+
+		// smooth out the ground around the bluff
+		fadeToGround(bb, corners.minX, corners.minZ, endLine.height);
 	}
 
-	//var slopeAngle = randFloat(0, TWO_PI);
-}
-
-function createAreas2(centeredPlacer, painter, constraint, amount, retryFactor = 10)
-{
-	let placeFunc = function (args) {
-		randomizePlacerCoordinates2(args.placer, args.halfMapSize);
-		var area = g_Map.createArea(args.placer, args.painter, args.constraint);
-		return area;
-	};
-
-	let args = {
-		"placer": centeredPlacer,
-		"painter": painter,
-		"constraint": constraint,
-		"halfMapSize": g_Map.size / 2
-	};
-
-	return retryPlacing2(placeFunc, args, retryFactor, amount, true);
-}
-
-function retryPlacing2(placeFunc, placeArgs, retryFactor, amount, getResult)
-{
-	let maxFail = amount * retryFactor;
-
-	let results = [];
-	let good = 0;
-	let bad = 0;
-
-	while (good < amount && bad <= maxFail)
-	{
-		let result = placeFunc(placeArgs);
-
-		if (result !== undefined)
+	var fish = [
 		{
-			++good;
-			if (getResult)
-				results.push(result);
+			"func": addFish,
+			"tile": "tc.fish",
+			"avoid": [tc.fish, 12, tc.hill, 8, tc.mountain, 8, tc.player, 8],
+			"stay": [tc.water, 8],
+			"sizes": ["small", "normal", "big"],
+			"mixes": ["similar", "normal", "varied"],
+			"amounts": ["normal", "many", "tons"]
 		}
-		else
-			++bad;
-	}
+	]
+	addElements(fish);
 
-	return getResult ? results : good;
+	var bluffPatches = [
+		{
+			"func": addLayeredPatches,
+			"tile": "tc.dirt",
+			"avoid": [tc.dirt, 5, tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.water, 3],
+			"stay": [tc.bluff, 5],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["normal"]
+		}
+	]
+	addElements(bluffPatches);
+
+	var bluffDecor = [
+		{
+			"func": addDecoration,
+			"tile": "tc.dirt",
+			"avoid": [tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.water, 3],
+			"stay": [tc.bluff, 5],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["normal"]
+		}
+	]
+	addElements(bluffDecor);
+
+	var bluffForest = [
+		{
+			"func": addForests,
+			"tile": "tc.forest",
+			"avoid": [tc.berries, 5, tc.forest, 18, tc.metal, 3, tc.mountain, 5, tc.player, 20, tc.rock, 3, tc.water, 2],
+			"stay": [tc.bluff, 5],
+			"sizes": ["normal"],
+			"mixes": ["similar", "normal"],
+			"amounts": ["few", "normal", "many"]
+		}
+	]
+	addElements(bluffForest);
+
+	var bluffMetal = [
+		{
+			"func": addMetal,
+			"tile": "tc.metal",
+			"avoid": [tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 15, tc.metal, 40, tc.water, 3],
+			"stay": [tc.bluff, 5],
+			"sizes": ["normal"],
+			"mixes": ["same"],
+			"amounts": allAmounts
+		}
+	]
+	addElements(bluffMetal);
+
+	var bluffStone = [
+		{
+			"func": addStone,
+			"tile": "tc.stone",
+			"avoid": [tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 15, tc.water, 3],
+			"stay": [tc.bluff, 5],
+			"sizes": ["normal"],
+			"mixes": ["same"],
+			"amounts": allAmounts
+		}
+	]
+	addElements(bluffStone);
+
+	var bluffTrees = [
+		{
+			"func": addStragglerTrees,
+			"tile": "tc.forest",
+			"avoid": [tc.berries, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5],
+			"stay": [tc.bluff, 5],
+			"sizes": ["big"],
+			"mixes": ["normal"],
+			"amounts": treeAmounts
+		}
+	]
+	addElements(bluffTrees);
+
+	var bluffAnimals = [
+		{
+			"func": addAnimals,
+			"tile": "tc.animals",
+			"avoid": [tc.animals, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.water, 3],
+			"stay": [tc.bluff, 5],
+			"sizes": allSizes,
+			"mixes": allMixes,
+			"amounts": allAmounts
+		}
+	]
+	addElements(bluffAnimals);
+
+	var bluffBerries = [
+		{
+			"func": addBerries,
+			"tile": "tc.berries",
+			"avoid": [tc.berries, 50, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.water, 3],
+			"stay": [tc.bluff, 5],
+			"sizes": ["small", "normal", "big"],
+			"mixes": ["similar", "normal", "varied"],
+			"amounts": ["few", "normal", "many"]
+		}
+	]
+	addElements(bluffBerries);
 }
 
-
-function randomizePlacerCoordinates2(placer, halfMapSize)
-{
-	if (!!g_MapSettings.CircularMap)
-	{
-		// Polar coordinates
-		let r = halfMapSize * Math.sqrt(randFloat()); // uniform distribution
-		let theta = randFloat(0, 2 * PI);
-		placer.x = Math.floor(r * Math.cos(theta)) + halfMapSize;
-		placer.z = Math.floor(r * Math.sin(theta)) + halfMapSize;
-	}
-	else
-	{
-		// Rectangular coordinates
-		placer.x = randInt(g_Map.size);
-		placer.z = randInt(g_Map.size);
-	}
-}
 /////////////////////////////////////////
 // addDecoration
 //
@@ -699,6 +539,7 @@ function addElevation(constraint, el)
 	var widths = [];
 
 	// allow for shore and cliff rendering
+	// TODO: remove this and define widths in the el object
 	for (var s = el.painter.length; s > 2; --s)
 		widths.push(1);
 
@@ -808,9 +649,9 @@ function addLakes(constraint, size, deviation, fill)
 		"deviation": deviation,
 		"fill": fill,
 		"count": scaleByMapSize(8, 8),
-		"minSize": floor(scaleByMapSize(7, 7)),
-		"maxSize": floor(scaleByMapSize(15, 15)),
-		"spread": floor(scaleByMapSize(20, 20)),
+		"minSize": floor(scaleByMapSize(4, 4)),
+		"maxSize": floor(scaleByMapSize(18, 18)),
+		"spread": floor(scaleByMapSize(10, 30)),
 		"minElevation": -15 + depthAdj,
 		"maxElevation": -3 + depthAdj,
 		"steepness": steepness
@@ -823,7 +664,7 @@ function addLakes(constraint, size, deviation, fill)
 			{
 				"func": addFish,
 				"tile": "tc.fish",
-				"avoid": [tc.fish, 12, tc.hill, 8, tc.land, 8, tc.mountain, 8, tc.player, 8],
+				"avoid": [tc.fish, 12, tc.hill, 8, tc.mountain, 8, tc.player, 8],
 				"stay": [tc.water, 8],
 				"sizes": ["small", "normal", "big"],
 				"mixes": ["similar", "normal", "varied"],
@@ -958,7 +799,7 @@ function addValleys(constraint, size, deviation, fill)
 
 	var valley = {
 		"class": tc.valley,
-		"painter": [t.mainTerrain, t.dirt],
+		"painter": [t.mainTerrain, t.tier3Terrain],
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
@@ -1208,7 +1049,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 		count = count * 1.25;
 		min = 2 * offset;
 		max = 5 * offset;
-		minDist = 2 * offset;
+		minDist = 5 * offset;
 		maxDist = 7 * offset;
 	}
 
@@ -1226,6 +1067,229 @@ function addStragglerTrees(constraint, size, deviation, fill)
 		var group = new SimpleGroup([new SimpleObject(trees[i], min, treesMax, minDist, maxDist)], true, tc.forest);
 		createObjectGroups(group, 0, constraint, count);
 	}
+}
+
+///////////
+// Terrain Helpers
+///////////
+
+// had to modify current RMgen function to return the list of points in the terrain feature
+function createAreas2(centeredPlacer, painter, constraint, amount, retryFactor = 10)
+{
+	let placeFunc = function (args) {
+		randomizePlacerCoordinates2(args.placer, args.halfMapSize);
+		var area = g_Map.createArea(args.placer, args.painter, args.constraint);
+		return area;
+	};
+
+	let args = {
+		"placer": centeredPlacer,
+		"painter": painter,
+		"constraint": constraint,
+		"halfMapSize": g_Map.size / 2
+	};
+
+	return retryPlacing2(placeFunc, args, retryFactor, amount, true);
+}
+
+// for some reason, couldn't call the original RMgen function
+function retryPlacing2(placeFunc, placeArgs, retryFactor, amount, getResult)
+{
+	let maxFail = amount * retryFactor;
+
+	let results = [];
+	let good = 0;
+	let bad = 0;
+
+	while (good < amount && bad <= maxFail)
+	{
+		let result = placeFunc(placeArgs);
+
+		if (result !== undefined)
+		{
+			++good;
+			if (getResult)
+				results.push(result);
+		}
+		else
+			++bad;
+	}
+
+	return getResult ? results : good;
+}
+
+// for some reason, couldn't call the original RMgen function
+function randomizePlacerCoordinates2(placer, halfMapSize)
+{
+	if (!!g_MapSettings.CircularMap)
+	{
+		// Polar coordinates
+		let r = halfMapSize * Math.sqrt(randFloat()); // uniform distribution
+		let theta = randFloat(0, 2 * PI);
+		placer.x = Math.floor(r * Math.cos(theta)) + halfMapSize;
+		placer.z = Math.floor(r * Math.sin(theta)) + halfMapSize;
+	}
+	else
+	{
+		// Rectangular coordinates
+		placer.x = randInt(g_Map.size);
+		placer.z = randInt(g_Map.size);
+	}
+}
+
+// create an array of points the fill a bounding box around a terrain feature
+function createBoundingBox(points, corners)
+{
+	var bb = [];
+	var width = corners.maxX - corners.minX + 1;
+	var length = corners.maxZ - corners.minZ + 1;
+	for (var w = 0; w < width; ++w)
+	{
+		bb[w] = [];
+		for (var l = 0; l < length; ++l)
+		{
+			var curHeight = g_Map.getHeight(w + corners.minX, l + corners.minZ);
+			bb[w][l] = {"height": curHeight, "isFeature": false};
+		}
+	}
+
+	// define the coordinates that represent the bluff
+	for (var p = 0; p < points.length; ++p)
+	{
+		var pt = points[p];
+		bb[pt.x - corners.minX][pt.z - corners.minZ].isFeature = true;
+	}
+
+	return bb;
+}
+
+// flattens the ground touching a terrain feature
+function fadeToGround(bb, minX, minZ, elevation)
+{
+	for (var x = 0; x < bb.length; ++x)
+	{
+		for (var z = 0; z < bb[x].length; ++z)
+		{
+			var pt = bb[x][z];
+			if (!pt.isFeature && nextToFeature(bb, x, z))
+				g_Map.setHeight(x + minX, z + minZ, elevation);
+		}
+	}
+}
+
+// TODO: find average or max height along the clear line
+// find a 45 degree line in a bounding box that does not intersect any terrain feature
+function findClearLine(bb, corners, angle)
+{
+	// angle - 0: northwest; 1: northeast; 2: southeast; 3: southwest
+	var z = corners.maxZ;
+	var xOffset = -1;
+	var zOffset = -1;
+
+	switch(angle)
+	{
+		case 1:
+			xOffset = 1;
+			break;
+		case 2:
+			xOffset = 1;
+			zOffset = 1;
+			z = corners.minZ;
+			break;
+		case 3:
+			zOffset = 1;
+			z = corners.minZ;
+			break;
+	}
+
+	var clearLine = {};
+
+	for (var x = corners.minX; x <= corners.maxX; ++x)
+	{
+		var x2 = x;
+		var z2 = z;
+
+		var clear = true;
+
+		while (x2 >= corners.minX && x2 <= corners.maxX && z2 >= corners.minZ && z2 <= corners.maxZ)
+		{
+			var bp = bb[x2 - corners.minX][z2 - corners.minZ];
+			if (bp.isFeature)
+			{
+				clear = false;
+				break;
+			}
+
+			x2 = x2 + xOffset;
+			z2 = z2 + zOffset;
+		}
+
+		if (clear)
+		{
+			var lastX = x2 - xOffset;
+			var lastZ = z2 - zOffset;
+			var midX = floor((x + lastX) / 2);
+			var midZ = floor((z + lastZ) / 2);
+			clearLine = {"x1": x, "z1": z, "x2": lastX, "z2": lastZ, "midX": midX, "midZ": midZ, "height": m.mapHeight};
+		}
+
+		if (clear && (angle == 1 || angle == 2))
+			break;
+
+		if (!clear && (angle == 0 || angle == 3))
+			break;
+	}
+
+	return clearLine;
+}
+
+// finds the corners of a bounding box
+function findCorners(points)
+{
+	// find the bounding box of the terrain feature
+	var minX = m.mapSize + 1;
+	var minZ = m.mapSize + 1;
+	var maxX = -1;
+	var maxZ = -1;
+
+	for (var p = 0; p < points.length; ++p)
+	{
+		var pt = points[p];
+
+		if (pt.x < minX)
+			minX = pt.x
+
+		if (pt.z < minZ)
+			minZ = pt.z
+
+		if (pt.x > maxX)
+			maxX = pt.x
+
+		if (pt.z > maxZ)
+			maxZ = pt.z
+	}
+
+	return {"minX": minX, "minZ": minZ, "maxX": maxX, "maxZ": maxZ}
+}
+
+// determines if a point in a bounding box array is next to a terrain feature
+function nextToFeature(bb, x, z)
+{
+	for (var xOffset = -1; xOffset <= 1; ++xOffset)
+	{
+		for (var zOffset = -1; zOffset <= 1; ++zOffset)
+		{
+			var thisX = x + xOffset;
+			var thisZ = z + zOffset;
+			if (thisX < 0 || thisX >= bb.length || thisZ < 0 || thisZ >= bb[x].length || (thisX == 0 && thisZ == 0))
+				continue;
+
+			if (bb[thisX][thisZ].isFeature)
+				return true;
+		}
+	}
+
+	return false;
 }
 
 /********************************
@@ -1818,7 +1882,7 @@ function constProps()
 // tile classes
 function constTileClasses(newClasses)
 {
-	var defaultClasses = ["animals", "baseResource", "berries", "bluff", "dirt", "fish", "food", "forest", "hill", "land", "map", "metal", "mountain", "player", "ramp", "rock", "settlement", "valley", "water"];
+	var defaultClasses = ["animals", "baseResource", "berries", "bluff", "bluffSlope", "dirt", "fish", "food", "forest", "hill", "land", "map", "metal", "mountain", "player", "ramp", "rock", "settlement", "valley", "water"];
 	var classes = defaultClasses;
 	if (newClasses !== undefined)
 		classes = defaultClasses.concat(newClasses)
