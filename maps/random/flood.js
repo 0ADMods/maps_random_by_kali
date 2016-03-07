@@ -113,7 +113,7 @@ let terrainPainter = new LayeredPainter(
 );
 let elevationPainter = new SmoothElevationPainter(
    ELEVATION_SET,          	// type
-   -2,             			// elevation
+   getMapBaseHeight(),             			// elevation
    2               			// blend radius
 );
 createArea(placer, [terrainPainter, elevationPainter, paintClass(clWater)], avoidClasses(clPlayer, 5));
