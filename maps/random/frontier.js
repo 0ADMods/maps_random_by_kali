@@ -2293,7 +2293,7 @@ function getStartingPositions()
 	var use = randInt(formats.length);
 
 	starting["setup"] = formats[use];
-	starting["distance"] = getRand(0.2, 0.4, 100);
+	starting["distance"] = getRand(0.2, 0.35, 100);
 	starting["separation"] = getRand(0.05, 0.1, 100);
 
 	return starting;
