@@ -313,19 +313,6 @@ function addBluffs(constraint, size, deviation, fill)
 		fadeToGround(bb, corners.minX, corners.minZ, endLine.height);
 	}
 
-	var fish = [
-		{
-			"func": addFish,
-			"tile": "tc.fish",
-			"avoid": [tc.fish, 12, tc.hill, 8, tc.mountain, 8, tc.player, 8],
-			"stay": [tc.water, 8],
-			"sizes": ["small", "normal", "big"],
-			"mixes": ["similar", "normal", "varied"],
-			"amounts": ["normal", "many", "tons"]
-		}
-	]
-	addElements(fish);
-
 	var bluffPatches = [
 		{
 			"func": addLayeredPatches,
