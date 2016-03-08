@@ -171,6 +171,9 @@ function placeBarriers()
 {
 	var spineTerrain = t.dirt;
 
+	if (m.biome == 2)
+		spineTerrain = t.tier1Terrain;
+
 	if (m.biome == 4 || m.biome == 6)
 		spineTerrain = t.tier2Terrain;
 
@@ -763,9 +766,20 @@ function addMountains(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addPlateaus(constraint, size, deviation, fill)
 {
+	var plateauTile = t.dirt;
+
+	if (m.biome == 2)
+		plateauTile = t.tier1Terrain;
+
+	if (m.biome == 4 || m.biome == 6)
+		plateauTile = t.tier2Terrain;
+
+	if (m.biome == 8)
+		plateauTile = t.tier4Terrain;
+
 	var plateau = {
 		"class": tc.mountain,
-		"painter": [t.cliff, t.cliff, t.hill],
+		"painter": [t.cliff, plateauTile],
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
@@ -847,9 +861,33 @@ function addValleys(constraint, size, deviation, fill)
 	if (minElevation < -1 * m.mapHeight)
 		minElevation = -1 * m.mapHeight;
 
+	var valleySlope = t.tier1Terrain;
+	var valleyFloor = t.tier4Terrain;
+
+	if (m.biome == 0)
+	{
+		valleySlope = t.dirt;
+		valleyFloor = t.tier2Terrain;
+	}
+
+	if (m.biome == 3 || m.biome == 5)
+	{
+		valleySlope = t.tier2Terrain;
+		valleyFloor = t.dirt;
+	}
+
+	if (m.biome == 4 || m.biome == 6)
+		valleyFloor = t.tier2Terrain;
+
+	if (m.biome == 7)
+		valleySlope = t.dirt;
+
+	if (m.biome == 8)
+		valleyFloor = t.tier3Terrain;
+
 	var valley = {
 		"class": tc.valley,
-		"painter": [t.mainTerrain, t.tier3Terrain],
+		"painter": [valleySlope, valleyFloor],
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
@@ -2322,7 +2360,7 @@ function getStartingPositions()
 	var use = randInt(formats.length);
 
 	starting["setup"] = formats[use];
-	starting["distance"] = getRand(0.2, 0.4, 100);
+	starting["distance"] = getRand(0.2, 0.35, 100);
 	starting["separation"] = getRand(0.05, 0.1, 100);
 
 	return starting;
