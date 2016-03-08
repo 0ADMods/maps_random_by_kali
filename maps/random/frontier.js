@@ -4,7 +4,7 @@ InitMap();
 ///////////
 // define the map constants
 ///////////
-const m = getSettings(randInt(1,8));
+const m = getSettings(randInt(1, 8));
 const t = constTerrains();
 const g = constGaia();
 const p = constProps();
