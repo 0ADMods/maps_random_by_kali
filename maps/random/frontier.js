@@ -2538,8 +2538,9 @@ function constForests()
 // put some useful map settings into an object
 function getSettings(biomeID)
 {
-	var m = {}
-	m["biome"] = setBiome(biomeID);
+	var m = {};
+	setBiome(biomeID);
+	m["biome"] = biomeID;
 	m["numPlayers"] = getNumPlayers();
 	m["mapSize"] = getMapSize();
 	m["mapArea"] = m["mapSize"] * m["mapSize"];
