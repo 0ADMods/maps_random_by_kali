@@ -206,8 +206,8 @@ function addLake() {
 	}
 
 	// create a bunch of fish
-	var group = new SimpleGroup([new SimpleObject(g.fish, 30, 40, 0, fDist)], true, tc.baseResource, m.centerOfMap, m.centerOfMap);
-	createObjectGroup(group, 0, avoidClasses(tc.player, 5, tc.mountain, 10));
+	var group = new SimpleGroup([new SimpleObject(g.fish, 20, 30, 0, fDist)], true, tc.baseResource, m.centerOfMap, m.centerOfMap);
+	createObjectGroup(group, 0, [avoidClasses(tc.player, 5, tc.hill, 3, tc.mountain, 3), stayClasses(tc.water, 5)]);
 }
 
 // add player harbors
@@ -228,10 +228,10 @@ function addHarbors(players) {
 
 		// create fish in harbor
 		var group = new SimpleGroup(
-			[new SimpleObject(g.fish, 4, 6, 5, 10)],
+			[new SimpleObject(g.fish, 6, 6, 1, 20)],
 			true, tc.baseResource, ix + offsetX, iz + offsetZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(tc.land, 2, tc.hill, 2), stayClasses(tc.water, 5)]);
+		createObjectGroup(group, 0, [avoidClasses(tc.hill, 3, tc.mountain, 3), stayClasses(tc.water, 5)]);
 	}
 }
 
@@ -461,19 +461,6 @@ function addBluffs(constraint, size, deviation, fill)
 		// smooth out the ground around the bluff
 		fadeToGround(bb, corners.minX, corners.minZ, endLine.height);
 	}
-
-	var fish = [
-		{
-			"func": addFish,
-			"tile": "tc.fish",
-			"avoid": [tc.fish, 12, tc.hill, 8, tc.mountain, 8, tc.player, 8],
-			"stay": [tc.water, 8],
-			"sizes": ["small", "normal", "big"],
-			"mixes": ["similar", "normal", "varied"],
-			"amounts": ["normal", "many", "tons"]
-		}
-	]
-	addElements(fish);
 
 	var bluffPatches = [
 		{
