@@ -221,11 +221,11 @@ function addBluffs(constraint, size, deviation, fill)
 	deviation = deviationOrDefault(deviation);
 	fill = fillOrDefault(fill);
 
-	var count = fill * 10;
-	var minSize = scaleByMapSize(15, 15);
-	var maxSize = scaleByMapSize(15, 15);
+	var count = fill * scaleByMapSize(15, 15);
+	var minSize = scaleByMapSize(2, 2);
+	var maxSize = scaleByMapSize(4, 4);
 	var elevation = 30;
-	var spread = scaleByMapSize(5, 5);
+	var spread = scaleByMapSize(500, 500);
 
 	for (var i = 0; i < count; ++i)
 	{
@@ -263,9 +263,29 @@ function addBluffs(constraint, size, deviation, fill)
 		var baseLine = findClearLine(bb, corners, angle);
 		var endLine = findClearLine(bb, corners, opAngle);
 
-		// if the clear lines are undefined, leave it as a plateau
-		if (baseLine.x1 === undefined || endLine.x1 === undefined)
+		// if we can't access the bluff, try different angles
+		var retries = 1;
+		while (unreachableBluff(baseLine, endLine) && retries < 4)
+		{
+			angle++;
+			if (angle > 3)
+				angle = 0;
+
+			opAngle = angle - 2;
+			if (angle < 2)
+				opAngle = angle + 2;
+
+			baseLine = findClearLine(bb, corners, angle);
+			endLine = findClearLine(bb, corners, opAngle);
+			retries++;
+		}
+
+		// found a bluff that can't slope in any direction, so turn it into a plateau
+		if (retries > 3)
+		{
+			removeBluff(points);
 			continue;
+		}
 
 		var ground = createTerrain(t.mainTerrain);
 
@@ -292,6 +312,17 @@ function addBluffs(constraint, size, deviation, fill)
 		// smooth out the ground around the bluff
 		fadeToGround(bb, corners.minX, corners.minZ, endLine.height);
 	}
+
+	var bluffHills = [{
+		"func": addHills,
+		"tile": "tc.hill",
+		"avoid": [tc.hill, 3, tc.mountain, 2, tc.player, 20, tc.valley, 2, tc.water, 2],
+		"stay": [tc.bluff, 3],
+		"sizes": allSizes,
+		"mixes": allMixes,
+		"amounts": allAmounts
+	}];
+	addElements(bluffHills);
 
 	var bluffPatches = [
 		{
@@ -325,9 +356,9 @@ function addBluffs(constraint, size, deviation, fill)
 			"tile": "tc.forest",
 			"avoid": [tc.berries, 5, tc.forest, 18, tc.metal, 3, tc.mountain, 5, tc.player, 20, tc.rock, 3, tc.water, 2],
 			"stay": [tc.bluff, 5],
-			"sizes": ["normal"],
-			"mixes": ["similar", "normal"],
-			"amounts": ["few", "normal", "many"]
+			"sizes": allSizes,
+			"mixes": allMixes,
+			"amounts": allAmounts
 		}
 	]
 	addElements(bluffForest);
@@ -364,8 +395,8 @@ function addBluffs(constraint, size, deviation, fill)
 			"tile": "tc.forest",
 			"avoid": [tc.berries, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5],
 			"stay": [tc.bluff, 5],
-			"sizes": ["big"],
-			"mixes": ["normal"],
+			"sizes": allSizes,
+			"mixes": allMixes,
 			"amounts": treeAmounts
 		}
 	]
@@ -390,9 +421,9 @@ function addBluffs(constraint, size, deviation, fill)
 			"tile": "tc.berries",
 			"avoid": [tc.berries, 50, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.water, 3],
 			"stay": [tc.bluff, 5],
-			"sizes": ["small", "normal", "big"],
-			"mixes": ["similar", "normal", "varied"],
-			"amounts": ["few", "normal", "many"]
+			"sizes": allSizes,
+			"mixes": allMixes,
+			"amounts": allAmounts
 		}
 	]
 	addElements(bluffBerries);
@@ -578,8 +609,8 @@ function addLakes(constraint, size, deviation, fill)
 		depthAdj = -20;
 		steepness = 20;
 		painter = [t.cliff, t.cliff, t.water];
-	} else if (steepness > 2) {
-		steepness = 2;
+	} else if (steepness > 1) {
+		steepness = 1;
 		depthAdj = 2;
 	}
 
@@ -589,10 +620,10 @@ function addLakes(constraint, size, deviation, fill)
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
-		"count": scaleByMapSize(8, 8),
-		"minSize": floor(scaleByMapSize(4, 4)),
-		"maxSize": floor(scaleByMapSize(18, 18)),
-		"spread": floor(scaleByMapSize(10, 30)),
+		"count": scaleByMapSize(6, 6),
+		"minSize": floor(scaleByMapSize(6, 6)),
+		"maxSize": floor(scaleByMapSize(9, 9)),
+		"spread": floor(scaleByMapSize(70, 70)),
 		"minElevation": -15 + depthAdj,
 		"maxElevation": -3 + depthAdj,
 		"steepness": steepness
@@ -678,11 +709,11 @@ function addMountains(constraint, size, deviation, fill)
 		"deviation": deviation,
 		"fill": fill,
 		"count": scaleByMapSize(8, 8),
-		"minSize": floor(scaleByMapSize(8, 8)),
-		"maxSize": floor(scaleByMapSize(10, 10)),
-		"spread": floor(scaleByMapSize(8, 8)),
-		"minElevation": 60,
-		"maxElevation": 80,
+		"minSize": floor(scaleByMapSize(2, 2)),
+		"maxSize": floor(scaleByMapSize(4, 4)),
+		"spread": floor(scaleByMapSize(100, 100)),
+		"minElevation": 100,
+		"maxElevation": 120,
 		"steepness": 4
 	}
 	addElevation(constraint, mountain);
@@ -718,10 +749,10 @@ function addPlateaus(constraint, size, deviation, fill)
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
-		"count": scaleByMapSize(8, 8),
-		"minSize": floor(scaleByMapSize(6, 6)),
-		"maxSize": floor(scaleByMapSize(9, 9)),
-		"spread": floor(scaleByMapSize(10, 10)),
+		"count": scaleByMapSize(15, 15),
+		"minSize": floor(scaleByMapSize(2, 2)),
+		"maxSize": floor(scaleByMapSize(4, 4)),
+		"spread": floor(scaleByMapSize(200, 200)),
 		"minElevation": 20,
 		"maxElevation": 30,
 		"steepness": 8
@@ -829,7 +860,7 @@ function addValleys(constraint, size, deviation, fill)
 		"count": scaleByMapSize(8, 8),
 		"minSize": floor(scaleByMapSize(5, 5)),
 		"maxSize": floor(scaleByMapSize(8, 8)),
-		"spread": floor(scaleByMapSize(20, 20)),
+		"spread": floor(scaleByMapSize(30, 30)),
 		"minElevation": minElevation,
 		"maxElevation": -2,
 		"steepness": 4
@@ -864,7 +895,7 @@ function addAnimals(constraint, size, deviation, fill)
 		[new SimpleObject(g.mainHuntableAnimal, 5 * groupOffset, 7 * groupOffset, 0, 4 * groupOffset)],
 		[new SimpleObject(g.secondaryHuntableAnimal, 2 * groupOffset, 3 * groupOffset, 0, 2 * groupOffset)]
 	];
-	var counts = [3 * m.numPlayers * fill, 3 * m.numPlayers * fill];
+	var counts = [scaleByMapSize(30, 30) * fill, scaleByMapSize(30, 30) * fill];
 
 	for (var i = 0; i < animals.length; ++i)
 	{
@@ -892,13 +923,13 @@ function addBerries(constraint, size, deviation, fill)
 
 	var groupOffset = getRandomDeviation(size, deviation);
 
-	var count = scaleByMapSize(30, 30) * fill;
+	var count = scaleByMapSize(50, 50) * fill;
 	var berries = [[new SimpleObject(g.fruitBush, 5 * groupOffset, 5 * groupOffset, 0, 3 * groupOffset)]];
 
 	for (var i = 0; i < berries.length; ++i)
 	{
 		var group = new SimpleGroup(berries[i], true, tc.berries);
-		createObjectGroups(group, 0, constraint, floor(count), 70);
+		createObjectGroups(group, 0, constraint, floor(count), 40);
 	}
 }
 
@@ -993,13 +1024,13 @@ function addMetal(constraint, size, deviation, fill)
 	fill = fillOrDefault(fill);
 
 	var offset = getRandomDeviation(size, deviation);
-	var count = m.numPlayers * scaleByMapSize(m.numPlayers, m.numPlayers) * fill;
+	var count = 1 + scaleByMapSize(20, 20) * fill;
 	var mines = [[new SimpleObject(g.metalLarge, 1 * offset, 1 * offset, 0, 4 * offset)]];
 
 	for (var i = 0; i < mines.length; ++i)
 	{
 		var group = new SimpleGroup(mines[i], true, tc.metal);
-		createObjectGroups(group, 0, constraint, count, 70);
+		createObjectGroups(group, 0, constraint, count, 100);
 	}
 }
 
@@ -1021,14 +1052,14 @@ function addStone(constraint, size, deviation, fill)
 	fill = fillOrDefault(fill);
 
 	var offset = getRandomDeviation(size, deviation);
-	var count = m.numPlayers * scaleByMapSize(m.numPlayers, m.numPlayers) * fill;
+	var count = 1 + scaleByMapSize(20, 20) * fill;
 	var mines = [[new SimpleObject(g.stoneSmall, 0, 2 * offset, 0, 4 * offset), new SimpleObject(g.stoneLarge, 1 * offset, 1 * offset, 0, 4 * offset)],
   [new SimpleObject(g.stoneSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)]];
 
 	for (var i = 0; i < mines.length; ++i)
 	{
 		var group = new SimpleGroup(mines[i], true, tc.rock);
-		createObjectGroups(group, 0, constraint, count, 70);
+		createObjectGroups(group, 0, constraint, count, 100);
 	}
 }
 
@@ -1095,6 +1126,22 @@ function addStragglerTrees(constraint, size, deviation, fill)
 ///////////
 // Terrain Helpers
 ///////////
+
+// determine if the endline of the bluff is within the tilemap
+function unreachableBluff(baseLine, endLine)
+{
+	if (baseLine.midX === undefined || endLine.midX === undefined || ((!g_Map.validT(endLine.x1, endLine.z1) || checkIfInClass(endLine.x1, endLine.z1, tc.player) && (!g_Map.validT(endLine.x2, endLine.z2) || checkIfInClass(endLine.x2, endLine.z2, tc.player)))))
+		return true;
+
+	return false;
+}
+
+// remove the bluff class and turn it into a plateau
+function removeBluff(points)
+{
+	for (var i = 0; i < points.length; ++i)
+		addToClass(points[i].x, points[i].z, tc.mountain);
+}
 
 // had to modify current RMgen function to return the list of points in the terrain feature
 function createAreas2(centeredPlacer, painter, constraint, amount, retryFactor = 10)
@@ -1189,13 +1236,18 @@ function createBoundingBox(points, corners)
 // flattens the ground touching a terrain feature
 function fadeToGround(bb, minX, minZ, elevation)
 {
+	var ground = createTerrain(t.mainTerrain);
 	for (var x = 0; x < bb.length; ++x)
 	{
 		for (var z = 0; z < bb[x].length; ++z)
 		{
 			var pt = bb[x][z];
 			if (!pt.isFeature && nextToFeature(bb, x, z))
-				g_Map.setHeight(x + minX, z + minZ, elevation);
+			{
+				var newEl = smoothElevation(x + minX, z + minZ);
+				g_Map.setHeight(x + minX, z + minZ, newEl);
+				ground.place(x + minX, z + minZ);
+			}
 		}
 	}
 }
@@ -1294,6 +1346,29 @@ function findCorners(points)
 	return {"minX": minX, "minZ": minZ, "maxX": maxX, "maxZ": maxZ}
 }
 
+// finds the average elevation around a point
+function smoothElevation(x, z)
+{
+	var min = g_Map.getHeight(x, z);
+
+	for (var xOffset = -1; xOffset <= 1; ++xOffset)
+	{
+		for (var zOffset = -1; zOffset <= 1; ++zOffset)
+		{
+			var thisX = x + xOffset;
+			var thisZ = z + zOffset;
+			if (!g_Map.validT(thisX, thisZ))
+				continue;
+
+			var height = g_Map.getHeight(thisX, thisZ);
+			if (height < min)
+				min = height;
+		}
+	}
+
+	return min;
+}
+
 // determines if a point in a bounding box array is next to a terrain feature
 function nextToFeature(bb, x, z)
 {
@@ -1352,13 +1427,13 @@ function pickAmount(amounts)
 	switch(amounts[amount])
 	{
 		case "scarce":
-			return 0.5;
+			return 0.2;
 		case "few":
-			return 0.75;
+			return 0.5;
 		case "many":
-			return 1.25;
+			return 1.75;
 		case "tons":
-			return 1.5;
+			return 3;
 	}
 
 	return 1;
@@ -2139,7 +2214,7 @@ function createBase(player, walls)
 	addToClass(ix, iz - 5, tc.player);
 
 	// create starting units
-	if (walls || walls == undefined)
+	if (walls || walls === undefined)
 		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius);
 	else
 		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius, {'iberWall': false});
@@ -2163,7 +2238,7 @@ function createBase(player, walls)
 			[new SimpleObject(g.chicken, 5, 5, 0, 2)],
 			true, tc.baseResource, aX, aZ
 		);
-		createObjectGroup(group, 0);
+		createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
 	}
 
 	// create berry bushes
@@ -2175,7 +2250,7 @@ function createBase(player, walls)
 		[new SimpleObject(g.fruitBush, 5, 5, 0, 3)],
 		true, tc.baseResource, bbX, bbZ
 	);
-	createObjectGroup(group, 0);
+	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
 
 	// create metal mine
 	var mAngle = bbAngle;
@@ -2189,7 +2264,7 @@ function createBase(player, walls)
 		[new SimpleObject(g.metalLarge, 1, 1, 0, 0)],
 		true, tc.baseResource, mX, mZ
 	);
-	createObjectGroup(group, 0);
+	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
 
 	// create stone mines
 	mAngle += randFloat(PI / 8, PI / 4);
@@ -2199,7 +2274,7 @@ function createBase(player, walls)
 		[new SimpleObject(g.stoneLarge, 1, 1, 0, 2)],
 		true, tc.baseResource, mX, mZ
 	);
-	createObjectGroup(group, 0);
+	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
 
 	var hillSize = PI * m.mapRadius * m.mapRadius;
 
@@ -2228,7 +2303,7 @@ function createBase(player, walls)
 			[new SimpleObject(p.grassShort, 2, 5, 0, 1, -PI / 8, PI / 8)],
 			false, tc.baseResource, gX, gZ
 		);
-		createObjectGroup(group, 0);
+		createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
 	}
 }
 
@@ -2435,8 +2510,20 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 
 	for (var i = 0; i < m.teams.length; ++i) {
 		var teamAngle = m.startAngle + (i + 1) * TWO_PI / m.teams.length;
+
+		if (m.teams[i].length == 1)
+			teamAngle = m.startAngle;
+
 		var fractionX = 0.5 + distance * cos(teamAngle);
 		var fractionZ = 0.5 + distance * sin(teamAngle);
+
+		// if we have a team of above average size, make sure they're spread out
+		if (m.teams[i].length > 4)
+			groupedDistance = getRand(0.08, 0.12, 100);
+
+		// if we have a team of below average size, make sure they're together
+		if (m.teams[i].length < 3)
+			groupedDistance = getRand(0.04, 0.06, 100);
 
 		// create player base
 		for (var p = 0; p < m.teams[i].length; ++p)
