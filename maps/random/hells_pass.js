@@ -2253,7 +2253,7 @@ function createBase(player, walls)
 	addToClass(ix, iz - 5, tc.player);
 
 	// create starting units
-	if (walls || walls === undefined)
+	if ((walls || walls === undefined) && m.mapSize > 192)
 		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius);
 	else
 		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius, {'iberWall': false});
