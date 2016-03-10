@@ -38,15 +38,15 @@ var features = [
 		"func": addBluffs,
 		"tile": "tc.bluff",
 		"avoid": [tc.bluff, 12, tc.hill, 5, tc.player, 35],
-		"sizes": ["big"],
-		"mixes": ["normal"],
+		"sizes": ["normal", "big", "huge"],
+		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addHills,
 		"tile": "tc.hill",
 		"avoid": [tc.bluff, 5, tc.hill, 15, tc.player, 20],
-		"sizes": ["big", "huge"],
+		"sizes": ["normal", "big"],
 		"mixes": ["normal"],
 		"amounts": ["tons"]
 	}
@@ -224,10 +224,10 @@ function addBluffs(constraint, size, deviation, fill)
 	fill = fillOrDefault(fill);
 
 	var count = fill * scaleByMapSize(15, 15);
-	var minSize = scaleByMapSize(2, 2);
-	var maxSize = scaleByMapSize(4, 4);
+	var minSize = scaleByMapSize(5, 5);
+	var maxSize = scaleByMapSize(7, 7);
 	var elevation = 30;
-	var spread = scaleByMapSize(500, 500);
+	var spread = scaleByMapSize(100, 100);
 
 	for (var i = 0; i < count; ++i)
 	{
@@ -267,8 +267,10 @@ function addBluffs(constraint, size, deviation, fill)
 
 		// if we can't access the bluff, try different angles
 		var retries = 1;
-		while (unreachableBluff(baseLine, endLine) && retries < 4)
+		var bluffCat = 2;
+		while (bluffCat != 0 && retries < 4)
 		{
+			bluffCat = unreachableBluff(bb, corners, baseLine, endLine);
 			angle++;
 			if (angle > 3)
 				angle = 0;
@@ -282,11 +284,14 @@ function addBluffs(constraint, size, deviation, fill)
 			retries++;
 		}
 
-		// found a bluff that can't slope in any direction, so turn it into a plateau
-		if (retries > 3)
+		// found a bluff that can't be accessed, so turn it into a plateau
+		if (retries == 4)
 		{
 			removeBluff(points);
-			continue;
+
+			// if we couldn't find the slope lines, turn it into a plateau
+			if (bluffCat == 1)
+				continue;
 		}
 
 		var ground = createTerrain(t.mainTerrain);
@@ -300,7 +305,7 @@ function addBluffs(constraint, size, deviation, fill)
 			var dist = distanceOfPointFromLine(baseLine.x1, baseLine.z1, baseLine.x2, baseLine.z2, pt.x, pt.z);
 
 			var curHeight = g_Map.getHeight(pt.x, pt.z);
-			var newHeight = curHeight - curHeight * (dist / slopeLength);
+			var newHeight = curHeight - curHeight * (dist / slopeLength) - 2;
 
 			if (newHeight < endLine.height)
 				newHeight = endLine.height;
@@ -352,12 +357,49 @@ function addBluffs(constraint, size, deviation, fill)
 	]
 	addElements(bluffDecor);
 
+	var bluffHills = [{
+		"func": addHills,
+		"tile": "tc.hill",
+		"avoid": [tc.hill, 3, tc.player, 20, tc.valley, 2, tc.water, 2],
+		"stay": [tc.bluff, 5, tc.mountain, 5],
+		"sizes": allSizes,
+		"mixes": allMixes,
+		"amounts": allAmounts
+	}];
+	addElements(bluffHills);
+
+	var bluffPatches = [
+		{
+			"func": addLayeredPatches,
+			"tile": "tc.dirt",
+			"avoid": [tc.dirt, 5, tc.forest, 2, tc.player, 12, tc.water, 3],
+			"stay": [tc.bluff, 5, tc.mountain, 5],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["normal"]
+		}
+	]
+	addElements(bluffPatches);
+
+	var bluffDecor = [
+		{
+			"func": addDecoration,
+			"tile": "tc.dirt",
+			"avoid": [tc.forest, 2, tc.player, 12, tc.water, 3],
+			"stay": [tc.bluff, 5, tc.mountain, 5],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["normal"]
+		}
+	]
+	addElements(bluffDecor);
+
 	var primaryRes = [
 		{
 			"func": addForests,
 			"tile": "tc.forest",
-			"avoid": [tc.berries, 5, tc.forest, 18, tc.metal, 3, tc.mountain, 5, tc.player, 20, tc.rock, 3, tc.water, 2],
-			"stay": [tc.bluff, 5],
+			"avoid": [tc.berries, 5, tc.forest, 18, tc.metal, 5, tc.mountain, 5, tc.player, 20, tc.rock, 5, tc.water, 2],
+			"stay": [tc.bluff, 10],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": allAmounts
@@ -365,8 +407,8 @@ function addBluffs(constraint, size, deviation, fill)
 		{
 			"func": addMetal,
 			"tile": "tc.metal",
-			"avoid": [tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 15, tc.metal, 40, tc.water, 3],
-			"stay": [tc.bluff, 5],
+			"avoid": [tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 15, tc.metal, 40, tc.water, 3],
+			"stay": [tc.bluff, 10],
 			"sizes": ["normal"],
 			"mixes": ["same"],
 			"amounts": allAmounts
@@ -374,8 +416,8 @@ function addBluffs(constraint, size, deviation, fill)
 		{
 			"func": addStone,
 			"tile": "tc.stone",
-			"avoid": [tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 15, tc.water, 3],
-			"stay": [tc.bluff, 5],
+			"avoid": [tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 15, tc.water, 3],
+			"stay": [tc.bluff, 10],
 			"sizes": ["normal"],
 			"mixes": ["same"],
 			"amounts": allAmounts
@@ -388,8 +430,8 @@ function addBluffs(constraint, size, deviation, fill)
 		{
 			"func": addStragglerTrees,
 			"tile": "tc.forest",
-			"avoid": [tc.berries, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5],
-			"stay": [tc.bluff, 5],
+			"avoid": [tc.berries, 5, tc.forest, 10, tc.metal, 5, tc.mountain, 1, tc.player, 12, tc.rock, 5, tc.water, 5],
+			"stay": [tc.bluff, 10],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": ["scarce", "few", "normal"]
@@ -397,8 +439,8 @@ function addBluffs(constraint, size, deviation, fill)
 		{
 			"func": addAnimals,
 			"tile": "tc.animals",
-			"avoid": [tc.animals, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.water, 3],
-			"stay": [tc.bluff, 5],
+			"avoid": [tc.animals, 20, tc.forest, 5, tc.mountain, 1, tc.player, 20, tc.rock, 5, tc.metal, 5, tc.water, 3],
+			"stay": [tc.bluff, 10],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": allAmounts
@@ -407,7 +449,7 @@ function addBluffs(constraint, size, deviation, fill)
 			"func": addBerries,
 			"tile": "tc.berries",
 			"avoid": [tc.berries, 50, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.water, 3],
-			"stay": [tc.bluff, 5],
+			"stay": [tc.bluff, 10],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": allAmounts
@@ -1121,12 +1163,77 @@ function addStragglerTrees(constraint, size, deviation, fill)
 ///////////
 
 // determine if the endline of the bluff is within the tilemap
-function unreachableBluff(baseLine, endLine)
+function unreachableBluff(bb, corners, baseLine, endLine)
 {
-	if (baseLine.midX === undefined || endLine.midX === undefined || ((!g_Map.validT(endLine.x1, endLine.z1) || checkIfInClass(endLine.x1, endLine.z1, tc.player) && (!g_Map.validT(endLine.x2, endLine.z2) || checkIfInClass(endLine.x2, endLine.z2, tc.player)))))
-		return true;
+	// if we couldn't find a slope line
+	if (baseLine.midX === undefined || endLine.midX === undefined)
+		return 1;
 
-	return false;
+	// if the end points aren't on the tilemap
+	if ((!g_Map.validT(endLine.x1, endLine.z1) || checkIfInClass(endLine.x1, endLine.z1, tc.player)) && (!g_Map.validT(endLine.x2, endLine.z2) || checkIfInClass(endLine.x2, endLine.z2, tc.player)))
+		return 2;
+
+	var minTilesInGroup = 1;
+	var insideBluff = false;
+	var outsideBluff = false;
+
+	// if there aren't enough points in each row
+	for (var x = 0; x < bb.length; ++x)
+	{
+		var count = 0;
+		for (var z = 0; z < bb[x].length; ++z)
+		{
+			if (!bb[x][z].isFeature)
+				continue;
+
+			var valid = g_Map.validT(x + corners.minX, z + corners.minZ);
+
+			if (valid)
+				count++;
+
+			if (!insideBluff && valid)
+				insideBluff = true;
+
+			if (outsideBluff && valid)
+				return 3;
+		}
+
+		// we're expecting the end of the bluff
+		if (insideBluff && count < minTilesInGroup)
+			outsideBluff = true;
+	}
+
+	var insideBluff = false;
+	var outsideBluff = false;
+
+	// if there aren't enough points in each column
+	for (var z = 0; z < bb[0].length; ++z)
+	{
+		var count = 0;
+		for (var x = 0; x < bb.length; ++x)
+		{
+			if (!bb[x][z].isFeature)
+				continue;
+
+			var valid = g_Map.validT(x + corners.minX, z + corners.minZ);
+
+			if (valid)
+				count++;
+
+			if (!insideBluff && valid)
+				insideBluff = true;
+
+			if (outsideBluff && valid)
+				return 3;
+		}
+
+		// we're expecting the end of the bluff
+		if (insideBluff && count < minTilesInGroup)
+			outsideBluff = true;
+	}
+
+	// bluff is reachable
+	return 0;
 }
 
 // remove the bluff class and turn it into a plateau
@@ -1281,7 +1388,7 @@ function findClearLine(bb, corners, angle)
 		while (x2 >= corners.minX && x2 <= corners.maxX && z2 >= corners.minZ && z2 <= corners.maxZ)
 		{
 			var bp = bb[x2 - corners.minX][z2 - corners.minZ];
-			if (bp.isFeature)
+			if (bp.isFeature && g_Map.validT(x2, z2))
 			{
 				clear = false;
 				break;
