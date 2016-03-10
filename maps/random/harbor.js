@@ -23,10 +23,6 @@ const allSizes = ["tiny", "small", "normal", "big", "huge"];
 const allMixes = ["same", "similar", "normal", "varied", "unique"];
 const allAmounts = ["scarce", "few", "normal", "many", "tons"];
 
-var treeAmounts = ["few", "normal", "many"];
-if (m.biome == 6)
-	treeAmounts = ["many", "tons"];
-
 ///////////
 // setup the map
 ///////////
@@ -51,18 +47,10 @@ RMS.SetProgress(40);
 // terrain features
 var features = [
 	{
-		"func": addBluffs,
-		"tile": "tc.bluff",
-		"avoid": [tc.bluff, 20, tc.hill, 5, tc.mountain, 20, tc.player, 30, tc.spine, 20, tc.valley, 5, tc.water, 7],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
-	},
-	{
 		"func": addHills,
 		"tile": "tc.hill",
 		"avoid": [tc.bluff, 5, tc.hill, 15, tc.mountain, 2, tc.player, 20, tc.spine, 5, tc.valley, 2, tc.water, 2],
-		"sizes": allSizes,
+		"sizes": ["tiny", "small"],
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
@@ -70,7 +58,7 @@ var features = [
 		"func": addMountains,
 		"tile": "tc.mountain",
 		"avoid": [tc.bluff, 20, tc.mountain, 25, tc.player, 20, tc.spine, 20, tc.valley, 10, tc.water, 15],
-		"sizes": allSizes,
+		"sizes": ["small"],
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
@@ -78,15 +66,7 @@ var features = [
 		"func": addPlateaus,
 		"tile": "tc.mountain",
 		"avoid": [tc.bluff, 20, tc.mountain, 25, tc.player, 40, tc.spine, 20, tc.valley, 10, tc.water, 15],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
-	},
-	{
-		"func": addValleys,
-		"tile": "tc.valley",
-		"avoid": [tc.bluff, 5, tc.hill, 5, tc.mountain, 25, tc.player, 40, tc.spine, 5, tc.valley, 15, tc.water, 10],
-		"sizes": allSizes,
+		"sizes": ["small"],
 		"mixes": allMixes,
 		"amounts": allAmounts
 	}
@@ -127,7 +107,7 @@ var primaryRes = [
 	{
 		"func": addMetal,
 		"tile": "tc.metal",
-		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 15, tc.metal, 40, tc.spine, 5, tc.water, 3],
+		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 3, tc.mountain, 2, tc.player, 30, tc.rock, 10, tc.metal, 20, tc.spine, 2, tc.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": allAmounts
@@ -135,7 +115,7 @@ var primaryRes = [
 	{
 		"func": addStone,
 		"tile": "tc.stone",
-		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 3, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 15, tc.spine, 5, tc.water, 3],
+		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 3, tc.mountain, 2, tc.player, 30, tc.rock, 20, tc.metal, 10, tc.spine, 2, tc.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": allAmounts
@@ -143,10 +123,10 @@ var primaryRes = [
 	{
 		"func": addForests,
 		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 18, tc.metal, 3, tc.mountain, 5, tc.player, 20, tc.rock, 3, tc.spine, 5, tc.water, 2],
-		"sizes": ["normal"],
-		"mixes": ["similar", "normal"],
-		"amounts": ["few", "normal", "many"]
+		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 18, tc.metal, 3, tc.mountain, 5, tc.player, 20, tc.rock, 3, tc.spine, 2, tc.water, 2],
+		"sizes": allSizes,
+		"mixes": allMixes,
+		"amounts": ["few", "normal", "many", "tons"]
 	}
 ];
 primaryRes = randArray(primaryRes);
@@ -156,15 +136,15 @@ var secondaryRes = [
 	{
 		"func": addBerries,
 		"tile": "tc.berries",
-		"avoid": [tc.berries, 50, tc.bluff, 5, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.spine, 5, tc.water, 3],
-		"sizes": ["small", "normal", "big"],
-		"mixes": ["similar", "normal", "varied"],
-		"amounts": ["few", "normal", "many"]
+		"avoid": [tc.berries, 30, tc.bluff, 5, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.spine, 2, tc.water, 3],
+		"sizes": allSizes,
+		"mixes": allMixes,
+		"amounts": allAmounts
 	},
 	{
 		"func": addAnimals,
 		"tile": "tc.animals",
-		"avoid": [tc.animals, 20, tc.bluff, 5, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.spine, 5, tc.water, 3],
+		"avoid": [tc.animals, 20, tc.bluff, 5, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.spine, 2, tc.water, 3],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -172,10 +152,10 @@ var secondaryRes = [
 	{
 		"func": addStragglerTrees,
 		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.spine, 5, tc.water, 5],
-		"sizes": ["normal", "big"],
-		"mixes": ["similar", "normal", "varied"],
-		"amounts": treeAmounts
+		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.spine, 2, tc.water, 5],
+		"sizes": allSizes,
+		"mixes": allMixes,
+		"amounts": ["normal", "many", "tons"]
 	}
 ];
 secondaryRes = randArray(secondaryRes);
@@ -241,6 +221,18 @@ function addHarbors(players) {
 
 // add mountain spines
 function addSpines() {
+	var spineTile = t.dirt;
+	var elevation = 35;
+
+	if (m.biome == 2)
+		spineTile = t.tier1Terrain;
+
+	if (m.biome == 4 || m.biome == 6)
+		spineTile = t.tier2Terrain;
+
+	if (m.biome == 8)
+		spineTile = t.tier4Terrain;
+
 	var split = 1;
 	if(m.numPlayers <= 3 || (m.mapSize >= 320 && m.numPlayers <= 4)) {
 		split = 2;
@@ -256,102 +248,23 @@ function addSpines() {
 
 		var mStartCo = 0.12
 		var mStopCo = 0.40
-		var mSize = 15;
-		var mWaviness = 0.4;
-		var mOffset = 0.3;
-		var mTaper = -1.5;
+		var mSize = 0.5;
+		var mWaviness = 0.6;
+		var mOffset = 0.4;
+		var mTaper = -1.4;
 
-		// make small mountain dividers if we're making expansion territories or if there are a lot of players
-		if(split == 2 && i % split == 0 || m.numPlayers >= 7 && m.mapSize <= 384) {
-			var mStartCo = 0.15
-			var mStopCo = 0.44
-			var mSize = 8;
-			var mWaviness = 0.4;
-			var mOffset = 0.3;
-			var mTaper = -1.5;
-		}
-
+		// make small mountain dividers if we're on a small map
 		if(m.mapSize <= 192) {
-			var mStartCo = 0.15
-			var mStopCo = 0.45
-			var mSize = 0.02;
-			var mWaviness = 0.2;
-			var mOffset = 0.1;
-			var mTaper = 0;
+			mSize = 0.02;
+			mTaper = -0.1;
+			elevation = 20;
 		}
 
 		var placer = new PathPlacer(fractionToTiles(0.5 + mStartCo * cos(tang)), fractionToTiles(0.5 + mStartCo * sin(tang)), fractionToTiles(0.5 + mStopCo * cos(tang)), fractionToTiles(0.5 + mStopCo * sin(tang)), scaleByMapSize(14, mSize), mWaviness, 0.1, mOffset, mTaper);
-		var terrainPainter = new LayeredPainter([t.cliff, t.mainTerrain, t.forestFloor2], [3, 5]);
-		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, 20, 3);
+		var terrainPainter = new LayeredPainter([t.cliff, spineTile], [3]);
+		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, elevation, 3);
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.spine)], avoidClasses(tc.player, 5));
 	}
-
-	// primary resources
-	var primaryRes = [
-		{
-			"func": addMetal,
-			"tile": "tc.metal",
-			"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 3, tc.mountain, 2, tc.player, 10, tc.rock, 15, tc.metal, 20, tc.water, 10],
-			"stay": [tc.spine, 5],
-			"sizes": ["normal"],
-			"mixes": ["same"],
-			"amounts": allAmounts
-		},
-		{
-			"func": addStone,
-			"tile": "tc.stone",
-			"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 3, tc.mountain, 2, tc.player, 10, tc.rock, 20, tc.metal, 15, tc.water, 10],
-			"stay": [tc.spine, 5],
-			"sizes": ["normal"],
-			"mixes": ["same"],
-			"amounts": allAmounts
-		},
-		{
-			"func": addForests,
-			"tile": "tc.forest",
-			"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 18, tc.metal, 3, tc.mountain, 2, tc.player, 10, tc.rock, 3, tc.water, 10],
-			"stay": [tc.spine, 5],
-			"sizes": ["normal"],
-			"mixes": ["similar", "normal"],
-			"amounts": ["few", "normal", "many"]
-		}
-	];
-	primaryRes = randArray(primaryRes);
-
-	// secondary resources
-	var secondaryRes = [
-		{
-			"func": addBerries,
-			"tile": "tc.berries",
-			"avoid": [tc.berries, 20, tc.bluff, 5, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 5, tc.rock, 10, tc.water, 10],
-			"stay": [tc.spine, 5],
-			"sizes": ["small", "normal", "big"],
-			"mixes": ["similar", "normal", "varied"],
-			"amounts": ["few", "normal", "many"]
-		},
-		{
-			"func": addAnimals,
-			"tile": "tc.animals",
-			"avoid": [tc.animals, 20, tc.bluff, 5, tc.forest, 0, tc.mountain, 1, tc.player, 5, tc.water, 10],
-			"stay": [tc.spine, 5],
-			"sizes": allSizes,
-			"mixes": allMixes,
-			"amounts": allAmounts
-		},
-		{
-			"func": addStragglerTrees,
-			"tile": "tc.forest",
-			"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 7, tc.metal, 2, tc.mountain, 2, tc.player, 5, tc.rock, 2, tc.water, 10],
-			"stay": [tc.spine, 5],
-			"sizes": ["normal", "big"],
-			"mixes": ["similar", "normal", "varied"],
-			"amounts": treeAmounts
-		}
-	];
-	secondaryRes = randArray(secondaryRes);
-
-	var gaia = primaryRes.concat(secondaryRes);
-	addElements(gaia);
 }
 
 ///////////
@@ -522,7 +435,7 @@ function addBluffs(constraint, size, deviation, fill)
 	]
 	addElements(bluffDecor);
 
-	var bluffForest = [
+	var primaryRes = [
 		{
 			"func": addForests,
 			"tile": "tc.forest",
@@ -531,11 +444,7 @@ function addBluffs(constraint, size, deviation, fill)
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": allAmounts
-		}
-	]
-	addElements(bluffForest);
-
-	var bluffMetal = [
+		},
 		{
 			"func": addMetal,
 			"tile": "tc.metal",
@@ -544,11 +453,7 @@ function addBluffs(constraint, size, deviation, fill)
 			"sizes": ["normal"],
 			"mixes": ["same"],
 			"amounts": allAmounts
-		}
-	]
-	addElements(bluffMetal);
-
-	var bluffStone = [
+		},
 		{
 			"func": addStone,
 			"tile": "tc.stone",
@@ -558,10 +463,11 @@ function addBluffs(constraint, size, deviation, fill)
 			"mixes": ["same"],
 			"amounts": allAmounts
 		}
-	]
-	addElements(bluffStone);
+	];
+	primaryRes = randArray(primaryRes);
+	addElements(primaryRes);
 
-	var bluffTrees = [
+	var secondaryRes = [
 		{
 			"func": addStragglerTrees,
 			"tile": "tc.forest",
@@ -569,12 +475,8 @@ function addBluffs(constraint, size, deviation, fill)
 			"stay": [tc.bluff, 5],
 			"sizes": allSizes,
 			"mixes": allMixes,
-			"amounts": treeAmounts
-		}
-	]
-	addElements(bluffTrees);
-
-	var bluffAnimals = [
+			"amounts": ["scarce", "few", "normal"]
+		},
 		{
 			"func": addAnimals,
 			"tile": "tc.animals",
@@ -583,11 +485,7 @@ function addBluffs(constraint, size, deviation, fill)
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": allAmounts
-		}
-	]
-	addElements(bluffAnimals);
-
-	var bluffBerries = [
+		},
 		{
 			"func": addBerries,
 			"tile": "tc.berries",
@@ -597,8 +495,9 @@ function addBluffs(constraint, size, deviation, fill)
 			"mixes": allMixes,
 			"amounts": allAmounts
 		}
-	]
-	addElements(bluffBerries);
+	];
+	secondaryRes = randArray(secondaryRes);
+	addElements(secondaryRes);
 }
 
 /////////////////////////////////////////
@@ -769,22 +668,18 @@ function addHills(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addLakes(constraint, size, deviation, fill)
 {
-	var painter = [t.shoreBlend, t.water, t.water];
-	var steepness = floor(m.mapHeight / 5) + 1 + randInt(floor(m.mapHeight / 5));
-	var depthAdj = 0;
-	var setFish = true;
+	var lakeTile = t.water;
 
-	// make impossible to reach lakes really deep
-	if (steepness * m.mapHeight > 20)
-	{
-		setFish = false;
-		depthAdj = -20;
-		steepness = 20;
-		painter = [t.cliff, t.cliff, t.water];
-	} else if (steepness > 1) {
-		steepness = 1;
-		depthAdj = 2;
-	}
+	if (m.biome == 0 || m.biome == 1 || m.biome == 7)
+		lakeTile = t.dirt;
+
+	if (m.biome == 5)
+		lakeTile = t.tier2Terrain;
+
+	if (m.biome == 8)
+		lakeTile = t.shore;
+
+	var painter = [lakeTile, lakeTile];
 
 	var lake = {
 		"class": tc.water,
@@ -793,30 +688,33 @@ function addLakes(constraint, size, deviation, fill)
 		"deviation": deviation,
 		"fill": fill,
 		"count": scaleByMapSize(6, 6),
-		"minSize": floor(scaleByMapSize(6, 6)),
+		"minSize": floor(scaleByMapSize(7, 7)),
 		"maxSize": floor(scaleByMapSize(9, 9)),
 		"spread": floor(scaleByMapSize(70, 70)),
-		"minElevation": -15 + depthAdj,
-		"maxElevation": -3 + depthAdj,
-		"steepness": steepness
+		"minElevation": -15,
+		"maxElevation": -2,
+		"steepness": 1.5
 	}
 	addElevation(constraint, lake);
 
-	if (setFish)
-	{
-		var fish = [
-			{
-				"func": addFish,
-				"tile": "tc.fish",
-				"avoid": [tc.fish, 12, tc.hill, 8, tc.mountain, 8, tc.player, 8],
-				"stay": [tc.water, 8],
-				"sizes": ["small", "normal", "big"],
-				"mixes": ["similar", "normal", "varied"],
-				"amounts": ["normal", "many", "tons"]
-			}
-		]
-		addElements(fish);
-	}
+	var lakeFish = [
+		{
+			"func": addFish,
+			"tile": "tc.fish",
+			"avoid": [tc.fish, 12, tc.hill, 8, tc.mountain, 8, tc.player, 8],
+			"stay": [tc.water, 7],
+			"sizes": allSizes,
+			"mixes": allMixes,
+			"amounts": ["normal", "many", "tons"]
+		}
+	]
+	addElements(lakeFish);
+
+	var group = new SimpleGroup([new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, tc.dirt)
+	createObjectGroups(group, 0, [stayClasses(tc.water, 1), borderClasses(tc.water, 4, 3)], 1000, 100);
+
+	group = new SimpleGroup([new SimpleObject(p.reeds, 10, 15, 1, 3), new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, tc.dirt)
+	createObjectGroups(group, 0, [stayClasses(tc.water, 2), borderClasses(tc.water, 4, 3)], 1000, 100);
 }
 
 /////////////////////////////////////////
@@ -1008,7 +906,13 @@ function addValleys(constraint, size, deviation, fill)
 		valleyFloor = t.tier2Terrain;
 	}
 
-	if (m.biome == 3 || m.biome == 5)
+	if (m.biome == 3)
+	{
+		valleySlope = t.tier3Terrain;
+		valleyFloor = t.dirt;
+	}
+
+	if (m.biome == 5)
 	{
 		valleySlope = t.tier2Terrain;
 		valleyFloor = t.dirt;
@@ -2635,6 +2539,7 @@ function placeRandom(playerIDs)
 
 	for (var i = 0; i < m.numPlayers; ++i)
 	{
+		var attempts = 0;
 		var playerAngle = randFloat(0, TWO_PI);
 		var distance = randFloat(0, 0.42);
 		var x = 0.5 + distance * cos(playerAngle);
@@ -2654,14 +2559,27 @@ function placeRandom(playerIDs)
 		if (tooClose)
 		{
 			--i;
+			++attempts;
+
+			// reset if we're in what looks like an infinite loop
+			if (attempts > 100)
+			{
+				players = [];
+				placed = [];
+				i = -1;
+				attempts = 0;
+			}
+
 			continue;
 		}
 
 		players[i] = {"id": playerIDs[i], "angle": playerAngle, "x": x, "z": z};
-		placed.push(players[i])
-
-		createBase(players[i])
+		placed.push(players[i]);
 	}
+
+	// create the bases
+	for (var i = 0; i < m.numPlayers; ++i)
+		createBase(players[i]);
 
 	return players;
 }
@@ -2682,10 +2600,6 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 
 	for (var i = 0; i < m.teams.length; ++i) {
 		var teamAngle = m.startAngle + (i + 1) * TWO_PI / m.teams.length;
-
-		if (m.teams[i].length == 1)
-			teamAngle = m.startAngle;
-
 		var fractionX = 0.5 + distance * cos(teamAngle);
 		var fractionZ = 0.5 + distance * sin(teamAngle);
 
@@ -2696,6 +2610,10 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 		// if we have a team of below average size, make sure they're together
 		if (m.teams[i].length < 3)
 			groupedDistance = getRand(0.04, 0.06, 100);
+
+		// if we have a solo player, place them on the center of the team's location
+		if (m.teams[i].length == 1)
+			groupedDistance = 0;
 
 		// create player base
 		for (var p = 0; p < m.teams[i].length; ++p)
