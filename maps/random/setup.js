@@ -928,7 +928,7 @@ function getTeams(numPlayers)
 		var team = getPlayerTeam(i) + 1;
 		if (team < 1)
 		{
-			teams[8 - ffaPlayers] = new Array();
+			teams[8 - ffaPlayers] = [];
 			teams[8 - ffaPlayers].push(i + 1);
 			ffaPlayers++;
 			numTeams++;
@@ -937,7 +937,7 @@ function getTeams(numPlayers)
 		{
 			if (teams[team] == null)
 			{
-				teams[team] = new Array();
+				teams[team] = [];
 				numTeams++;
 			}
 			teams[team].push(i+1);
@@ -945,7 +945,7 @@ function getTeams(numPlayers)
 	}
 
 	// consolidate the array
-	var setTeams = new Array();
+	var setTeams = [];
 	var currentTeam = 0;
 	for (var i = 1; i < 9; ++i)
 	{
@@ -962,7 +962,6 @@ function getTeams(numPlayers)
 // picks a random starting style
 function getStartingPositions()
 {
-	var starting = {};
 	var formats = ["radial"];
 
 	// enable stronghold if we have a few teams and a big enough map
@@ -977,20 +976,18 @@ function getStartingPositions()
 	if (m.teams.length >= 2 && m.numPlayers >= 4 && m.mapSize >= 384)
 		formats.push("line");
 
-	var use = randInt(formats.length);
-
-	starting["setup"] = formats[use];
-	starting["distance"] = getRand(0.2, 0.35, 100);
-	starting["separation"] = getRand(0.05, 0.1, 100);
-
-	return starting;
+	return {
+		"setup": formats[randInt(formats.length)],
+		"distance": getRand(0.2, 0.35, 100),
+		"separation": getRand(0.05, 0.1, 100)
+	};
 }
 
 // randomize player order
 function randomizePlayers()
 {
 	var playerIDs = [];
-	for (var i = 0; i < m.numPlayers; i++)
+	for (var i = 0; i < m.numPlayers; ++i)
 		playerIDs.push(i + 1);
 
 	playerIDs = sortPlayers(playerIDs);
@@ -1010,9 +1007,10 @@ function randomizePlayers()
 /////////////////////////////////////////
 function placeLine(playerIDs, distance, groupedDistance)
 {
-	var players = new Array();
+	var players = [];
 
-	for (var i = 0; i < m.teams.length; ++i) {
+	for (var i = 0; i < m.teams.length; ++i)
+	{
 		var safeDist = distance;
 		if (distance + m.teams[i].length * groupedDistance > 0.45)
 			safeDist = 0.45 - m.teams[i].length * groupedDistance;
@@ -1022,10 +1020,12 @@ function placeLine(playerIDs, distance, groupedDistance)
 		// create player base
 		for (var p = 0; p < m.teams[i].length; ++p)
 		{
-			var player = {"id": m.teams[i][p], "angle": m.startAngle + (p + 1) * TWO_PI / m.teams[i].length};
-			player["x"] = 0.5 + (safeDist + p * groupedDistance) * cos(teamAngle);
-			player["z"] = 0.5 + (safeDist + p * groupedDistance) * sin(teamAngle);
-			players[m.teams[i][p]] = player;
+			players[m.teams[i][p]] = {
+				"id": m.teams[i][p],
+				"angle": m.startAngle + (p + 1) * TWO_PI / m.teams[i].length,
+				"x": 0.5 + (safeDist + p * groupedDistance) * cos(teamAngle),
+				"z": 0.5 + (safeDist + p * groupedDistance) * sin(teamAngle)
+			};
 			createBase(players[m.teams[i][p]], false)
 		}
 	}
@@ -1044,14 +1044,16 @@ function placeLine(playerIDs, distance, groupedDistance)
 /////////////////////////////////////////
 function placeRadial(playerIDs, distance)
 {
-	var players = new Array();
+	var players = [];
 
 	for (var i = 0; i < m.numPlayers; ++i)
 	{
-		players[i] = {"id": playerIDs[i], "angle": m.startAngle + i * TWO_PI / m.numPlayers};
-		players[i]["x"] = 0.5 + distance * cos(players[i].angle);
-		players[i]["z"] = 0.5 + distance * sin(players[i].angle);
-
+		players[i] = {
+			"id": playerIDs[i],
+			"angle": m.startAngle + i * TWO_PI / m.numPlayers,
+			"x": 0.5 + distance * cos(players[i].angle),
+			"z": 0.5 + distance * sin(players[i].angle)
+		};
 		createBase(players[i])
 	}
 
@@ -1068,8 +1070,8 @@ function placeRadial(playerIDs, distance)
 /////////////////////////////////////////
 function placeRandom(playerIDs)
 {
-	var players = new Array();
-	var placed = new Array();
+	var players = [];
+	var placed = [];
 
 	for (var i = 0; i < m.numPlayers; ++i)
 	{
@@ -1107,7 +1109,13 @@ function placeRandom(playerIDs)
 			continue;
 		}
 
-		players[i] = {"id": playerIDs[i], "angle": playerAngle, "x": x, "z": z};
+		players[i] = {
+			"id": playerIDs[i],
+			"angle": playerAngle,
+			"x": x,
+			"z": z
+		};
+
 		placed.push(players[i]);
 	}
 
@@ -1130,7 +1138,7 @@ function placeRandom(playerIDs)
 /////////////////////////////////////////
 function placeStronghold(playerIDs, distance, groupedDistance)
 {
-	var players = new Array();
+	var players = [];
 
 	for (var i = 0; i < m.teams.length; ++i) {
 		var teamAngle = m.startAngle + (i + 1) * TWO_PI / m.teams.length;
@@ -1152,10 +1160,12 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 		// create player base
 		for (var p = 0; p < m.teams[i].length; ++p)
 		{
-			var player = {"id": m.teams[i][p], "angle": m.startAngle + (p + 1) * TWO_PI / m.teams[i].length};
-			player["x"] = fractionX + groupedDistance * cos(player.angle);
-			player["z"] = fractionZ + groupedDistance * sin(player.angle);
-			players[m.teams[i][p]] = player;
+			players[m.teams[i][p]] = {
+				"id": m.teams[i][p],
+				"angle": m.startAngle + (p + 1) * TWO_PI / m.teams[i].length,
+				"x": fractionX + groupedDistance * cos(player.angle),
+				"z": fractionZ + groupedDistance * sin(player.angle)
+			};
 			createBase(players[m.teams[i][p]], false)
 		}
 	}
@@ -1167,67 +1177,88 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 // Constants
 ///////////
 
-// terrains
 function constTerrains()
 {
-	var t = {};
-	t["mainTerrain"] = rBiomeT1();
-	t["forestFloor1"] = rBiomeT2();
-	t["forestFloor2"] = rBiomeT3();
-	t["cliff"] = rBiomeT4();
-	t["tier1Terrain"] = rBiomeT5();
-	t["tier2Terrain"] = rBiomeT6();
-	t["tier3Terrain"] = rBiomeT7();
-	t["hill"] = rBiomeT8();
-	t["dirt"] = rBiomeT9();
-	t["road"] = rBiomeT10();
-	t["roadWild"] = rBiomeT11();
-	t["tier4Terrain"] = rBiomeT12();
-	t["shoreBlend"] = rBiomeT13();
-	t["shore"] = rBiomeT14();
-	t["water"] = rBiomeT15();
-	return t;
+	return {
+		"mainTerrain": rBiomeT1(),
+		"forestFloor1": rBiomeT2(),
+		"forestFloor2": rBiomeT3(),
+		"cliff": rBiomeT4(),
+		"tier1Terrain": rBiomeT5(),
+		"tier2Terrain": rBiomeT6(),
+		"tier3Terrain": rBiomeT7(),
+		"hill": rBiomeT8(),
+		"dirt": rBiomeT9(),
+		"road": rBiomeT10(),
+		"roadWild": rBiomeT11(),
+		"tier4Terrain": rBiomeT12(),
+		"shoreBlend": rBiomeT13(),
+		"shore": rBiomeT14(),
+		"water": rBiomeT15()
+	};
 }
 
 // gaia entities
 function constGaia()
 {
-	var g = {};
-	g["tree1"] = rBiomeE1();
-	g["tree2"] = rBiomeE2();
-	g["tree3"] = rBiomeE3();
-	g["tree4"] = rBiomeE4();
-	g["tree5"] = rBiomeE5();
-	g["fruitBush"] = rBiomeE6();
-	g["chicken"] = rBiomeE7();
-	g["mainHuntableAnimal"] = rBiomeE8();
-	g["fish"] = rBiomeE9();
-	g["secondaryHuntableAnimal"] = rBiomeE10();
-	g["stoneLarge"] = rBiomeE11();
-	g["stoneSmall"] = rBiomeE12();
-	g["metalLarge"] = rBiomeE13();
-	return g;
+	return {
+		"tree1": rBiomeE1(),
+		"tree2": rBiomeE2(),
+		"tree3": rBiomeE3(),
+		"tree4": rBiomeE4(),
+		"tree5": rBiomeE5(),
+		"fruitBush": rBiomeE6(),
+		"chicken": rBiomeE7(),
+		"mainHuntableAnimal": rBiomeE8(),
+		"fish": rBiomeE9(),
+		"secondaryHuntableAnimal": rBiomeE10(),
+		"stoneLarge": rBiomeE11(),
+		"stoneSmall": rBiomeE12(),
+		"metalLarge": rBiomeE13()
+	};
 }
 
-// props
 function constProps()
 {
-	var p = {};
-	p["grass"] = rBiomeA1();
-	p["grassShort"] = rBiomeA2();
-	p["reeds"] = rBiomeA3();
-	p["lillies"] = rBiomeA4();
-	p["rockLarge"] = rBiomeA5();
-	p["rockMedium"] = rBiomeA6();
-	p["bushMedium"] = rBiomeA7();
-	p["bushSmall"] = rBiomeA8();
-	return p;
+	return {
+		"grass": rBiomeA1(),
+		"grassShort": rBiomeA2(),
+		"reeds": rBiomeA3(),
+		"lillies": rBiomeA4(),
+		"rockLarge": rBiomeA5(),
+		"rockMedium": rBiomeA6(),
+		"bushMedium": rBiomeA7(),
+		"bushSmall": rBiomeA8()
+	};
 }
 
 // tile classes
 function constTileClasses(newClasses)
 {
-	var defaultClasses = ["animals", "baseResource", "berries", "bluff", "bluffSlope", "dirt", "fish", "food", "forest", "hill", "land", "map", "metal", "mountain", "player", "ramp", "rock", "settlement", "spine", "valley", "water"];
+	var defaultClasses = [
+		"animals",
+		"baseResource",
+		"berries",
+		"bluff",
+		"bluffSlope",
+		"dirt",
+		"fish",
+		"food",
+		"forest",
+		"hill",
+		"land",
+		"map",
+		"metal",
+		"mountain",
+		"player",
+		"ramp",
+		"rock",
+		"settlement",
+		"spine",
+		"valley",
+		"water"
+	];
+
 	var classes = defaultClasses;
 	if (newClasses !== undefined)
 		classes = defaultClasses.concat(newClasses)
@@ -1242,27 +1273,32 @@ function constTileClasses(newClasses)
 // forests
 function constForests()
 {
-	var f = {};
-	f["forest1"] = [t.forestFloor2 + TERRAIN_SEPARATOR + g.tree1, t.forestFloor2 + TERRAIN_SEPARATOR + g.tree2, t.forestFloor2];
-	f["forest2"] = [t.forestFloor1 + TERRAIN_SEPARATOR + g.tree4, t.forestFloor1 + TERRAIN_SEPARATOR + g.tree5, t.forestFloor1];
-	return f;
+	return {
+		"forest1": [t.forestFloor2 + TERRAIN_SEPARATOR + g.tree1, t.forestFloor2 + TERRAIN_SEPARATOR + g.tree2, t.forestFloor2],
+		"forest2": [t.forestFloor1 + TERRAIN_SEPARATOR + g.tree4, t.forestFloor1 + TERRAIN_SEPARATOR + g.tree5, t.forestFloor1]
+	};
 }
 
 // put some useful map settings into an object
 function getSettings(biomeID)
 {
-	var m = {};
 	setBiome(biomeID);
-	m["biome"] = biomeID;
-	m["numPlayers"] = getNumPlayers();
-	m["mapSize"] = getMapSize();
-	m["mapArea"] = m["mapSize"] * m["mapSize"];
-	m["centerOfMap"] = floor(m["mapSize"] / 2);
-	m["mapHeight"] = getHeight(m["centerOfMap"], m["centerOfMap"]);
-	m["mapRadius"] = -PI / 4;
-	m["teams"] = getTeams(m["numPlayers"]);
-	m["startAngle"] = randFloat(0, TWO_PI);
-	return m;
+
+	let mapSize = getMapSize();
+	let center = floor(mapSize / 2);
+	let numPlayers = getNumPlayers();
+
+	return {
+		"biome": biomeID,
+		"numPlayers": numPlayers,
+		"mapSize": mapSize,
+		"mapArea": mapSize * mapSize,
+		"centerOfMap": center,
+		"mapHeight": getHeight(center, center),
+		"mapRadius": -PI / 4,
+		"teams": getTeams(numPlayers),
+		"startAngle": randFloat(0, TWO_PI)
+	};
 }
 
 ///////////

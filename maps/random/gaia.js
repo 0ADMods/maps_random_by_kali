@@ -866,8 +866,15 @@ function addStone(constraint, size, deviation, fill)
 
 	var offset = getRandomDeviation(size, deviation);
 	var count = 1 + scaleByMapSize(20, 20) * fill;
-	var mines = [[new SimpleObject(g.stoneSmall, 0, 2 * offset, 0, 4 * offset), new SimpleObject(g.stoneLarge, 1 * offset, 1 * offset, 0, 4 * offset)],
-  [new SimpleObject(g.stoneSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)]];
+	var mines = [
+		[
+			new SimpleObject(g.stoneSmall, 0, 2 * offset, 0, 4 * offset),
+			new SimpleObject(g.stoneLarge, 1 * offset, 1 * offset, 0, 4 * offset)
+		],
+		[
+			new SimpleObject(g.stoneSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)
+		]
+	];
 
 	for (var i = 0; i < mines.length; ++i)
 	{
@@ -967,7 +974,7 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 			var valid = g_Map.validT(x + corners.minX, z + corners.minZ);
 
 			if (valid)
-				count++;
+				++count;
 
 			if (!insideBluff && valid)
 				insideBluff = true;
