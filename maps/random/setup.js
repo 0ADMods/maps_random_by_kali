@@ -103,8 +103,8 @@ function initTerrain(terrain, tc, elevation)
 	m.mapHeight = getHeight(m["centerOfMap"], m["centerOfMap"]);
 }
 
-// find the distance between two points
-function separation(x1, z1, x2, z2)
+// euclidian distance between two points
+function euclid_distance(x1, z1, x2, z2)
 {
 	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
 }
@@ -1082,7 +1082,7 @@ function placeRandom(playerIDs)
 		var tooClose = false;
 		for (var j = 0; j < placed.length; ++j)
 		{
-			var sep = separation(x, z, placed[j].x, placed[j].z);
+			var sep = euclid_distance(x, z, placed[j].x, placed[j].z);
 			if (sep < 0.25)
 			{
 				tooClose = true;

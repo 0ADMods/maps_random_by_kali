@@ -1097,7 +1097,10 @@ function createBoundingBox(points, corners)
 		for (var l = 0; l < length; ++l)
 		{
 			var curHeight = g_Map.getHeight(w + corners.minX, l + corners.minZ);
-			bb[w][l] = {"height": curHeight, "isFeature": false};
+			bb[w][l] = {
+				"height": curHeight,
+				"isFeature": false
+			};
 		}
 	}
 
@@ -1180,7 +1183,15 @@ function findClearLine(bb, corners, angle)
 			var lastZ = z2 - zOffset;
 			var midX = floor((x + lastX) / 2);
 			var midZ = floor((z + lastZ) / 2);
-			clearLine = {"x1": x, "z1": z, "x2": lastX, "z2": lastZ, "midX": midX, "midZ": midZ, "height": m.mapHeight};
+			clearLine = {
+				"x1": x,
+				"z1": z,
+				"x2": lastX,
+				"z2": lastZ,
+				"midX": midX,
+				"midZ": midZ,
+				"height": m.mapHeight
+			};
 		}
 
 		if (clear && (angle == 1 || angle == 2))
