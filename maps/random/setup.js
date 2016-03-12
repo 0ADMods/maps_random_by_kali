@@ -1,16 +1,9 @@
-///////////
-// define the map constants
-///////////
 const m = getSettings(randInt(1, 8));
 const t = constTerrains();
 const g = constGaia();
 const p = constProps();
 const tc = constTileClasses();
 const f = constForests();
-
-///////////
-// Gaia
-///////////
 
 // adds an array of elements to the map
 function addElements(els)
@@ -100,7 +93,7 @@ function initTerrain(terrain, tc, elevation)
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc)], null);
 
 	// update the map height
-	m.mapHeight = getHeight(m["centerOfMap"], m["centerOfMap"]);
+	m.mapHeight = getHeight(m.centerOfMap, m.centerOfMap);
 }
 
 // euclidian distance between two points
@@ -827,7 +820,7 @@ function createBase(player, walls)
 	if ((walls || walls === undefined) && m.mapSize > 192)
 		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius);
 	else
-		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius, {'iberWall': false});
+		placeCivDefaultEntities(fx, fz, player.id, m.mapRadius, { 'iberWall': false });
 
 	// create the city patch
 	var cityRadius = scaleByMapSize(15, 25) / 3;
@@ -903,7 +896,7 @@ function createBase(player, walls)
 
 	// create grass tufts
 	var num = hillSize / 250;
-	for (var j = 0; j < num; j++)
+	for (var j = 0; j < num; ++j)
 	{
 		var gAngle = randFloat(0, TWO_PI);
 		var gDist = m.mapRadius - (5 + randInt(7));
@@ -930,15 +923,15 @@ function getTeams(numPlayers)
 		{
 			teams[8 - ffaPlayers] = [];
 			teams[8 - ffaPlayers].push(i + 1);
-			ffaPlayers++;
-			numTeams++;
+			++ffaPlayers;
+			++numTeams;
 		}
 		else
 		{
 			if (teams[team] == null)
 			{
 				teams[team] = [];
-				numTeams++;
+				++numTeams;
 			}
 			teams[team].push(i+1);
 		}
@@ -952,7 +945,7 @@ function getTeams(numPlayers)
 		if (teams[i] !== undefined)
 		{
 			setTeams[currentTeam] = teams[i];
-			currentTeam++;
+			++currentTeam;
 		}
 	}
 
@@ -1140,7 +1133,8 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 {
 	var players = [];
 
-	for (var i = 0; i < m.teams.length; ++i) {
+	for (var i = 0; i < m.teams.length; ++i)
+	{
 		var teamAngle = m.startAngle + (i + 1) * TWO_PI / m.teams.length;
 		var fractionX = 0.5 + distance * cos(teamAngle);
 		var fractionZ = 0.5 + distance * sin(teamAngle);
@@ -1310,13 +1304,14 @@ function randArray(array)
 {
 	var currentIndex = array.length, temporaryValue, randomIndex;
 
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
+	while (0 !== currentIndex)
+	{
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
 
 	return array;
 }

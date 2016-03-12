@@ -67,7 +67,7 @@ function addBluffs(constraint, size, deviation, fill)
 		while (bluffCat != 0 && retries < 4)
 		{
 			bluffCat = unreachableBluff(bb, corners, baseLine, endLine);
-			angle++;
+			++angle;
 			if (angle > 3)
 				angle = 0;
 
@@ -77,7 +77,7 @@ function addBluffs(constraint, size, deviation, fill)
 
 			baseLine = findClearLine(bb, corners, angle);
 			endLine = findClearLine(bb, corners, opAngle);
-			retries++;
+			++retries;
 		}
 
 		// found a bluff that can't be accessed, so turn it into a plateau
@@ -479,7 +479,7 @@ function addLayeredPatches(constraint, size, deviation, fill)
 	var count = fill * scaleByMapSize(15, 45);
 	var sizes = [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)];
 
-	for (var i = 0; i < sizes.length; i++)
+	for (var i = 0; i < sizes.length; ++i)
 	{
 		var offset = getRandomDeviation(size, deviation);
 		var patchMinRadius = floor(minRadius * offset);
