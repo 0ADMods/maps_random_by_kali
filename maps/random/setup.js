@@ -714,49 +714,23 @@ function setBiome(biomeID)
 
 }
 
-///////////
-// Defaults
-///////////
-
 // default to 10% deviation
 function deviationOrDefault(deviation)
 {
-	return optionalParam(deviation, 0.1);
-}
-
-// default to 0.3 distance
-function distanceOrDefault(distance)
-{
-	return optionalParam(distance, 0.3);
+	return deviation || 0.1;
 }
 
 // default to filling 100% of the map
 function fillOrDefault(fill)
 {
-	return optionalParam(fill, 1)
-}
-
-// default to 0.05 distance between teammates
-function groupedDistanceOrDefault(groupedDistance)
-{
-	return optionalParam(groupedDistance, 0.05);
+	return fill || 1;
 }
 
 // default to 100% of normal size
 function sizeOrDefault(size)
 {
-	return optionalParam(size, 1);
+	return size || 1;
 }
-
-// default to "radial" placement
-function typeOrDefault(type)
-{
-	return optionalParam(type, "radial");
-}
-
-///////////
-// Players
-///////////
 
 /////////////////////////////////////////
 // addBases
@@ -769,9 +743,10 @@ function typeOrDefault(type)
 /////////////////////////////////////////
 function addBases(type, distance, groupedDistance)
 {
-	type = typeOrDefault(type);
-	distance = distanceOrDefault(distance);
-	groupedDistance = groupedDistanceOrDefault(groupedDistance);
+	type = type || "radial";
+	distance = distance || 0.3;
+	groupedDistance = groupedDistance || 0.05;
+
 	var playerIDs = randomizePlayers();
 	var players = {};
 
@@ -1330,10 +1305,4 @@ function getRandomDeviation(base, randomness)
 
 	var deviation = base + (-1 * randomness + (randInt(20 * randomness) + 0.0001) / 10);
 	return floor(deviation * 100) / 100;
-}
-
-// return a parameteter or it's default value
-function optionalParam(param, defaultVal)
-{
-	return param || defaultVal;
 }

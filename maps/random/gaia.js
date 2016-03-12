@@ -955,7 +955,8 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 		return 1;
 
 	// if the end points aren't on the tilemap
-	if ((!g_Map.validT(endLine.x1, endLine.z1) || checkIfInClass(endLine.x1, endLine.z1, tc.player)) && (!g_Map.validT(endLine.x2, endLine.z2) || checkIfInClass(endLine.x2, endLine.z2, tc.player)))
+	if ((!g_Map.validT(endLine.x1, endLine.z1) || checkIfInClass(endLine.x1, endLine.z1, tc.player)) &&
+		(!g_Map.validT(endLine.x2, endLine.z2) || checkIfInClass(endLine.x2, endLine.z2, tc.player)))
 		return 2;
 
 	var minTilesInGroup = 1;
