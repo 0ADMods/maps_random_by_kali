@@ -1,14 +1,9 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
-///////////
-// setup the map
-///////////
-
 var randElevation = randInt(5);
-
 initTerrain(t.mainTerrain, tc.land, randElevation);
-var pos = getStartingPositions();
+
 var players = addBases("stronghold", 0.37, 0.04);
 
 // change the starting angle and add the players again
@@ -21,20 +16,11 @@ if (m.teams.length == 4)
 	rotation = PI + PI / 4;
 
 m.startAngle = m.startAngle + rotation;
+
 players = addBases("stronghold", 0.15, 0.04);
-RMS.SetProgress(20);
-
-///////////
-// customize the map
-///////////
-
 RMS.SetProgress(40);
-///////////
-// add terrain
-///////////
 
-// terrain features
-var features = [
+var terrain = randArray([
 	{
 		"func": addHills,
 		"tile": "tc.hill",
@@ -59,10 +45,8 @@ var features = [
 		"mixes": ["same", "similar"],
 		"amounts": ["tons"]
 	}
-];
-features = randArray(features);
+]);
 
-// decorative elements
 var decoration = [
 	{
 		"func": addLayeredPatches,
@@ -80,19 +64,13 @@ var decoration = [
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	}
-]
+];
 
 // add decorative elements to the end of the terrain rendering
-var terrain = features.concat(decoration);
-addElements(terrain);
+addElements(terrain.concat(decoration));
 RMS.SetProgress(60);
 
-///////////
-// add gaia
-///////////
-
-// primary resources
-var primaryRes = [
+var primaryRes = randArray([
 	{
 		"func": addMetal,
 		"tile": "tc.metal",
@@ -117,11 +95,9 @@ var primaryRes = [
 		"mixes": allMixes,
 		"amounts": ["few", "normal", "many", "tons"]
 	}
-];
-primaryRes = randArray(primaryRes);
+]);
 
-// secondary resources
-var secondaryRes = [
+var secondaryRes = randArray([
 	{
 		"func": addBerries,
 		"tile": "tc.berries",
@@ -146,19 +122,8 @@ var secondaryRes = [
 		"mixes": allMixes,
 		"amounts": ["normal", "many", "tons"]
 	}
-];
-secondaryRes = randArray(secondaryRes);
+]);
 
-var gaia = primaryRes.concat(secondaryRes);
-addElements(gaia);
-RMS.SetProgress(80);
-
-///////////
-// export the map
-///////////
-RMS.SetProgress(100);
+addElements(primaryRes.concat(secondaryRes));
+RMS.SetProgress(90);
 ExportMap();
-
-///////////
-// Custom map functions
-///////////
