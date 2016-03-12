@@ -2,10 +2,6 @@ const allSizes = ["tiny", "small", "normal", "big", "huge"];
 const allMixes = ["same", "similar", "normal", "varied", "unique"];
 const allAmounts = ["scarce", "few", "normal", "many", "tons"];
 
-///////////
-// Terrain
-///////////
-
 /////////////////////////////////////////
 // addBluffs
 //
@@ -120,7 +116,7 @@ function addBluffs(constraint, size, deviation, fill)
 		fadeToGround(bb, corners.minX, corners.minZ, endLine.height);
 	}
 
-	var bluffHills = [{
+	addElements([{
 		"func": addHills,
 		"tile": "tc.hill",
 		"avoid": [tc.hill, 3, tc.mountain, 2, tc.player, 20, tc.valley, 2, tc.water, 2],
@@ -128,10 +124,9 @@ function addBluffs(constraint, size, deviation, fill)
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
-	}];
-	addElements(bluffHills);
+	}]);
 
-	var bluffPatches = [
+	addElements([
 		{
 			"func": addLayeredPatches,
 			"tile": "tc.dirt",
@@ -141,10 +136,9 @@ function addBluffs(constraint, size, deviation, fill)
 			"mixes": ["normal"],
 			"amounts": ["normal"]
 		}
-	]
-	addElements(bluffPatches);
+	]);
 
-	var bluffDecor = [
+	addElements([
 		{
 			"func": addDecoration,
 			"tile": "tc.dirt",
@@ -154,10 +148,9 @@ function addBluffs(constraint, size, deviation, fill)
 			"mixes": ["normal"],
 			"amounts": ["normal"]
 		}
-	]
-	addElements(bluffDecor);
+	]);
 
-	var bluffHills = [{
+	addElements([{
 		"func": addHills,
 		"tile": "tc.hill",
 		"avoid": [tc.hill, 3, tc.player, 20, tc.valley, 2, tc.water, 2],
@@ -165,10 +158,9 @@ function addBluffs(constraint, size, deviation, fill)
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
-	}];
-	addElements(bluffHills);
+	}]);
 
-	var bluffPatches = [
+	addElements([
 		{
 			"func": addLayeredPatches,
 			"tile": "tc.dirt",
@@ -178,10 +170,9 @@ function addBluffs(constraint, size, deviation, fill)
 			"mixes": ["normal"],
 			"amounts": ["normal"]
 		}
-	]
-	addElements(bluffPatches);
+	]);
 
-	var bluffDecor = [
+	addElements([
 		{
 			"func": addDecoration,
 			"tile": "tc.dirt",
@@ -191,10 +182,9 @@ function addBluffs(constraint, size, deviation, fill)
 			"mixes": ["normal"],
 			"amounts": ["normal"]
 		}
-	]
-	addElements(bluffDecor);
+	]);
 
-	var primaryRes = [
+	addElements(randArray([
 		{
 			"func": addForests,
 			"tile": "tc.forest",
@@ -222,11 +212,9 @@ function addBluffs(constraint, size, deviation, fill)
 			"mixes": ["same"],
 			"amounts": allAmounts
 		}
-	];
-	primaryRes = randArray(primaryRes);
-	addElements(primaryRes);
+	]));
 
-	var secondaryRes = [
+	addElements(randArray([
 		{
 			"func": addStragglerTrees,
 			"tile": "tc.forest",
@@ -254,9 +242,7 @@ function addBluffs(constraint, size, deviation, fill)
 			"mixes": allMixes,
 			"amounts": allAmounts
 		}
-	];
-	secondaryRes = randArray(secondaryRes);
-	addElements(secondaryRes);
+	]));
 }
 
 /////////////////////////////////////////
@@ -397,7 +383,7 @@ function addElevation(constraint, el)
 /////////////////////////////////////////
 function addHills(constraint, size, deviation, fill)
 {
-	var hill = {
+	addElevation(constraint, {
 		"class": tc.hill,
 		"painter": [t.mainTerrain, t.mainTerrain],
 		"size": size,
@@ -410,8 +396,7 @@ function addHills(constraint, size, deviation, fill)
 		"minElevation": 6,
 		"maxElevation": 12,
 		"steepness": 1.5
-	}
-	addElevation(constraint, hill);
+	});
 }
 
 /////////////////////////////////////////
@@ -438,11 +423,9 @@ function addLakes(constraint, size, deviation, fill)
 	if (m.biome == 8)
 		lakeTile = t.shore;
 
-	var painter = [lakeTile, lakeTile];
-
-	var lake = {
+	addElevation(constraint, {
 		"class": tc.water,
-		"painter": painter,
+		"painter": [lakeTile, lakeTile],
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
@@ -453,10 +436,9 @@ function addLakes(constraint, size, deviation, fill)
 		"minElevation": -15,
 		"maxElevation": -2,
 		"steepness": 1.5
-	}
-	addElevation(constraint, lake);
+	});
 
-	var lakeFish = [
+	addElements([
 		{
 			"func": addFish,
 			"tile": "tc.fish",
@@ -466,8 +448,7 @@ function addLakes(constraint, size, deviation, fill)
 			"mixes": allMixes,
 			"amounts": ["normal", "many", "tons"]
 		}
-	]
-	addElements(lakeFish);
+	]);
 
 	var group = new SimpleGroup([new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, tc.dirt)
 	createObjectGroups(group, 0, [stayClasses(tc.water, 1), borderClasses(tc.water, 4, 3)], 1000, 100);
@@ -531,7 +512,7 @@ function addLayeredPatches(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addMountains(constraint, size, deviation, fill)
 {
-	var mountain = {
+	addElevation(constraint, {
 		"class": tc.mountain,
 		"painter": [t.cliff, t.hill],
 		"size": size,
@@ -544,8 +525,7 @@ function addMountains(constraint, size, deviation, fill)
 		"minElevation": 100,
 		"maxElevation": 120,
 		"steepness": 4
-	}
-	addElevation(constraint, mountain);
+	});
 }
 
 /////////////////////////////////////////
@@ -572,7 +552,7 @@ function addPlateaus(constraint, size, deviation, fill)
 	if (m.biome == 8)
 		plateauTile = t.tier4Terrain;
 
-	var plateau = {
+	addElevation(constraint, {
 		"class": tc.mountain,
 		"painter": [t.cliff, plateauTile],
 		"size": size,
@@ -585,8 +565,7 @@ function addPlateaus(constraint, size, deviation, fill)
 		"minElevation": 20,
 		"maxElevation": 30,
 		"steepness": 8
-	}
-	addElevation(constraint, plateau);
+	});
 }
 
 /////////////////////////////////////////
@@ -686,7 +665,7 @@ function addValleys(constraint, size, deviation, fill)
 	if (m.biome == 8)
 		valleyFloor = t.tier3Terrain;
 
-	var valley = {
+	addElevation(constraint, {
 		"class": tc.valley,
 		"painter": [valleySlope, valleyFloor],
 		"size": size,
@@ -699,8 +678,7 @@ function addValleys(constraint, size, deviation, fill)
 		"minElevation": minElevation,
 		"maxElevation": -2,
 		"steepness": 4
-	}
-	addElevation(constraint, valley);
+	});
 }
 
 ///////////
@@ -1018,7 +996,7 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 			var valid = g_Map.validT(x + corners.minX, z + corners.minZ);
 
 			if (valid)
-				count++;
+				++count;
 
 			if (!insideBluff && valid)
 				insideBluff = true;
@@ -1138,7 +1116,6 @@ function fadeToGround(bb, minX, minZ, elevation)
 {
 	var ground = createTerrain(t.mainTerrain);
 	for (var x = 0; x < bb.length; ++x)
-	{
 		for (var z = 0; z < bb[x].length; ++z)
 		{
 			var pt = bb[x][z];
@@ -1149,7 +1126,6 @@ function fadeToGround(bb, minX, minZ, elevation)
 				ground.place(x + minX, z + minZ);
 			}
 		}
-	}
 }
 
 // find a 45 degree line in a bounding box that does not intersect any terrain feature
@@ -1243,7 +1219,7 @@ function findCorners(points)
 			maxZ = pt.z
 	}
 
-	return {"minX": minX, "minZ": minZ, "maxX": maxX, "maxZ": maxZ}
+	return { "minX": minX, "minZ": minZ, "maxX": maxX, "maxZ": maxZ };
 }
 
 // finds the average elevation around a point
@@ -1252,7 +1228,6 @@ function smoothElevation(x, z)
 	var min = g_Map.getHeight(x, z);
 
 	for (var xOffset = -1; xOffset <= 1; ++xOffset)
-	{
 		for (var zOffset = -1; zOffset <= 1; ++zOffset)
 		{
 			var thisX = x + xOffset;
@@ -1264,7 +1239,6 @@ function smoothElevation(x, z)
 			if (height < min)
 				min = height;
 		}
-	}
 
 	return min;
 }
@@ -1273,7 +1247,6 @@ function smoothElevation(x, z)
 function nextToFeature(bb, x, z)
 {
 	for (var xOffset = -1; xOffset <= 1; ++xOffset)
-	{
 		for (var zOffset = -1; zOffset <= 1; ++zOffset)
 		{
 			var thisX = x + xOffset;
@@ -1284,7 +1257,6 @@ function nextToFeature(bb, x, z)
 			if (bb[thisX][thisZ].isFeature)
 				return true;
 		}
-	}
 
 	return false;
 }

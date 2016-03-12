@@ -779,7 +779,7 @@ function addBases(type, distance, groupedDistance)
 	type = typeOrDefault(type);
 	distance = distanceOrDefault(distance);
 	groupedDistance = groupedDistanceOrDefault(groupedDistance);
-	var playerIDs = randomizePlayers()
+	var playerIDs = randomizePlayers();
 	var players = {};
 
 	switch(type)
