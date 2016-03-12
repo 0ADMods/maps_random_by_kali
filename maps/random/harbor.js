@@ -1,35 +1,21 @@
 RMS.LoadLibrary("rmgen");
 
-///////////
-// initialize the map
-///////////
 log("Initializing map...");
 InitMap();
 
-
-///////////
-// setup the map
-///////////
 initTerrain(t.mainTerrain, tc.land, 2);
 var players = addBases("radial", 0.38);
 RMS.SetProgress(20);
 
-///////////
-// customize the map
-///////////
 addLake();
-if(m.mapSize >= 192) {
+
+if(m.mapSize >= 192)
 	addHarbors(players);
-}
+
 addSpines();
 RMS.SetProgress(40);
 
-///////////
-// add terrain
-///////////
-
-// terrain features
-var features = [
+addElements(randArray([
 	{
 		"func": addHills,
 		"tile": "tc.hill",
@@ -54,11 +40,10 @@ var features = [
 		"mixes": allMixes,
 		"amounts": allAmounts
 	}
-];
-features = randArray(features);
+]));
+RMS.SetProgress(60);
 
-// decorative elements
-var decoration = [
+addElements([
 	{
 		"func": addLayeredPatches,
 		"tile": "tc.dirt",
@@ -75,19 +60,10 @@ var decoration = [
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	}
-]
+]);
+RMS.SetProgress(70);
 
-// add decorative elements to the end of the terrain rendering
-var terrain = features.concat(decoration);
-addElements(terrain);
-RMS.SetProgress(60);
-
-///////////
-// add gaia
-///////////
-
-// primary resources
-var primaryRes = [
+addElements(randArray([
 	{
 		"func": addMetal,
 		"tile": "tc.metal",
@@ -112,11 +88,10 @@ var primaryRes = [
 		"mixes": allMixes,
 		"amounts": ["few", "normal", "many", "tons"]
 	}
-];
-primaryRes = randArray(primaryRes);
+]));
+RMS.SetProgress(80);
 
-// secondary resources
-var secondaryRes = [
+addElements(randArray([
 	{
 		"func": addBerries,
 		"tile": "tc.berries",
@@ -141,22 +116,10 @@ var secondaryRes = [
 		"mixes": allMixes,
 		"amounts": ["normal", "many", "tons"]
 	}
-];
-secondaryRes = randArray(secondaryRes);
+]));
+RMS.SetProgress(90);
 
-var gaia = primaryRes.concat(secondaryRes);
-addElements(gaia);
-RMS.SetProgress(80);
-
-///////////
-// export the map
-///////////
-RMS.SetProgress(100);
 ExportMap();
-
-///////////
-// Custom map functions
-///////////
 
 // add the center lake
 function addLake() {

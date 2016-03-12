@@ -1,27 +1,17 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
-///////////
-// setup the map
-///////////
-
 initTerrain(t.cliff, tc.land, 50);
+RMS.SetProgress(10);
+
 var pos = getStartingPositions();
 var players = addBases("radial", 0.4, pos.separation);
 RMS.SetProgress(20);
 
-///////////
-// customize the map
-///////////
 createSunkenTerrain(players);
-
 RMS.SetProgress(40);
-///////////
-// add terrain
-///////////
 
-// decorative elements
-var decoration = [
+addElements([
 	{
 		"func": addLayeredPatches,
 		"tile": "tc.dirt",
@@ -85,15 +75,10 @@ var decoration = [
 		"mixes": ["normal"],
 		"amounts": ["scarce"]
 	}
-];
-addElements(decoration);
+]);
 RMS.SetProgress(60);
 
-///////////
-// add gaia
-///////////
-// primary resources
-var primaryRes = [
+addElements(randArray([
 	{
 		"func": addMetal,
 		"tile": "tc.metal",
@@ -148,11 +133,10 @@ var primaryRes = [
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	}
-];
-primaryRes = randArray(primaryRes);
+]));
+RMS.SetProgress(70);
 
-// secondary resources
-var secondaryRes = [
+addElements(randArray([
 	{
 		"func": addBerries,
 		"tile": "tc.berries",
@@ -216,22 +200,10 @@ var secondaryRes = [
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	}
-];
-secondaryRes = randArray(secondaryRes);
+]));
+RMS.SetProgress(90);
 
-var gaia = primaryRes.concat(secondaryRes);
-addElements(gaia);
-RMS.SetProgress(80);
-
-///////////
-// export the map
-///////////
-RMS.SetProgress(100);
 ExportMap();
-
-///////////
-// Custom map functions
-///////////
 
 // create the sunken terrain
 function createSunkenTerrain(players)

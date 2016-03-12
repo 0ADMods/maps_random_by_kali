@@ -1,6 +1,5 @@
 RMS.LoadLibrary("rmgen");
 
-//random terrain textures
 var random_terrain = randomizeBiome();
 
 const tMainTerrain = rBiomeT1();
@@ -48,17 +47,12 @@ const pForest1 = [tForestFloor2 + TERRAIN_SEPARATOR + oTree1, tForestFloor2 + TE
 const pForest2 = [tForestFloor1 + TERRAIN_SEPARATOR + oTree4, tForestFloor1 + TERRAIN_SEPARATOR + oTree5, tForestFloor1];
 const BUILDING_ANGlE = -PI/4;
 
-// initialize map
-
 log("Initializing map...");
-
 InitMap();
 
 const numPlayers = getNumPlayers();
 const mapSize = getMapSize();
 const mapArea = mapSize*mapSize;
-
-// create tile classes
 
 var clPlayer = createTileClass();
 var clHill = createTileClass();
@@ -73,14 +67,12 @@ var clSettlement = createTileClass();
 var clLand = createTileClass();
 
 for (var ix = 0; ix < mapSize; ix++)
-{
 	for (var iz = 0; iz < mapSize; iz++)
 	{
 		var x = ix / (mapSize + 1.0);
 		var z = iz / (mapSize + 1.0);
 			placeTerrain(ix, iz, tMainTerrain);
 	}
-}
 
 // some constants
 var radius = scaleByMapSize(15,25);
@@ -344,8 +336,6 @@ for(var i = 0; i < 9; i++) {
 
 RMS.SetProgress(85);
 
-// create upper minerals
-// create stone quarries
 createMines(
 [
 	[new SimpleObject(oStoneLarge, 1,1, 1,numPlayers)], [new SimpleObject(oStoneSmall, 2,2, 2,numPlayers * 2)]
@@ -355,7 +345,6 @@ clRock
 )
 
 log("Creating metal mines...");
-// create large metal quarries
 createMines(
 [
 	[new SimpleObject(oMetalLarge, 1,1, 1,numPlayers)]
@@ -364,7 +353,6 @@ avoidClasses(clWater, 5, clForest, 1, clPlayer, 20, clMetal, 10, clRock, 5, clHi
 clMetal
 )
 
-// create the center bounty
 group = new SimpleGroup(
 	[new SimpleObject(oMetalLarge,1,3,0,40)],
 	true, clBaseResource, centerOfMap, centerOfMap
@@ -377,10 +365,8 @@ group = new SimpleGroup(
 );
 createObjectGroup(group, 0, avoidClasses(clBaseResource, 5));
 
-// create bumps
 createBumps();
 
-// create lower food
 createFood(
 	[
 		[new SimpleObject(oFruitBush, 5,6, 1,5)],
@@ -396,7 +382,6 @@ createFood(
 	clFood
 );
 
-// create upper food
 createFood(
 	[
 		[new SimpleObject(oFruitBush, 3,4, 0,5)],
@@ -418,7 +403,6 @@ if(mapSize < 256) {
 	forestDist = 12;
 }
 
-// create forests
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
  [avoidClasses(clPlayer, forestDist, clForest, forestDist, clHill, forestDist, clWater, 5), stayClasses(clLand, floor(forestDist/2))],
@@ -427,13 +411,11 @@ createForests(
  random_terrain
 );
 
-// create straggeler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
 createStragglerTrees(types, avoidClasses(clWater, 5, clForest, 10, clPlayer, 20, clMetal, 1, clRock, 1, clHill, 1));
 
 // create decoration
 var planetm = 1;
-
 if (random_terrain==7)
 	planetm = 8;
 
@@ -454,7 +436,5 @@ createDecoration
  ],
  avoidClasses(clForest, 2, clPlayer, 20, clHill, 5, clWater, 1, clFood, 1, clBaseResource, 2)
 );
-
-// Export map data
 
 ExportMap();

@@ -1,26 +1,14 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
-///////////
-// setup the map
-///////////
-
 initTerrain(t.mainTerrain, tc.land, 2);
+RMS.SetProgress(10);
+
 var pos = getStartingPositions();
 var players = addBases(pos.setup, pos.distance, pos.separation);
 RMS.SetProgress(20);
 
-///////////
-// customize the map
-///////////
-
-RMS.SetProgress(40);
-///////////
-// add terrain
-///////////
-
-// terrain features
-var features = [
+addElements([
 	{
 		"func": addBluffs,
 		"tile": "tc.bluff",
@@ -37,10 +25,10 @@ var features = [
 		"mixes": ["normal"],
 		"amounts": ["tons"]
 	}
-];
+]);
+RMS.SetProgress(30);
 
-// decorative elements
-var decoration = [
+addElements([
 	{
 		"func": addLayeredPatches,
 		"tile": "tc.dirt",
@@ -57,19 +45,10 @@ var decoration = [
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	}
-];
+]);
+RMS.SetProgress(50);
 
-// add decorative elements to the end of the terrain rendering
-var terrain = features.concat(decoration);
-addElements(terrain);
-RMS.SetProgress(60);
-
-///////////
-// add gaia
-///////////
-
-// primary resources
-var primaryRes = [
+addElements(randArray([
 	{
 		"func": addMetal,
 		"tile": "tc.metal",
@@ -97,11 +76,10 @@ var primaryRes = [
 		"mixes": ["normal"],
 		"amounts": ["tons"]
 	}
-];
-primaryRes = randArray(primaryRes);
+]);
+RMS.SetProgress(70);
 
-// secondary resources
-var secondaryRes = [
+addElements(randArray([
 	{
 		"func": addBerries,
 		"tile": "tc.berries",
@@ -153,19 +131,7 @@ var secondaryRes = [
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	}
-];
-secondaryRes = randArray(secondaryRes);
+]);
+RMS.SetProgress(90);
 
-var gaia = primaryRes.concat(secondaryRes);
-addElements(gaia);
-RMS.SetProgress(80);
-
-///////////
-// export the map
-///////////
-RMS.SetProgress(100);
 ExportMap();
-
-///////////
-// Custom map functions
-///////////

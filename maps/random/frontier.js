@@ -1,30 +1,18 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
-///////////
-// setup the map
-///////////
-
 // pick a random elevation with a bias towards lower elevations
 var randElevation = randInt(30);
 if (randElevation < 25)
 	randElevation = 1 + randInt(4);
 
 initTerrain(t.mainTerrain, tc.land, randElevation);
-var pos = getStartingPositions();
-var players = addBases(pos.setup, pos.distance, pos.separation);
 RMS.SetProgress(20);
 
-///////////
-// customize the map
-///////////
-
+var pos = getStartingPositions();
+addBases(pos.setup, pos.distance, pos.separation);
 RMS.SetProgress(40);
-///////////
-// add terrain
-///////////
 
-// terrain features
 var features = [
 	{
 		"func": addBluffs,
@@ -70,6 +58,7 @@ var valleys = [
 		"amounts": allAmounts
 	}
 ];
+
 var lakes = [
 	{
 		"func": addLakes,
@@ -80,16 +69,17 @@ var lakes = [
 		"amounts": allAmounts
 	}
 ];
+
 if (randElevation < 4)
 	features = features.concat(lakes);
 
 if (randElevation > 20)
 	features = features.concat(valleys);
 
-features = randArray(features);
+addElements(randArray(features));
+RMS.SetProgress(50);
 
-// decorative elements
-var decoration = [
+addElements([
 	{
 		"func": addLayeredPatches,
 		"tile": "tc.dirt",
@@ -106,19 +96,10 @@ var decoration = [
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	}
-];
-
-// add decorative elements to the end of the terrain rendering
-var terrain = features.concat(decoration);
-addElements(terrain);
+]);
 RMS.SetProgress(60);
 
-///////////
-// add gaia
-///////////
-
-// primary resources
-var primaryRes = [
+addElements(randArray([
 	{
 		"func": addMetal,
 		"tile": "tc.metal",
@@ -143,11 +124,10 @@ var primaryRes = [
 		"mixes": allMixes,
 		"amounts": ["few", "normal", "many", "tons"]
 	}
-];
-primaryRes = randArray(primaryRes);
+]));
+RMS.SetProgress(70);
 
-// secondary resources
-var secondaryRes = [
+addElements(randArray([
 	{
 		"func": addBerries,
 		"tile": "tc.berries",
@@ -172,19 +152,7 @@ var secondaryRes = [
 		"mixes": allMixes,
 		"amounts": ["normal", "many", "tons"]
 	}
-];
-secondaryRes = randArray(secondaryRes);
+]));
+RMS.SetProgress(90);
 
-var gaia = primaryRes.concat(secondaryRes);
-addElements(gaia);
-RMS.SetProgress(80);
-
-///////////
-// export the map
-///////////
-RMS.SetProgress(100);
 ExportMap();
-
-///////////
-// Custom map functions
-///////////

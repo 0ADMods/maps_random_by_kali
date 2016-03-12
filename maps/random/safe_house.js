@@ -1,6 +1,5 @@
 RMS.LoadLibrary("rmgen");
 
-//random terrain textures
 var random_terrain = randomizeBiome();
 
 const tMainTerrain = rBiomeT1();
@@ -48,8 +47,6 @@ const pForest1 = [tForestFloor2 + TERRAIN_SEPARATOR + oTree1, tForestFloor2 + TE
 const pForest2 = [tForestFloor1 + TERRAIN_SEPARATOR + oTree4, tForestFloor1 + TERRAIN_SEPARATOR + oTree5, tForestFloor1];
 const BUILDING_ANGlE = -PI/4;
 
-// initialize map
-
 log("Initializing map...");
 
 InitMap();
@@ -57,8 +54,6 @@ InitMap();
 const numPlayers = getNumPlayers();
 const mapSize = getMapSize();
 const mapArea = mapSize*mapSize;
-
-// create tile classes
 
 var clPlayer = createTileClass();
 var clHill = createTileClass();
@@ -73,25 +68,20 @@ var clSettlement = createTileClass();
 var clLand = createTileClass();
 
 for (var ix = 0; ix < mapSize; ix++)
-{
 	for (var iz = 0; iz < mapSize; iz++)
 	{
 		var x = ix / (mapSize + 1.0);
 		var z = iz / (mapSize + 1.0);
 			placeTerrain(ix, iz, tMainTerrain);
 	}
-}
 
 // randomize player order
 var playerIDs = [];
 for (var i = 0; i < numPlayers; i++)
-{
 	playerIDs.push(i+1);
-}
 playerIDs = sortPlayers(playerIDs);
 
 // place players
-
 var playerX = new Array(numPlayers);
 var playerZ = new Array(numPlayers);
 var playerAngle = new Array(numPlayers);
@@ -110,7 +100,6 @@ var cliffRadius = 2;
 var elevation = 20;
 var centerOfMap = mapSize / 2;
 
-// create mountain ranges
 log ("Creating mountain ranges...");
 
 var split = 1;
@@ -272,13 +261,10 @@ for (var i = 0; i < numPlayers; i++)
 
 RMS.SetProgress(20);
 
-// create bumps
 createBumps();
 
-// create hills
 createHills([tCliff, tCliff, tHill], avoidClasses(clPlayer, 20, clHill, 15, clWater, 15), clHill, scaleByMapSize(3, 15));
 
-// create forests
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
  avoidClasses(clPlayer, 12, clForest, 18, clHill, 5, clWater, 2),
@@ -289,7 +275,6 @@ createForests(
 
 RMS.SetProgress(50);
 
-// create dirt patches
 log("Creating dirt patches...");
 createLayeredPatches(
  [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)],
@@ -298,7 +283,6 @@ createLayeredPatches(
  avoidClasses(clWater, 3, clForest, 3, clHill, 4, clDirt, 5, clPlayer, 12)
 );
 
-// create grass patches
 log("Creating grass patches...");
 createPatches(
  [scaleByMapSize(2, 4), scaleByMapSize(3, 7), scaleByMapSize(5, 15)],
@@ -309,7 +293,6 @@ createPatches(
 RMS.SetProgress(55);
 
 log("Creating stone mines...");
-// create stone quarries
 createMines(
  [
   [new SimpleObject(oStoneSmall, 0,2, 0,4), new SimpleObject(oStoneLarge, 1,1, 0,4)],
@@ -320,7 +303,6 @@ createMines(
 )
 
 log("Creating metal mines...");
-// create large metal quarries
 createMines(
  [
   [new SimpleObject(oMetalLarge, 1,1, 0,4)]
@@ -333,7 +315,6 @@ RMS.SetProgress(65);
 
 // create decoration
 var planetm = 1;
-
 if (random_terrain==7)
 	planetm = 8;
 
@@ -357,7 +338,6 @@ createDecoration
 
 RMS.SetProgress(70);
 
-// create animals
 createFood
 (
  [
@@ -373,7 +353,6 @@ createFood
 
 RMS.SetProgress(75);
 
-// create fruits
 createFood
 (
  [
@@ -387,10 +366,7 @@ createFood
 
 RMS.SetProgress(85);
 
-// create straggler trees
 var types = [oTree1, oTree2, oTree4, oTree3];	// some variation
 createStragglerTrees(types, avoidClasses(clWater, 5, clForest, 7, clHill, 4, clPlayer, 12, clMetal, 1, clRock, 1));
-
-// Export map data
 
 ExportMap();

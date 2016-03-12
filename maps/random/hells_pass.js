@@ -1,26 +1,16 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
-///////////
-// setup the map
-///////////
 initTerrain(t.mainTerrain, tc.land, 1);
-var pos = getStartingPositions();
-var players = addBases("line", 0.2, 0.08);
+RMS.SetProgress(10);
+
+addBases("line", 0.2, 0.08);
 RMS.SetProgress(20);
 
-///////////
-// customize the map
-///////////
 placeBarriers();
 RMS.SetProgress(40);
 
-///////////
-// add terrain
-///////////
-
-// terrain features
-var features = [
+addElements(randArray([
 	{
 		"func": addBluffs,
 		"tile": "tc.bluff",
@@ -45,11 +35,10 @@ var features = [
 		"mixes": ["varied", "unique"],
 		"amounts": ["few"]
 	}
-];
-features = randArray(features);
+]));
+RMS.SetProgress(50);
 
-// decorative elements
-var decoration = [
+addElements([
 	{
 		"func": addLayeredPatches,
 		"tile": "tc.dirt",
@@ -66,19 +55,10 @@ var decoration = [
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	}
-]
-
-// add decorative elements to the end of the terrain rendering
-var terrain = features.concat(decoration);
-addElements(terrain);
+]);
 RMS.SetProgress(60);
 
-///////////
-// add gaia
-///////////
-
-// primary resources
-var primaryRes = [
+addElements(randArray([
 	{
 		"func": addMetal,
 		"tile": "tc.metal",
@@ -103,11 +83,10 @@ var primaryRes = [
 		"mixes": allMixes,
 		"amounts": ["few", "normal", "many", "tons"]
 	}
-];
-primaryRes = randArray(primaryRes);
+]));
+RMS.SetProgress(80);
 
-// secondary resources
-var secondaryRes = [
+addElements(randArray([
 	{
 		"func": addBerries,
 		"tile": "tc.berries",
@@ -132,22 +111,10 @@ var secondaryRes = [
 		"mixes": allMixes,
 		"amounts": ["normal", "many", "tons"]
 	}
-];
-secondaryRes = randArray(secondaryRes);
+]));
+RMS.SetProgress(90);
 
-var gaia = primaryRes.concat(secondaryRes);
-addElements(gaia);
-RMS.SetProgress(80);
-
-///////////
-// export the map
-///////////
-RMS.SetProgress(100);
 ExportMap();
-
-///////////
-// Custom map functions
-///////////
 
 // place the mountainous barriers between the teams
 function placeBarriers()
@@ -166,12 +133,12 @@ function placeBarriers()
 	// create mountain ranges
 	for (var i = 0; i < m.teams.length; ++i)
 	{
-	  var tang = m.startAngle + (i + 0.5) * TWO_PI / m.teams.length;
+		var tang = m.startAngle + (i + 0.5) * TWO_PI / m.teams.length;
 
-	  var fx = fractionToTiles(0.5);
-	  var fz = fractionToTiles(0.5);
-	  var ix = round(fx);
-	  var iz = round(fz);
+		var fx = fractionToTiles(0.5);
+		var fz = fractionToTiles(0.5);
+		var ix = round(fx);
+		var iz = round(fz);
 
 		var mStartCo = 0.07;
 		var mStopCo = 0.42;
@@ -180,14 +147,14 @@ function placeBarriers()
 		var mOffset = 0.5;
 		var mTaper = -1.5;
 
-		if(m.teams.length > 3 || m.mapSize <= 192)
+		if (m.teams.length > 3 || m.mapSize <= 192)
 		{
 			mWaviness = 0.2;
 			mOffset = 0.2;
 			mTaper = -1;
 		}
 
-		if(m.teams.length >= 5)
+		if (m.teams.length >= 5)
 		{
 			mSize = 4;
 			mWaviness = 0.2;
@@ -202,8 +169,7 @@ function placeBarriers()
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.spine)], avoidClasses(tc.player, 5, tc.baseResource, 5));
 	}
 
-	// decorative elements
-	var decoration = [
+	addElements([
 		{
 			"func": addDecoration,
 			"tile": "tc.dirt",
@@ -213,6 +179,5 @@ function placeBarriers()
 			"mixes": ["unique"],
 			"amounts": ["tons"]
 		}
-	]
-	addElements(decoration);
+	]);
 }
