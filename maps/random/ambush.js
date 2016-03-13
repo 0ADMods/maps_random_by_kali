@@ -76,7 +76,7 @@ addElements(randArray([
 		"mixes": ["normal"],
 		"amounts": ["tons"]
 	}
-]);
+]));
 RMS.SetProgress(70);
 
 addElements(randArray([
@@ -131,7 +131,7 @@ addElements(randArray([
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	}
-]);
+]));
 RMS.SetProgress(90);
 
 ExportMap();
