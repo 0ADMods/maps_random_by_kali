@@ -36,7 +36,7 @@ const g_Gaia = {
 	"metalLarge": rBiomeE13()
 };
 
-const p = {
+const g_Decoratives = {
 	"grass": rBiomeA1(),
 	"grassShort": rBiomeA2(),
 	"reeds": rBiomeA3(),
@@ -319,7 +319,7 @@ function createBase(player, walls)
 		var gX = round(fx + gDist * cos(gAngle));
 		var gZ = round(fz + gDist * sin(gAngle));
 		group = new SimpleGroup(
-			[new SimpleObject(p.grassShort, 2, 5, 0, 1, -PI / 8, PI / 8)],
+			[new SimpleObject(g_Decoratives.grassShort, 2, 5, 0, 1, -PI / 8, PI / 8)],
 			false, tc.baseResource, gX, gZ
 		);
 		createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
