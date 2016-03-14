@@ -1,4 +1,4 @@
-const m = getSettings(randInt(1, 8)); // THIS THROWS ERRORS
+const m = getSettings(); // THIS THROWS ERRORS
 
 const t = {
 	"mainTerrain": rBiomeT1(),
@@ -611,9 +611,9 @@ function constTileClasses(newClasses)
 }
 
 // put some useful map settings into an object
-function getSettings(biomeID)
+function getSettings()
 {
-	setBiome(biomeID);
+	randomizeBiome();
 
 	let mapSize = getMapSize();
 	let center = floor(mapSize / 2);
