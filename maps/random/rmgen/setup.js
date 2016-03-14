@@ -49,7 +49,7 @@ const g_Decoratives = {
 
 const g_TileClasses = constTileClasses();
 
-const f = {
+const g_Forests = {
 	"forest1": [
 		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree1,
 		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree2,

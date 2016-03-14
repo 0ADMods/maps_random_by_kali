@@ -859,18 +859,18 @@ function addForests(constraint, size, deviation, fill)
 
 	var types = [
 		[
-			[g_Terrains.forestFloor2, g_Terrains.mainTerrain, f.forest1],
-			[g_Terrains.forestFloor2, f.forest1]
+			[g_Terrains.forestFloor2, g_Terrains.mainTerrain, g_Forests.forest1],
+			[g_Terrains.forestFloor2, g_Forests.forest1]
 		],
 		[
-			[g_Terrains.forestFloor2, g_Terrains.mainTerrain, f.forest2],
-			[g_Terrains.forestFloor1, f.forest2]],
+			[g_Terrains.forestFloor2, g_Terrains.mainTerrain, g_Forests.forest2],
+			[g_Terrains.forestFloor1, g_Forests.forest2]],
 		[
-			[g_Terrains.forestFloor1, g_Terrains.mainTerrain, f.forest1],
-			[g_Terrains.forestFloor2, f.forest1]],
+			[g_Terrains.forestFloor1, g_Terrains.mainTerrain, g_Forests.forest1],
+			[g_Terrains.forestFloor2, g_Forests.forest1]],
 		[
-			[g_Terrains.forestFloor1, g_Terrains.mainTerrain, f.forest2],
-			[g_Terrains.forestFloor1, f.forest2]
+			[g_Terrains.forestFloor1, g_Terrains.mainTerrain, g_Forests.forest2],
+			[g_Terrains.forestFloor1, g_Forests.forest2]
 		]
 	];
 
