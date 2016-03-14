@@ -37,7 +37,7 @@ function addBluffs(constraint, size, deviation, fill)
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, g_Terrains.mainTerrain, g_Terrains.tier2Terrain], [2, 3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, pElevation, 2);
-		var rendered = createAreas2(placer, [terrainPainter, elevationPainter, paintClass(tc.bluff)], constraint, 1);
+		var rendered = createAreas2(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.bluff)], constraint, 1);
 
 		// find the bounding box of the bluff
 		if (rendered[0] === undefined)
@@ -118,9 +118,9 @@ function addBluffs(constraint, size, deviation, fill)
 
 	addElements([{
 		"func": addHills,
-		"tile": "tc.hill",
-		"avoid": [tc.hill, 3, tc.mountain, 2, tc.player, 20, tc.valley, 2, tc.water, 2],
-		"stay": [tc.bluff, 3],
+		"tile": "g_TileClasses.hill",
+		"avoid": [g_TileClasses.hill, 3, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
+		"stay": [g_TileClasses.bluff, 3],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -129,9 +129,9 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addLayeredPatches,
-			"tile": "tc.dirt",
-			"avoid": [tc.dirt, 5, tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.water, 3],
-			"stay": [tc.bluff, 5],
+			"tile": "g_TileClasses.dirt",
+			"avoid": [g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
 			"amounts": ["normal"]
@@ -141,9 +141,9 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addDecoration,
-			"tile": "tc.dirt",
-			"avoid": [tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.water, 3],
-			"stay": [tc.bluff, 5],
+			"tile": "g_TileClasses.dirt",
+			"avoid": [g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
 			"amounts": ["normal"]
@@ -152,9 +152,9 @@ function addBluffs(constraint, size, deviation, fill)
 
 	addElements([{
 		"func": addHills,
-		"tile": "tc.hill",
-		"avoid": [tc.hill, 3, tc.player, 20, tc.valley, 2, tc.water, 2],
-		"stay": [tc.bluff, 5, tc.mountain, 5],
+		"tile": "g_TileClasses.hill",
+		"avoid": [g_TileClasses.hill, 3, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
+		"stay": [g_TileClasses.bluff, 5, g_TileClasses.mountain, 5],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -163,9 +163,9 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addLayeredPatches,
-			"tile": "tc.dirt",
-			"avoid": [tc.dirt, 5, tc.forest, 2, tc.player, 12, tc.water, 3],
-			"stay": [tc.bluff, 5, tc.mountain, 5],
+			"tile": "g_TileClasses.dirt",
+			"avoid": [g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"stay": [g_TileClasses.bluff, 5, g_TileClasses.mountain, 5],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
 			"amounts": ["normal"]
@@ -175,9 +175,9 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addDecoration,
-			"tile": "tc.dirt",
-			"avoid": [tc.forest, 2, tc.player, 12, tc.water, 3],
-			"stay": [tc.bluff, 5, tc.mountain, 5],
+			"tile": "g_TileClasses.dirt",
+			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"stay": [g_TileClasses.bluff, 5, g_TileClasses.mountain, 5],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
 			"amounts": ["normal"]
@@ -187,27 +187,51 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements(randArray([
 		{
 			"func": addForests,
-			"tile": "tc.forest",
-			"avoid": [tc.berries, 5, tc.forest, 18, tc.metal, 5, tc.mountain, 5, tc.player, 20, tc.rock, 5, tc.water, 2],
-			"stay": [tc.bluff, 10],
+			"tile": "g_TileClasses.forest",
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 18,
+				g_TileClasses.metal, 5,
+				g_TileClasses.mountain, 5,
+				g_TileClasses.player, 20,
+				g_TileClasses.rock, 5,
+				g_TileClasses.water, 2
+			],
+			"stay": [g_TileClasses.bluff, 10],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": allAmounts
 		},
 		{
 			"func": addMetal,
-			"tile": "tc.metal",
-			"avoid": [tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 15, tc.metal, 40, tc.water, 3],
-			"stay": [tc.bluff, 10],
+			"tile": "g_TileClasses.metal",
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 5,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 50,
+				g_TileClasses.rock, 15,
+				g_TileClasses.metal, 40,
+				g_TileClasses.water, 3
+			],
+			"stay": [g_TileClasses.bluff, 10],
 			"sizes": ["normal"],
 			"mixes": ["same"],
 			"amounts": allAmounts
 		},
 		{
 			"func": addStone,
-			"tile": "tc.stone",
-			"avoid": [tc.berries, 5, tc.forest, 5, tc.mountain, 2, tc.player, 50, tc.rock, 40, tc.metal, 15, tc.water, 3],
-			"stay": [tc.bluff, 10],
+			"tile": "g_TileClasses.stone",
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 5,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 50,
+				g_TileClasses.rock, 40,
+				g_TileClasses.metal, 15,
+				g_TileClasses.water, 3
+			],
+			"stay": [g_TileClasses.bluff, 10],
 			"sizes": ["normal"],
 			"mixes": ["same"],
 			"amounts": allAmounts
@@ -217,27 +241,51 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements(randArray([
 		{
 			"func": addStragglerTrees,
-			"tile": "tc.forest",
-			"avoid": [tc.berries, 5, tc.forest, 10, tc.metal, 5, tc.mountain, 1, tc.player, 12, tc.rock, 5, tc.water, 5],
-			"stay": [tc.bluff, 10],
+			"tile": "g_TileClasses.forest",
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 10,
+				g_TileClasses.metal, 5,
+				g_TileClasses.mountain, 1,
+				g_TileClasses.player, 12,
+				g_TileClasses.rock, 5,
+				g_TileClasses.water, 5
+			 ],
+			"stay": [g_TileClasses.bluff, 10],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": ["scarce", "few", "normal"]
 		},
 		{
 			"func": addAnimals,
-			"tile": "tc.animals",
-			"avoid": [tc.animals, 20, tc.forest, 5, tc.mountain, 1, tc.player, 20, tc.rock, 5, tc.metal, 5, tc.water, 3],
-			"stay": [tc.bluff, 10],
+			"tile": "g_TileClasses.animals",
+			"avoid": [
+				g_TileClasses.animals, 20,
+				g_TileClasses.forest, 5,
+				g_TileClasses.mountain, 1,
+				g_TileClasses.player, 20,
+				g_TileClasses.rock, 5,
+				g_TileClasses.metal, 5,
+				g_TileClasses.water, 3
+			 ],
+			"stay": [g_TileClasses.bluff, 10],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": allAmounts
 		},
 		{
 			"func": addBerries,
-			"tile": "tc.berries",
-			"avoid": [tc.berries, 50, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.water, 3],
-			"stay": [tc.bluff, 10],
+			"tile": "g_TileClasses.berries",
+			"avoid": [
+				g_TileClasses.berries, 50,
+				g_TileClasses.forest, 5,
+				g_TileClasses.metal, 10,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 20,
+				g_TileClasses.rock, 10,
+				g_TileClasses.water, 3
+			],
+			"stay": [g_TileClasses.bluff, 10],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": allAmounts
@@ -297,7 +345,7 @@ function addDecoration(constraint, size, deviation, fill)
 //
 // constraint: constraint classes
 // element: the element to be rendered, ex:
-//    "class": tc.hill,
+//    "class": g_TileClasses.hill,
 //		"painter": [g_Terrains.mainTerrain, g_Terrains.mainTerrain],
 //		"size": 1,
 //		"deviation": 0.2,
@@ -322,7 +370,7 @@ function addElevation(constraint, el)
 	var spread = el.spread;
 
 	var elType = ELEVATION_MODIFY;
-	if (el.class == tc.water)
+	if (el.class == g_TileClasses.water)
 		elType = ELEVATION_SET;
 
 	var widths = [];
@@ -384,7 +432,7 @@ function addElevation(constraint, el)
 function addHills(constraint, size, deviation, fill)
 {
 	addElevation(constraint, {
-		"class": tc.hill,
+		"class": g_TileClasses.hill,
 		"painter": [g_Terrains.mainTerrain, g_Terrains.mainTerrain],
 		"size": size,
 		"deviation": deviation,
@@ -424,7 +472,7 @@ function addLakes(constraint, size, deviation, fill)
 		lakeTile = g_Terrains.shore;
 
 	addElevation(constraint, {
-		"class": tc.water,
+		"class": g_TileClasses.water,
 		"painter": [lakeTile, lakeTile],
 		"size": size,
 		"deviation": deviation,
@@ -441,20 +489,25 @@ function addLakes(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addFish,
-			"tile": "tc.fish",
-			"avoid": [tc.fish, 12, tc.hill, 8, tc.mountain, 8, tc.player, 8],
-			"stay": [tc.water, 7],
+			"tile": "g_TileClasses.fish",
+			"avoid": [
+				g_TileClasses.fish, 12,
+				g_TileClasses.hill, 8,
+				g_TileClasses.mountain, 8,
+				g_TileClasses.player, 8
+			],
+			"stay": [g_TileClasses.water, 7],
 			"sizes": allSizes,
 			"mixes": allMixes,
 			"amounts": ["normal", "many", "tons"]
 		}
 	]);
 
-	var group = new SimpleGroup([new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, tc.dirt)
-	createObjectGroups(group, 0, [stayClasses(tc.water, 1), borderClasses(tc.water, 4, 3)], 1000, 100);
+	var group = new SimpleGroup([new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt)
+	createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 1), borderClasses(g_TileClasses.water, 4, 3)], 1000, 100);
 
-	group = new SimpleGroup([new SimpleObject(p.reeds, 10, 15, 1, 3), new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, tc.dirt)
-	createObjectGroups(group, 0, [stayClasses(tc.water, 2), borderClasses(tc.water, 4, 3)], 1000, 100);
+	group = new SimpleGroup([new SimpleObject(p.reeds, 10, 15, 1, 3), new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt)
+	createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 2), borderClasses(g_TileClasses.water, 4, 3)], 1000, 100);
 }
 
 /////////////////////////////////////////
@@ -500,7 +553,7 @@ function addLayeredPatches(constraint, size, deviation, fill)
 			],
 			[1, 1]			// widths
 		);
-		createAreas(placer, [painter, paintClass(tc.dirt)], constraint, patchCount);
+		createAreas(placer, [painter, paintClass(g_TileClasses.dirt)], constraint, patchCount);
 	}
 }
 
@@ -518,7 +571,7 @@ function addLayeredPatches(constraint, size, deviation, fill)
 function addMountains(constraint, size, deviation, fill)
 {
 	addElevation(constraint, {
-		"class": tc.mountain,
+		"class": g_TileClasses.mountain,
 		"painter": [g_Terrains.cliff, g_Terrains.hill],
 		"size": size,
 		"deviation": deviation,
@@ -558,7 +611,7 @@ function addPlateaus(constraint, size, deviation, fill)
 		plateauTile = g_Terrains.tier4Terrain;
 
 	addElevation(constraint, {
-		"class": tc.mountain,
+		"class": g_TileClasses.mountain,
 		"painter": [g_Terrains.cliff, plateauTile],
 		"size": size,
 		"deviation": deviation,
@@ -616,7 +669,7 @@ function addRivers(constraint, size, deviation, fill)
 		var placer = new PathPlacer(startX, startZ, endX, endZ, 12, 0.25, 1, 0.05, 0.3);
 		var terrainPainter = new LayeredPainter([g_Terrains.water, g_Terrains.shore], [2]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, elevation, 2);
-		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.water)], constraint);
+		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.water)], constraint);
 	}
 }
 
@@ -671,7 +724,7 @@ function addValleys(constraint, size, deviation, fill)
 		valleyFloor = g_Terrains.tier3Terrain;
 
 	addElevation(constraint, {
-		"class": tc.valley,
+		"class": g_TileClasses.valley,
 		"painter": [valleySlope, valleyFloor],
 		"size": size,
 		"deviation": deviation,
@@ -717,7 +770,7 @@ function addAnimals(constraint, size, deviation, fill)
 
 	for (var i = 0; i < animals.length; ++i)
 	{
-		var group = new SimpleGroup(animals[i], true, tc.animals);
+		var group = new SimpleGroup(animals[i], true, g_TileClasses.animals);
 		createObjectGroups(group, 0, constraint, floor(counts[i]), 50);
 	}
 }
@@ -746,7 +799,7 @@ function addBerries(constraint, size, deviation, fill)
 
 	for (var i = 0; i < berries.length; ++i)
 	{
-		var group = new SimpleGroup(berries[i], true, tc.berries);
+		var group = new SimpleGroup(berries[i], true, g_TileClasses.berries);
 		createObjectGroups(group, 0, constraint, floor(count), 40);
 	}
 }
@@ -778,7 +831,7 @@ function addFish(constraint, size, deviation, fill)
 
 	for (var i = 0; i < fish.length; ++i)
 	{
-		var group = new SimpleGroup(fish[i], true, tc.fish);
+		var group = new SimpleGroup(fish[i], true, g_TileClasses.fish);
 		createObjectGroups(group, 0, constraint, floor(counts[i]), 50);
 	}
 }
@@ -830,7 +883,7 @@ function addForests(constraint, size, deviation, fill)
 
 		var placer = new ChainPlacer(1, minSize, maxSize, 0.5);
 		var painter = new LayeredPainter(types[i], [2]);
-		createAreas(placer, [painter, paintClass(tc.forest)], constraint, forestCount);
+		createAreas(placer, [painter, paintClass(g_TileClasses.forest)], constraint, forestCount);
 	}
 }
 
@@ -857,7 +910,7 @@ function addMetal(constraint, size, deviation, fill)
 
 	for (var i = 0; i < mines.length; ++i)
 	{
-		var group = new SimpleGroup(mines[i], true, tc.metal);
+		var group = new SimpleGroup(mines[i], true, g_TileClasses.metal);
 		createObjectGroups(group, 0, constraint, count, 100);
 	}
 }
@@ -893,7 +946,7 @@ function addStone(constraint, size, deviation, fill)
 
 	for (var i = 0; i < mines.length; ++i)
 	{
-		var group = new SimpleGroup(mines[i], true, tc.rock);
+		var group = new SimpleGroup(mines[i], true, g_TileClasses.rock);
 		createObjectGroups(group, 0, constraint, count, 100);
 	}
 }
@@ -953,7 +1006,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 		if (min > treesMax)
 			min = treesMax
 
-		var group = new SimpleGroup([new SimpleObject(trees[i], min, treesMax, minDist, maxDist)], true, tc.forest);
+		var group = new SimpleGroup([new SimpleObject(trees[i], min, treesMax, minDist, maxDist)], true, g_TileClasses.forest);
 		createObjectGroups(group, 0, constraint, count);
 	}
 }
@@ -970,8 +1023,8 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 		return 1;
 
 	// if the end points aren't on the tilemap
-	if ((!g_Map.validT(endLine.x1, endLine.z1) || checkIfInClass(endLine.x1, endLine.z1, tc.player)) &&
-		(!g_Map.validT(endLine.x2, endLine.z2) || checkIfInClass(endLine.x2, endLine.z2, tc.player)))
+	if ((!g_Map.validT(endLine.x1, endLine.z1) || checkIfInClass(endLine.x1, endLine.z1, g_TileClasses.player)) &&
+		(!g_Map.validT(endLine.x2, endLine.z2) || checkIfInClass(endLine.x2, endLine.z2, g_TileClasses.player)))
 		return 2;
 
 	var minTilesInGroup = 1;
@@ -1041,7 +1094,7 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 function removeBluff(points)
 {
 	for (var i = 0; i < points.length; ++i)
-		addToClass(points[i].x, points[i].z, tc.mountain);
+		addToClass(points[i].x, points[i].z, g_TileClasses.mountain);
 }
 
 // had to modify current RMgen function to return the list of points in the terrain feature

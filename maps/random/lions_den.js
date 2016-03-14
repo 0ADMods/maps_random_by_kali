@@ -1,7 +1,7 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
-initTerrain(g_Terrains.cliff, tc.land, 50);
+initTerrain(g_Terrains.cliff, g_TileClasses.land, 50);
 RMS.SetProgress(10);
 
 var pos = getStartingPositions();
@@ -14,63 +14,90 @@ RMS.SetProgress(40);
 addElements([
 	{
 		"func": addLayeredPatches,
-		"tile": "tc.dirt",
-		"avoid": [tc.dirt, 5, tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.step, 5],
-		"stay": [tc.valley, 7],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [
+			g_TileClasses.dirt, 5,
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.step, 5
+	    ],
+		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	},
 	{
 		"func": addLayeredPatches,
-		"tile": "tc.dirt",
-		"avoid": [tc.dirt, 5, tc.forest, 2, tc.mountain, 2, tc.player, 12],
-		"stay": [tc.settlement, 7],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [
+			g_TileClasses.dirt, 5,
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.player, 12
+		],
+		"stay": [g_TileClasses.settlement, 7],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	},
 	{
 		"func": addLayeredPatches,
-		"tile": "tc.dirt",
-		"avoid": [tc.dirt, 5, tc.forest, 2],
-		"stay": [tc.player, 1],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [
+			g_TileClasses.dirt, 5,
+			g_TileClasses.forest, 2
+		],
+		"stay": [g_TileClasses.player, 1],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	},
 	{
 		"func": addDecoration,
-		"tile": "tc.dirt",
-		"avoid": [tc.forest, 2],
-		"stay": [tc.player, 1],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [g_TileClasses.forest, 2],
+		"stay": [g_TileClasses.player, 1],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	},
 	{
 		"func": addDecoration,
-		"tile": "tc.dirt",
-		"avoid": [tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.step, 2],
-		"stay": [tc.valley, 7],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.step, 2
+		 ],
+		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	},
 	{
 		"func": addDecoration,
-		"tile": "tc.dirt",
-		"avoid": [tc.forest, 2, tc.mountain, 2, tc.player, 12],
-		"stay": [tc.settlement, 7],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.player, 12
+		],
+		"stay": [g_TileClasses.settlement, 7],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	},
 	{
 		"func": addDecoration,
-		"tile": "tc.dirt",
-		"avoid": [tc.forest, 2, tc.mountain, 2, tc.player, 12],
-		"stay": [tc.step, 7],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.player, 12
+		],
+		"stay": [g_TileClasses.step, 7],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["scarce"]
@@ -81,54 +108,54 @@ RMS.SetProgress(60);
 addElements(randArray([
 	{
 		"func": addMetal,
-		"tile": "tc.metal",
-		"avoid": [tc.berries, 5, tc.forest, 3, tc.player, 30, tc.rock, 10, tc.metal, 20],
-		"stay": [tc.settlement, 7],
+		"tile": "g_TileClasses.metal",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.player, 30, g_TileClasses.rock, 10, g_TileClasses.metal, 20],
+		"stay": [g_TileClasses.settlement, 7],
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addMetal,
-		"tile": "tc.metal",
-		"avoid": [tc.berries, 5, tc.forest, 3, tc.player, 10, tc.rock, 10, tc.metal, 20, tc.mountain, 5, tc.step, 5],
-		"stay": [tc.valley, 7],
+		"tile": "g_TileClasses.metal",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.player, 10, g_TileClasses.rock, 10, g_TileClasses.metal, 20, g_TileClasses.mountain, 5, g_TileClasses.step, 5],
+		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": allAmounts
 	},
 	{
 		"func": addStone,
-		"tile": "tc.stone",
-		"avoid": [tc.berries, 5, tc.forest, 3, tc.player, 30, tc.rock, 20, tc.metal, 10],
-		"stay": [tc.settlement, 7],
+		"tile": "g_TileClasses.stone",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.player, 30, g_TileClasses.rock, 20, g_TileClasses.metal, 10],
+		"stay": [g_TileClasses.settlement, 7],
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addStone,
-		"tile": "tc.stone",
-		"avoid": [tc.berries, 5, tc.forest, 3, tc.player, 10, tc.rock, 20, tc.metal, 10, tc.mountain, 5, tc.step, 5],
-		"stay": [tc.valley, 7],
+		"tile": "g_TileClasses.stone",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.player, 10, g_TileClasses.rock, 20, g_TileClasses.metal, 10, g_TileClasses.mountain, 5, g_TileClasses.step, 5],
+		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": allAmounts
 	},
 	{
 		"func": addForests,
-		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.forest, 18, tc.metal, 3, tc.player, 20, tc.rock, 3],
-		"stay": [tc.settlement, 7],
+		"tile": "g_TileClasses.forest",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 18, g_TileClasses.metal, 3, g_TileClasses.player, 20, g_TileClasses.rock, 3],
+		"stay": [g_TileClasses.settlement, 7],
 		"sizes": ["normal", "big"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addForests,
-		"tile": "tc.forest",
-		"avoid": [tc.berries, 3, tc.forest, 18, tc.metal, 3, tc.mountain, 5, tc.player, 5, tc.rock, 3, tc.step, 1],
-		"stay": [tc.valley, 7],
+		"tile": "g_TileClasses.forest",
+		"avoid": [g_TileClasses.berries, 3, g_TileClasses.forest, 18, g_TileClasses.metal, 3, g_TileClasses.mountain, 5, g_TileClasses.player, 5, g_TileClasses.rock, 3, g_TileClasses.step, 1],
+		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal", "big"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
@@ -139,63 +166,63 @@ RMS.SetProgress(70);
 addElements(randArray([
 	{
 		"func": addBerries,
-		"tile": "tc.berries",
-		"avoid": [tc.berries, 30, tc.forest, 5, tc.metal, 10, tc.player, 20, tc.rock, 10],
-		"stay": [tc.settlement, 7],
+		"tile": "g_TileClasses.berries",
+		"avoid": [g_TileClasses.berries, 30, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.player, 20, g_TileClasses.rock, 10],
+		"stay": [g_TileClasses.settlement, 7],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": ["tons"]
 	},
 	{
 		"func": addBerries,
-		"tile": "tc.berries",
-		"avoid": [tc.berries, 30, tc.forest, 5, tc.metal, 10, tc.mountain, 5, tc.player, 10, tc.rock, 10, tc.step, 5],
-		"stay": [tc.valley, 7],
+		"tile": "g_TileClasses.berries",
+		"avoid": [g_TileClasses.berries, 30, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.mountain, 5, g_TileClasses.player, 10, g_TileClasses.rock, 10, g_TileClasses.step, 5],
+		"stay": [g_TileClasses.valley, 7],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
 	{
 		"func": addAnimals,
-		"tile": "tc.animals",
-		"avoid": [tc.animals, 20, tc.forest, 0, tc.metal, 1, tc.player, 20, tc.rock, 1],
-		"stay": [tc.settlement, 7],
+		"tile": "g_TileClasses.animals",
+		"avoid": [g_TileClasses.animals, 20, g_TileClasses.forest, 0, g_TileClasses.metal, 1, g_TileClasses.player, 20, g_TileClasses.rock, 1],
+		"stay": [g_TileClasses.settlement, 7],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": ["tons"]
 	},
 	{
 		"func": addAnimals,
-		"tile": "tc.animals",
-		"avoid": [tc.animals, 20, tc.forest, 0, tc.metal, 1, tc.mountain, 5, tc.player, 10, tc.rock, 1, tc.step, 5],
-		"stay": [tc.valley, 7],
+		"tile": "g_TileClasses.animals",
+		"avoid": [g_TileClasses.animals, 20, g_TileClasses.forest, 0, g_TileClasses.metal, 1, g_TileClasses.mountain, 5, g_TileClasses.player, 10, g_TileClasses.rock, 1, g_TileClasses.step, 5],
+		"stay": [g_TileClasses.valley, 7],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.forest, 7, tc.metal, 3, tc.player, 12, tc.rock, 3],
-		"stay": [tc.settlement, 7],
+		"tile": "g_TileClasses.forest",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 3, g_TileClasses.player, 12, g_TileClasses.rock, 3],
+		"stay": [g_TileClasses.settlement, 7],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": ["tons"]
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.forest, 7, tc.metal, 3, tc.mountain, 5, tc.player, 10, tc.rock, 3, tc.step, 5],
-		"stay": [tc.valley, 7],
+		"tile": "g_TileClasses.forest",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 3, g_TileClasses.mountain, 5, g_TileClasses.player, 10, g_TileClasses.rock, 3, g_TileClasses.step, 5],
+		"stay": [g_TileClasses.valley, 7],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": ["normal", "many", "tons"]
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.forest, 3, tc.metal, 5, tc.rock, 5],
-		"stay": [tc.player, 1],
+		"tile": "g_TileClasses.forest",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.metal, 5, g_TileClasses.rock, 5],
+		"stay": [g_TileClasses.player, 1],
 		"sizes": ["huge"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
@@ -261,13 +288,13 @@ function createSunkenTerrain(players)
 	var placer = new ClumpPlacer(mapSettings.mapArea * 0.26, 1, 1, 1, mapSettings.centerOfMap, mapSettings.centerOfMap);
 	var terrainPainter = new LayeredPainter([g_Terrains.cliff, lower], [3]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 0, 3);
-	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.valley)]);
+	createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.valley)]);
 
 	// create the center hill
 	var placer = new ClumpPlacer(mapSettings.mapArea * 0.14, 1, 1, 1, mapSettings.centerOfMap, mapSettings.centerOfMap);
 	var terrainPainter = new LayeredPainter([g_Terrains.cliff, g_Terrains.cliff], [3]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, mapSettings.mapHeight, 3);
-	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.mountain)]);
+	createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.mountain)]);
 
 	for(var i = 0; i < players.length; ++i)
 	{
@@ -289,32 +316,32 @@ function createSunkenTerrain(players)
 		var placer = new PathPlacer(pX, pZ, expX, expZ, scaleByMapSize(12, 12), 0.7, 0.5, 0.1, -1);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, middle, road], [3, 4]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 10, 3);
-		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.step)]);
+		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.step)]);
 
 		// create path to neighbor
 		var placer = new PathPlacer(rearX, rearZ, nextX, nextZ, scaleByMapSize(19, 19), 0.4, 0.5, 0.1, -0.6);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, middle, road], [3, 6]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 10, 3);
-		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.step)]);
+		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.step)]);
 
 		// create path to neighbor
 		var placer = new PathPlacer(rearX, rearZ, preX, preZ, scaleByMapSize(19, 19), 0.4, 0.5, 0.1, -0.6);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, middle, road], [3, 6]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 10, 3);
-		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.step)]);
+		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.step)]);
 
 		// create the den
 		var placer = new ClumpPlacer(mapSettings.mapArea * 0.03, 0.9, 0.3, 1, pX, pZ);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, base], [3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 22, 3);
-		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.valley)]);
+		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.valley)]);
 
 		// create the expansion
 		var placer = new ClumpPlacer(expSize, 0.9, 0.3, 1, expX, expZ);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, base], [3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 22, 3);
-		var area = createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.settlement)], [avoidClasses(tc.settlement, 2)]);
-		var unpainter = new TileClassUnPainter(new TileClass(mapSettings.mapSize, tc.mountain));
+		var area = createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.settlement)], [avoidClasses(g_TileClasses.settlement, 2)]);
+		var unpainter = new TileClassUnPainter(new TileClass(mapSettings.mapSize, g_TileClasses.mountain));
 		unpainter.paint(area);
 	}
 
@@ -329,6 +356,6 @@ function createSunkenTerrain(players)
 		var placer = new ClumpPlacer(expSize, 0.9, 0.3, 1, nextX, nextZ);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, lower], [3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 0, 3);
-		var area = createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.settlement)]);
+		var area = createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.settlement)]);
 	}
 }

@@ -47,7 +47,7 @@ const g_Decoratives = {
 	"bushSmall": rBiomeA8()
 };
 
-const tc = constTileClasses();
+const g_TileClasses = constTileClasses();
 
 const f = {
 	"forest1": [
@@ -226,11 +226,11 @@ function createBase(player, walls)
 	var fz = fractionToTiles(player.z);
 	var ix = round(fx);
 	var iz = round(fz);
-	addToClass(ix, iz, tc.player);
-	addToClass(ix + 5, iz, tc.player);
-	addToClass(ix, iz + 5, tc.player);
-	addToClass(ix - 5, iz, tc.player);
-	addToClass(ix, iz - 5, tc.player);
+	addToClass(ix, iz, g_TileClasses.player);
+	addToClass(ix + 5, iz, g_TileClasses.player);
+	addToClass(ix, iz + 5, g_TileClasses.player);
+	addToClass(ix - 5, iz, g_TileClasses.player);
+	addToClass(ix, iz - 5, g_TileClasses.player);
 
 	// create starting units
 	if ((walls || walls === undefined) && mapSettings.mapSize > 192)
@@ -255,9 +255,9 @@ function createBase(player, walls)
 		var aZ = round(fz + aDist * sin(aAngle));
 		var group = new SimpleGroup(
 			[new SimpleObject(g_Gaia.chicken, 5, 5, 0, 2)],
-			true, tc.baseResource, aX, aZ
+			true, g_TileClasses.baseResource, aX, aZ
 		);
-		createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
+		createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 	}
 
 	// create berry bushes
@@ -267,9 +267,9 @@ function createBase(player, walls)
 	var bbZ = round(fz + bbDist * sin(bbAngle));
 	group = new SimpleGroup(
 		[new SimpleObject(g_Gaia.fruitBush, 5, 5, 0, 3)],
-		true, tc.baseResource, bbX, bbZ
+		true, g_TileClasses.baseResource, bbX, bbZ
 	);
-	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
+	createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 
 	// create metal mine
 	var mAngle = bbAngle;
@@ -281,9 +281,9 @@ function createBase(player, walls)
 	var mZ = round(fz + mDist * sin(mAngle));
 	group = new SimpleGroup(
 		[new SimpleObject(g_Gaia.metalLarge, 1, 1, 0, 0)],
-		true, tc.baseResource, mX, mZ
+		true, g_TileClasses.baseResource, mX, mZ
 	);
-	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
+	createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 
 	// create stone mines
 	mAngle += randFloat(PI / 8, PI / 4);
@@ -291,9 +291,9 @@ function createBase(player, walls)
 	mZ = round(fz + mDist * sin(mAngle));
 	group = new SimpleGroup(
 		[new SimpleObject(g_Gaia.stoneLarge, 1, 1, 0, 2)],
-		true, tc.baseResource, mX, mZ
+		true, g_TileClasses.baseResource, mX, mZ
 	);
-	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
+	createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 
 	var hillSize = PI * mapSettings.mapRadius * mapSettings.mapRadius;
 
@@ -306,9 +306,9 @@ function createBase(player, walls)
 
 	group = new SimpleGroup(
 		[new SimpleObject(g_Gaia.tree1, num, num, 0, 3)],
-		false, tc.baseResource, tX, tZ
+		false, g_TileClasses.baseResource, tX, tZ
 	);
-	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
+	createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 
 	// create grass tufts
 	var num = hillSize / 250;
@@ -320,9 +320,9 @@ function createBase(player, walls)
 		var gZ = round(fz + gDist * sin(gAngle));
 		group = new SimpleGroup(
 			[new SimpleObject(g_Decoratives.grassShort, 2, 5, 0, 1, -PI / 8, PI / 8)],
-			false, tc.baseResource, gX, gZ
+			false, g_TileClasses.baseResource, gX, gZ
 		);
-		createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
+		createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 	}
 }
 

@@ -2,7 +2,7 @@ RMS.LoadLibrary("rmgen");
 
 InitMap();
 
-initTerrain(g_Terrains.mainTerrain, tc.land, 2);
+initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 2);
 RMS.SetProgress(10);
 
 var pos = getStartingPositions();
@@ -12,16 +12,16 @@ RMS.SetProgress(20);
 addElements([
 	{
 		"func": addBluffs,
-		"tile": "tc.bluff",
-		"avoid": [tc.bluff, 12, tc.hill, 5, tc.player, 35],
+		"tile": "g_TileClasses.bluff",
+		"avoid": [g_TileClasses.bluff, 12, g_TileClasses.hill, 5, g_TileClasses.player, 35],
 		"sizes": ["normal", "big", "huge"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addHills,
-		"tile": "tc.hill",
-		"avoid": [tc.bluff, 5, tc.hill, 15, tc.player, 20],
+		"tile": "g_TileClasses.hill",
+		"avoid": [g_TileClasses.bluff, 5, g_TileClasses.hill, 15, g_TileClasses.player, 20],
 		"sizes": ["normal", "big"],
 		"mixes": ["normal"],
 		"amounts": ["tons"]
@@ -32,16 +32,16 @@ RMS.SetProgress(30);
 addElements([
 	{
 		"func": addLayeredPatches,
-		"tile": "tc.dirt",
-		"avoid": [tc.bluff, 2, tc.dirt, 5, tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.water, 3],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [g_TileClasses.bluff, 2, g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	},
 	{
 		"func": addDecoration,
-		"tile": "tc.dirt",
-		"avoid": [tc.bluff, 2, tc.forest, 2, tc.mountain, 2, tc.player, 12, tc.water, 3],
+		"tile": "g_TileClasses.dirt",
+		"avoid": [g_TileClasses.bluff, 2, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
@@ -52,27 +52,27 @@ RMS.SetProgress(50);
 addElements(randArray([
 	{
 		"func": addMetal,
-		"tile": "tc.metal",
-		"avoid": [tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 30, tc.rock, 10, tc.metal, 20, tc.water, 3],
-		"stay": [tc.bluff, 5],
+		"tile": "g_TileClasses.metal",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.mountain, 2, g_TileClasses.player, 30, g_TileClasses.rock, 10, g_TileClasses.metal, 20, g_TileClasses.water, 3],
+		"stay": [g_TileClasses.bluff, 5],
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addStone,
-		"tile": "tc.stone",
-		"avoid": [tc.berries, 5, tc.forest, 3, tc.mountain, 2, tc.player, 30, tc.rock, 20, tc.metal, 10, tc.water, 3],
-		"stay": [tc.bluff, 5],
+		"tile": "g_TileClasses.stone",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.mountain, 2, g_TileClasses.player, 30, g_TileClasses.rock, 20, g_TileClasses.metal, 10, g_TileClasses.water, 3],
+		"stay": [g_TileClasses.bluff, 5],
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addForests,
-		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.forest, 18, tc.metal, 3, tc.mountain, 5, tc.player, 20, tc.rock, 3, tc.water, 2],
-		"stay": [tc.bluff, 5],
+		"tile": "g_TileClasses.forest",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 18, g_TileClasses.metal, 3, g_TileClasses.mountain, 5, g_TileClasses.player, 20, g_TileClasses.rock, 3, g_TileClasses.water, 2],
+		"stay": [g_TileClasses.bluff, 5],
 		"sizes": ["big", "huge"],
 		"mixes": ["normal"],
 		"amounts": ["tons"]
@@ -83,51 +83,51 @@ RMS.SetProgress(70);
 addElements(randArray([
 	{
 		"func": addBerries,
-		"tile": "tc.berries",
-		"avoid": [tc.berries, 30, tc.bluff, 5, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.water, 3],
+		"tile": "g_TileClasses.berries",
+		"avoid": [g_TileClasses.berries, 30, g_TileClasses.bluff, 5, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.rock, 10, g_TileClasses.water, 3],
 		"sizes": ["tiny"],
 		"mixes": ["same"],
 		"amounts": ["scarce"]
 	},
 	{
 		"func": addAnimals,
-		"tile": "tc.animals",
-		"avoid": [tc.animals, 20, tc.bluff, 5, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.water, 3],
+		"tile": "g_TileClasses.animals",
+		"avoid": [g_TileClasses.animals, 20, g_TileClasses.bluff, 5, g_TileClasses.forest, 0, g_TileClasses.mountain, 1, g_TileClasses.player, 20, g_TileClasses.water, 3],
 		"sizes": ["tiny"],
 		"mixes": ["same"],
 		"amounts": ["scarce"]
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.bluff, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5],
+		"tile": "g_TileClasses.forest",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 1, g_TileClasses.mountain, 1, g_TileClasses.player, 12, g_TileClasses.rock, 1, g_TileClasses.water, 5],
 		"sizes": ["tiny"],
 		"mixes": ["same"],
 		"amounts": ["many"]
 	},
 	{
 		"func": addBerries,
-		"tile": "tc.berries",
-		"avoid": [tc.berries, 30, tc.forest, 5, tc.metal, 10, tc.mountain, 2, tc.player, 20, tc.rock, 10, tc.water, 3],
-		"stay": [tc.bluff, 5],
+		"tile": "g_TileClasses.berries",
+		"avoid": [g_TileClasses.berries, 30, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.rock, 10, g_TileClasses.water, 3],
+		"stay": [g_TileClasses.bluff, 5],
 		"sizes": ["huge"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addAnimals,
-		"tile": "tc.animals",
-		"avoid": [tc.animals, 20, tc.forest, 0, tc.mountain, 1, tc.player, 20, tc.water, 3],
-		"stay": [tc.bluff, 5],
+		"tile": "g_TileClasses.animals",
+		"avoid": [g_TileClasses.animals, 20, g_TileClasses.forest, 0, g_TileClasses.mountain, 1, g_TileClasses.player, 20, g_TileClasses.water, 3],
+		"stay": [g_TileClasses.bluff, 5],
 		"sizes": ["huge"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "tc.forest",
-		"avoid": [tc.berries, 5, tc.forest, 7, tc.metal, 1, tc.mountain, 1, tc.player, 12, tc.rock, 1, tc.water, 5],
-		"stay": [tc.bluff, 5],
+		"tile": "g_TileClasses.forest",
+		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 1, g_TileClasses.mountain, 1, g_TileClasses.player, 12, g_TileClasses.rock, 1, g_TileClasses.water, 5],
+		"stay": [g_TileClasses.bluff, 5],
 		"sizes": ["huge"],
 		"mixes": ["same"],
 		"amounts": ["tons"]
