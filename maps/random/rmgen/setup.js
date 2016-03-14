@@ -1,9 +1,56 @@
 const m = getSettings(randInt(1, 8)); // THIS THROWS ERRORS
-const t = constTerrains();
-const g = constGaia();
-const p = constProps();
+
+const t = {
+	"mainTerrain": rBiomeT1(),
+	"forestFloor1": rBiomeT2(),
+	"forestFloor2": rBiomeT3(),
+	"cliff": rBiomeT4(),
+	"tier1Terrain": rBiomeT5(),
+	"tier2Terrain": rBiomeT6(),
+	"tier3Terrain": rBiomeT7(),
+	"hill": rBiomeT8(),
+	"dirt": rBiomeT9(),
+	"road": rBiomeT10(),
+	"roadWild": rBiomeT11(),
+	"tier4Terrain": rBiomeT12(),
+	"shoreBlend": rBiomeT13(),
+	"shore": rBiomeT14(),
+	"water": rBiomeT15()
+};
+
+const g = {
+	"tree1": rBiomeE1(),
+	"tree2": rBiomeE2(),
+	"tree3": rBiomeE3(),
+	"tree4": rBiomeE4(),
+	"tree5": rBiomeE5(),
+	"fruitBush": rBiomeE6(),
+	"chicken": rBiomeE7(),
+	"mainHuntableAnimal": rBiomeE8(),
+	"fish": rBiomeE9(),
+	"secondaryHuntableAnimal": rBiomeE10(),
+	"stoneLarge": rBiomeE11(),
+	"stoneSmall": rBiomeE12(),
+	"metalLarge": rBiomeE13()
+};
+
+const p = {
+	"grass": rBiomeA1(),
+	"grassShort": rBiomeA2(),
+	"reeds": rBiomeA3(),
+	"lillies": rBiomeA4(),
+	"rockLarge": rBiomeA5(),
+	"rockMedium": rBiomeA6(),
+	"bushMedium": rBiomeA7(),
+	"bushSmall": rBiomeA8()
+};
+
 const tc = constTileClasses();
-const f = constForests();
+
+const f = {
+	"forest1": [t.forestFloor2 + TERRAIN_SEPARATOR + g.tree1, t.forestFloor2 + TERRAIN_SEPARATOR + g.tree2, t.forestFloor2],
+	"forest2": [t.forestFloor1 + TERRAIN_SEPARATOR + g.tree4, t.forestFloor1 + TERRAIN_SEPARATOR + g.tree5, t.forestFloor1]
+};
 
 // adds an array of elements to the map
 function addElements(els)
@@ -79,10 +126,6 @@ function pickSize(sizes)
 
 	return 1;
 }
-
-///////////
-// Map
-///////////
 
 // paints the entire map with a single tile type
 function initTerrain(terrain, tc, elevation)
@@ -530,66 +573,6 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 	return players;
 }
 
-///////////
-// Constants
-///////////
-
-function constTerrains()
-{
-	return {
-		"mainTerrain": rBiomeT1(),
-		"forestFloor1": rBiomeT2(),
-		"forestFloor2": rBiomeT3(),
-		"cliff": rBiomeT4(),
-		"tier1Terrain": rBiomeT5(),
-		"tier2Terrain": rBiomeT6(),
-		"tier3Terrain": rBiomeT7(),
-		"hill": rBiomeT8(),
-		"dirt": rBiomeT9(),
-		"road": rBiomeT10(),
-		"roadWild": rBiomeT11(),
-		"tier4Terrain": rBiomeT12(),
-		"shoreBlend": rBiomeT13(),
-		"shore": rBiomeT14(),
-		"water": rBiomeT15()
-	};
-}
-
-// gaia entities
-function constGaia()
-{
-	return {
-		"tree1": rBiomeE1(),
-		"tree2": rBiomeE2(),
-		"tree3": rBiomeE3(),
-		"tree4": rBiomeE4(),
-		"tree5": rBiomeE5(),
-		"fruitBush": rBiomeE6(),
-		"chicken": rBiomeE7(),
-		"mainHuntableAnimal": rBiomeE8(),
-		"fish": rBiomeE9(),
-		"secondaryHuntableAnimal": rBiomeE10(),
-		"stoneLarge": rBiomeE11(),
-		"stoneSmall": rBiomeE12(),
-		"metalLarge": rBiomeE13()
-	};
-}
-
-function constProps()
-{
-	return {
-		"grass": rBiomeA1(),
-		"grassShort": rBiomeA2(),
-		"reeds": rBiomeA3(),
-		"lillies": rBiomeA4(),
-		"rockLarge": rBiomeA5(),
-		"rockMedium": rBiomeA6(),
-		"bushMedium": rBiomeA7(),
-		"bushSmall": rBiomeA8()
-	};
-}
-
-// tile classes
 function constTileClasses(newClasses)
 {
 	var defaultClasses = [
@@ -625,15 +608,6 @@ function constTileClasses(newClasses)
 		tc[classes[i]] = createTileClass();
 
 	return tc;
-}
-
-// forests
-function constForests()
-{
-	return {
-		"forest1": [t.forestFloor2 + TERRAIN_SEPARATOR + g.tree1, t.forestFloor2 + TERRAIN_SEPARATOR + g.tree2, t.forestFloor2],
-		"forest2": [t.forestFloor1 + TERRAIN_SEPARATOR + g.tree4, t.forestFloor1 + TERRAIN_SEPARATOR + g.tree5, t.forestFloor1]
-	};
 }
 
 // put some useful map settings into an object
