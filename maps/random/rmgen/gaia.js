@@ -119,7 +119,7 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([{
 		"func": addHills,
 		"tile": "g_TileClasses.hill",
-		"avoid": [g_TileClasses.hill, 3, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
+		"avoid": [g_TileClasses.hill, 3, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
 		"stay": [g_TileClasses.bluff, 3],
 		"sizes": allSizes,
 		"mixes": allMixes,
@@ -142,42 +142,8 @@ function addBluffs(constraint, size, deviation, fill)
 		{
 			"func": addDecoration,
 			"tile": "g_TileClasses.dirt",
-			"avoid": [g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
-			"stay": [g_TileClasses.bluff, 5],
-			"sizes": ["normal"],
-			"mixes": ["normal"],
-			"amounts": ["normal"]
-		}
-	]);
-
-	addElements([{
-		"func": addHills,
-		"tile": "g_TileClasses.hill",
-		"avoid": [g_TileClasses.hill, 3, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
-		"stay": [g_TileClasses.bluff, 5, g_TileClasses.mountain, 5],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
-	}]);
-
-	addElements([
-		{
-			"func": addLayeredPatches,
-			"tile": "g_TileClasses.dirt",
-			"avoid": [g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
-			"stay": [g_TileClasses.bluff, 5, g_TileClasses.mountain, 5],
-			"sizes": ["normal"],
-			"mixes": ["normal"],
-			"amounts": ["normal"]
-		}
-	]);
-
-	addElements([
-		{
-			"func": addDecoration,
-			"tile": "g_TileClasses.dirt",
 			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
-			"stay": [g_TileClasses.bluff, 5, g_TileClasses.mountain, 5],
+			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
 			"amounts": ["normal"]
