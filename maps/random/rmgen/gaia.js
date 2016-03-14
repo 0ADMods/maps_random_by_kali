@@ -37,7 +37,7 @@ function addBluffs(constraint, size, deviation, fill)
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, g_Terrains.mainTerrain, g_Terrains.tier2Terrain], [2, 3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, pElevation, 2);
-		var rendered = createAreas2(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.bluff)], constraint, 1);
+		var rendered = createAreas(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.bluff)], constraint, 1);
 
 		// find the bounding box of the bluff
 		if (rendered[0] === undefined)
@@ -1095,70 +1095,6 @@ function removeBluff(points)
 {
 	for (var i = 0; i < points.length; ++i)
 		addToClass(points[i].x, points[i].z, g_TileClasses.mountain);
-}
-
-// had to modify current RMgen function to return the list of points in the terrain feature
-function createAreas2(centeredPlacer, painter, constraint, amount, retryFactor = 10)
-{
-	let placeFunc = function (args) {
-		randomizePlacerCoordinates2(args.placer, args.halfMapSize);
-		var area = g_Map.createArea(args.placer, args.painter, args.constraint);
-		return area;
-	};
-
-	let args = {
-		"placer": centeredPlacer,
-		"painter": painter,
-		"constraint": constraint,
-		"halfMapSize": g_Map.size / 2
-	};
-
-	return retryPlacing2(placeFunc, args, retryFactor, amount, true);
-}
-
-// for some reason, couldn't call the original RMgen function
-function retryPlacing2(placeFunc, placeArgs, retryFactor, amount, getResult)
-{
-	let maxFail = amount * retryFactor;
-
-	let results = [];
-	let good = 0;
-	let bad = 0;
-
-	while (good < amount && bad <= maxFail)
-	{
-		let result = placeFunc(placeArgs);
-
-		if (result !== undefined)
-		{
-			++good;
-			if (getResult)
-				results.push(result);
-		}
-		else
-			++bad;
-	}
-
-	return getResult ? results : good;
-}
-
-// for some reason, couldn't call the original RMgen function
-function randomizePlacerCoordinates2(placer, halfMapSize)
-{
-	if (!!g_MapSettings.CircularMap)
-	{
-		// Polar coordinates
-		let r = halfMapSize * Math.sqrt(randFloat()); // uniform distribution
-		let theta = randFloat(0, 2 * PI);
-		placer.x = Math.floor(r * Math.cos(theta)) + halfMapSize;
-		placer.z = Math.floor(r * Math.sin(theta)) + halfMapSize;
-	}
-	else
-	{
-		// Rectangular coordinates
-		placer.x = randInt(g_Map.size);
-		placer.z = randInt(g_Map.size);
-	}
 }
 
 // create an array of points the fill a bounding box around a terrain feature
