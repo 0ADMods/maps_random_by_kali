@@ -710,8 +710,8 @@ function addAnimals(constraint, size, deviation, fill)
 	var groupOffset = getRandomDeviation(size, deviation);
 
 	var animals = [
-		[new SimpleObject(g.mainHuntableAnimal, 5 * groupOffset, 7 * groupOffset, 0, 4 * groupOffset)],
-		[new SimpleObject(g.secondaryHuntableAnimal, 2 * groupOffset, 3 * groupOffset, 0, 2 * groupOffset)]
+		[new SimpleObject(g_Gaia.mainHuntableAnimal, 5 * groupOffset, 7 * groupOffset, 0, 4 * groupOffset)],
+		[new SimpleObject(g_Gaia.secondaryHuntableAnimal, 2 * groupOffset, 3 * groupOffset, 0, 2 * groupOffset)]
 	];
 	var counts = [scaleByMapSize(30, 30) * fill, scaleByMapSize(30, 30) * fill];
 
@@ -742,7 +742,7 @@ function addBerries(constraint, size, deviation, fill)
 	var groupOffset = getRandomDeviation(size, deviation);
 
 	var count = scaleByMapSize(50, 50) * fill;
-	var berries = [[new SimpleObject(g.fruitBush, 5 * groupOffset, 5 * groupOffset, 0, 3 * groupOffset)]];
+	var berries = [[new SimpleObject(g_Gaia.fruitBush, 5 * groupOffset, 5 * groupOffset, 0, 3 * groupOffset)]];
 
 	for (var i = 0; i < berries.length; ++i)
 	{
@@ -771,8 +771,8 @@ function addFish(constraint, size, deviation, fill)
 	var groupOffset = getRandomDeviation(size, deviation);
 
 	var fish = [
-		[new SimpleObject(g.fish, 1 * groupOffset, 2 * groupOffset, 0, 2 * groupOffset)],
-		[new SimpleObject(g.fish, 2 * groupOffset, 4 * groupOffset, 10 * groupOffset, 20 * groupOffset)]
+		[new SimpleObject(g_Gaia.fish, 1 * groupOffset, 2 * groupOffset, 0, 2 * groupOffset)],
+		[new SimpleObject(g_Gaia.fish, 2 * groupOffset, 4 * groupOffset, 10 * groupOffset, 20 * groupOffset)]
 	];
 	var counts = [scaleByMapSize(40, 40) * fill, scaleByMapSize(40, 40) * fill];
 
@@ -853,7 +853,7 @@ function addMetal(constraint, size, deviation, fill)
 
 	var offset = getRandomDeviation(size, deviation);
 	var count = 1 + scaleByMapSize(20, 20) * fill;
-	var mines = [[new SimpleObject(g.metalLarge, 1 * offset, 1 * offset, 0, 4 * offset)]];
+	var mines = [[new SimpleObject(g_Gaia.metalLarge, 1 * offset, 1 * offset, 0, 4 * offset)]];
 
 	for (var i = 0; i < mines.length; ++i)
 	{
@@ -883,11 +883,11 @@ function addStone(constraint, size, deviation, fill)
 	var count = 1 + scaleByMapSize(20, 20) * fill;
 	var mines = [
 		[
-			new SimpleObject(g.stoneSmall, 0, 2 * offset, 0, 4 * offset),
-			new SimpleObject(g.stoneLarge, 1 * offset, 1 * offset, 0, 4 * offset)
+			new SimpleObject(g_Gaia.stoneSmall, 0, 2 * offset, 0, 4 * offset),
+			new SimpleObject(g_Gaia.stoneLarge, 1 * offset, 1 * offset, 0, 4 * offset)
 		],
 		[
-			new SimpleObject(g.stoneSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)
+			new SimpleObject(g_Gaia.stoneSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)
 		]
 	];
 
@@ -918,7 +918,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	if (mapSettings.biome == 6 && fill < 0.8)
 		fill = 0.8;
 
-	var trees = [g.tree1, g.tree2, g.tree3, g.tree4];
+	var trees = [g_Gaia.tree1, g_Gaia.tree2, g_Gaia.tree3, g_Gaia.tree4];
 
 	var treesPerPlayer = 40;
 

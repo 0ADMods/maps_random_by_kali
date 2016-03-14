@@ -137,7 +137,7 @@ function addLake() {
 	}
 
 	// create a bunch of fish
-	var group = new SimpleGroup([new SimpleObject(g.fish, 20, 30, 0, fDist)], true, tc.baseResource, mapSettings.centerOfMap, mapSettings.centerOfMap);
+	var group = new SimpleGroup([new SimpleObject(g_Gaia.fish, 20, 30, 0, fDist)], true, tc.baseResource, mapSettings.centerOfMap, mapSettings.centerOfMap);
 	createObjectGroup(group, 0, [avoidClasses(tc.player, 5, tc.hill, 3, tc.mountain, 3), stayClasses(tc.water, 5)]);
 }
 
@@ -159,7 +159,7 @@ function addHarbors(players) {
 
 		// create fish in harbor
 		var group = new SimpleGroup(
-			[new SimpleObject(g.fish, 6, 6, 1, 20)],
+			[new SimpleObject(g_Gaia.fish, 6, 6, 1, 20)],
 			true, tc.baseResource, ix + offsetX, iz + offsetZ
 		);
 		createObjectGroup(group, 0, [avoidClasses(tc.hill, 3, tc.mountain, 3), stayClasses(tc.water, 5)]);

@@ -20,7 +20,7 @@ const g_Terrains = {
 	"water": rBiomeT15()
 };
 
-const g = {
+const g_Gaia = {
 	"tree1": rBiomeE1(),
 	"tree2": rBiomeE2(),
 	"tree3": rBiomeE3(),
@@ -51,13 +51,13 @@ const tc = constTileClasses();
 
 const f = {
 	"forest1": [
-		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g.tree1,
-		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g.tree2,
+		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree1,
+		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree2,
 		g_Terrains.forestFloor2
 	],
 	"forest2": [
-		g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g.tree4,
-		g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g.tree5,
+		g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g_Gaia.tree4,
+		g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g_Gaia.tree5,
 		g_Terrains.forestFloor1
 	]
 };
@@ -254,7 +254,7 @@ function createBase(player, walls)
 		var aX = round(fx + aDist * cos(aAngle));
 		var aZ = round(fz + aDist * sin(aAngle));
 		var group = new SimpleGroup(
-			[new SimpleObject(g.chicken, 5, 5, 0, 2)],
+			[new SimpleObject(g_Gaia.chicken, 5, 5, 0, 2)],
 			true, tc.baseResource, aX, aZ
 		);
 		createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
@@ -266,7 +266,7 @@ function createBase(player, walls)
 	var bbX = round(fx + bbDist * cos(bbAngle));
 	var bbZ = round(fz + bbDist * sin(bbAngle));
 	group = new SimpleGroup(
-		[new SimpleObject(g.fruitBush, 5, 5, 0, 3)],
+		[new SimpleObject(g_Gaia.fruitBush, 5, 5, 0, 3)],
 		true, tc.baseResource, bbX, bbZ
 	);
 	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
@@ -280,7 +280,7 @@ function createBase(player, walls)
 	var mX = round(fx + mDist * cos(mAngle));
 	var mZ = round(fz + mDist * sin(mAngle));
 	group = new SimpleGroup(
-		[new SimpleObject(g.metalLarge, 1, 1, 0, 0)],
+		[new SimpleObject(g_Gaia.metalLarge, 1, 1, 0, 0)],
 		true, tc.baseResource, mX, mZ
 	);
 	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
@@ -290,7 +290,7 @@ function createBase(player, walls)
 	mX = round(fx + mDist * cos(mAngle));
 	mZ = round(fz + mDist * sin(mAngle));
 	group = new SimpleGroup(
-		[new SimpleObject(g.stoneLarge, 1, 1, 0, 2)],
+		[new SimpleObject(g_Gaia.stoneLarge, 1, 1, 0, 2)],
 		true, tc.baseResource, mX, mZ
 	);
 	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
@@ -305,7 +305,7 @@ function createBase(player, walls)
 	var tZ = round(fz + tDist * sin(tAngle));
 
 	group = new SimpleGroup(
-		[new SimpleObject(g.tree1, num, num, 0, 3)],
+		[new SimpleObject(g_Gaia.tree1, num, num, 0, 3)],
 		false, tc.baseResource, tX, tZ
 	);
 	createObjectGroup(group, 0, avoidClasses(tc.baseResource, 2));
