@@ -1,7 +1,7 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
-initTerrain(t.mainTerrain, tc.land, 30);
+initTerrain(g_Terrains.mainTerrain, tc.land, 30);
 RMS.SetProgress(20);
 
 var pos = getStartingPositions();

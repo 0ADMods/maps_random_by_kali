@@ -1,7 +1,7 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
-initTerrain(t.mainTerrain, tc.land, 1);
+initTerrain(g_Terrains.mainTerrain, tc.land, 1);
 RMS.SetProgress(10);
 
 addBases("line", 0.2, 0.08);
@@ -119,16 +119,16 @@ ExportMap();
 // place the mountainous barriers between the teams
 function placeBarriers()
 {
-	var spineTerrain = t.dirt;
+	var spineTerrain = g_Terrains.dirt;
 
 	if (mapSettings.biome == 2)
-		spineTerrain = t.tier1Terrain;
+		spineTerrain = g_Terrains.tier1Terrain;
 
 	if (mapSettings.biome == 4 || mapSettings.biome == 6)
-		spineTerrain = t.tier2Terrain;
+		spineTerrain = g_Terrains.tier2Terrain;
 
 	if (mapSettings.biome == 8)
-		spineTerrain = t.tier4Terrain;
+		spineTerrain = g_Terrains.tier4Terrain;
 
 	// create mountain ranges
 	for (var i = 0; i < mapSettings.teams.length; ++i)
@@ -164,7 +164,7 @@ function placeBarriers()
 
 		// place barrier
 		var placer = new PathPlacer(fractionToTiles(0.5 + mStartCo * cos(tang)), fractionToTiles(0.5 + mStartCo * sin(tang)), fractionToTiles(0.5 + mStopCo * cos(tang)), fractionToTiles(0.5 + mStopCo * sin(tang)), scaleByMapSize(14, mSize), mWaviness, 0.1, mOffset, mTaper);
-		var terrainPainter = new LayeredPainter([t.cliff, spineTerrain], [2]);
+		var terrainPainter = new LayeredPainter([g_Terrains.cliff, spineTerrain], [2]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 30, 2);
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.spine)], avoidClasses(tc.player, 5, tc.baseResource, 5));
 	}

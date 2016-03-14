@@ -2,7 +2,7 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 var randElevation = randInt(5);
-initTerrain(t.mainTerrain, tc.land, randElevation);
+initTerrain(g_Terrains.mainTerrain, tc.land, randElevation);
 
 var players = addBases("stronghold", 0.37, 0.04);
 

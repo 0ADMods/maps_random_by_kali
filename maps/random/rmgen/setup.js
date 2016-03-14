@@ -2,7 +2,7 @@ var mapSettings;
 
 mapSettings = getMapSettings();
 
-const t = {
+const g_Terrains = {
 	"mainTerrain": rBiomeT1(),
 	"forestFloor1": rBiomeT2(),
 	"forestFloor2": rBiomeT3(),
@@ -51,14 +51,14 @@ const tc = constTileClasses();
 
 const f = {
 	"forest1": [
-		t.forestFloor2 + TERRAIN_SEPARATOR + g.tree1,
-		t.forestFloor2 + TERRAIN_SEPARATOR + g.tree2,
-		t.forestFloor2
+		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g.tree1,
+		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g.tree2,
+		g_Terrains.forestFloor2
 	],
 	"forest2": [
-		t.forestFloor1 + TERRAIN_SEPARATOR + g.tree4,
-		t.forestFloor1 + TERRAIN_SEPARATOR + g.tree5,
-		t.forestFloor1
+		g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g.tree4,
+		g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g.tree5,
+		g_Terrains.forestFloor1
 	]
 };
 
@@ -241,7 +241,7 @@ function createBase(player, walls)
 	// create the city patch
 	var cityRadius = scaleByMapSize(15, 25) / 3;
 	var placer = new ClumpPlacer(PI * cityRadius * cityRadius, 0.6, 0.3, 10, ix, iz);
-	var painter = new LayeredPainter([t.roadWild, t.road], [1]);
+	var painter = new LayeredPainter([g_Terrains.roadWild, g_Terrains.road], [1]);
 	createArea(placer, painter, null);
 
 	// custom base terrain function

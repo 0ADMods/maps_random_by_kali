@@ -3,7 +3,7 @@ RMS.LoadLibrary("rmgen");
 log("Initializing map...");
 InitMap();
 
-initTerrain(t.mainTerrain, tc.land, 2);
+initTerrain(g_Terrains.mainTerrain, tc.land, 2);
 var players = addBases("radial", 0.38);
 RMS.SetProgress(20);
 
@@ -126,7 +126,7 @@ function addLake() {
 	var lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
 	var placer = new ChainPlacer(2, floor(scaleByMapSize(2, 12)), floor(scaleByMapSize(35, 160)), 1, mapSettings.centerOfMap, mapSettings.centerOfMap, 0, [floor(mapSettings.mapSize * 0.17 * lSize)]);
-	var terrainPainter = new LayeredPainter([t.shore, t.water, t.water], [1, 100]);
+	var terrainPainter = new LayeredPainter([g_Terrains.shore, g_Terrains.water, g_Terrains.water], [1, 100]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, -18, 10);
 
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.water)], avoidClasses(tc.player, 20));
@@ -153,7 +153,7 @@ function addHarbors(players) {
 		var offsetZ = round(playerDistZ / 2.5);
 
 		var placer = new ClumpPlacer(scaleByMapSize(1200, 1200), 0.5, 0.5, 1, ix + offsetX, iz + offsetZ)
-		var terrainPainter = new LayeredPainter([t.shore, t.water],	[2]);
+		var terrainPainter = new LayeredPainter([g_Terrains.shore, g_Terrains.water],	[2]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, -11, 3);
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.water)], avoidClasses(tc.player, 15, tc.hill, 1));
 
@@ -168,17 +168,17 @@ function addHarbors(players) {
 
 // add mountain spines
 function addSpines() {
-	var spineTile = t.dirt;
+	var spineTile = g_Terrains.dirt;
 	var elevation = 35;
 
 	if (mapSettings.biome == 2)
-		spineTile = t.tier1Terrain;
+		spineTile = g_Terrains.tier1Terrain;
 
 	if (mapSettings.biome == 4 || mapSettings.biome == 6)
-		spineTile = t.tier2Terrain;
+		spineTile = g_Terrains.tier2Terrain;
 
 	if (mapSettings.biome == 8)
-		spineTile = t.tier4Terrain;
+		spineTile = g_Terrains.tier4Terrain;
 
 	var split = 1;
 	if(mapSettings.numPlayers <= 3 || (mapSettings.mapSize >= 320 && mapSettings.numPlayers <= 4)) {
@@ -208,7 +208,7 @@ function addSpines() {
 		}
 
 		var placer = new PathPlacer(fractionToTiles(0.5 + mStartCo * cos(tang)), fractionToTiles(0.5 + mStartCo * sin(tang)), fractionToTiles(0.5 + mStopCo * cos(tang)), fractionToTiles(0.5 + mStopCo * sin(tang)), scaleByMapSize(14, mSize), mWaviness, 0.1, mOffset, mTaper);
-		var terrainPainter = new LayeredPainter([t.cliff, spineTile], [3]);
+		var terrainPainter = new LayeredPainter([g_Terrains.cliff, spineTile], [3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, elevation, 3);
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.spine)], avoidClasses(tc.player, 5));
 	}

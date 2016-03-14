@@ -35,7 +35,7 @@ function addBluffs(constraint, size, deviation, fill)
 		var pElevation = floor(elevation * offset);
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
-		var terrainPainter = new LayeredPainter([t.cliff, t.mainTerrain, t.tier2Terrain], [2, 3]);
+		var terrainPainter = new LayeredPainter([g_Terrains.cliff, g_Terrains.mainTerrain, g_Terrains.tier2Terrain], [2, 3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, pElevation, 2);
 		var rendered = createAreas2(placer, [terrainPainter, elevationPainter, paintClass(tc.bluff)], constraint, 1);
 
@@ -90,7 +90,7 @@ function addBluffs(constraint, size, deviation, fill)
 				continue;
 		}
 
-		var ground = createTerrain(t.mainTerrain);
+		var ground = createTerrain(g_Terrains.mainTerrain);
 
 		var slopeLength = getDistance(baseLine.midX, baseLine.midZ, endLine.midX, endLine.midZ);
 
@@ -298,7 +298,7 @@ function addDecoration(constraint, size, deviation, fill)
 // constraint: constraint classes
 // element: the element to be rendered, ex:
 //    "class": tc.hill,
-//		"painter": [t.mainTerrain, t.mainTerrain],
+//		"painter": [g_Terrains.mainTerrain, g_Terrains.mainTerrain],
 //		"size": 1,
 //		"deviation": 0.2,
 //		"fill": 1,
@@ -385,7 +385,7 @@ function addHills(constraint, size, deviation, fill)
 {
 	addElevation(constraint, {
 		"class": tc.hill,
-		"painter": [t.mainTerrain, t.mainTerrain],
+		"painter": [g_Terrains.mainTerrain, g_Terrains.mainTerrain],
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
@@ -412,16 +412,16 @@ function addHills(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addLakes(constraint, size, deviation, fill)
 {
-	var lakeTile = t.water;
+	var lakeTile = g_Terrains.water;
 
 	if (mapSettings.biome == 0 || mapSettings.biome == 1 || mapSettings.biome == 7)
-		lakeTile = t.dirt;
+		lakeTile = g_Terrains.dirt;
 
 	if (mapSettings.biome == 5)
-		lakeTile = t.tier2Terrain;
+		lakeTile = g_Terrains.tier2Terrain;
 
 	if (mapSettings.biome == 8)
-		lakeTile = t.shore;
+		lakeTile = g_Terrains.shore;
 
 	addElevation(constraint, {
 		"class": tc.water,
@@ -492,7 +492,12 @@ function addLayeredPatches(constraint, size, deviation, fill)
 
 		var placer = new ChainPlacer(patchMinRadius, patchMaxRadius, patchSize, 0.5);
 		var painter = new LayeredPainter(
-			[[t.mainTerrain, t.tier1Terrain], [t.tier1Terrain, t.tier2Terrain], [t.tier2Terrain, t.tier3Terrain], [t.tier4Terrain]], 		// terrains
+			[
+				[g_Terrains.mainTerrain, g_Terrains.tier1Terrain],
+				[g_Terrains.tier1Terrain, g_Terrains.tier2Terrain],
+				[g_Terrains.tier2Terrain, g_Terrains.tier3Terrain],
+				[g_Terrains.tier4Terrain]
+			],
 			[1, 1]			// widths
 		);
 		createAreas(placer, [painter, paintClass(tc.dirt)], constraint, patchCount);
@@ -514,7 +519,7 @@ function addMountains(constraint, size, deviation, fill)
 {
 	addElevation(constraint, {
 		"class": tc.mountain,
-		"painter": [t.cliff, t.hill],
+		"painter": [g_Terrains.cliff, g_Terrains.hill],
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
@@ -541,20 +546,20 @@ function addMountains(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addPlateaus(constraint, size, deviation, fill)
 {
-	var plateauTile = t.dirt;
+	var plateauTile = g_Terrains.dirt;
 
 	if (mapSettings.biome == 2)
-		plateauTile = t.tier1Terrain;
+		plateauTile = g_Terrains.tier1Terrain;
 
 	if (mapSettings.biome == 4 || mapSettings.biome == 6)
-		plateauTile = t.tier2Terrain;
+		plateauTile = g_Terrains.tier2Terrain;
 
 	if (mapSettings.biome == 8)
-		plateauTile = t.tier4Terrain;
+		plateauTile = g_Terrains.tier4Terrain;
 
 	addElevation(constraint, {
 		"class": tc.mountain,
-		"painter": [t.cliff, plateauTile],
+		"painter": [g_Terrains.cliff, plateauTile],
 		"size": size,
 		"deviation": deviation,
 		"fill": fill,
@@ -609,7 +614,7 @@ function addRivers(constraint, size, deviation, fill)
 		var pSpread = floor(spread * offset);
 
 		var placer = new PathPlacer(startX, startZ, endX, endZ, 12, 0.25, 1, 0.05, 0.3);
-		var terrainPainter = new LayeredPainter([t.water, t.shore], [2]);
+		var terrainPainter = new LayeredPainter([g_Terrains.water, g_Terrains.shore], [2]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, elevation, 2);
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.water)], constraint);
 	}
@@ -635,35 +640,35 @@ function addValleys(constraint, size, deviation, fill)
 	if (minElevation < -1 * mapSettings.mapHeight)
 		minElevation = -1 * mapSettings.mapHeight;
 
-	var valleySlope = t.tier1Terrain;
-	var valleyFloor = t.tier4Terrain;
+	var valleySlope = g_Terrains.tier1Terrain;
+	var valleyFloor = g_Terrains.tier4Terrain;
 
 	if (mapSettings.biome == 0)
 	{
-		valleySlope = t.dirt;
-		valleyFloor = t.tier2Terrain;
+		valleySlope = g_Terrains.dirt;
+		valleyFloor = g_Terrains.tier2Terrain;
 	}
 
 	if (mapSettings.biome == 3)
 	{
-		valleySlope = t.tier3Terrain;
-		valleyFloor = t.dirt;
+		valleySlope = g_Terrains.tier3Terrain;
+		valleyFloor = g_Terrains.dirt;
 	}
 
 	if (mapSettings.biome == 5)
 	{
-		valleySlope = t.tier2Terrain;
-		valleyFloor = t.dirt;
+		valleySlope = g_Terrains.tier2Terrain;
+		valleyFloor = g_Terrains.dirt;
 	}
 
 	if (mapSettings.biome == 4 || mapSettings.biome == 6)
-		valleyFloor = t.tier2Terrain;
+		valleyFloor = g_Terrains.tier2Terrain;
 
 	if (mapSettings.biome == 7)
-		valleySlope = t.dirt;
+		valleySlope = g_Terrains.dirt;
 
 	if (mapSettings.biome == 8)
-		valleyFloor = t.tier3Terrain;
+		valleyFloor = g_Terrains.tier3Terrain;
 
 	addElevation(constraint, {
 		"class": tc.valley,
@@ -800,10 +805,20 @@ function addForests(constraint, size, deviation, fill)
 		return;
 
 	var types = [
-		[[t.forestFloor2, t.mainTerrain, f.forest1], [t.forestFloor2, f.forest1]],
-		[[t.forestFloor2, t.mainTerrain, f.forest2], [t.forestFloor1, f.forest2]],
-		[[t.forestFloor1, t.mainTerrain, f.forest1], [t.forestFloor2, f.forest1]],
-		[[t.forestFloor1, t.mainTerrain, f.forest2], [t.forestFloor1, f.forest2]]
+		[
+			[g_Terrains.forestFloor2, g_Terrains.mainTerrain, f.forest1],
+			[g_Terrains.forestFloor2, f.forest1]
+		],
+		[
+			[g_Terrains.forestFloor2, g_Terrains.mainTerrain, f.forest2],
+			[g_Terrains.forestFloor1, f.forest2]],
+		[
+			[g_Terrains.forestFloor1, g_Terrains.mainTerrain, f.forest1],
+			[g_Terrains.forestFloor2, f.forest1]],
+		[
+			[g_Terrains.forestFloor1, g_Terrains.mainTerrain, f.forest2],
+			[g_Terrains.forestFloor1, f.forest2]
+		]
 	];
 
 	for (var i = 0; i < types.length; ++i)
@@ -1125,7 +1140,7 @@ function createBoundingBox(points, corners)
 // flattens the ground touching a terrain feature
 function fadeToGround(bb, minX, minZ, elevation)
 {
-	var ground = createTerrain(t.mainTerrain);
+	var ground = createTerrain(g_Terrains.mainTerrain);
 	for (var x = 0; x < bb.length; ++x)
 		for (var z = 0; z < bb[x].length; ++z)
 		{

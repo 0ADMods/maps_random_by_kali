@@ -6,7 +6,7 @@ var randElevation = randInt(30);
 if (randElevation < 25)
 	randElevation = 1 + randInt(4);
 
-initTerrain(t.mainTerrain, tc.land, randElevation);
+initTerrain(g_Terrains.mainTerrain, tc.land, randElevation);
 RMS.SetProgress(20);
 
 var pos = getStartingPositions();
