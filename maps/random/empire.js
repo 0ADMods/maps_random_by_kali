@@ -9,13 +9,13 @@ var players = addBases("stronghold", 0.37, 0.04);
 // change the starting angle and add the players again
 var rotation = PI;
 
-if (m.teams.length == 2)
+if (mapSettings.teams.length == 2)
 	rotation = PI / 2;
 
-if (m.teams.length == 4)
+if (mapSettings.teams.length == 4)
 	rotation = PI + PI / 4;
 
-m.startAngle = m.startAngle + rotation;
+mapSettings.startAngle = mapSettings.startAngle + rotation;
 
 players = addBases("stronghold", 0.15, 0.04);
 RMS.SetProgress(40);

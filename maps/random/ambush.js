@@ -1,4 +1,5 @@
 RMS.LoadLibrary("rmgen");
+
 InitMap();
 
 initTerrain(t.mainTerrain, tc.land, 2);

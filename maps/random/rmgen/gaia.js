@@ -271,7 +271,7 @@ function addDecoration(constraint, size, deviation, fill)
 	];
 
 	var baseCount = 1;
-	if (m.biome == 7)
+	if (mapSettings.biome == 7)
 		baseCount = 8;
 
 	var counts = [
@@ -414,13 +414,13 @@ function addLakes(constraint, size, deviation, fill)
 {
 	var lakeTile = t.water;
 
-	if (m.biome == 0 || m.biome == 1 || m.biome == 7)
+	if (mapSettings.biome == 0 || mapSettings.biome == 1 || mapSettings.biome == 7)
 		lakeTile = t.dirt;
 
-	if (m.biome == 5)
+	if (mapSettings.biome == 5)
 		lakeTile = t.tier2Terrain;
 
-	if (m.biome == 8)
+	if (mapSettings.biome == 8)
 		lakeTile = t.shore;
 
 	addElevation(constraint, {
@@ -543,13 +543,13 @@ function addPlateaus(constraint, size, deviation, fill)
 {
 	var plateauTile = t.dirt;
 
-	if (m.biome == 2)
+	if (mapSettings.biome == 2)
 		plateauTile = t.tier1Terrain;
 
-	if (m.biome == 4 || m.biome == 6)
+	if (mapSettings.biome == 4 || mapSettings.biome == 6)
 		plateauTile = t.tier2Terrain;
 
-	if (m.biome == 8)
+	if (mapSettings.biome == 8)
 		plateauTile = t.tier4Terrain;
 
 	addElevation(constraint, {
@@ -598,11 +598,11 @@ function addRivers(constraint, size, deviation, fill)
 		var startAngle = randFloat(0, 2 * PI);
 		var endAngle = startAngle + randFloat(PI * 0.5, PI * 1.5);
 
-		var startX = m.centerOfMap + floor(m.centerOfMap * Math.cos(startAngle));
-		var startZ = m.centerOfMap + floor(m.centerOfMap * Math.sin(startAngle));
+		var startX = mapSettings.centerOfMap + floor(mapSettings.centerOfMap * Math.cos(startAngle));
+		var startZ = mapSettings.centerOfMap + floor(mapSettings.centerOfMap * Math.sin(startAngle));
 
-		var endX = m.centerOfMap + floor(m.centerOfMap * Math.cos(endAngle));
-		var endZ = m.centerOfMap + floor(m.centerOfMap * Math.sin(endAngle));
+		var endX = mapSettings.centerOfMap + floor(mapSettings.centerOfMap * Math.cos(endAngle));
+		var endZ = mapSettings.centerOfMap + floor(mapSettings.centerOfMap * Math.sin(endAngle));
 
 		var pMinSize = floor(minSize * offset);
 		var pMaxSize = floor(maxSize * offset);
@@ -628,41 +628,41 @@ function addRivers(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addValleys(constraint, size, deviation, fill)
 {
-	if (m.mapHeight < 6)
+	if (mapSettings.mapHeight < 6)
 		return;
 
-	var minElevation = (-1 * m.mapHeight) / (size * (1 + deviation)) + 1;
-	if (minElevation < -1 * m.mapHeight)
-		minElevation = -1 * m.mapHeight;
+	var minElevation = (-1 * mapSettings.mapHeight) / (size * (1 + deviation)) + 1;
+	if (minElevation < -1 * mapSettings.mapHeight)
+		minElevation = -1 * mapSettings.mapHeight;
 
 	var valleySlope = t.tier1Terrain;
 	var valleyFloor = t.tier4Terrain;
 
-	if (m.biome == 0)
+	if (mapSettings.biome == 0)
 	{
 		valleySlope = t.dirt;
 		valleyFloor = t.tier2Terrain;
 	}
 
-	if (m.biome == 3)
+	if (mapSettings.biome == 3)
 	{
 		valleySlope = t.tier3Terrain;
 		valleyFloor = t.dirt;
 	}
 
-	if (m.biome == 5)
+	if (mapSettings.biome == 5)
 	{
 		valleySlope = t.tier2Terrain;
 		valleyFloor = t.dirt;
 	}
 
-	if (m.biome == 4 || m.biome == 6)
+	if (mapSettings.biome == 4 || mapSettings.biome == 6)
 		valleyFloor = t.tier2Terrain;
 
-	if (m.biome == 7)
+	if (mapSettings.biome == 7)
 		valleySlope = t.dirt;
 
-	if (m.biome == 8)
+	if (mapSettings.biome == 8)
 		valleyFloor = t.tier3Terrain;
 
 	addElevation(constraint, {
@@ -796,7 +796,7 @@ function addForests(constraint, size, deviation, fill)
 	fill = fillOrDefault(fill);
 
 	// no forests to render in the african biome
-	if (m.biome == 6)
+	if (mapSettings.biome == 6)
 		return;
 
 	var types = [
@@ -900,7 +900,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	deviation = deviationOrDefault(deviation);
 	fill = fillOrDefault(fill);
 
-	if (m.biome == 6 && fill < 0.8)
+	if (mapSettings.biome == 6 && fill < 0.8)
 		fill = 0.8;
 
 	var trees = [g.tree1, g.tree2, g.tree3, g.tree4];
@@ -908,7 +908,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	var treesPerPlayer = 40;
 
 	var offset = getRandomDeviation(size, deviation);
-	var treeCount = treesPerPlayer * m.numPlayers * fill;
+	var treeCount = treesPerPlayer * mapSettings.numPlayers * fill;
 	var totalTrees = scaleByMapSize(treeCount, treeCount);
 
 	var count = floor(totalTrees / trees.length) * fill;
@@ -918,7 +918,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	var maxDist = 5 * offset;
 
 	// render more trees for the african biome
-	if (m.biome == 6)
+	if (mapSettings.biome == 6)
 	{
 		count = count * 1.25;
 		min = 2 * offset;
@@ -932,7 +932,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 		var treesMax = max;
 
 		// don't clump fruit trees
-		if (i == 2 && (m.biome == 3 || m.biome == 5))
+		if (i == 2 && (mapSettings.biome == 3 || mapSettings.biome == 5))
 			treesMax = 1;
 
 		if (min > treesMax)
@@ -1198,7 +1198,7 @@ function findClearLine(bb, corners, angle)
 				"z2": lastZ,
 				"midX": midX,
 				"midZ": midZ,
-				"height": m.mapHeight
+				"height": mapSettings.mapHeight
 			};
 		}
 
@@ -1216,8 +1216,8 @@ function findClearLine(bb, corners, angle)
 function findCorners(points)
 {
 	// find the bounding box of the terrain feature
-	var minX = m.mapSize + 1;
-	var minZ = m.mapSize + 1;
+	var minX = mapSettings.mapSize + 1;
+	var minZ = mapSettings.mapSize + 1;
 	var maxX = -1;
 	var maxZ = -1;
 

@@ -9,7 +9,7 @@ RMS.SetProgress(20);
 
 addLake();
 
-if(m.mapSize >= 192)
+if(mapSettings.mapSize >= 192)
 	addHarbors(players);
 
 addSpines();
@@ -125,19 +125,19 @@ ExportMap();
 function addLake() {
 	var lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
-	var placer = new ChainPlacer(2, floor(scaleByMapSize(2, 12)), floor(scaleByMapSize(35, 160)), 1, m.centerOfMap, m.centerOfMap, 0, [floor(m.mapSize * 0.17 * lSize)]);
+	var placer = new ChainPlacer(2, floor(scaleByMapSize(2, 12)), floor(scaleByMapSize(35, 160)), 1, mapSettings.centerOfMap, mapSettings.centerOfMap, 0, [floor(mapSettings.mapSize * 0.17 * lSize)]);
 	var terrainPainter = new LayeredPainter([t.shore, t.water, t.water], [1, 100]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, -18, 10);
 
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.water)], avoidClasses(tc.player, 20));
 
 	var fDist = 50;
-	if(m.mapSize <= 192) {
+	if(mapSettings.mapSize <= 192) {
 		fDist = 20;
 	}
 
 	// create a bunch of fish
-	var group = new SimpleGroup([new SimpleObject(g.fish, 20, 30, 0, fDist)], true, tc.baseResource, m.centerOfMap, m.centerOfMap);
+	var group = new SimpleGroup([new SimpleObject(g.fish, 20, 30, 0, fDist)], true, tc.baseResource, mapSettings.centerOfMap, mapSettings.centerOfMap);
 	createObjectGroup(group, 0, [avoidClasses(tc.player, 5, tc.hill, 3, tc.mountain, 3), stayClasses(tc.water, 5)]);
 }
 
@@ -147,8 +147,8 @@ function addHarbors(players) {
 		// create player harbors
 		var ix = round(fractionToTiles(players[i].x));
 		var iz = round(fractionToTiles(players[i].z));
-		var playerDistX = m.centerOfMap - ix;
-		var playerDistZ = m.centerOfMap - iz;
+		var playerDistX = mapSettings.centerOfMap - ix;
+		var playerDistZ = mapSettings.centerOfMap - iz;
 		var offsetX = round(playerDistX / 2.5);
 		var offsetZ = round(playerDistZ / 2.5);
 
@@ -171,22 +171,22 @@ function addSpines() {
 	var spineTile = t.dirt;
 	var elevation = 35;
 
-	if (m.biome == 2)
+	if (mapSettings.biome == 2)
 		spineTile = t.tier1Terrain;
 
-	if (m.biome == 4 || m.biome == 6)
+	if (mapSettings.biome == 4 || mapSettings.biome == 6)
 		spineTile = t.tier2Terrain;
 
-	if (m.biome == 8)
+	if (mapSettings.biome == 8)
 		spineTile = t.tier4Terrain;
 
 	var split = 1;
-	if(m.numPlayers <= 3 || (m.mapSize >= 320 && m.numPlayers <= 4)) {
+	if(mapSettings.numPlayers <= 3 || (mapSettings.mapSize >= 320 && mapSettings.numPlayers <= 4)) {
 		split = 2;
 	}
 
-	for (var i = 0; i < m.numPlayers * split; ++i) {
-	  var tang = m.startAngle + (i + 0.5) * TWO_PI / (m.numPlayers * split);
+	for (var i = 0; i < mapSettings.numPlayers * split; ++i) {
+	  var tang = mapSettings.startAngle + (i + 0.5) * TWO_PI / (mapSettings.numPlayers * split);
 
 	  var fx = fractionToTiles(0.5);
 	  var fz = fractionToTiles(0.5);
@@ -201,7 +201,7 @@ function addSpines() {
 		var mTaper = -1.4;
 
 		// make small mountain dividers if we're on a small map
-		if(m.mapSize <= 192) {
+		if(mapSettings.mapSize <= 192) {
 			mSize = 0.02;
 			mTaper = -0.1;
 			elevation = 20;

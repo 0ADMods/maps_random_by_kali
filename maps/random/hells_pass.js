@@ -121,19 +121,19 @@ function placeBarriers()
 {
 	var spineTerrain = t.dirt;
 
-	if (m.biome == 2)
+	if (mapSettings.biome == 2)
 		spineTerrain = t.tier1Terrain;
 
-	if (m.biome == 4 || m.biome == 6)
+	if (mapSettings.biome == 4 || mapSettings.biome == 6)
 		spineTerrain = t.tier2Terrain;
 
-	if (m.biome == 8)
+	if (mapSettings.biome == 8)
 		spineTerrain = t.tier4Terrain;
 
 	// create mountain ranges
-	for (var i = 0; i < m.teams.length; ++i)
+	for (var i = 0; i < mapSettings.teams.length; ++i)
 	{
-		var tang = m.startAngle + (i + 0.5) * TWO_PI / m.teams.length;
+		var tang = mapSettings.startAngle + (i + 0.5) * TWO_PI / mapSettings.teams.length;
 
 		var fx = fractionToTiles(0.5);
 		var fz = fractionToTiles(0.5);
@@ -147,14 +147,14 @@ function placeBarriers()
 		var mOffset = 0.5;
 		var mTaper = -1.5;
 
-		if (m.teams.length > 3 || m.mapSize <= 192)
+		if (mapSettings.teams.length > 3 || mapSettings.mapSize <= 192)
 		{
 			mWaviness = 0.2;
 			mOffset = 0.2;
 			mTaper = -1;
 		}
 
-		if (m.teams.length >= 5)
+		if (mapSettings.teams.length >= 5)
 		{
 			mSize = 4;
 			mWaviness = 0.2;

@@ -213,75 +213,75 @@ function createSunkenTerrain(players)
 	var lower = t.tier2Terrain;
 	var road = t.road;
 
-	if (m.biome == 2)
+	if (mapSettings.biome == 2)
 	{
 		middle = t.tier2Terrain;
 		lower = t.tier1Terrain;
 	}
 
-	if (m.biome == 4)
+	if (mapSettings.biome == 4)
 	{
 		middle = t.shore;
 		lower = t.tier4Terrain;
 	}
 
-	if (m.biome == 5)
+	if (mapSettings.biome == 5)
 	{
 		middle = t.tier1Terrain;
 		lower = t.forestFloor1;
 	}
 
-	if (m.biome == 6)
+	if (mapSettings.biome == 6)
 	{
 		middle = t.tier2Terrain;
 		lower = t.tier4Terrain;
 	}
 
-	if (m.biome == 7 || m.biome == 8)
+	if (mapSettings.biome == 7 || mapSettings.biome == 8)
 		road = t.roadWild;
 
-	if (m.biome == 8)
+	if (mapSettings.biome == 8)
 		middle = t.shore;
 
-	var expSize = m.mapArea * 0.015 / (m.numPlayers / 4);
-	var expDist = 0.1 + (m.numPlayers / 200);
-	if (m.numPlayers == 2)
-		expSize = m.mapArea * 0.015 / 0.7;
+	var expSize = mapSettings.mapArea * 0.015 / (mapSettings.numPlayers / 4);
+	var expDist = 0.1 + (mapSettings.numPlayers / 200);
+	if (mapSettings.numPlayers == 2)
+		expSize = mapSettings.mapArea * 0.015 / 0.7;
 
 	var nRoad = 0.44;
 	var nExp = 0.425;
 
-	if (m.numPlayers < 4)
+	if (mapSettings.numPlayers < 4)
 	{
 		nRoad = 0.42;
 		nExp = 0.4;
 	}
 
 	// create central valley
-	var placer = new ClumpPlacer(m.mapArea * 0.26, 1, 1, 1, m.centerOfMap, m.centerOfMap);
+	var placer = new ClumpPlacer(mapSettings.mapArea * 0.26, 1, 1, 1, mapSettings.centerOfMap, mapSettings.centerOfMap);
 	var terrainPainter = new LayeredPainter([t.cliff, lower], [3]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 0, 3);
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.valley)]);
 
 	// create the center hill
-	var placer = new ClumpPlacer(m.mapArea * 0.14, 1, 1, 1, m.centerOfMap, m.centerOfMap);
+	var placer = new ClumpPlacer(mapSettings.mapArea * 0.14, 1, 1, 1, mapSettings.centerOfMap, mapSettings.centerOfMap);
 	var terrainPainter = new LayeredPainter([t.cliff, t.cliff], [3]);
-	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, m.mapHeight, 3);
+	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, mapSettings.mapHeight, 3);
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.mountain)]);
 
 	for(var i = 0; i < players.length; ++i)
 	{
-		var playerAngle = m.startAngle + i * TWO_PI / m.numPlayers;
+		var playerAngle = mapSettings.startAngle + i * TWO_PI / mapSettings.numPlayers;
 		var pX = round(fractionToTiles(0.5 + 0.4 * cos(playerAngle)));
 		var pZ = round(fractionToTiles(0.5 + 0.4 * sin(playerAngle)));
-		var expX = round(fractionToTiles(0.5 + expDist * cos(m.startAngle + (i + 0.75) * TWO_PI / m.numPlayers)));
-		var expZ = round(fractionToTiles(0.5 + expDist * sin(m.startAngle + (i + 0.75) * TWO_PI / m.numPlayers)));
+		var expX = round(fractionToTiles(0.5 + expDist * cos(mapSettings.startAngle + (i + 0.75) * TWO_PI / mapSettings.numPlayers)));
+		var expZ = round(fractionToTiles(0.5 + expDist * sin(mapSettings.startAngle + (i + 0.75) * TWO_PI / mapSettings.numPlayers)));
 		var rearX = round(fractionToTiles(0.5 + 0.47 * cos(playerAngle)));
 		var rearZ = round(fractionToTiles(0.5 + 0.47 * sin(playerAngle)));
-		var prePlayerAngle = m.startAngle + (i - 0.5) * TWO_PI / m.numPlayers;
+		var prePlayerAngle = mapSettings.startAngle + (i - 0.5) * TWO_PI / mapSettings.numPlayers;
 		var preX = round(fractionToTiles(0.5 + nRoad * cos(prePlayerAngle)));
 		var preZ = round(fractionToTiles(0.5 + nRoad * sin(prePlayerAngle)));
-		var nextPlayerAngle = m.startAngle + (i + 0.5) * TWO_PI / m.numPlayers;
+		var nextPlayerAngle = mapSettings.startAngle + (i + 0.5) * TWO_PI / mapSettings.numPlayers;
 		var nextX = round(fractionToTiles(0.5 + nRoad * cos(nextPlayerAngle)));
 		var nextZ = round(fractionToTiles(0.5 + nRoad * sin(nextPlayerAngle)));
 
@@ -304,7 +304,7 @@ function createSunkenTerrain(players)
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.step)]);
 
 		// create the den
-		var placer = new ClumpPlacer(m.mapArea * 0.03, 0.9, 0.3, 1, pX, pZ);
+		var placer = new ClumpPlacer(mapSettings.mapArea * 0.03, 0.9, 0.3, 1, pX, pZ);
 		var terrainPainter = new LayeredPainter([t.cliff, base], [3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 22, 3);
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.valley)]);
@@ -314,14 +314,14 @@ function createSunkenTerrain(players)
 		var terrainPainter = new LayeredPainter([t.cliff, base], [3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 22, 3);
 		var area = createArea(placer, [terrainPainter, elevationPainter, paintClass(tc.settlement)], [avoidClasses(tc.settlement, 2)]);
-		var unpainter = new TileClassUnPainter(new TileClass(m.mapSize, tc.mountain));
+		var unpainter = new TileClassUnPainter(new TileClass(mapSettings.mapSize, tc.mountain));
 		unpainter.paint(area);
 	}
 
 	// create the neighbor expansions
-	for (var i = 0; i < m.numPlayers; ++i)
+	for (var i = 0; i < mapSettings.numPlayers; ++i)
 	{
-		var nextPlayerAngle = m.startAngle + (i + 0.5) * TWO_PI / m.numPlayers;
+		var nextPlayerAngle = mapSettings.startAngle + (i + 0.5) * TWO_PI / mapSettings.numPlayers;
 		var nextX = round(fractionToTiles(0.5 + nExp * cos(nextPlayerAngle)));
 		var nextZ = round(fractionToTiles(0.5 + nExp * sin(nextPlayerAngle)));
 
