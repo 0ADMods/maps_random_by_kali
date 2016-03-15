@@ -335,8 +335,8 @@ function getStartingPositions()
 
 	return {
 		"setup": formats[randInt(formats.length)],
-		"distance": getRand(0.2, 0.35, 100),
-		"separation": getRand(0.05, 0.1, 100)
+		"distance": randFloat(0.2, 0.35),
+		"separation": randFloat(0.05, 0.1)
 	};
 }
 
@@ -506,11 +506,11 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 
 		// if we have a team of above average size, make sure they're spread out
 		if (mapSettings.teams[i].length > 4)
-			groupedDistance = getRand(0.08, 0.12, 100);
+			groupedDistance = randFloat(0.08, 0.12);
 
 		// if we have a team of below average size, make sure they're together
 		if (mapSettings.teams[i].length < 3)
-			groupedDistance = getRand(0.04, 0.06, 100);
+			groupedDistance = randFloat(0.04, 0.06);
 
 		// if we have a solo player, place them on the center of the team's location
 		if (mapSettings.teams[i].length == 1)
@@ -644,12 +644,6 @@ function getMapSettings()
 ///////////
 // Generic Helpers
 ///////////
-
-// gets a random number between two values
-function getRand(min, max, factor)
-{
-	return ((min * factor) + randInt((max - min) * factor)) / factor;
-}
 
 // gets a number within a random deviation of a base number
 function getRandomDeviation(base, randomness)
