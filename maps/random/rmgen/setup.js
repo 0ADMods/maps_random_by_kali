@@ -4,6 +4,7 @@ var g_Gaia;
 var g_Decoratives;
 var g_TileClasses;
 var g_Forests;
+var g_Props;
 
 // adds an array of elements to the map
 function addElements(els)
@@ -101,6 +102,24 @@ function initTerrain(terrain, tc, elevation)
 function euclid_distance(x1, z1, x2, z2)
 {
 	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
+}
+
+// default to 10% deviation
+function deviationOrDefault(deviation)
+{
+	return deviation || 0.1;
+}
+
+// default to filling 100% of the map
+function fillOrDefault(fill)
+{
+	return fill || 1;
+}
+
+// default to 100% of normal size
+function sizeOrDefault(size)
+{
+	return size || 1;
 }
 
 /////////////////////////////////////////
@@ -532,7 +551,9 @@ function constTileClasses(newClasses)
 		"map",
 		"metal",
 		"mountain",
+		"plateau",
 		"player",
+		"prop",
 		"ramp",
 		"rock",
 		"settlement",
@@ -599,7 +620,18 @@ function getMapSettings()
 		"rockLarge": rBiomeA5(),
 		"rockMedium": rBiomeA6(),
 		"bushMedium": rBiomeA7(),
-		"bushSmall": rBiomeA8()
+		"bushSmall": rBiomeA8(),
+		"tree": rBiomeA9()
+	};
+
+	g_Props = {
+		"barrels": "actor|props/special/eyecandy/barrels_buried.xml",
+		"crate": "actor|props/special/eyecandy/crate_a.xml",
+		"cart": "actor|props/special/eyecandy/handcart_1_broken.xml",
+		"well": "actor|props/special/eyecandy/well_1_c.xml",
+		"skeleton": "actor|props/special/eyecandy/skeleton.xml",
+		"blood": "actor|props/units/blood_01.xml",
+		"bigBlood": "actor|props/units/blood_whale.xml"
 	};
 
 	g_Forests = {
