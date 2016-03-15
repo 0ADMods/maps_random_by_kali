@@ -15,9 +15,9 @@ const allAmounts = ["scarce", "few", "normal", "many", "tons"];
 /////////////////////////////////////////
 function addBluffs(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	var count = fill * scaleByMapSize(15, 15);
 	var minSize = scaleByMapSize(5, 5);
@@ -271,9 +271,9 @@ function addBluffs(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addDecoration(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	var offset = getRandomDeviation(size, deviation);
 	var decorations = [[new SimpleObject(g_Decoratives.rockMedium, 1 * offset, 3 * offset, 0, 1 * offset)],
@@ -326,9 +326,10 @@ function addDecoration(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addElevation(constraint, el)
 {
-	var size = sizeOrDefault(el.size);
-	var deviation = deviationOrDefault(el.deviation);
-	var fill = fillOrDefault(el.fill);
+	var size = el.size || 1;
+	var deviation = el.deviation || 0.1;
+	var fill = el.fill || 1;
+
 	var count = fill * el.count;
 	var minSize = el.minSize;
 	var maxSize = el.maxSize;
@@ -489,7 +490,7 @@ function addLakes(constraint, size, deviation, fill)
 function addLayeredPatches(constraint, size, deviation, fill)
 {
 	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
+	deviation = deviation || 0.1;
 	fill = fillOrDefault(fill);
 
 	var minRadius = 1;
@@ -604,9 +605,9 @@ function addPlateaus(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addRivers(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	var count = 5;
 	var minSize = scaleByMapSize(15, 15);
@@ -721,9 +722,9 @@ function addValleys(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addAnimals(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	var groupOffset = getRandomDeviation(size, deviation);
 
@@ -753,9 +754,9 @@ function addAnimals(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addBerries(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	var groupOffset = getRandomDeviation(size, deviation);
 
@@ -782,9 +783,9 @@ function addBerries(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addFish(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	var groupOffset = getRandomDeviation(size, deviation);
 
@@ -814,9 +815,9 @@ function addFish(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addForests(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	// no forests to render in the african biome
 	if (mapSettings.biome == 6)
@@ -865,9 +866,9 @@ function addForests(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addMetal(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	var offset = getRandomDeviation(size, deviation);
 	var count = 1 + scaleByMapSize(20, 20) * fill;
@@ -893,9 +894,9 @@ function addMetal(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addStone(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	var offset = getRandomDeviation(size, deviation);
 	var count = 1 + scaleByMapSize(20, 20) * fill;
@@ -929,9 +930,9 @@ function addStone(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addStragglerTrees(constraint, size, deviation, fill)
 {
-	size = sizeOrDefault(size);
-	deviation = deviationOrDefault(deviation);
-	fill = fillOrDefault(fill);
+	size = size || 1;
+	deviation = deviation || 0.1;
+	fill = fill || 1;
 
 	if (mapSettings.biome == 6)
 	{
