@@ -149,7 +149,7 @@ function addBluffs(constraint, size, deviation, fill)
 		}
 	]);
 
-	addElements(randArray([
+	addElements(shuffleArray([
 		{
 			"func": addForests,
 			"tile": "g_TileClasses.forest",
@@ -203,7 +203,7 @@ function addBluffs(constraint, size, deviation, fill)
 		}
 	]));
 
-	addElements(randArray([
+	addElements(shuffleArray([
 		{
 			"func": addStragglerTrees,
 			"tile": "g_TileClasses.forest",
