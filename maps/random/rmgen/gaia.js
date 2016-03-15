@@ -15,9 +15,9 @@ const allAmounts = ["scarce", "few", "normal", "many", "tons"];
 /////////////////////////////////////////
 function addBluffs(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	var count = fill * scaleByMapSize(15, 15);
 	var minSize = scaleByMapSize(5, 5);
@@ -117,6 +117,7 @@ function addBluffs(constraint, size, deviation, fill)
 
 	addElements([{
 		"func": addHills,
+		"tile": "g_TileClasses.hill",
 		"avoid": [g_TileClasses.hill, 3, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
 		"stay": [g_TileClasses.bluff, 3],
 		"sizes": allSizes,
@@ -127,6 +128,7 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addLayeredPatches,
+			"tile": "g_TileClasses.dirt",
 			"avoid": [g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
 			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
@@ -138,6 +140,7 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addDecoration,
+			"tile": "g_TileClasses.dirt",
 			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
 			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
@@ -146,9 +149,22 @@ function addBluffs(constraint, size, deviation, fill)
 		}
 	]);
 
+	addElements([
+		{
+			"func": addProps,
+			"tile": "g_TileClasses.prop",
+			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.prop, 40, g_TileClasses.water, 3],
+			"stay": [g_TileClasses.bluff, 7, g_TileClasses.mountain, 7],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["scarce"]
+		}
+	]);
+
 	addElements(shuffleArray([
 		{
 			"func": addForests,
+			"tile": "g_TileClasses.forest",
 			"avoid": [
 				g_TileClasses.berries, 5,
 				g_TileClasses.forest, 18,
@@ -165,6 +181,7 @@ function addBluffs(constraint, size, deviation, fill)
 		},
 		{
 			"func": addMetal,
+			"tile": "g_TileClasses.metal",
 			"avoid": [
 				g_TileClasses.berries, 5,
 				g_TileClasses.forest, 5,
@@ -181,6 +198,7 @@ function addBluffs(constraint, size, deviation, fill)
 		},
 		{
 			"func": addStone,
+			"tile": "g_TileClasses.stone",
 			"avoid": [
 				g_TileClasses.berries, 5,
 				g_TileClasses.forest, 5,
@@ -200,6 +218,7 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements(shuffleArray([
 		{
 			"func": addStragglerTrees,
+			"tile": "g_TileClasses.forest",
 			"avoid": [
 				g_TileClasses.berries, 5,
 				g_TileClasses.forest, 10,
@@ -216,6 +235,7 @@ function addBluffs(constraint, size, deviation, fill)
 		},
 		{
 			"func": addAnimals,
+			"tile": "g_TileClasses.animals",
 			"avoid": [
 				g_TileClasses.animals, 20,
 				g_TileClasses.forest, 5,
@@ -232,6 +252,7 @@ function addBluffs(constraint, size, deviation, fill)
 		},
 		{
 			"func": addBerries,
+			"tile": "g_TileClasses.berries",
 			"avoid": [
 				g_TileClasses.berries, 50,
 				g_TileClasses.forest, 5,
@@ -262,9 +283,9 @@ function addBluffs(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addDecoration(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	var offset = getRandomDeviation(size, deviation);
 	var decorations = [[new SimpleObject(g_Decoratives.rockMedium, 1 * offset, 3 * offset, 0, 1 * offset)],
@@ -317,10 +338,9 @@ function addDecoration(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addElevation(constraint, el)
 {
-	var size = el.size || 1;
-	var deviation = el.deviation || 0.1;
-	var fill = el.fill || 1;
-
+	var size = sizeOrDefault(el.size);
+	var deviation = deviationOrDefault(el.deviation);
+	var fill = fillOrDefault(el.fill);
 	var count = fill * el.count;
 	var minSize = el.minSize;
 	var maxSize = el.maxSize;
@@ -446,6 +466,7 @@ function addLakes(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addFish,
+			"tile": "g_TileClasses.fish",
 			"avoid": [
 				g_TileClasses.fish, 12,
 				g_TileClasses.hill, 8,
@@ -480,7 +501,7 @@ function addLakes(constraint, size, deviation, fill)
 function addLayeredPatches(constraint, size, deviation, fill)
 {
 	size = sizeOrDefault(size);
-	deviation = deviation || 0.1;
+	deviation = deviationOrDefault(deviation);
 	fill = fillOrDefault(fill);
 
 	var minRadius = 1;
@@ -567,7 +588,7 @@ function addPlateaus(constraint, size, deviation, fill)
 		plateauTile = g_Terrains.tier4Terrain;
 
 	addElevation(constraint, {
-		"class": g_TileClasses.mountain,
+		"class": g_TileClasses.plateau,
 		"painter": [g_Terrains.cliff, plateauTile],
 		"size": size,
 		"deviation": deviation,
@@ -580,6 +601,81 @@ function addPlateaus(constraint, size, deviation, fill)
 		"maxElevation": 30,
 		"steepness": 8
 	});
+
+	for (var i = 0; i < 40; ++i)
+	{
+		var placer = new ChainPlacer(3, 15, 1, 0.5);
+		var terrainPainter = new LayeredPainter([plateauTile, plateauTile], [3]);
+		var hillElevation = 4 + randInt(15);
+		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, hillElevation, hillElevation - 2);
+		createAreas(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.hill)], [avoidClasses(g_TileClasses.hill, 7), stayClasses(g_TileClasses.plateau, 7)], 1);
+	}
+
+	addElements([
+		{
+			"func": addDecoration,
+			"tile": "g_TileClasses.dirt",
+			"avoid": [g_TileClasses.dirt, 15, g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"stay": [g_TileClasses.plateau, 8],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["tons"]
+		},
+		{
+			"func": addProps,
+			"tile": "g_TileClasses.prop",
+			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.prop, 40, g_TileClasses.water, 3],
+			"stay": [g_TileClasses.plateau, 8],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["scarce"]
+		}
+	]);
+}
+
+/////////////////////////////////////////
+// addProps
+//
+// Function for creating props
+//
+// constraint: constraint classes
+// size: size of normal (1.2 would be 120% of normal)
+// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
+// fill: size of map to fill (1.5 would be 150% of normal)
+//
+/////////////////////////////////////////
+function addProps(constraint, size, deviation, fill)
+{
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
+
+	var offset = getRandomDeviation(size, deviation);
+	var props = [
+		[new SimpleObject(g_Props.skeleton, 1 * offset, 5 * offset, 0, 3 * offset + 2), new SimpleObject(g_Props.blood, 1 * offset, 2 * offset, 0, 1 * offset + 3), new SimpleObject(g_Props.bigBlood, 1 * offset, 3 * offset, 0, 2 * offset + 3)],
+		[new SimpleObject(g_Props.barrels, 1 * offset, 2 * offset, 2, 3 * offset + 2), new SimpleObject(g_Props.cart, 0, 1 * offset, 5, 2.5 * offset + 5), new SimpleObject(g_Props.crate, 1 * offset, 2 * offset, 2, 2 * offset + 2), new SimpleObject(g_Props.well, 0, 1, 2, 2 * offset + 2)]
+	];
+
+	var baseCount = 1;
+
+	var counts = [
+		scaleByMapSize(16, 262),
+		scaleByMapSize(8, 131),
+		baseCount * scaleByMapSize(13, 200),
+		baseCount * scaleByMapSize(13, 200),
+		baseCount * scaleByMapSize(13, 200)
+	];
+
+	// add small props
+	for (var i = 0; i < props.length; ++i)
+	{
+		var propCount = floor(counts[i] * fill);
+		var group = new SimpleGroup(props[i], true);
+		createObjectGroups(group, 0, constraint, propCount, 5);
+	}
+
+	// add tree props
+	createObjectGroups(new SimpleGroup([new SimpleObject(g_Decoratives.tree, 5 * offset, 30 * offset, 2, 3 * offset + 10)], true), 0, constraint, counts[0] * 5 * fill, 5);
 }
 
 /////////////////////////////////////////
@@ -595,9 +691,9 @@ function addPlateaus(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addRivers(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	var count = 5;
 	var minSize = scaleByMapSize(15, 15);
@@ -712,9 +808,9 @@ function addValleys(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addAnimals(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	var groupOffset = getRandomDeviation(size, deviation);
 
@@ -744,9 +840,9 @@ function addAnimals(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addBerries(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	var groupOffset = getRandomDeviation(size, deviation);
 
@@ -773,9 +869,9 @@ function addBerries(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addFish(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	var groupOffset = getRandomDeviation(size, deviation);
 
@@ -805,9 +901,9 @@ function addFish(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addForests(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	// no forests to render in the african biome
 	if (mapSettings.biome == 6)
@@ -856,9 +952,9 @@ function addForests(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addMetal(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	var offset = getRandomDeviation(size, deviation);
 	var count = 1 + scaleByMapSize(20, 20) * fill;
@@ -884,9 +980,9 @@ function addMetal(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addStone(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	var offset = getRandomDeviation(size, deviation);
 	var count = 1 + scaleByMapSize(20, 20) * fill;
@@ -920,9 +1016,9 @@ function addStone(constraint, size, deviation, fill)
 /////////////////////////////////////////
 function addStragglerTrees(constraint, size, deviation, fill)
 {
-	size = size || 1;
-	deviation = deviation || 0.1;
-	fill = fill || 1;
+	size = sizeOrDefault(size);
+	deviation = deviationOrDefault(deviation);
+	fill = fillOrDefault(fill);
 
 	if (mapSettings.biome == 6)
 	{
