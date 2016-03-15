@@ -1,6 +1,10 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
+randomizeBiome();
+mapSettings = getMapSettings();
+g_TileClasses = constTileClasses();
+
 // pick a random elevation with a bias towards lower elevations
 var randElevation = randInt(30);
 if (randElevation < 25)
@@ -10,7 +14,7 @@ initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randElevation);
 RMS.SetProgress(20);
 
 var pos = getStartingPositions();
-addBases(pos.setup, pos.distance, pos.separation);
+var players = addBases(pos.setup, pos.distance, pos.separation);
 RMS.SetProgress(40);
 
 var features = [
@@ -76,7 +80,7 @@ if (randElevation < 4)
 if (randElevation > 20)
 	features = features.concat(valleys);
 
-addElements(randArray(features));
+addElements(shuffleArray(features));
 RMS.SetProgress(50);
 
 addElements([
@@ -150,7 +154,7 @@ addElements(randArray([
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 1, g_TileClasses.mountain, 1, g_TileClasses.player, 12, g_TileClasses.rock, 1, g_TileClasses.water, 5],
 		"sizes": allSizes,
 		"mixes": allMixes,
-		"amounts": ["normal", "many", "tons"]
+		"amounts": allAmounts
 	}
 ]));
 RMS.SetProgress(90);
