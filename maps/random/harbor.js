@@ -20,7 +20,6 @@ RMS.SetProgress(40);
 addElements(shuffleArray([
 	{
 		"func": addHills,
-		"tile": "g_TileClasses.hill",
 		"avoid": [g_TileClasses.bluff, 5, g_TileClasses.hill, 15, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.spine, 5, g_TileClasses.valley, 2, g_TileClasses.water, 2],
 		"sizes": ["tiny", "small"],
 		"mixes": allMixes,
@@ -28,7 +27,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addMountains,
-		"tile": "g_TileClasses.mountain",
 		"avoid": [g_TileClasses.bluff, 20, g_TileClasses.mountain, 25, g_TileClasses.player, 20, g_TileClasses.spine, 20, g_TileClasses.valley, 10, g_TileClasses.water, 15],
 		"sizes": ["small"],
 		"mixes": allMixes,
@@ -36,7 +34,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addPlateaus,
-		"tile": "g_TileClasses.mountain",
 		"avoid": [g_TileClasses.bluff, 20, g_TileClasses.mountain, 25, g_TileClasses.player, 40, g_TileClasses.spine, 20, g_TileClasses.valley, 10, g_TileClasses.water, 15],
 		"sizes": ["small"],
 		"mixes": allMixes,
@@ -48,7 +45,6 @@ RMS.SetProgress(60);
 addElements([
 	{
 		"func": addLayeredPatches,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [g_TileClasses.bluff, 2, g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.spine, 5, g_TileClasses.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
@@ -56,7 +52,6 @@ addElements([
 	},
 	{
 		"func": addDecoration,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [g_TileClasses.bluff, 2, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.spine, 5, g_TileClasses.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
@@ -68,7 +63,6 @@ RMS.SetProgress(70);
 addElements(shuffleArray([
 	{
 		"func": addMetal,
-		"tile": "g_TileClasses.metal",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 3, g_TileClasses.mountain, 2, g_TileClasses.player, 30, g_TileClasses.rock, 10, g_TileClasses.metal, 20, g_TileClasses.spine, 2, g_TileClasses.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["same"],
@@ -76,7 +70,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addStone,
-		"tile": "g_TileClasses.stone",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 3, g_TileClasses.mountain, 2, g_TileClasses.player, 30, g_TileClasses.rock, 20, g_TileClasses.metal, 10, g_TileClasses.spine, 2, g_TileClasses.water, 3],
 		"sizes": ["normal"],
 		"mixes": ["same"],
@@ -84,7 +77,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addForests,
-		"tile": "g_TileClasses.forest",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 18, g_TileClasses.metal, 3, g_TileClasses.mountain, 5, g_TileClasses.player, 20, g_TileClasses.rock, 3, g_TileClasses.spine, 2, g_TileClasses.water, 2],
 		"sizes": allSizes,
 		"mixes": allMixes,
@@ -96,7 +88,6 @@ RMS.SetProgress(80);
 addElements(shuffleArray([
 	{
 		"func": addBerries,
-		"tile": "g_TileClasses.berries",
 		"avoid": [g_TileClasses.berries, 30, g_TileClasses.bluff, 5, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.rock, 10, g_TileClasses.spine, 2, g_TileClasses.water, 3],
 		"sizes": allSizes,
 		"mixes": allMixes,
@@ -104,7 +95,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addAnimals,
-		"tile": "g_TileClasses.animals",
 		"avoid": [g_TileClasses.animals, 20, g_TileClasses.bluff, 5, g_TileClasses.forest, 0, g_TileClasses.mountain, 1, g_TileClasses.player, 20, g_TileClasses.spine, 2, g_TileClasses.water, 3],
 		"sizes": allSizes,
 		"mixes": allMixes,
@@ -112,7 +102,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "g_TileClasses.forest",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 1, g_TileClasses.mountain, 1, g_TileClasses.player, 12, g_TileClasses.rock, 1, g_TileClasses.spine, 2, g_TileClasses.water, 5],
 		"sizes": allSizes,
 		"mixes": allMixes,
@@ -219,7 +208,6 @@ function addSpines() {
 	var decoration = [
 		{
 			"func": addDecoration,
-			"tile": "g_TileClasses.dirt",
 			"avoid": [g_TileClasses.bluff, 2, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
 			"stay": [g_TileClasses.spine, 5],
 			"sizes": ["normal"],
