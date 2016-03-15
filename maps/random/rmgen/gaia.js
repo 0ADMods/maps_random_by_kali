@@ -933,15 +933,24 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	deviation = deviationOrDefault(deviation);
 	fill = fillOrDefault(fill);
 
-	if (mapSettings.biome == 6 && fill < 1)
-			fill = 1;
+	if (mapSettings.biome == 6)
+	{
+		if (fill < 2)
+			fill = 2;
+		if (size < 1)
+			size = 1;
+	}
 
 	var trees = [g_Gaia.tree1, g_Gaia.tree2, g_Gaia.tree3, g_Gaia.tree4];
 
 	var treesPerPlayer = 40;
+	var playerBonus = (mapSettings.numPlayers - 3) / 2;
+
+	if (playerBonus < 1)
+		playerBonus = 1;
 
 	var offset = getRandomDeviation(size, deviation);
-	var treeCount = treesPerPlayer * mapSettings.numPlayers * fill;
+	var treeCount = treesPerPlayer * playerBonus * fill;
 	var totalTrees = scaleByMapSize(treeCount, treeCount);
 
 	var count = floor(totalTrees / trees.length) * fill;
@@ -953,7 +962,6 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	// render more trees for the african biome
 	if (mapSettings.biome == 6)
 	{
-		count = count * 0.5;
 		min = 3 * offset;
 		max = 5 * offset;
 		minDist = 2 * offset + 1;
