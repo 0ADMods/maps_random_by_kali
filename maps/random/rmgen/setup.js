@@ -1,66 +1,9 @@
 var mapSettings;
-
-mapSettings = getMapSettings();
-
-const g_Terrains = {
-	"mainTerrain": rBiomeT1(),
-	"forestFloor1": rBiomeT2(),
-	"forestFloor2": rBiomeT3(),
-	"cliff": rBiomeT4(),
-	"tier1Terrain": rBiomeT5(),
-	"tier2Terrain": rBiomeT6(),
-	"tier3Terrain": rBiomeT7(),
-	"hill": rBiomeT8(),
-	"dirt": rBiomeT9(),
-	"road": rBiomeT10(),
-	"roadWild": rBiomeT11(),
-	"tier4Terrain": rBiomeT12(),
-	"shoreBlend": rBiomeT13(),
-	"shore": rBiomeT14(),
-	"water": rBiomeT15()
-};
-
-const g_Gaia = {
-	"tree1": rBiomeE1(),
-	"tree2": rBiomeE2(),
-	"tree3": rBiomeE3(),
-	"tree4": rBiomeE4(),
-	"tree5": rBiomeE5(),
-	"fruitBush": rBiomeE6(),
-	"chicken": rBiomeE7(),
-	"mainHuntableAnimal": rBiomeE8(),
-	"fish": rBiomeE9(),
-	"secondaryHuntableAnimal": rBiomeE10(),
-	"stoneLarge": rBiomeE11(),
-	"stoneSmall": rBiomeE12(),
-	"metalLarge": rBiomeE13()
-};
-
-const g_Decoratives = {
-	"grass": rBiomeA1(),
-	"grassShort": rBiomeA2(),
-	"reeds": rBiomeA3(),
-	"lillies": rBiomeA4(),
-	"rockLarge": rBiomeA5(),
-	"rockMedium": rBiomeA6(),
-	"bushMedium": rBiomeA7(),
-	"bushSmall": rBiomeA8()
-};
-
-const g_TileClasses = constTileClasses();
-
-const g_Forests = {
-	"forest1": [
-		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree1,
-		g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree2,
-		g_Terrains.forestFloor2
-	],
-	"forest2": [
-		g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g_Gaia.tree4,
-		g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g_Gaia.tree5,
-		g_Terrains.forestFloor1
-	]
-};
+var g_Terrains;
+var g_Gaia;
+var g_Decoratives;
+var g_TileClasses;
+var g_Forests;
 
 // adds an array of elements to the map
 function addElements(els)
@@ -140,6 +83,11 @@ function pickSize(sizes)
 // paints the entire map with a single tile type
 function initTerrain(terrain, tc, elevation)
 {
+	mapSettings.mapSize = getMapSize();
+	mapSettings.mapArea = mapSettings.mapSize * mapSettings.mapSize;
+	mapSettings.centerOfMap = floor(mapSettings.mapSize / 2);
+	mapSettings.mapRadius = -PI / 4;
+
 	var placer = new ClumpPlacer(mapSettings.mapArea, 1, 1, 1, mapSettings.centerOfMap, mapSettings.centerOfMap);
 	var terrainPainter = new LayeredPainter([terrain], []);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, elevation, 1);
@@ -453,15 +401,16 @@ function placeLine(playerIDs, distance, groupedDistance)
 /////////////////////////////////////////
 function placeRadial(playerIDs, distance)
 {
-	var players = [];
+	var players = new Array(mapSettings.numPlayers);
 
 	for (var i = 0; i < mapSettings.numPlayers; ++i)
 	{
+		var angle = mapSettings.startAngle + i * TWO_PI / mapSettings.numPlayers;
 		players[i] = {
 			"id": playerIDs[i],
-			"angle": mapSettings.startAngle + i * TWO_PI / mapSettings.numPlayers,
-			"x": 0.5 + distance * cos(players[i].angle),
-			"z": 0.5 + distance * sin(players[i].angle)
+			"angle": angle,
+			"x": 0.5 + distance * cos(angle),
+			"z": 0.5 + distance * sin(angle)
 		};
 		createBase(players[i])
 	}
@@ -570,11 +519,12 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 		// create player base
 		for (var p = 0; p < mapSettings.teams[i].length; ++p)
 		{
+			var angle = mapSettings.startAngle + (p + 1) * TWO_PI / mapSettings.teams[i].length;
 			players[mapSettings.teams[i][p]] = {
 				"id": mapSettings.teams[i][p],
-				"angle": mapSettings.startAngle + (p + 1) * TWO_PI / mapSettings.teams[i].length,
-				"x": fractionX + groupedDistance * cos(player.angle),
-				"z": fractionZ + groupedDistance * sin(player.angle)
+				"angle": angle,
+				"x": fractionX + groupedDistance * cos(angle),
+				"z": fractionZ + groupedDistance * sin(angle)
 			};
 			createBase(players[mapSettings.teams[i][p]], false)
 		}
@@ -623,20 +573,69 @@ function constTileClasses(newClasses)
 // put some useful map settings into an object
 function getMapSettings()
 {
-	randomizeBiome();
-
-	let mapSize = getMapSize();
-	let center = floor(mapSize / 2);
 	let numPlayers = getNumPlayers();
+
+	g_Terrains = {
+		"mainTerrain": rBiomeT1(),
+		"forestFloor1": rBiomeT2(),
+		"forestFloor2": rBiomeT3(),
+		"cliff": rBiomeT4(),
+		"tier1Terrain": rBiomeT5(),
+		"tier2Terrain": rBiomeT6(),
+		"tier3Terrain": rBiomeT7(),
+		"hill": rBiomeT8(),
+		"dirt": rBiomeT9(),
+		"road": rBiomeT10(),
+		"roadWild": rBiomeT11(),
+		"tier4Terrain": rBiomeT12(),
+		"shoreBlend": rBiomeT13(),
+		"shore": rBiomeT14(),
+		"water": rBiomeT15()
+	};
+
+	g_Gaia = {
+		"tree1": rBiomeE1(),
+		"tree2": rBiomeE2(),
+		"tree3": rBiomeE3(),
+		"tree4": rBiomeE4(),
+		"tree5": rBiomeE5(),
+		"fruitBush": rBiomeE6(),
+		"chicken": rBiomeE7(),
+		"mainHuntableAnimal": rBiomeE8(),
+		"fish": rBiomeE9(),
+		"secondaryHuntableAnimal": rBiomeE10(),
+		"stoneLarge": rBiomeE11(),
+		"stoneSmall": rBiomeE12(),
+		"metalLarge": rBiomeE13()
+	};
+
+	g_Decoratives = {
+		"grass": rBiomeA1(),
+		"grassShort": rBiomeA2(),
+		"reeds": rBiomeA3(),
+		"lillies": rBiomeA4(),
+		"rockLarge": rBiomeA5(),
+		"rockMedium": rBiomeA6(),
+		"bushMedium": rBiomeA7(),
+		"bushSmall": rBiomeA8()
+	};
+
+	g_Forests = {
+		"forest1": [
+			g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree1,
+			g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree2,
+			g_Terrains.forestFloor2
+		],
+		"forest2": [
+			g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g_Gaia.tree4,
+			g_Terrains.forestFloor1 + TERRAIN_SEPARATOR + g_Gaia.tree5,
+			g_Terrains.forestFloor1
+		]
+	};
 
 	return {
 		"biome": biomeID,
 		"numPlayers": numPlayers,
-		"mapSize": mapSize,
-		"mapArea": mapSize * mapSize,
-		"centerOfMap": center,
-		"mapHeight": getHeight(center, center),
-		"mapRadius": -PI / 4,
 		"teams": getTeams(numPlayers),
 		"startAngle": randFloat(0, TWO_PI)
 	};
