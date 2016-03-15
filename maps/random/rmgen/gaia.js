@@ -58,14 +58,17 @@ function addBluffs(constraint, size, deviation, fill)
 			opAngle = angle + 2;
 
 		// find the edges of the bluff
-		var baseLine = findClearLine(bb, corners, angle);
-		var endLine = findClearLine(bb, corners, opAngle);
+		var baseLine;
+		var endLine;
 
 		// if we can't access the bluff, try different angles
-		var retries = 1;
+		var retries = 0;
 		var bluffCat = 2;
-		while (bluffCat != 0 && retries < 4)
+		while (bluffCat != 0 && retries < 5)
 		{
+			baseLine = findClearLine(bb, corners, angle);
+			endLine = findClearLine(bb, corners, opAngle);
+
 			bluffCat = unreachableBluff(bb, corners, baseLine, endLine);
 			++angle;
 			if (angle > 3)
@@ -75,20 +78,16 @@ function addBluffs(constraint, size, deviation, fill)
 			if (angle < 2)
 				opAngle = angle + 2;
 
-			baseLine = findClearLine(bb, corners, angle);
-			endLine = findClearLine(bb, corners, opAngle);
 			++retries;
 		}
 
 		// found a bluff that can't be accessed, so turn it into a plateau
-		if (retries == 4)
-		{
+		if (retries == 5)
 			removeBluff(points);
 
-			// if we couldn't find the slope lines, turn it into a plateau
-			if (bluffCat == 1)
-				continue;
-		}
+		// if we couldn't find the slope lines, turn it into a plateau
+		if (bluffCat == 1)
+			continue;
 
 		var ground = createTerrain(g_Terrains.mainTerrain);
 
@@ -163,10 +162,10 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.rock, 5,
 				g_TileClasses.water, 2
 			],
-			"stay": [g_TileClasses.bluff, 10],
+			"stay": [g_TileClasses.bluff, 6],
 			"sizes": allSizes,
 			"mixes": allMixes,
-			"amounts": allAmounts
+			"amounts":  ["normal", "many", "tons"]
 		},
 		{
 			"func": addMetal,
@@ -180,10 +179,10 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.metal, 40,
 				g_TileClasses.water, 3
 			],
-			"stay": [g_TileClasses.bluff, 10],
+			"stay": [g_TileClasses.bluff, 6],
 			"sizes": ["normal"],
 			"mixes": ["same"],
-			"amounts": allAmounts
+			"amounts":  ["normal", "many", "tons"]
 		},
 		{
 			"func": addStone,
@@ -197,10 +196,10 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.metal, 15,
 				g_TileClasses.water, 3
 			],
-			"stay": [g_TileClasses.bluff, 10],
+			"stay": [g_TileClasses.bluff, 6],
 			"sizes": ["normal"],
 			"mixes": ["same"],
-			"amounts": allAmounts
+			"amounts": ["normal", "many", "tons"]
 		}
 	]));
 
@@ -217,10 +216,10 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.rock, 5,
 				g_TileClasses.water, 5
 			 ],
-			"stay": [g_TileClasses.bluff, 10],
+			"stay": [g_TileClasses.bluff, 6],
 			"sizes": allSizes,
 			"mixes": allMixes,
-			"amounts": ["scarce", "few", "normal"]
+			"amounts": ["normal", "many", "tons"]
 		},
 		{
 			"func": addAnimals,
@@ -234,10 +233,10 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.metal, 5,
 				g_TileClasses.water, 3
 			 ],
-			"stay": [g_TileClasses.bluff, 10],
+			"stay": [g_TileClasses.bluff, 6],
 			"sizes": allSizes,
 			"mixes": allMixes,
-			"amounts": allAmounts
+			"amounts": ["normal", "many", "tons"]
 		},
 		{
 			"func": addBerries,
@@ -251,10 +250,10 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.rock, 10,
 				g_TileClasses.water, 3
 			],
-			"stay": [g_TileClasses.bluff, 10],
+			"stay": [g_TileClasses.bluff, 6],
 			"sizes": allSizes,
 			"mixes": allMixes,
-			"amounts": allAmounts
+			"amounts": ["normal", "many", "tons"]
 		}
 	]));
 }
@@ -277,11 +276,11 @@ function addDecoration(constraint, size, deviation, fill)
 	fill = fillOrDefault(fill);
 
 	var offset = getRandomDeviation(size, deviation);
-	var decorations = [[new SimpleObject(p.rockMedium, 1 * offset, 3 * offset, 0, 1 * offset)],
-		[new SimpleObject(p.rockLarge, 1 * offset, 2 * offset, 0, 1 * offset), new SimpleObject(p.rockMedium, 1 * offset, 3 * offset, 0, 2 * offset)],
-		[new SimpleObject(p.grassShort, 1 * offset, 2 * offset, 0, 1 * offset, -PI / 8, PI / 8)],
-		[new SimpleObject(p.grass, 2 * offset, 4 * offset, 0, 1.8 * offset, -PI / 8, PI / 8), new SimpleObject(p.grassShort, 3 * offset, 6 * offset, 1.2 * offset, 2.5 * offset, -PI / 8, PI / 8)],
-		[new SimpleObject(p.bushMedium, 1 * offset, 2 * offset, 0, 2 * offset), new SimpleObject(p.bushSmall, 2 * offset, 4 * offset, 0, 2 * offset)]
+	var decorations = [[new SimpleObject(g_Decoratives.rockMedium, 1 * offset, 3 * offset, 0, 1 * offset)],
+		[new SimpleObject(g_Decoratives.rockLarge, 1 * offset, 2 * offset, 0, 1 * offset), new SimpleObject(g_Decoratives.rockMedium, 1 * offset, 3 * offset, 0, 2 * offset)],
+		[new SimpleObject(g_Decoratives.grassShort, 1 * offset, 2 * offset, 0, 1 * offset, -PI / 8, PI / 8)],
+		[new SimpleObject(g_Decoratives.grass, 2 * offset, 4 * offset, 0, 1.8 * offset, -PI / 8, PI / 8), new SimpleObject(g_Decoratives.grassShort, 3 * offset, 6 * offset, 1.2 * offset, 2.5 * offset, -PI / 8, PI / 8)],
+		[new SimpleObject(g_Decoratives.bushMedium, 1 * offset, 2 * offset, 0, 2 * offset), new SimpleObject(g_Decoratives.bushSmall, 2 * offset, 4 * offset, 0, 2 * offset)]
 	];
 
 	var baseCount = 1;
@@ -469,10 +468,10 @@ function addLakes(constraint, size, deviation, fill)
 		}
 	]);
 
-	var group = new SimpleGroup([new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt)
+	var group = new SimpleGroup([new SimpleObject(g_Decoratives.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt)
 	createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 1), borderClasses(g_TileClasses.water, 4, 3)], 1000, 100);
 
-	group = new SimpleGroup([new SimpleObject(p.reeds, 10, 15, 1, 3), new SimpleObject(p.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt)
+	group = new SimpleGroup([new SimpleObject(g_Decoratives.reeds, 10, 15, 1, 3), new SimpleObject(g_Decoratives.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt)
 	createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 2), borderClasses(g_TileClasses.water, 4, 3)], 1000, 100);
 }
 
@@ -934,8 +933,8 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	deviation = deviationOrDefault(deviation);
 	fill = fillOrDefault(fill);
 
-	if (mapSettings.biome == 6 && fill < 0.8)
-		fill = 0.8;
+	if (mapSettings.biome == 6 && fill < 1)
+			fill = 1;
 
 	var trees = [g_Gaia.tree1, g_Gaia.tree2, g_Gaia.tree3, g_Gaia.tree4];
 
@@ -954,11 +953,11 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	// render more trees for the african biome
 	if (mapSettings.biome == 6)
 	{
-		count = count * 1.25;
-		min = 2 * offset;
+		count = count * 0.5;
+		min = 3 * offset;
 		max = 5 * offset;
-		minDist = 5 * offset;
-		maxDist = 7 * offset;
+		minDist = 2 * offset + 1;
+		maxDist = 3 * offset + 2;
 	}
 
 	for (var i = 0; i < trees.length; ++i)
@@ -985,7 +984,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 function unreachableBluff(bb, corners, baseLine, endLine)
 {
 	// if we couldn't find a slope line
-	if (baseLine.midX === undefined || endLine.midX === undefined)
+	if (typeof baseLine.midX === "undefined" || typeof endLine.midX === "undefined")
 		return 1;
 
 	// if the end points aren't on the tilemap
