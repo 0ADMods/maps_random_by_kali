@@ -1,7 +1,9 @@
 RMS.LoadLibrary("rmgen");
-
-log("Initializing map...");
 InitMap();
+
+randomizeBiome();
+mapSettings = getMapSettings();
+g_TileClasses = constTileClasses();
 
 initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 2);
 var players = addBases("radial", 0.38);
@@ -15,7 +17,7 @@ if(mapSettings.mapSize >= 192)
 addSpines();
 RMS.SetProgress(40);
 
-addElements(randArray([
+addElements(shuffleArray([
 	{
 		"func": addHills,
 		"tile": "g_TileClasses.hill",
@@ -63,7 +65,7 @@ addElements([
 ]);
 RMS.SetProgress(70);
 
-addElements(randArray([
+addElements(shuffleArray([
 	{
 		"func": addMetal,
 		"tile": "g_TileClasses.metal",
@@ -91,7 +93,7 @@ addElements(randArray([
 ]));
 RMS.SetProgress(80);
 
-addElements(randArray([
+addElements(shuffleArray([
 	{
 		"func": addBerries,
 		"tile": "g_TileClasses.berries",

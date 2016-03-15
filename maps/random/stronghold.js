@@ -1,6 +1,10 @@
 RMS.LoadLibrary("rmgen");
 InitMap();
 
+randomizeBiome();
+mapSettings = getMapSettings();
+g_TileClasses = constTileClasses();
+
 initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 30);
 RMS.SetProgress(20);
 
@@ -8,7 +12,7 @@ var pos = getStartingPositions();
 var players = addBases("stronghold", pos.distance, pos.separation);
 RMS.SetProgress(30);
 
-addElements(randArray([
+addElements(shuffleArray([
 	{
 		"func": addBluffs,
 		"tile": "g_TileClasses.bluff",
@@ -72,7 +76,7 @@ addElements([
 ]);
 RMS.SetProgress(70);
 
-addElements(randArray([
+addElements(shuffleArray([
 	{
 		"func": addMetal,
 		"tile": "g_TileClasses.metal",
@@ -100,7 +104,7 @@ addElements(randArray([
 ]));
 RMS.SetProgress(80);
 
-addElements(randArray([
+addElements(shuffleArray([
 	{
 		"func": addBerries,
 		"tile": "g_TileClasses.berries",

@@ -14,7 +14,7 @@ initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randElevation);
 RMS.SetProgress(20);
 
 var pos = getStartingPositions();
-var players = addBases(pos.setup, pos.distance, pos.separation);
+addBases(pos.setup, pos.distance, pos.separation);
 RMS.SetProgress(40);
 
 var features = [
