@@ -104,15 +104,10 @@ function euclid_distance(x1, z1, x2, z2)
 	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
 }
 
-/////////////////////////////////////////
-// addBases
-//
 // Function for creating player bases
 //
 // type: "radial", "stacked", "stronghold", "random"
 // distance: radial distance from the center of the map
-//
-/////////////////////////////////////////
 function addBases(type, distance, groupedDistance)
 {
 	type = type || "radial";
@@ -141,15 +136,10 @@ function addBases(type, distance, groupedDistance)
 	return players;
 }
 
-/////////////////////////////////////////
-// createBase
-//
 // Function for creating a single player base
 //
 // player: An object with the player's attributes (id, angle, x, z)
 // walls: Iberian walls (true/false)
-//
-/////////////////////////////////////////
 function createBase(player, walls)
 {
 	// get the x and z in tiles
@@ -335,16 +325,11 @@ function randomizePlayers()
 	return playerIDs
 }
 
-/////////////////////////////////////////
-// placeLine
-//
 // Function for placing teams in a line pattern
 //
 // playerIDs: array of randomized playerIDs
 // distance: radial distance from the center of the map
 // groupedDistance: distance between teammates
-//
-/////////////////////////////////////////
 function placeLine(playerIDs, distance, groupedDistance)
 {
 	var players = [];
@@ -373,15 +358,10 @@ function placeLine(playerIDs, distance, groupedDistance)
 	return players;
 }
 
-/////////////////////////////////////////
-// placeRadial
-//
 // Function for placing players in a radial pattern
 //
 // playerIDs: array of randomized playerIDs
 // distance: radial distance from the center of the map
-//
-/////////////////////////////////////////
 function placeRadial(playerIDs, distance)
 {
 	var players = new Array(mapSettings.numPlayers);
@@ -401,14 +381,9 @@ function placeRadial(playerIDs, distance)
 	return players;
 }
 
-/////////////////////////////////////////
-// placeRandom
-//
 // Function for placing players in a random pattern
 //
 // playerIDs: array of randomized playerIDs
-//
-/////////////////////////////////////////
 function placeRandom(playerIDs)
 {
 	var players = [];
@@ -467,16 +442,11 @@ function placeRandom(playerIDs)
 	return players;
 }
 
-/////////////////////////////////////////
-// placeStronghold
-//
 // Function for placing teams in a stronghold pattern
 //
 // playerIDs: array of randomized playerIDs
 // distance: radial distance from the center of the map
 // groupedDistance: distance between teammates
-//
-/////////////////////////////////////////
 function placeStronghold(playerIDs, distance, groupedDistance)
 {
 	var players = [];
@@ -636,10 +606,6 @@ function getMapSettings()
 		"startAngle": randFloat(0, TWO_PI)
 	};
 }
-
-///////////
-// Generic Helpers
-///////////
 
 // gets a number within a random deviation of a base number
 function getRandomDeviation(base, randomness)

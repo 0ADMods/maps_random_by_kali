@@ -4,17 +4,12 @@ const allSizes = ["tiny", "small", "normal", "big", "huge"];
 const allMixes = ["same", "similar", "normal", "varied", "unique"];
 const allAmounts = ["scarce", "few", "normal", "many", "tons"];
 
-/////////////////////////////////////////
-// addBluffs
-//
 // Function for creating bluffs
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addBluffs(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -262,17 +257,12 @@ function addBluffs(constraint, size, deviation, fill)
 	]));
 }
 
-/////////////////////////////////////////
-// addDecoration
-//
 // Function for creating decoration
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addDecoration(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -307,9 +297,6 @@ function addDecoration(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addElevation
-//
 // Function for creating varying elevations
 //
 // constraint: constraint classes
@@ -326,8 +313,6 @@ function addDecoration(constraint, size, deviation, fill)
 //		"minElevation": 6,
 //		"maxElevation": 12,
 //		"steepness": 1.5
-//
-/////////////////////////////////////////
 function addElevation(constraint, el)
 {
 	var deviation = el.deviation || g_DefaultDeviation;
@@ -388,17 +373,12 @@ function addElevation(constraint, el)
 	}
 }
 
-/////////////////////////////////////////
-// addHills
-//
 // Function for creating rolling hills
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addHills(constraint, size, deviation, fill)
 {
 	addElevation(constraint, {
@@ -417,17 +397,12 @@ function addHills(constraint, size, deviation, fill)
 	});
 }
 
-/////////////////////////////////////////
-// addLakes
-//
 // Function for creating lakes
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addLakes(constraint, size, deviation, fill)
 {
 	var lakeTile = g_Terrains.water;
@@ -479,17 +454,12 @@ function addLakes(constraint, size, deviation, fill)
 	createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 2), borderClasses(g_TileClasses.water, 4, 3)], 1000, 100);
 }
 
-/////////////////////////////////////////
-// addLayeredPatches
-//
 // Function for creating layered patches
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addLayeredPatches(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -526,17 +496,12 @@ function addLayeredPatches(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addMountains
-//
 // Function for creating steep mountains
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addMountains(constraint, size, deviation, fill)
 {
 	addElevation(constraint, {
@@ -555,17 +520,12 @@ function addMountains(constraint, size, deviation, fill)
 	});
 }
 
-/////////////////////////////////////////
-// addPlateaus
-//
 // Function for creating plateaus
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addPlateaus(constraint, size, deviation, fill)
 {
 	var plateauTile = g_Terrains.dirt;
@@ -623,17 +583,12 @@ function addPlateaus(constraint, size, deviation, fill)
 	]);
 }
 
-/////////////////////////////////////////
-// addProps
-//
 // Function for creating props
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addProps(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -668,17 +623,12 @@ function addProps(constraint, size, deviation, fill)
 	createObjectGroups(new SimpleGroup([new SimpleObject(g_Decoratives.tree, 5 * offset, 30 * offset, 2, 3 * offset + 10)], true), 0, constraint, counts[0] * 5 * fill, 5);
 }
 
-/////////////////////////////////////////
-// addRivers
-//
 // Function for creating rivers
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addRivers(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -715,17 +665,12 @@ function addRivers(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addValleys
-//
 // Function for creating valleys
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addValleys(constraint, size, deviation, fill)
 {
 	if (mapSettings.mapHeight < 6)
@@ -781,21 +726,12 @@ function addValleys(constraint, size, deviation, fill)
 	});
 }
 
-///////////
-// Resources
-///////////
-
-/////////////////////////////////////////
-// addAnimals
-//
 // Function for creating animals
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addAnimals(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -817,17 +753,10 @@ function addAnimals(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addBerries
-//
-// Function for creating berries
-//
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addBerries(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -846,17 +775,12 @@ function addBerries(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addFish
-//
 // Function for creating fish
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addFish(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -878,17 +802,12 @@ function addFish(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addForests
-//
 // Function for creating forests
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addForests(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -929,17 +848,12 @@ function addForests(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addMetal
-//
 // Function for creating metal mines
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addMetal(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -957,17 +871,12 @@ function addMetal(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addStone
-//
 // Function for creating stone mines
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addStone(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -993,17 +902,12 @@ function addStone(constraint, size, deviation, fill)
 	}
 }
 
-/////////////////////////////////////////
-// addStragglerTrees
-//
 // Function for creating straggler trees
 //
 // constraint: constraint classes
 // size: size of normal (1.2 would be 120% of normal)
 // deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
 // fill: size of map to fill (1.5 would be 150% of normal)
-//
-/////////////////////////////////////////
 function addStragglerTrees(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
