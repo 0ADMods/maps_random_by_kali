@@ -104,18 +104,6 @@ function euclid_distance(x1, z1, x2, z2)
 	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
 }
 
-// default to filling 100% of the map
-function fillOrDefault(fill)
-{
-	return fill || 1;
-}
-
-// default to 100% of normal size
-function sizeOrDefault(size)
-{
-	return size || 1;
-}
-
 /////////////////////////////////////////
 // addBases
 //
