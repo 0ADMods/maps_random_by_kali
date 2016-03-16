@@ -5,7 +5,9 @@ randomizeBiome();
 initMapSettings();
 initTileClasses();
 
-// pick a random elevation with a bias towards lower elevations
+RMS.SetProgress(10);
+
+// Pick a random elevation with a bias towards lower elevations
 var randElevation = randInt(30);
 if (randElevation < 25)
 	randElevation = 1 + randInt(4);

@@ -6,10 +6,12 @@ initMapSettings();
 initTileClasses();
 
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randInt(5));
+RMS.SetProgress(10);
 
 addBases("stronghold", 0.37, 0.04);
+RMS.SetProgress(20);
 
-// change the starting angle and add the players again
+// Change the starting angle and add the players again
 var rotation = PI;
 
 if (g_MapInfo.teams.length == 2)

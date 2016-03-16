@@ -18,7 +18,7 @@ const tShoreBlend = rBiomeT13();
 const tShore = rBiomeT14();
 const tWater = rBiomeT15();
 
-// gaia entities
+// Gaia entities
 const oTree1 = rBiomeE1();
 const oTree2 = rBiomeE2();
 const oTree3 = rBiomeE3();
@@ -33,7 +33,7 @@ const oStoneLarge = rBiomeE11();
 const oStoneSmall = rBiomeE12();
 const oMetalLarge = rBiomeE13();
 
-// decorative props
+// Decorative props
 const aGrass = rBiomeA1();
 const aGrassShort = rBiomeA2();
 const aReeds = rBiomeA3();
@@ -74,7 +74,7 @@ for (var ix = 0; ix < mapSize; ix++)
 			placeTerrain(ix, iz, tMainTerrain);
 	}
 
-// some constants
+// Some constants
 var radius = scaleByMapSize(15,25);
 var cliffRadius = 2;
 var elevation = 20;
@@ -89,7 +89,7 @@ var teamNo = 0;
 
 var startAngle = randFloat(0, TWO_PI);
 
-// randomize player order
+// Randomize player order
 var playerIDs = [];
 for (var i = 0; i < numPlayers; i++)
 {
@@ -122,7 +122,7 @@ for (var i = 0; i < numPlayers; i++)
 	}
 }
 
-// create bowl
+// Create bowl
 var bSize = PI * fx * fx / 2.25;
 var placer = new ClumpPlacer(bSize, 1, 1, 1, centerOfMap, centerOfMap);
 var terrainPainter = new LayeredPainter(
@@ -138,10 +138,10 @@ createArea(placer, [terrainPainter, elevationPainter, paintClass(clLand)]);
 
 RMS.SetProgress(50);
 
-// place inner team members
+//Place inner team members
 for (var i = 0; i < 9; i++)
 {
-	// we found a team
+	// We found a team
 	if (teams[i] != null)
 	{
 		teamNo++;

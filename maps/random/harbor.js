@@ -7,16 +7,22 @@ initMapSettings();
 initTileClasses();
 
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 2);
+RMS.SetProgress(10);
+
 var players = addBases("radial", 0.38);
 RMS.SetProgress(20);
 
 addCenterLake();
+RMS.SetProgress(30);
 
 if (g_MapInfo.mapSize >= 192)
+{
 	addHarbors(players);
+	RMS.SetProgress(40);
+}
 
 addSpines();
-RMS.SetProgress(40);
+RMS.SetProgress(50);
 
 addElements(shuffleArray([
 	{
