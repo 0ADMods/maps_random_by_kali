@@ -474,13 +474,13 @@ function createSunkenTerrain(players)
 		// create the den
 		var placer = new ClumpPlacer(mapSettings.mapArea * 0.03, 0.9, 0.3, 1, pX, pZ);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, base], [3]);
-		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 22, 3);
+		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 15, 3);
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.valley)]);
 
 		// create the expansion
 		var placer = new ClumpPlacer(expSize, 0.9, 0.3, 1, expX, expZ);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, base], [3]);
-		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 22, 3);
+		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 15, 3);
 		var area = createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.settlement)], [avoidClasses(g_TileClasses.settlement, 2)]);
 		var unpainter = new TileClassUnPainter(new TileClass(mapSettings.mapSize, g_TileClasses.mountain));
 		unpainter.paint(area);
