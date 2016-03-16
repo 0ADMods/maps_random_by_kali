@@ -322,7 +322,7 @@ function randomizePlayers()
 
 	playerIDs = sortPlayers(playerIDs);
 
-	return playerIDs
+	return playerIDs;
 }
 
 // Function for placing teams in a line pattern
@@ -351,7 +351,7 @@ function placeLine(playerIDs, distance, groupedDistance)
 				"x": 0.5 + (safeDist + p * groupedDistance) * cos(teamAngle),
 				"z": 0.5 + (safeDist + p * groupedDistance) * sin(teamAngle)
 			};
-			createBase(players[mapSettings.teams[i][p]], false)
+			createBase(players[mapSettings.teams[i][p]], false);
 		}
 	}
 
@@ -375,7 +375,7 @@ function placeRadial(playerIDs, distance)
 			"x": 0.5 + distance * cos(angle),
 			"z": 0.5 + distance * sin(angle)
 		};
-		createBase(players[i])
+		createBase(players[i]);
 	}
 
 	return players;
@@ -479,7 +479,7 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 				"x": fractionX + groupedDistance * cos(angle),
 				"z": fractionZ + groupedDistance * sin(angle)
 			};
-			createBase(players[mapSettings.teams[i][p]], false)
+			createBase(players[mapSettings.teams[i][p]], false);
 		}
 	}
 
@@ -515,7 +515,7 @@ function createTileClasses(newClasses)
 	];
 
 	if (newClasses !== undefined)
-		classNames = classNames.concat(newClasses)
+		classNames = classNames.concat(newClasses);
 
 	var tileClasses = {};
 	for (var className of classNames)

@@ -436,10 +436,10 @@ function addLakes(constraint, size, deviation, fill)
 		}
 	]);
 
-	var group = new SimpleGroup([new SimpleObject(g_Decoratives.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt)
+	var group = new SimpleGroup([new SimpleObject(g_Decoratives.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt);
 	createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 1), borderClasses(g_TileClasses.water, 4, 3)], 1000, 100);
 
-	group = new SimpleGroup([new SimpleObject(g_Decoratives.reeds, 10, 15, 1, 3), new SimpleObject(g_Decoratives.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt)
+	group = new SimpleGroup([new SimpleObject(g_Decoratives.reeds, 10, 15, 1, 3), new SimpleObject(g_Decoratives.rockMedium, 1, 3, 1, 3)], true, g_TileClasses.dirt);
 	createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 2), borderClasses(g_TileClasses.water, 4, 3)], 1000, 100);
 }
 
@@ -943,8 +943,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 		if (i == 2 && (mapSettings.biome == 3 || mapSettings.biome == 5))
 			treesMax = 1;
 
-		if (min > treesMax)
-			min = treesMax
+		min = Math.min(min, treesMax);
 
 		var group = new SimpleGroup([new SimpleObject(trees[i], min, treesMax, minDist, maxDist)], true, g_TileClasses.forest);
 		createObjectGroups(group, 0, constraint, count);
