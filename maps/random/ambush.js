@@ -3,8 +3,8 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 randomizeBiome();
-mapSettings = getMapSettings();
-g_TileClasses = createTileClasses();
+initMapSettings();
+initTileClasses();
 
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 2);
 RMS.SetProgress(10);

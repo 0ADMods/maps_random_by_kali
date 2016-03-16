@@ -2,11 +2,10 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 randomizeBiome();
-g_MapInfo = getMapSettings();
-g_TileClasses = createTileClasses();
+initMapSettings();
+initTileClasses();
 
-var randElevation = randInt(5);
-resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randElevation);
+resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randInt(5));
 
 addBases("stronghold", 0.37, 0.04);
 

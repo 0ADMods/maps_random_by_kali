@@ -2,8 +2,8 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 randomizeBiome();
-g_MapInfo = getMapSettings();
-g_TileClasses = createTileClasses(["step"]);
+initMapSettings();
+initTileClasses(["step"]);
 
 var topTerrain = g_Terrains.tier2Terrain;
 

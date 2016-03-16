@@ -2,8 +2,8 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 randomizeBiome();
-g_MapInfo = getMapSettings();
-g_TileClasses = createTileClasses();
+initMapSettings();
+initTileClasses();
 
 // pick a random elevation with a bias towards lower elevations
 var randElevation = randInt(30);

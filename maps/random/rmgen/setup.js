@@ -1,12 +1,50 @@
+const g_DefaultTileClasses = [
+	"animals",
+	"baseResource",
+	"berries",
+	"bluff",
+	"bluffSlope",
+	"dirt",
+	"fish",
+	"food",
+	"forest",
+	"hill",
+	"land",
+	"map",
+	"metal",
+	"mountain",
+	"plateau",
+	"player",
+	"prop",
+	"ramp",
+	"rock",
+	"settlement",
+	"spine",
+	"valley",
+	"water"
+];
+
+const g_Props = {
+	"barrels": "actor|props/special/eyecandy/barrels_buried.xml",
+	"crate": "actor|props/special/eyecandy/crate_a.xml",
+	"cart": "actor|props/special/eyecandy/handcart_1_broken.xml",
+	"well": "actor|props/special/eyecandy/well_1_c.xml",
+	"skeleton": "actor|props/special/eyecandy/skeleton.xml",
+	"blood": "actor|props/units/blood_01.xml",
+	"bigBlood": "actor|props/units/blood_whale.xml"
+};
+
 var g_MapInfo;
+var g_TileClasses;
+
 var g_Terrains;
 var g_Gaia;
 var g_Decoratives;
-var g_TileClasses;
 var g_Forests;
-var g_Props;
 
-// adds an array of elements to the map
+/**
+ * Adds an array of elements to the map.
+ */
 function addElements(els)
 {
 	for (var i = 0; i < els.length; ++i)
@@ -24,7 +62,9 @@ function addElements(els)
 	}
 }
 
-// converts "amount" terms to numbers
+/**
+ * Converts "amount" terms to numbers.
+ */
 function pickAmount(amounts)
 {
 	var amount = randInt(amounts.length);
@@ -43,7 +83,9 @@ function pickAmount(amounts)
 	return 1;
 }
 
-// converts "mix" terms to numbers
+/**
+ * Converts "mix" terms to numbers.
+ */
 function pickMix(mixes)
 {
 	var mix = randInt(mixes.length);
@@ -62,7 +104,9 @@ function pickMix(mixes)
 	return 0.25;
 }
 
-// converst "size" terms to numbers
+/**
+ * Converts "size" terms to numbers.
+ */
 function pickSize(sizes)
 {
 	var size = randInt(sizes.length);
@@ -81,7 +125,9 @@ function pickSize(sizes)
 	return 1;
 }
 
-// paints the entire map with a single tile type
+/**
+ * Paints the entire map with a single tile type.
+ */
 function resetTerrain(terrain, tc, elevation)
 {
 	g_MapInfo.mapSize = getMapSize();
@@ -97,16 +143,20 @@ function resetTerrain(terrain, tc, elevation)
 	g_MapInfo.mapHeight = elevation;
 }
 
-// euclidian distance between two points
+/**
+ * Euclidian distance between two points.
+ */
 function euclid_distance(x1, z1, x2, z2)
 {
 	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
 }
 
-// Function for creating player bases
-//
-// type: "radial", "stacked", "stronghold", "random"
-// distance: radial distance from the center of the map
+/**
+ * Chose starting locations for the given players.
+ *
+ * @param {string} type - "radial", "stacked", "stronghold", "random"
+ * @param {number} distance - radial distance from the center of the map
+ */
 function addBases(type, distance, groupedDistance)
 {
 	type = type || "radial";
@@ -135,10 +185,12 @@ function addBases(type, distance, groupedDistance)
 	return players;
 }
 
-// Function for creating a single player base
-//
-// player: An object with the player's attributes (id, angle, x, z)
-// walls: Iberian walls (true/false)
+/**
+ * Create the base for a single player.
+ *
+ * @param {Object} - contains id, angle, x, z
+ * @param {boolean} - Whether or not iberian gets starting walls
+ */ 
 function createBase(player, walls)
 {
 	// get the x and z in tiles
@@ -274,7 +326,9 @@ function getTeams(numPlayers)
 	return teams.filter(team => true);
 }
 
-// picks a random starting style
+/**
+ * Chose a random pattern for placing the bases of the players.
+ */ 
 function getStartingPositions()
 {
 	var formats = ["radial"];
@@ -298,7 +352,6 @@ function getStartingPositions()
 	};
 }
 
-// randomize player order
 function randomizePlayers()
 {
 	var playerIDs = [];
@@ -310,11 +363,15 @@ function randomizePlayers()
 	return playerIDs;
 }
 
-// Function for placing teams in a line pattern
-//
-// playerIDs: array of randomized playerIDs
-// distance: radial distance from the center of the map
-// groupedDistance: distance between teammates
+/**
+ * Place teams in a line-pattern.
+ *
+ * @param {Array} playerIDs - typically randomized indices of players of a single team
+ * @param {number} distance - radial distance from the center of the map
+ * @param {number} groupedDistance - distance between players
+ *
+ * @returns {Array} - contains id, angle, x, z for every player
+ */
 function placeLine(playerIDs, distance, groupedDistance)
 {
 	var players = [];
@@ -343,10 +400,11 @@ function placeLine(playerIDs, distance, groupedDistance)
 	return players;
 }
 
-// Function for placing players in a radial pattern
-//
-// playerIDs: array of randomized playerIDs
-// distance: radial distance from the center of the map
+/**
+ * Place players in a circle-pattern.
+ *
+ * @param {number} distance - radial distance from the center of the map
+ */
 function placeRadial(playerIDs, distance)
 {
 	var players = new Array(g_MapInfo.numPlayers);
@@ -366,9 +424,9 @@ function placeRadial(playerIDs, distance)
 	return players;
 }
 
-// Function for placing players in a random pattern
-//
-// playerIDs: array of randomized playerIDs
+/**
+ * Chose arbitrary starting locations.
+ */
 function placeRandom(playerIDs)
 {
 	var players = [];
@@ -427,11 +485,12 @@ function placeRandom(playerIDs)
 	return players;
 }
 
-// Function for placing teams in a stronghold pattern
-//
-// playerIDs: array of randomized playerIDs
-// distance: radial distance from the center of the map
-// groupedDistance: distance between teammates
+/**
+ * Place given players in a stronghold-pattern.
+ *
+ * @param distance - radial distance from the center of the map
+ * @param groupedDistance - distance between neighboring players
+ */
 function placeStronghold(playerIDs, distance, groupedDistance)
 {
 	var players = [];
@@ -471,42 +530,22 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 	return players;
 }
 
-function createTileClasses(newClasses)
+/**
+ * Creates tileClass for the default classes and every class given.
+ *
+ * @param {Array} newClasses
+ * @returns {Object} - maps from classname to ID
+ */
+function initTileClasses(newClasses)
 {
-	var classNames = [
-		"animals",
-		"baseResource",
-		"berries",
-		"bluff",
-		"bluffSlope",
-		"dirt",
-		"fish",
-		"food",
-		"forest",
-		"hill",
-		"land",
-		"map",
-		"metal",
-		"mountain",
-		"plateau",
-		"player",
-		"prop",
-		"ramp",
-		"rock",
-		"settlement",
-		"spine",
-		"valley",
-		"water"
-	];
+	var classNames = g_DefaultTileClasses;
 
 	if (newClasses !== undefined)
 		classNames = classNames.concat(newClasses);
 
-	var tileClasses = {};
+	g_TileClasses = {};
 	for (var className of classNames)
-		tileClasses[className] = createTileClass();
-
-	return tileClasses;
+		g_TileClasses[className] = createTileClass();
 }
 
 /**
@@ -560,16 +599,6 @@ function initBiome()
 		"tree": rBiomeA9()
 	};
 
-	g_Props = {
-		"barrels": "actor|props/special/eyecandy/barrels_buried.xml",
-		"crate": "actor|props/special/eyecandy/crate_a.xml",
-		"cart": "actor|props/special/eyecandy/handcart_1_broken.xml",
-		"well": "actor|props/special/eyecandy/well_1_c.xml",
-		"skeleton": "actor|props/special/eyecandy/skeleton.xml",
-		"blood": "actor|props/units/blood_01.xml",
-		"bigBlood": "actor|props/units/blood_whale.xml"
-	};
-
 	g_Forests = {
 		"forest1": [
 			g_Terrains.forestFloor2 + TERRAIN_SEPARATOR + g_Gaia.tree1,
@@ -584,12 +613,15 @@ function initBiome()
 	};
 }
 
-function getMapSettings()
+/**
+ * Creates an object of commonly used functions.
+ */
+function initMapSettings()
 {
 	initBiome();
 
 	let numPlayers = getNumPlayers();
-	return {
+	g_MapInfo = {
 		"biome": biomeID,
 		"numPlayers": numPlayers,
 		"teams": getTeams(numPlayers),
