@@ -246,17 +246,36 @@ function addHarbors(players)
 		var offsetX = round(playerDistX / 2.5);
 		var offsetZ = round(playerDistZ / 2.5);
 
-		var placer = new ClumpPlacer(scaleByMapSize(1200, 1200), 0.5, 0.5, 1, ix + offsetX, iz + offsetZ)
-		var terrainPainter = new LayeredPainter([g_Terrains.shore, g_Terrains.water],	[2]);
+		var placer = new ClumpPlacer(scaleByMapSize(1200, 1200), 0.5, 0.5, 1, ix + offsetX, iz + offsetZ);
+		var terrainPainter = new LayeredPainter([g_Terrains.shore, g_Terrains.water], [2]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, -11, 3);
-		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.water)], avoidClasses(g_TileClasses.player, 15, g_TileClasses.hill, 1));
+
+		createArea(
+			placer,
+			[
+		        terrainPainter,
+		        elevationPainter,
+		        paintClass(g_TileClasses.water)
+	        ],
+	        avoidClasses(
+        		g_TileClasses.player, 15,
+        		g_TileClasses.hill, 1
+            )
+		);
 
 		// create fish in harbor
 		var group = new SimpleGroup(
 			[new SimpleObject(g_Gaia.fish, 6, 6, 1, 20)],
 			true, g_TileClasses.baseResource, ix + offsetX, iz + offsetZ
 		);
-		createObjectGroup(group, 0, [avoidClasses(g_TileClasses.hill, 3, g_TileClasses.mountain, 3), stayClasses(g_TileClasses.water, 5)]);
+
+		createObjectGroup(group, 0, [
+			avoidClasses(
+				g_TileClasses.hill, 3,
+				g_TileClasses.mountain, 3
+			),
+			stayClasses(g_TileClasses.water, 5)
+		]);
 	}
 }
 
@@ -287,8 +306,8 @@ function addSpines()
 		var ix = round(fx);
 		var iz = round(fz);
 
-		var mStartCo = 0.12
-		var mStopCo = 0.40
+		var mStartCo = 0.12;
+		var mStopCo = 0.40;
 		var mSize = 0.5;
 		var mWaviness = 0.6;
 		var mOffset = 0.4;
