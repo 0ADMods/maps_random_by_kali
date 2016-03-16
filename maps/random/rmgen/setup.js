@@ -611,13 +611,3 @@ function getMapSettings()
 		"startAngle": randFloat(0, TWO_PI)
 	};
 }
-
-// gets a number within a random deviation of a base number
-function getRandomDeviation(base, randomness)
-{
-	if (randomness > base)
-		randomness = base;
-
-	var deviation = base + (-1 * randomness + (randInt(20 * randomness) + 0.0001) / 10);
-	return floor(deviation * 100) / 100;
-}

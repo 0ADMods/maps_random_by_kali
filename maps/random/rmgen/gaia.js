@@ -99,8 +99,7 @@ function addBluffs(constraint, size, deviation, fill)
 			var curHeight = g_Map.getHeight(pt.x, pt.z);
 			var newHeight = curHeight - curHeight * (dist / slopeLength) - 2;
 
-			if (newHeight < endLine.height)
-				newHeight = endLine.height;
+			newHeight = Math.max(newHeight, endLine.height);
 
 			if (newHeight <= endLine.height + 2 && g_Map.validT(pt.x, pt.z) && g_Map.getTexture(pt.x, pt.z).indexOf('cliff') > -1)
 				ground.place(pt.x, pt.z);
@@ -346,23 +345,13 @@ function addElevation(constraint, el)
 		var pSmooth = Math.abs(floor(smooth * offset));
 		var pElevation = floor(elevation * offset);
 
-		if (pMinSize > pMaxSize)
-			pMinSize = pMaxSize;
+		pElevation = Math.max(el.minElevation, Math.min(pElevation, el.maxElevation));
 
-		if (pElevation > el.maxElevation)
-			pElevation = el.maxElevation;
+		pMinSize = Math.min(pMinSize, pMaxSize);
+		pMaxSize = Math.min(pMaxSize, el.maxSize);
+		pMinSize = Math.max(pMaxSize, el.minSize);
 
-		if (pElevation < el.minElevation)
-			pElevation = el.minElevation;
-
-		if (pMaxSize > el.maxSize)
-			pMaxSize = el.maxSize;
-
-		if (pMinSize < el.minSize)
-			pMinSize = el.minSize;
-
-		if (pSmooth < 1)
-			pSmooth = 1;
+		pSmooth = Math.max(pSmooth, 1);
 
 		var pWidths = widths.concat(pSmooth);
 
@@ -925,10 +914,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	var trees = [g_Gaia.tree1, g_Gaia.tree2, g_Gaia.tree3, g_Gaia.tree4];
 
 	var treesPerPlayer = 40;
-	var playerBonus = (mapSettings.numPlayers - 3) / 2;
-
-	if (playerBonus < 1)
-		playerBonus = 1;
+	var playerBonus = Math.max(1, (mapSettings.numPlayers - 3) / 2);
 
 	var offset = getRandomDeviation(size, deviation);
 	var treeCount = treesPerPlayer * playerBonus * fill;
@@ -1170,7 +1156,9 @@ function findClearLine(bb, corners, angle)
 	return clearLine;
 }
 
-// finds the corners of a bounding box
+/**
+ * Returns the corners of a bounding box.
+ */
 function findCorners(points)
 {
 	// find the bounding box of the terrain feature
@@ -1183,20 +1171,19 @@ function findCorners(points)
 	{
 		var pt = points[p];
 
-		if (pt.x < minX)
-			minX = pt.x
+		minX = Math.min(pt.x, minX);
+		minZ = Math.min(pt.z, minZ);
 
-		if (pt.z < minZ)
-			minZ = pt.z
-
-		if (pt.x > maxX)
-			maxX = pt.x
-
-		if (pt.z > maxZ)
-			maxZ = pt.z
+		maxX = Math.max(pt.x, maxX);
+		maxZ = Math.max(pt.z, maxZ);
 	}
 
-	return { "minX": minX, "minZ": minZ, "maxX": maxX, "maxZ": maxZ };
+	return {
+		"minX": minX,
+		"minZ": minZ,
+		"maxX": maxX,
+		"maxZ": maxZ
+	};
 }
 
 // finds the average elevation around a point
@@ -1236,4 +1223,14 @@ function nextToFeature(bb, x, z)
 		}
 
 	return false;
+}
+
+/**
+ * Returns a number within a random deviation of a base number.
+ */
+function getRandomDeviation(base, deviation)
+{
+	deviation = Math.min(base, deviation);
+	deviation = base + randInt(20 * deviation) / 10 - deviation;
+	return deviation.toFixed(2);
 }
