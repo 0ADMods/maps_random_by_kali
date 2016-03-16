@@ -2,7 +2,7 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 randomizeBiome();
-mapSettings = getMapSettings();
+g_MapInfo = getMapSettings();
 g_TileClasses = createTileClasses(["step"]);
 
 var topTerrain = g_Terrains.tier2Terrain;
@@ -381,75 +381,75 @@ function createSunkenTerrain(players)
 	var lower = g_Terrains.tier2Terrain;
 	var road = g_Terrains.road;
 
-	if (mapSettings.biome == 2)
+	if (g_MapInfo.biome == 2)
 	{
 		middle = g_Terrains.tier2Terrain;
 		lower = g_Terrains.tier1Terrain;
 	}
 
-	if (mapSettings.biome == 4)
+	if (g_MapInfo.biome == 4)
 	{
 		middle = g_Terrains.shore;
 		lower = g_Terrains.tier4Terrain;
 	}
 
-	if (mapSettings.biome == 5)
+	if (g_MapInfo.biome == 5)
 	{
 		middle = g_Terrains.tier1Terrain;
 		lower = g_Terrains.forestFloor1;
 	}
 
-	if (mapSettings.biome == 6)
+	if (g_MapInfo.biome == 6)
 	{
 		middle = g_Terrains.tier2Terrain;
 		lower = g_Terrains.tier4Terrain;
 	}
 
-	if (mapSettings.biome == 7 || mapSettings.biome == 8)
+	if (g_MapInfo.biome == 7 || g_MapInfo.biome == 8)
 		road = g_Terrains.roadWild;
 
-	if (mapSettings.biome == 8)
+	if (g_MapInfo.biome == 8)
 		middle = g_Terrains.shore;
 
-	var expSize = mapSettings.mapArea * 0.015 / (mapSettings.numPlayers / 4);
-	var expDist = 0.1 + (mapSettings.numPlayers / 200);
-	if (mapSettings.numPlayers == 2)
-		expSize = mapSettings.mapArea * 0.015 / 0.7;
+	var expSize = g_MapInfo.mapArea * 0.015 / (g_MapInfo.numPlayers / 4);
+	var expDist = 0.1 + (g_MapInfo.numPlayers / 200);
+	if (g_MapInfo.numPlayers == 2)
+		expSize = g_MapInfo.mapArea * 0.015 / 0.7;
 
 	var nRoad = 0.44;
 	var nExp = 0.425;
 
-	if (mapSettings.numPlayers < 4)
+	if (g_MapInfo.numPlayers < 4)
 	{
 		nRoad = 0.42;
 		nExp = 0.4;
 	}
 
 	// create central valley
-	var placer = new ClumpPlacer(mapSettings.mapArea * 0.26, 1, 1, 1, mapSettings.centerOfMap, mapSettings.centerOfMap);
+	var placer = new ClumpPlacer(g_MapInfo.mapArea * 0.26, 1, 1, 1, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap);
 	var terrainPainter = new LayeredPainter([g_Terrains.cliff, lower], [3]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 0, 3);
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.valley)]);
 
 	// create the center hill
-	var placer = new ClumpPlacer(mapSettings.mapArea * 0.14, 1, 1, 1, mapSettings.centerOfMap, mapSettings.centerOfMap);
+	var placer = new ClumpPlacer(g_MapInfo.mapArea * 0.14, 1, 1, 1, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap);
 	var terrainPainter = new LayeredPainter([g_Terrains.cliff, topTerrain], [3]);
-	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, mapSettings.mapHeight, 3);
+	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, g_MapInfo.mapHeight, 3);
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.mountain)]);
 
 	for(var i = 0; i < players.length; ++i)
 	{
-		var playerAngle = mapSettings.startAngle + i * TWO_PI / mapSettings.numPlayers;
+		var playerAngle = g_MapInfo.startAngle + i * TWO_PI / g_MapInfo.numPlayers;
 		var pX = round(fractionToTiles(0.5 + 0.4 * cos(playerAngle)));
 		var pZ = round(fractionToTiles(0.5 + 0.4 * sin(playerAngle)));
-		var expX = round(fractionToTiles(0.5 + expDist * cos(mapSettings.startAngle + (i + 0.75) * TWO_PI / mapSettings.numPlayers)));
-		var expZ = round(fractionToTiles(0.5 + expDist * sin(mapSettings.startAngle + (i + 0.75) * TWO_PI / mapSettings.numPlayers)));
+		var expX = round(fractionToTiles(0.5 + expDist * cos(g_MapInfo.startAngle + (i + 0.75) * TWO_PI / g_MapInfo.numPlayers)));
+		var expZ = round(fractionToTiles(0.5 + expDist * sin(g_MapInfo.startAngle + (i + 0.75) * TWO_PI / g_MapInfo.numPlayers)));
 		var rearX = round(fractionToTiles(0.5 + 0.47 * cos(playerAngle)));
 		var rearZ = round(fractionToTiles(0.5 + 0.47 * sin(playerAngle)));
-		var prePlayerAngle = mapSettings.startAngle + (i - 0.5) * TWO_PI / mapSettings.numPlayers;
+		var prePlayerAngle = g_MapInfo.startAngle + (i - 0.5) * TWO_PI / g_MapInfo.numPlayers;
 		var preX = round(fractionToTiles(0.5 + nRoad * cos(prePlayerAngle)));
 		var preZ = round(fractionToTiles(0.5 + nRoad * sin(prePlayerAngle)));
-		var nextPlayerAngle = mapSettings.startAngle + (i + 0.5) * TWO_PI / mapSettings.numPlayers;
+		var nextPlayerAngle = g_MapInfo.startAngle + (i + 0.5) * TWO_PI / g_MapInfo.numPlayers;
 		var nextX = round(fractionToTiles(0.5 + nRoad * cos(nextPlayerAngle)));
 		var nextZ = round(fractionToTiles(0.5 + nRoad * sin(nextPlayerAngle)));
 
@@ -472,7 +472,7 @@ function createSunkenTerrain(players)
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.step)]);
 
 		// create the den
-		var placer = new ClumpPlacer(mapSettings.mapArea * 0.03, 0.9, 0.3, 1, pX, pZ);
+		var placer = new ClumpPlacer(g_MapInfo.mapArea * 0.03, 0.9, 0.3, 1, pX, pZ);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, base], [3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 15, 3);
 		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.valley)]);
@@ -482,14 +482,14 @@ function createSunkenTerrain(players)
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, base], [3]);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, 15, 3);
 		var area = createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.settlement)], [avoidClasses(g_TileClasses.settlement, 2)]);
-		var unpainter = new TileClassUnPainter(new TileClass(mapSettings.mapSize, g_TileClasses.mountain));
+		var unpainter = new TileClassUnPainter(new TileClass(g_MapInfo.mapSize, g_TileClasses.mountain));
 		unpainter.paint(area);
 	}
 
 	// create the neighbor expansions
-	for (var i = 0; i < mapSettings.numPlayers; ++i)
+	for (var i = 0; i < g_MapInfo.numPlayers; ++i)
 	{
-		var nextPlayerAngle = mapSettings.startAngle + (i + 0.5) * TWO_PI / mapSettings.numPlayers;
+		var nextPlayerAngle = g_MapInfo.startAngle + (i + 0.5) * TWO_PI / g_MapInfo.numPlayers;
 		var nextX = round(fractionToTiles(0.5 + nExp * cos(nextPlayerAngle)));
 		var nextZ = round(fractionToTiles(0.5 + nExp * sin(nextPlayerAngle)));
 

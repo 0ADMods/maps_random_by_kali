@@ -1,4 +1,4 @@
-var mapSettings;
+var g_MapInfo;
 var g_Terrains;
 var g_Gaia;
 var g_Decoratives;
@@ -84,18 +84,18 @@ function pickSize(sizes)
 // paints the entire map with a single tile type
 function initTerrain(terrain, tc, elevation)
 {
-	mapSettings.mapSize = getMapSize();
-	mapSettings.mapArea = mapSettings.mapSize * mapSettings.mapSize;
-	mapSettings.centerOfMap = floor(mapSettings.mapSize / 2);
-	mapSettings.mapRadius = -PI / 4;
+	g_MapInfo.mapSize = getMapSize();
+	g_MapInfo.mapArea = g_MapInfo.mapSize * g_MapInfo.mapSize;
+	g_MapInfo.centerOfMap = floor(g_MapInfo.mapSize / 2);
+	g_MapInfo.mapRadius = -PI / 4;
 
-	var placer = new ClumpPlacer(mapSettings.mapArea, 1, 1, 1, mapSettings.centerOfMap, mapSettings.centerOfMap);
+	var placer = new ClumpPlacer(g_MapInfo.mapArea, 1, 1, 1, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap);
 	var terrainPainter = new LayeredPainter([terrain], []);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, elevation, 1);
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc)], null);
 
 	// update the map height
-	mapSettings.mapHeight = getHeight(mapSettings.centerOfMap, mapSettings.centerOfMap);
+	g_MapInfo.mapHeight = getHeight(g_MapInfo.centerOfMap, g_MapInfo.centerOfMap);
 }
 
 // euclidian distance between two points
@@ -154,10 +154,10 @@ function createBase(player, walls)
 	addToClass(ix, iz - 5, g_TileClasses.player);
 
 	// create starting units
-	if ((walls || walls === undefined) && mapSettings.mapSize > 192)
-		placeCivDefaultEntities(fx, fz, player.id, mapSettings.mapRadius);
+	if ((walls || walls === undefined) && g_MapInfo.mapSize > 192)
+		placeCivDefaultEntities(fx, fz, player.id, g_MapInfo.mapRadius);
 	else
-		placeCivDefaultEntities(fx, fz, player.id, mapSettings.mapRadius, { 'iberWall': false });
+		placeCivDefaultEntities(fx, fz, player.id, g_MapInfo.mapRadius, { 'iberWall': false });
 
 	// create the city patch
 	var cityRadius = scaleByMapSize(15, 25) / 3;
@@ -216,7 +216,7 @@ function createBase(player, walls)
 	);
 	createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 
-	var hillSize = PI * mapSettings.mapRadius * mapSettings.mapRadius;
+	var hillSize = PI * g_MapInfo.mapRadius * g_MapInfo.mapRadius;
 
 	// create starting trees
 	var num = 5;
@@ -236,7 +236,7 @@ function createBase(player, walls)
 	for (var j = 0; j < num; ++j)
 	{
 		var gAngle = randFloat(0, TWO_PI);
-		var gDist = mapSettings.mapRadius - (5 + randInt(7));
+		var gDist = g_MapInfo.mapRadius - (5 + randInt(7));
 		var gX = round(fx + gDist * cos(gAngle));
 		var gZ = round(fz + gDist * sin(gAngle));
 		group = new SimpleGroup(
@@ -281,15 +281,15 @@ function getStartingPositions()
 	var formats = ["radial"];
 
 	// enable stronghold if we have a few teams and a big enough map
-	if (mapSettings.teams.length >= 2 && mapSettings.numPlayers >= 4 && mapSettings.mapSize >= 256)
+	if (g_MapInfo.teams.length >= 2 && g_MapInfo.numPlayers >= 4 && g_MapInfo.mapSize >= 256)
 		formats.push("stronghold");
 
 	// enable random if we have enough teams or enough players on a big enough map
-	if (mapSettings.mapSize >= 256 && (mapSettings.teams.length >= 3 || mapSettings.numPlayers > 4))
+	if (g_MapInfo.mapSize >= 256 && (g_MapInfo.teams.length >= 3 || g_MapInfo.numPlayers > 4))
 		formats.push("random");
 
 	// enable line if we have enough teams and players on a big enough map
-	if (mapSettings.teams.length >= 2 && mapSettings.numPlayers >= 4 && mapSettings.mapSize >= 384)
+	if (g_MapInfo.teams.length >= 2 && g_MapInfo.numPlayers >= 4 && g_MapInfo.mapSize >= 384)
 		formats.push("line");
 
 	return {
@@ -303,7 +303,7 @@ function getStartingPositions()
 function randomizePlayers()
 {
 	var playerIDs = [];
-	for (var i = 0; i < mapSettings.numPlayers; ++i)
+	for (var i = 0; i < g_MapInfo.numPlayers; ++i)
 		playerIDs.push(i + 1);
 
 	playerIDs = sortPlayers(playerIDs);
@@ -320,24 +320,24 @@ function placeLine(playerIDs, distance, groupedDistance)
 {
 	var players = [];
 
-	for (var i = 0; i < mapSettings.teams.length; ++i)
+	for (var i = 0; i < g_MapInfo.teams.length; ++i)
 	{
 		var safeDist = distance;
-		if (distance + mapSettings.teams[i].length * groupedDistance > 0.45)
-			safeDist = 0.45 - mapSettings.teams[i].length * groupedDistance;
+		if (distance + g_MapInfo.teams[i].length * groupedDistance > 0.45)
+			safeDist = 0.45 - g_MapInfo.teams[i].length * groupedDistance;
 
-		var teamAngle = mapSettings.startAngle + (i + 1) * TWO_PI / mapSettings.teams.length;
+		var teamAngle = g_MapInfo.startAngle + (i + 1) * TWO_PI / g_MapInfo.teams.length;
 
 		// create player base
-		for (var p = 0; p < mapSettings.teams[i].length; ++p)
+		for (var p = 0; p < g_MapInfo.teams[i].length; ++p)
 		{
-			players[mapSettings.teams[i][p]] = {
-				"id": mapSettings.teams[i][p],
-				"angle": mapSettings.startAngle + (p + 1) * TWO_PI / mapSettings.teams[i].length,
+			players[g_MapInfo.teams[i][p]] = {
+				"id": g_MapInfo.teams[i][p],
+				"angle": g_MapInfo.startAngle + (p + 1) * TWO_PI / g_MapInfo.teams[i].length,
 				"x": 0.5 + (safeDist + p * groupedDistance) * cos(teamAngle),
 				"z": 0.5 + (safeDist + p * groupedDistance) * sin(teamAngle)
 			};
-			createBase(players[mapSettings.teams[i][p]], false);
+			createBase(players[g_MapInfo.teams[i][p]], false);
 		}
 	}
 
@@ -350,11 +350,11 @@ function placeLine(playerIDs, distance, groupedDistance)
 // distance: radial distance from the center of the map
 function placeRadial(playerIDs, distance)
 {
-	var players = new Array(mapSettings.numPlayers);
+	var players = new Array(g_MapInfo.numPlayers);
 
-	for (var i = 0; i < mapSettings.numPlayers; ++i)
+	for (var i = 0; i < g_MapInfo.numPlayers; ++i)
 	{
-		var angle = mapSettings.startAngle + i * TWO_PI / mapSettings.numPlayers;
+		var angle = g_MapInfo.startAngle + i * TWO_PI / g_MapInfo.numPlayers;
 		players[i] = {
 			"id": playerIDs[i],
 			"angle": angle,
@@ -375,7 +375,7 @@ function placeRandom(playerIDs)
 	var players = [];
 	var placed = [];
 
-	for (var i = 0; i < mapSettings.numPlayers; ++i)
+	for (var i = 0; i < g_MapInfo.numPlayers; ++i)
 	{
 		var attempts = 0;
 		var playerAngle = randFloat(0, TWO_PI);
@@ -422,7 +422,7 @@ function placeRandom(playerIDs)
 	}
 
 	// create the bases
-	for (var i = 0; i < mapSettings.numPlayers; ++i)
+	for (var i = 0; i < g_MapInfo.numPlayers; ++i)
 		createBase(players[i]);
 
 	return players;
@@ -437,35 +437,35 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 {
 	var players = [];
 
-	for (var i = 0; i < mapSettings.teams.length; ++i)
+	for (var i = 0; i < g_MapInfo.teams.length; ++i)
 	{
-		var teamAngle = mapSettings.startAngle + (i + 1) * TWO_PI / mapSettings.teams.length;
+		var teamAngle = g_MapInfo.startAngle + (i + 1) * TWO_PI / g_MapInfo.teams.length;
 		var fractionX = 0.5 + distance * cos(teamAngle);
 		var fractionZ = 0.5 + distance * sin(teamAngle);
 
 		// if we have a team of above average size, make sure they're spread out
-		if (mapSettings.teams[i].length > 4)
+		if (g_MapInfo.teams[i].length > 4)
 			groupedDistance = randFloat(0.08, 0.12);
 
 		// if we have a team of below average size, make sure they're together
-		if (mapSettings.teams[i].length < 3)
+		if (g_MapInfo.teams[i].length < 3)
 			groupedDistance = randFloat(0.04, 0.06);
 
 		// if we have a solo player, place them on the center of the team's location
-		if (mapSettings.teams[i].length == 1)
+		if (g_MapInfo.teams[i].length == 1)
 			groupedDistance = 0;
 
 		// create player base
-		for (var p = 0; p < mapSettings.teams[i].length; ++p)
+		for (var p = 0; p < g_MapInfo.teams[i].length; ++p)
 		{
-			var angle = mapSettings.startAngle + (p + 1) * TWO_PI / mapSettings.teams[i].length;
-			players[mapSettings.teams[i][p]] = {
-				"id": mapSettings.teams[i][p],
+			var angle = g_MapInfo.startAngle + (p + 1) * TWO_PI / g_MapInfo.teams[i].length;
+			players[g_MapInfo.teams[i][p]] = {
+				"id": g_MapInfo.teams[i][p],
 				"angle": angle,
 				"x": fractionX + groupedDistance * cos(angle),
 				"z": fractionZ + groupedDistance * sin(angle)
 			};
-			createBase(players[mapSettings.teams[i][p]], false);
+			createBase(players[g_MapInfo.teams[i][p]], false);
 		}
 	}
 

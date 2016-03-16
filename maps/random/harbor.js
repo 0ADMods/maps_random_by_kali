@@ -3,7 +3,7 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 randomizeBiome();
-mapSettings = getMapSettings();
+g_MapInfo = getMapSettings();
 g_TileClasses = createTileClasses();
 
 initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 2);
@@ -12,7 +12,7 @@ RMS.SetProgress(20);
 
 addCenterLake();
 
-if (mapSettings.mapSize >= 192)
+if (g_MapInfo.mapSize >= 192)
 	addHarbors(players);
 
 addSpines();
@@ -220,18 +220,18 @@ function addCenterLake()
 {
 	var lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
-	var placer = new ChainPlacer(2, floor(scaleByMapSize(2, 12)), floor(scaleByMapSize(35, 160)), 1, mapSettings.centerOfMap, mapSettings.centerOfMap, 0, [floor(mapSettings.mapSize * 0.17 * lSize)]);
+	var placer = new ChainPlacer(2, floor(scaleByMapSize(2, 12)), floor(scaleByMapSize(35, 160)), 1, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap, 0, [floor(g_MapInfo.mapSize * 0.17 * lSize)]);
 	var terrainPainter = new LayeredPainter([g_Terrains.shore, g_Terrains.water, g_Terrains.water], [1, 100]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, -18, 10);
 
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.water)], avoidClasses(g_TileClasses.player, 20));
 
 	var fDist = 50;
-	if (mapSettings.mapSize <= 192)
+	if (g_MapInfo.mapSize <= 192)
 		fDist = 20;
 
 	// create a bunch of fish
-	var group = new SimpleGroup([new SimpleObject(g_Gaia.fish, 20, 30, 0, fDist)], true, g_TileClasses.baseResource, mapSettings.centerOfMap, mapSettings.centerOfMap);
+	var group = new SimpleGroup([new SimpleObject(g_Gaia.fish, 20, 30, 0, fDist)], true, g_TileClasses.baseResource, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap);
 	createObjectGroup(group, 0, [avoidClasses(g_TileClasses.player, 5, g_TileClasses.hill, 3, g_TileClasses.mountain, 3), stayClasses(g_TileClasses.water, 5)]);
 }
 
@@ -241,8 +241,8 @@ function addHarbors(players)
 	{
 		var ix = round(fractionToTiles(players[i].x));
 		var iz = round(fractionToTiles(players[i].z));
-		var playerDistX = mapSettings.centerOfMap - ix;
-		var playerDistZ = mapSettings.centerOfMap - iz;
+		var playerDistX = g_MapInfo.centerOfMap - ix;
+		var playerDistZ = g_MapInfo.centerOfMap - iz;
 		var offsetX = round(playerDistX / 2.5);
 		var offsetZ = round(playerDistZ / 2.5);
 
@@ -284,22 +284,22 @@ function addSpines()
 	var spineTile = g_Terrains.dirt;
 	var elevation = 35;
 
-	if (mapSettings.biome == 2)
+	if (g_MapInfo.biome == 2)
 		spineTile = g_Terrains.tier1Terrain;
 
-	if (mapSettings.biome == 4 || mapSettings.biome == 6)
+	if (g_MapInfo.biome == 4 || g_MapInfo.biome == 6)
 		spineTile = g_Terrains.tier2Terrain;
 
-	if (mapSettings.biome == 8)
+	if (g_MapInfo.biome == 8)
 		spineTile = g_Terrains.tier4Terrain;
 
 	var split = 1;
-	if (mapSettings.numPlayers <= 3 || (mapSettings.mapSize >= 320 && mapSettings.numPlayers <= 4))
+	if (g_MapInfo.numPlayers <= 3 || (g_MapInfo.mapSize >= 320 && g_MapInfo.numPlayers <= 4))
 		split = 2;
 
-	for (var i = 0; i < mapSettings.numPlayers * split; ++i)
+	for (var i = 0; i < g_MapInfo.numPlayers * split; ++i)
 	{
-		var tang = mapSettings.startAngle + (i + 0.5) * TWO_PI / (mapSettings.numPlayers * split);
+		var tang = g_MapInfo.startAngle + (i + 0.5) * TWO_PI / (g_MapInfo.numPlayers * split);
 
 		var fx = fractionToTiles(0.5);
 		var fz = fractionToTiles(0.5);
@@ -314,7 +314,7 @@ function addSpines()
 		var mTaper = -1.4;
 
 		// make small mountain dividers if we're on a small map
-		if (mapSettings.mapSize <= 192)
+		if (g_MapInfo.mapSize <= 192)
 		{
 			mSize = 0.02;
 			mTaper = -0.1;

@@ -2,7 +2,7 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 randomizeBiome();
-mapSettings = getMapSettings();
+g_MapInfo = getMapSettings();
 g_TileClasses = createTileClasses();
 
 var randElevation = randInt(5);
@@ -13,13 +13,13 @@ addBases("stronghold", 0.37, 0.04);
 // change the starting angle and add the players again
 var rotation = PI;
 
-if (mapSettings.teams.length == 2)
+if (g_MapInfo.teams.length == 2)
 	rotation = PI / 2;
 
-if (mapSettings.teams.length == 4)
+if (g_MapInfo.teams.length == 4)
 	rotation = PI + PI / 4;
 
-mapSettings.startAngle = mapSettings.startAngle + rotation;
+g_MapInfo.startAngle = g_MapInfo.startAngle + rotation;
 
 addBases("stronghold", 0.15, 0.04);
 RMS.SetProgress(40);

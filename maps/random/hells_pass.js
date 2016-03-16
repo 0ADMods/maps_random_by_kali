@@ -2,7 +2,7 @@ RMS.LoadLibrary("rmgen");
 InitMap();
 
 randomizeBiome();
-mapSettings = getMapSettings();
+g_MapInfo = getMapSettings();
 g_TileClasses = createTileClasses();
 
 initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
@@ -220,19 +220,19 @@ function placeBarriers()
 {
 	var spineTerrain = g_Terrains.dirt;
 
-	if (mapSettings.biome == 2)
+	if (g_MapInfo.biome == 2)
 		spineTerrain = g_Terrains.tier1Terrain;
 
-	if (mapSettings.biome == 4 || mapSettings.biome == 6)
+	if (g_MapInfo.biome == 4 || g_MapInfo.biome == 6)
 		spineTerrain = g_Terrains.tier2Terrain;
 
-	if (mapSettings.biome == 8)
+	if (g_MapInfo.biome == 8)
 		spineTerrain = g_Terrains.tier4Terrain;
 
 	// create mountain ranges
-	for (var i = 0; i < mapSettings.teams.length; ++i)
+	for (var i = 0; i < g_MapInfo.teams.length; ++i)
 	{
-		var tang = mapSettings.startAngle + (i + 0.5) * TWO_PI / mapSettings.teams.length;
+		var tang = g_MapInfo.startAngle + (i + 0.5) * TWO_PI / g_MapInfo.teams.length;
 
 		var fx = fractionToTiles(0.5);
 		var fz = fractionToTiles(0.5);
@@ -246,14 +246,14 @@ function placeBarriers()
 		var mOffset = 0.5;
 		var mTaper = -1.5;
 
-		if (mapSettings.teams.length > 3 || mapSettings.mapSize <= 192)
+		if (g_MapInfo.teams.length > 3 || g_MapInfo.mapSize <= 192)
 		{
 			mWaviness = 0.2;
 			mOffset = 0.2;
 			mTaper = -1;
 		}
 
-		if (mapSettings.teams.length >= 5)
+		if (g_MapInfo.teams.length >= 5)
 		{
 			mSize = 4;
 			mWaviness = 0.2;
