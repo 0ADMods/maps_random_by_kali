@@ -165,59 +165,7 @@ addElements(shuffleArray([
 		"amounts": g_AllAmounts
 	}
 ]));
-RMS.SetProgress(80);
 
-addElements(shuffleArray([
-	{
-		"func": addBerries,
-		"avoid": [
-			g_TileClasses.berries, 30,
-			g_TileClasses.bluff, 5,
-			g_TileClasses.forest, 5,
-			g_TileClasses.metal, 10,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.player, 20,
-			g_TileClasses.rock, 10,
-			g_TileClasses.spine, 2,
-			g_TileClasses.water, 3
-		],
-		"sizes": g_AllSizes,
-		"mixes": g_AllMixes,
-		"amounts": g_AllAmounts
-	},
-	{
-		"func": addAnimals,
-		"avoid": [
-			g_TileClasses.animals, 20,
-			g_TileClasses.bluff, 5,
-			g_TileClasses.forest, 0,
-			g_TileClasses.mountain, 1,
-			g_TileClasses.player, 20,
-			g_TileClasses.spine, 2,
-			g_TileClasses.water, 3
-		],
-		"sizes": g_AllSizes,
-		"mixes": g_AllMixes,
-		"amounts": g_AllAmounts
-	},
-	{
-		"func": addStragglerTrees,
-		"avoid": [
-			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
-			g_TileClasses.forest, 7,
-			g_TileClasses.metal, 1,
-			g_TileClasses.mountain, 1,
-			g_TileClasses.player, 12,
-			g_TileClasses.rock, 1,
-			g_TileClasses.spine, 2,
-			g_TileClasses.water, 5
-		],
-		"sizes": g_AllSizes,
-		"mixes": g_AllMixes,
-		"amounts": ["normal", "many", "tons"]
-	}
-]));
 RMS.SetProgress(90);
 
 ExportMap();
