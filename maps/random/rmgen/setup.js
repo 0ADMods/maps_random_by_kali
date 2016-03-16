@@ -52,16 +52,6 @@ const g_DefaultTileClasses = [
 	"water"
 ];
 
-const g_Props = {
-	"barrels": "actor|props/special/eyecandy/barrels_buried.xml",
-	"crate": "actor|props/special/eyecandy/crate_a.xml",
-	"cart": "actor|props/special/eyecandy/handcart_1_broken.xml",
-	"well": "actor|props/special/eyecandy/well_1_c.xml",
-	"skeleton": "actor|props/special/eyecandy/skeleton.xml",
-	"blood": "actor|props/units/blood_01.xml",
-	"bigBlood": "actor|props/units/blood_whale.xml"
-};
-
 var g_MapInfo;
 var g_TileClasses;
 
@@ -356,15 +346,18 @@ function randomStartingPositionPattern()
 	};
 }
 
+/**
+ * Mix player indices but sort by team.
+ *
+ * @returns {Array} - every item is an array of player indices
+ */
 function randomizePlayers()
 {
 	var playerIDs = [];
 	for (var i = 0; i < g_MapInfo.numPlayers; ++i)
 		playerIDs.push(i + 1);
 
-	playerIDs = sortPlayers(playerIDs);
-
-	return playerIDs;
+	return sortPlayers(playerIDs);
 }
 
 /**

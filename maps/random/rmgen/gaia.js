@@ -1,3 +1,13 @@
+const g_Props = {
+	"barrels": "actor|props/special/eyecandy/barrels_buried.xml",
+	"crate": "actor|props/special/eyecandy/crate_a.xml",
+	"cart": "actor|props/special/eyecandy/handcart_1_broken.xml",
+	"well": "actor|props/special/eyecandy/well_1_c.xml",
+	"skeleton": "actor|props/special/eyecandy/skeleton.xml",
+	"blood": "actor|props/units/blood_01.xml",
+	"bigBlood": "actor|props/units/blood_whale.xml"
+};
+
 const g_DefaultDeviation = 0.1;
 
 /**
@@ -279,7 +289,7 @@ function addBluffs(constraint, size, deviation, fill)
 }
 
 /**
- * Add decorative actors.
+ * Add grass, rocks and bushes.
  */
 function addDecoration(constraint, size, deviation, fill)
 {
@@ -623,7 +633,7 @@ function addPlateaus(constraint, size, deviation, fill)
 }
 
 /**
- * Crate props.
+ * Place less usual decoratives like barrels or crates.
  */
 function addProps(constraint, size, deviation, fill)
 {
