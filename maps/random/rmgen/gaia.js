@@ -113,7 +113,12 @@ function addBluffs(constraint, size, deviation, fill)
 
 	addElements([{
 		"func": addHills,
-		"avoid": [g_TileClasses.hill, 3, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
+		"avoid": [
+			g_TileClasses.hill, 3,
+			g_TileClasses.player, 20,
+			g_TileClasses.valley, 2,
+			g_TileClasses.water, 2
+		],
 		"stay": [g_TileClasses.bluff, 3],
 		"sizes": g_AllSizes,
 		"mixes": g_AllMixes,
@@ -123,7 +128,13 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addLayeredPatches,
-			"avoid": [g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"avoid": [
+				g_TileClasses.dirt, 5,
+				g_TileClasses.forest, 2,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 12,
+				g_TileClasses.water, 3
+			],
 			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
@@ -134,7 +145,11 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addDecoration,
-			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"avoid": [
+				g_TileClasses.forest, 2,
+				g_TileClasses.player, 12,
+				g_TileClasses.water, 3
+			],
 			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
@@ -145,8 +160,16 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addProps,
-			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.prop, 40, g_TileClasses.water, 3],
-			"stay": [g_TileClasses.bluff, 7, g_TileClasses.mountain, 7],
+			"avoid": [
+				g_TileClasses.forest, 2,
+				g_TileClasses.player, 12,
+				g_TileClasses.prop, 40,
+				g_TileClasses.water, 3
+			],
+			"stay": [
+				g_TileClasses.bluff, 7,
+				g_TileClasses.mountain, 7
+			],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
 			"amounts": ["scarce"]
@@ -269,11 +292,25 @@ function addDecoration(constraint, size, deviation, fill)
 	fill = fill || 1;
 
 	var offset = getRandomDeviation(size, deviation);
-	var decorations = [[new SimpleObject(g_Decoratives.rockMedium, 1 * offset, 3 * offset, 0, 1 * offset)],
-		[new SimpleObject(g_Decoratives.rockLarge, 1 * offset, 2 * offset, 0, 1 * offset), new SimpleObject(g_Decoratives.rockMedium, 1 * offset, 3 * offset, 0, 2 * offset)],
-		[new SimpleObject(g_Decoratives.grassShort, 1 * offset, 2 * offset, 0, 1 * offset, -PI / 8, PI / 8)],
-		[new SimpleObject(g_Decoratives.grass, 2 * offset, 4 * offset, 0, 1.8 * offset, -PI / 8, PI / 8), new SimpleObject(g_Decoratives.grassShort, 3 * offset, 6 * offset, 1.2 * offset, 2.5 * offset, -PI / 8, PI / 8)],
-		[new SimpleObject(g_Decoratives.bushMedium, 1 * offset, 2 * offset, 0, 2 * offset), new SimpleObject(g_Decoratives.bushSmall, 2 * offset, 4 * offset, 0, 2 * offset)]
+	var decorations = [
+		[
+			new SimpleObject(g_Decoratives.rockMedium, 1 * offset, 3 * offset, 0, 1 * offset)
+		],
+		[
+			new SimpleObject(g_Decoratives.rockLarge, 1 * offset, 2 * offset, 0, 1 * offset),
+			new SimpleObject(g_Decoratives.rockMedium, 1 * offset, 3 * offset, 0, 2 * offset)
+		],
+		[
+			new SimpleObject(g_Decoratives.grassShort, 1 * offset, 2 * offset, 0, 1 * offset, -PI / 8, PI / 8)
+		],
+		[
+			new SimpleObject(g_Decoratives.grass, 2 * offset, 4 * offset, 0, 1.8 * offset, -PI / 8, PI / 8),
+			new SimpleObject(g_Decoratives.grassShort, 3 * offset, 6 * offset, 1.2 * offset, 2.5 * offset, -PI / 8, PI / 8)
+		],
+		[
+			new SimpleObject(g_Decoratives.bushMedium, 1 * offset, 2 * offset, 0, 2 * offset),
+			new SimpleObject(g_Decoratives.bushSmall, 2 * offset, 4 * offset, 0, 2 * offset)
+		]
 	];
 
 	var baseCount = 1;
@@ -479,7 +516,7 @@ function addLayeredPatches(constraint, size, deviation, fill)
 				[g_Terrains.tier2Terrain, g_Terrains.tier3Terrain],
 				[g_Terrains.tier4Terrain]
 			],
-			[1, 1]			// widths
+			[1, 1] // widths
 		);
 		createAreas(placer, [painter, paintClass(g_TileClasses.dirt)], constraint, patchCount);
 	}
@@ -549,13 +586,31 @@ function addPlateaus(constraint, size, deviation, fill)
 		var terrainPainter = new LayeredPainter([plateauTile, plateauTile], [3]);
 		var hillElevation = 4 + randInt(15);
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, hillElevation, hillElevation - 2);
-		createAreas(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.hill)], [avoidClasses(g_TileClasses.hill, 7), stayClasses(g_TileClasses.plateau, 7)], 1);
+
+		createAreas(
+			placer,
+			[
+				terrainPainter,
+				elevationPainter,
+				paintClass(g_TileClasses.hill)
+			],
+			[
+				avoidClasses(g_TileClasses.hill, 7),
+				stayClasses(g_TileClasses.plateau, 7)
+			],
+			1
+		);
 	}
 
 	addElements([
 		{
 			"func": addDecoration,
-			"avoid": [g_TileClasses.dirt, 15, g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"avoid": [
+				g_TileClasses.dirt, 15,
+				g_TileClasses.forest, 2,
+				g_TileClasses.player, 12,
+				g_TileClasses.water, 3
+			],
 			"stay": [g_TileClasses.plateau, 8],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
@@ -563,7 +618,12 @@ function addPlateaus(constraint, size, deviation, fill)
 		},
 		{
 			"func": addProps,
-			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.prop, 40, g_TileClasses.water, 3],
+			"avoid": [
+				g_TileClasses.forest, 2,
+				g_TileClasses.player, 12,
+				g_TileClasses.prop, 40,
+				g_TileClasses.water, 3
+			],
 			"stay": [g_TileClasses.plateau, 8],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
