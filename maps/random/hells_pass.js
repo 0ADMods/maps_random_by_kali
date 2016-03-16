@@ -5,7 +5,7 @@ randomizeBiome();
 g_MapInfo = getMapSettings();
 g_TileClasses = createTileClasses();
 
-initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
+resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
 
 addBases("line", 0.2, 0.08);

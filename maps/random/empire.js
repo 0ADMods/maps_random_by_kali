@@ -6,7 +6,7 @@ g_MapInfo = getMapSettings();
 g_TileClasses = createTileClasses();
 
 var randElevation = randInt(5);
-initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randElevation);
+resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randElevation);
 
 addBases("stronghold", 0.37, 0.04);
 

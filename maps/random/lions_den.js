@@ -7,7 +7,7 @@ g_TileClasses = createTileClasses(["step"]);
 
 var topTerrain = g_Terrains.tier2Terrain;
 
-initTerrain(topTerrain, g_TileClasses.land, 50);
+resetTerrain(topTerrain, g_TileClasses.land, 50);
 RMS.SetProgress(10);
 
 var pos = getStartingPositions();

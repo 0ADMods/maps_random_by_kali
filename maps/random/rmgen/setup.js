@@ -82,7 +82,7 @@ function pickSize(sizes)
 }
 
 // paints the entire map with a single tile type
-function initTerrain(terrain, tc, elevation)
+function resetTerrain(terrain, tc, elevation)
 {
 	g_MapInfo.mapSize = getMapSize();
 	g_MapInfo.mapArea = g_MapInfo.mapSize * g_MapInfo.mapSize;
@@ -94,8 +94,7 @@ function initTerrain(terrain, tc, elevation)
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, elevation, 1);
 	createArea(placer, [terrainPainter, elevationPainter, paintClass(tc)], null);
 
-	// update the map height
-	g_MapInfo.mapHeight = getHeight(g_MapInfo.centerOfMap, g_MapInfo.centerOfMap);
+	g_MapInfo.mapHeight = elevation;
 }
 
 // euclidian distance between two points
