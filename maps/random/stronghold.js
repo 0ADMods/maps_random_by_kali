@@ -8,8 +8,7 @@ initTileClasses();
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 30);
 RMS.SetProgress(20);
 
-var pos = randomStartingPositionPattern();
-addBases("stronghold", pos.distance, pos.separation);
+addBases("stronghold", randFloat(0.2, 0.35), randFloat(0.05, 0.1));
 RMS.SetProgress(30);
 
 addElements(shuffleArray([
