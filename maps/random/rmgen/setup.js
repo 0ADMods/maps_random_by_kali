@@ -104,12 +104,6 @@ function euclid_distance(x1, z1, x2, z2)
 	return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(z2 - z1, 2));
 }
 
-// default to 10% deviation
-function deviationOrDefault(deviation)
-{
-	return deviation || 0.1;
-}
-
 // default to filling 100% of the map
 function fillOrDefault(fill)
 {
