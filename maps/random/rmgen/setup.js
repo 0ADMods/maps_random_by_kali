@@ -247,46 +247,32 @@ function createBase(player, walls)
 	}
 }
 
-// generates an array of teams
+/**
+ * Return an array where each element is an array of playerIndices of a team.
+ */
 function getTeams(numPlayers)
 {
-	var ffaPlayers = 0;
-	var numTeams = 0;
-	var teams = new Array(9);
+	// Group players by team
+	var teams = [];
 	for (var i = 0; i < numPlayers; ++i)
 	{
-		var team = getPlayerTeam(i) + 1;
-		if (team < 1)
-		{
-			teams[8 - ffaPlayers] = [];
-			teams[8 - ffaPlayers].push(i + 1);
-			++ffaPlayers;
-			++numTeams;
-		}
-		else
-		{
-			if (teams[team] == null)
-			{
-				teams[team] = [];
-				++numTeams;
-			}
-			teams[team].push(i+1);
-		}
+		let team = getPlayerTeam(i);
+		if (team == -1)
+			continue;
+
+		if (!teams[team])
+			teams[team] = [];
+
+		teams[team].push(i+1);
 	}
 
-	// consolidate the array
-	var setTeams = [];
-	var currentTeam = 0;
-	for (var i = 1; i < 9; ++i)
-	{
-		if (teams[i] !== undefined)
-		{
-			setTeams[currentTeam] = teams[i];
-			++currentTeam;
-		}
-	}
+	// Players without a team get a custom index
+	for (var i = 0; i < numPlayers; ++i)
+		if (getPlayerTeam(i) == -1)
+			teams.push([i+1]);
 
-	return setTeams;
+	// Remove unused indices
+	return teams.filter(team => true);
 }
 
 // picks a random starting style
