@@ -524,11 +524,11 @@ function createTileClasses(newClasses)
 	return tileClasses;
 }
 
-// put some useful map settings into an object
-function getMapSettings()
+/**
+ * Get biome-specific names of entities and terrain after randomization.
+ */
+function initBiome()
 {
-	let numPlayers = getNumPlayers();
-
 	g_Terrains = {
 		"mainTerrain": rBiomeT1(),
 		"forestFloor1": rBiomeT2(),
@@ -597,7 +597,13 @@ function getMapSettings()
 			g_Terrains.forestFloor1
 		]
 	};
+}
 
+function getMapSettings()
+{
+	initBiome();
+
+	let numPlayers = getNumPlayers();
 	return {
 		"biome": biomeID,
 		"numPlayers": numPlayers,
