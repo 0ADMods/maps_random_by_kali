@@ -29,9 +29,9 @@ var features = [
 			g_TileClasses.valley, 5,
 			g_TileClasses.water, 7
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addHills,
@@ -44,9 +44,9 @@ var features = [
 			g_TileClasses.valley, 2,
 			g_TileClasses.water, 2
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addMountains,
@@ -58,9 +58,9 @@ var features = [
 			g_TileClasses.valley, 10,
 			g_TileClasses.water, 15
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addPlateaus,
@@ -73,9 +73,9 @@ var features = [
 			g_TileClasses.valley, 10,
 			g_TileClasses.water, 15
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	}
 ];
 
@@ -92,9 +92,9 @@ if (randElevation < 4)
     			g_TileClasses.valley, 10,
     			g_TileClasses.water, 25
     		],
-    		"sizes": allSizes,
-    		"mixes": allMixes,
-    		"amounts": allAmounts
+    		"sizes": g_AllSizes,
+    		"mixes": g_AllMixes,
+    		"amounts": g_AllAmounts
     	}
     );
 
@@ -111,9 +111,9 @@ if (randElevation > 20)
     			g_TileClasses.valley, 15,
     			g_TileClasses.water, 10
     		],
-    		"sizes": allSizes,
-    		"mixes": allMixes,
-    		"amounts": allAmounts
+    		"sizes": g_AllSizes,
+    		"mixes": g_AllMixes,
+    		"amounts": g_AllAmounts
     	}
     );
 
@@ -169,7 +169,7 @@ addElements(shuffleArray([
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": allAmounts
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addStone,
@@ -185,7 +185,7 @@ addElements(shuffleArray([
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": allAmounts
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addForests,
@@ -200,8 +200,8 @@ addElements(shuffleArray([
 			g_TileClasses.rock, 3,
 			g_TileClasses.water, 2
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
 		"amounts": ["few", "normal", "many", "tons"]
 	}
 ]));
@@ -221,9 +221,9 @@ addElements(shuffleArray([
 			g_TileClasses.rock, 10,
 			g_TileClasses.water, 3
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addAnimals,
@@ -238,9 +238,9 @@ addElements(shuffleArray([
 			g_TileClasses.rock, 2,
 			g_TileClasses.water, 3
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addStragglerTrees,
@@ -255,9 +255,9 @@ addElements(shuffleArray([
 			g_TileClasses.rock, 2,
 			g_TileClasses.water, 5
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	}
 ]));
 RMS.SetProgress(90);

@@ -133,7 +133,7 @@ addElements(shuffleArray([
 		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": allAmounts
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addStone,
@@ -163,7 +163,7 @@ addElements(shuffleArray([
 		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": allAmounts
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addForests,
@@ -209,8 +209,8 @@ addElements(shuffleArray([
 			g_TileClasses.rock, 10
 		],
 		"stay": [g_TileClasses.settlement, 7],
-		"sizes": allSizes,
-		"mixes": allMixes,
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
 		"amounts": ["tons"]
 	},
 	{
@@ -225,9 +225,9 @@ addElements(shuffleArray([
 			g_TileClasses.step, 5
 		],
 		"stay": [g_TileClasses.valley, 7],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addAnimals,
@@ -239,8 +239,8 @@ addElements(shuffleArray([
 			g_TileClasses.rock, 1
 		],
 		"stay": [g_TileClasses.settlement, 7],
-		"sizes": allSizes,
-		"mixes": allMixes,
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
 		"amounts": ["tons"]
 	},
 	{
@@ -255,9 +255,9 @@ addElements(shuffleArray([
 			g_TileClasses.step, 5
 		],
 		"stay": [g_TileClasses.valley, 7],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addStragglerTrees,
@@ -269,8 +269,8 @@ addElements(shuffleArray([
 			g_TileClasses.rock, 3
 		],
 		"stay": [g_TileClasses.settlement, 7],
-		"sizes": allSizes,
-		"mixes": allMixes,
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
 		"amounts": ["tons"]
 	},
 	{
@@ -285,8 +285,8 @@ addElements(shuffleArray([
 			g_TileClasses.step, 5
 		],
 		"stay": [g_TileClasses.valley, 7],
-		"sizes": allSizes,
-		"mixes": allMixes,
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
 		"amounts": ["normal", "many", "tons"]
 	},
 	{

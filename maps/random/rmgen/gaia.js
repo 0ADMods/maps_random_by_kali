@@ -1,8 +1,8 @@
 const g_DefaultDeviation = 0.1;
 
-const allSizes = ["tiny", "small", "normal", "big", "huge"];
-const allMixes = ["same", "similar", "normal", "varied", "unique"];
-const allAmounts = ["scarce", "few", "normal", "many", "tons"];
+const g_AllSizes = ["tiny", "small", "normal", "big", "huge"];
+const g_AllMixes = ["same", "similar", "normal", "varied", "unique"];
+const g_AllAmounts = ["scarce", "few", "normal", "many", "tons"];
 
 // Function for creating bluffs
 //
@@ -115,9 +115,9 @@ function addBluffs(constraint, size, deviation, fill)
 		"func": addHills,
 		"avoid": [g_TileClasses.hill, 3, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
 		"stay": [g_TileClasses.bluff, 3],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	}]);
 
 	addElements([
@@ -166,8 +166,8 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.water, 2
 			],
 			"stay": [g_TileClasses.bluff, 6],
-			"sizes": allSizes,
-			"mixes": allMixes,
+			"sizes": g_AllSizes,
+			"mixes": g_AllMixes,
 			"amounts":  ["normal", "many", "tons"]
 		},
 		{
@@ -217,8 +217,8 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.water, 5
 			 ],
 			"stay": [g_TileClasses.bluff, 6],
-			"sizes": allSizes,
-			"mixes": allMixes,
+			"sizes": g_AllSizes,
+			"mixes": g_AllMixes,
 			"amounts": ["normal", "many", "tons"]
 		},
 		{
@@ -233,8 +233,8 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.water, 3
 			 ],
 			"stay": [g_TileClasses.bluff, 6],
-			"sizes": allSizes,
-			"mixes": allMixes,
+			"sizes": g_AllSizes,
+			"mixes": g_AllMixes,
 			"amounts": ["normal", "many", "tons"]
 		},
 		{
@@ -249,8 +249,8 @@ function addBluffs(constraint, size, deviation, fill)
 				g_TileClasses.water, 3
 			],
 			"stay": [g_TileClasses.bluff, 6],
-			"sizes": allSizes,
-			"mixes": allMixes,
+			"sizes": g_AllSizes,
+			"mixes": g_AllMixes,
 			"amounts": ["normal", "many", "tons"]
 		}
 	]));
@@ -430,8 +430,8 @@ function addLakes(constraint, size, deviation, fill)
 				g_TileClasses.player, 8
 			],
 			"stay": [g_TileClasses.water, 7],
-			"sizes": allSizes,
-			"mixes": allMixes,
+			"sizes": g_AllSizes,
+			"mixes": g_AllMixes,
 			"amounts": ["normal", "many", "tons"]
 		}
 	]);
@@ -585,9 +585,19 @@ function addProps(constraint, size, deviation, fill)
 	fill = fill || 1;
 
 	var offset = getRandomDeviation(size, deviation);
+
 	var props = [
-		[new SimpleObject(g_Props.skeleton, 1 * offset, 5 * offset, 0, 3 * offset + 2), new SimpleObject(g_Props.blood, 1 * offset, 2 * offset, 0, 1 * offset + 3), new SimpleObject(g_Props.bigBlood, 1 * offset, 3 * offset, 0, 2 * offset + 3)],
-		[new SimpleObject(g_Props.barrels, 1 * offset, 2 * offset, 2, 3 * offset + 2), new SimpleObject(g_Props.cart, 0, 1 * offset, 5, 2.5 * offset + 5), new SimpleObject(g_Props.crate, 1 * offset, 2 * offset, 2, 2 * offset + 2), new SimpleObject(g_Props.well, 0, 1, 2, 2 * offset + 2)]
+		[
+			new SimpleObject(g_Props.skeleton, 1 * offset, 5 * offset, 0, 3 * offset + 2),
+			new SimpleObject(g_Props.blood, 1 * offset, 2 * offset, 0, 1 * offset + 3),
+			new SimpleObject(g_Props.bigBlood, 1 * offset, 3 * offset, 0, 2 * offset + 3)
+		],
+		[
+			new SimpleObject(g_Props.barrels, 1 * offset, 2 * offset, 2, 3 * offset + 2),
+			new SimpleObject(g_Props.cart, 0, 1 * offset, 5, 2.5 * offset + 5),
+			new SimpleObject(g_Props.crate, 1 * offset, 2 * offset, 2, 2 * offset + 2),
+			new SimpleObject(g_Props.well, 0, 1, 2, 2 * offset + 2)
+		]
 	];
 
 	var baseCount = 1;
@@ -608,8 +618,9 @@ function addProps(constraint, size, deviation, fill)
 		createObjectGroups(group, 0, constraint, propCount, 5);
 	}
 
-	// add tree props
-	createObjectGroups(new SimpleGroup([new SimpleObject(g_Decoratives.tree, 5 * offset, 30 * offset, 2, 3 * offset + 10)], true), 0, constraint, counts[0] * 5 * fill, 5);
+	// add decorative trees
+	var trees = new SimpleObject(g_Decoratives.tree, 5 * offset, 30 * offset, 2, 3 * offset + 10);
+	createObjectGroups(new SimpleGroup([trees], true), 0, constraint, counts[0] * 5 * fill, 5);
 }
 
 // Function for creating rivers
@@ -733,6 +744,7 @@ function addAnimals(constraint, size, deviation, fill)
 		[new SimpleObject(g_Gaia.mainHuntableAnimal, 5 * groupOffset, 7 * groupOffset, 0, 4 * groupOffset)],
 		[new SimpleObject(g_Gaia.secondaryHuntableAnimal, 2 * groupOffset, 3 * groupOffset, 0, 2 * groupOffset)]
 	];
+
 	var counts = [scaleByMapSize(30, 30) * fill, scaleByMapSize(30, 30) * fill];
 
 	for (var i = 0; i < animals.length; ++i)
@@ -782,6 +794,7 @@ function addFish(constraint, size, deviation, fill)
 		[new SimpleObject(g_Gaia.fish, 1 * groupOffset, 2 * groupOffset, 0, 2 * groupOffset)],
 		[new SimpleObject(g_Gaia.fish, 2 * groupOffset, 4 * groupOffset, 10 * groupOffset, 20 * groupOffset)]
 	];
+
 	var counts = [scaleByMapSize(40, 40) * fill, scaleByMapSize(40, 40) * fill];
 
 	for (var i = 0; i < fish.length; ++i)

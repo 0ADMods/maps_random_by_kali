@@ -115,7 +115,7 @@ addElements(shuffleArray([
 			],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": allAmounts
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addStone,
@@ -133,7 +133,7 @@ addElements(shuffleArray([
 			],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": allAmounts
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addForests,
@@ -148,8 +148,8 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 5,
 			g_TileClasses.water, 2
 			],
-		"sizes": allSizes,
-		"mixes": allMixes,
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
 		"amounts": ["few", "normal", "many", "tons"]
 	}
 ]));
@@ -170,9 +170,9 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 3
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addAnimals,
@@ -188,9 +188,9 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 3
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addStragglerTrees,
@@ -206,9 +206,9 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 5
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	}
 ]));
 RMS.SetProgress(90);

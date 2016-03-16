@@ -32,8 +32,8 @@ addElements(shuffleArray([
 			g_TileClasses.water, 2
 		],
 		"sizes": ["tiny", "small"],
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addMountains,
@@ -47,8 +47,8 @@ addElements(shuffleArray([
 			g_TileClasses.water, 15
 		],
 		"sizes": ["small"],
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addPlateaus,
@@ -62,8 +62,8 @@ addElements(shuffleArray([
 			g_TileClasses.water, 15
 		],
 		"sizes": ["small"],
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	}
 ]));
 RMS.SetProgress(60);
@@ -118,9 +118,9 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 3
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addAnimals,
@@ -136,9 +136,9 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 3
 		 ],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addStragglerTrees,
@@ -154,9 +154,9 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 5
 		 ],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	}
 ]));
 RMS.SetProgress(80);
@@ -175,9 +175,9 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 3
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addAnimals,
@@ -190,9 +190,9 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 3
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
-		"amounts": allAmounts
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	},
 	{
 		"func": addStragglerTrees,
@@ -207,8 +207,8 @@ addElements(shuffleArray([
 			g_TileClasses.spine, 2,
 			g_TileClasses.water, 5
 		],
-		"sizes": allSizes,
-		"mixes": allMixes,
+		"sizes": g_AllSizes,
+		"mixes": g_AllMixes,
 		"amounts": ["normal", "many", "tons"]
 	}
 ]));
