@@ -4,12 +4,15 @@ const g_AllSizes = ["tiny", "small", "normal", "big", "huge"];
 const g_AllMixes = ["same", "similar", "normal", "varied", "unique"];
 const g_AllAmounts = ["scarce", "few", "normal", "many", "tons"];
 
-// Function for creating bluffs
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create bluffs, i.e. a slope hill reachable from ground level.
+ * Fill it with wood, mines, animals and decoratives.
+ *
+ * @param {Array} constraint - where to place them
+ * @param {number} size - size of the bluffs (1.2 would be 120% of normal) 
+ * @param {number} deviation - degree of deviation from the defined size (0.2 would be 20% plus/minus)
+ * @param {number} fill - size of map to fill (1.5 would be 150% of normal)
+ */
 function addBluffs(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -36,7 +39,7 @@ function addBluffs(constraint, size, deviation, fill)
 		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, pElevation, 2);
 		var rendered = createAreas(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.bluff)], constraint, 1);
 
-		// find the bounding box of the bluff
+		// Find the bounding box of the bluff
 		if (rendered[0] === undefined)
 			continue;
 
@@ -45,20 +48,20 @@ function addBluffs(constraint, size, deviation, fill)
 		var corners = findCorners(points);
 		var area = points.length;
 
-		// seed an array the size of the bounding box
+		// Seed an array the size of the bounding box
 		var bb = createBoundingBox(points, corners);
 
-		// get a random starting position for the baseline and the endline
+		// Get a random starting position for the baseline and the endline
 		var angle = randInt(4);
 		var opAngle = angle - 2;
 		if (angle < 2)
 			opAngle = angle + 2;
 
-		// find the edges of the bluff
+		// Find the edges of the bluff
 		var baseLine;
 		var endLine;
 
-		// if we can't access the bluff, try different angles
+		// If we can't access the bluff, try different angles
 		var retries = 0;
 		var bluffCat = 2;
 		while (bluffCat != 0 && retries < 5)
@@ -78,11 +81,11 @@ function addBluffs(constraint, size, deviation, fill)
 			++retries;
 		}
 
-		// found a bluff that can't be accessed, so turn it into a plateau
+		// Found a bluff that can't be accessed, so turn it into a plateau
 		if (retries == 5)
 			removeBluff(points);
 
-		// if we couldn't find the slope lines, turn it into a plateau
+		// If we couldn't find the slope lines, turn it into a plateau
 		if (bluffCat == 1)
 			continue;
 
@@ -90,7 +93,7 @@ function addBluffs(constraint, size, deviation, fill)
 
 		var slopeLength = getDistance(baseLine.midX, baseLine.midZ, endLine.midX, endLine.midZ);
 
-		// adjust the height of each point in the bluff
+		// Adjust the height of each point in the bluff
 		for (var p = 0; p < points.length; ++p)
 		{
 			var pt = points[p];
@@ -107,7 +110,7 @@ function addBluffs(constraint, size, deviation, fill)
 			g_Map.setHeight(pt.x, pt.z, newHeight);
 		}
 
-		// smooth out the ground around the bluff
+		// Smooth out the ground around the bluff
 		fadeToGround(bb, corners.minX, corners.minZ, endLine.height);
 	}
 
@@ -279,12 +282,9 @@ function addBluffs(constraint, size, deviation, fill)
 	]));
 }
 
-// Function for creating decoration
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Add decorative actors.
+ */
 function addDecoration(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -333,22 +333,26 @@ function addDecoration(constraint, size, deviation, fill)
 	}
 }
 
-// Function for creating varying elevations
-//
-// constraint: constraint classes
-// element: the element to be rendered, ex:
-//    "class": g_TileClasses.hill,
-//		"painter": [g_Terrains.mainTerrain, g_Terrains.mainTerrain],
-//		"size": 1,
-//		"deviation": 0.2,
-//		"fill": 1,
-//		"count": scaleByMapSize(8, 8),
-//		"minSize": floor(scaleByMapSize(5, 5)),
-//		"maxSize": floor(scaleByMapSize(8, 8)),
-//		"spread": floor(scaleByMapSize(20, 20)),
-//		"minElevation": 6,
-//		"maxElevation": 12,
-//		"steepness": 1.5
+/**
+ * Create varying elevations.
+ *
+ * @param {Array} constraint - avoid/stay-classes
+ * 
+ * @param {Object} el - the element to be rendered, for example:
+ *  "class": g_TileClasses.hill,
+ *	"painter": [g_Terrains.mainTerrain, g_Terrains.mainTerrain],
+ *	"size": 1,
+ *	"deviation": 0.2,
+ *	"fill": 1,
+ *	"count": scaleByMapSize(8, 8),
+ *	"minSize": floor(scaleByMapSize(5, 5)),
+ *	"maxSize": floor(scaleByMapSize(8, 8)),
+ *	"spread": floor(scaleByMapSize(20, 20)),
+ *	"minElevation": 6,
+ *	"maxElevation": 12,
+ *	"steepness": 1.5
+ */
+
 function addElevation(constraint, el)
 {
 	var deviation = el.deviation || g_DefaultDeviation;
@@ -366,7 +370,7 @@ function addElevation(constraint, el)
 
 	var widths = [];
 
-	// allow for shore and cliff rendering
+	// Allow for shore and cliff rendering
 	for (var s = el.painter.length; s > 2; --s)
 		widths.push(1);
 
@@ -399,12 +403,9 @@ function addElevation(constraint, el)
 	}
 }
 
-// Function for creating rolling hills
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create rolling hills.
+ */
 function addHills(constraint, size, deviation, fill)
 {
 	addElevation(constraint, {
@@ -423,12 +424,9 @@ function addHills(constraint, size, deviation, fill)
 	});
 }
 
-// Function for creating lakes
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create random lakes with fish in it.
+ */
 function addLakes(constraint, size, deviation, fill)
 {
 	var lakeTile = g_Terrains.water;
@@ -480,12 +478,9 @@ function addLakes(constraint, size, deviation, fill)
 	createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 2), borderClasses(g_TileClasses.water, 4, 3)], 1000, 100);
 }
 
-// Function for creating layered patches
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Universal function to create layered patches.
+ */
 function addLayeredPatches(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -495,7 +490,12 @@ function addLayeredPatches(constraint, size, deviation, fill)
 	var minRadius = 1;
 	var maxRadius = floor(scaleByMapSize(3, 5));
 	var count = fill * scaleByMapSize(15, 45);
-	var sizes = [scaleByMapSize(3, 6), scaleByMapSize(5, 10), scaleByMapSize(8, 21)];
+
+	var sizes = [
+		scaleByMapSize(3, 6),
+		scaleByMapSize(5, 10),
+		scaleByMapSize(8, 21)
+	];
 
 	for (var i = 0; i < sizes.length; ++i)
 	{
@@ -522,12 +522,9 @@ function addLayeredPatches(constraint, size, deviation, fill)
 	}
 }
 
-// Function for creating steep mountains
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create steep mountains.
+ */
 function addMountains(constraint, size, deviation, fill)
 {
 	addElevation(constraint, {
@@ -546,12 +543,9 @@ function addMountains(constraint, size, deviation, fill)
 	});
 }
 
-// Function for creating plateaus
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create plateaus.
+ */
 function addPlateaus(constraint, size, deviation, fill)
 {
 	var plateauTile = g_Terrains.dirt;
@@ -632,12 +626,9 @@ function addPlateaus(constraint, size, deviation, fill)
 	]);
 }
 
-// Function for creating props
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Crate props.
+ */
 function addProps(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -670,7 +661,7 @@ function addProps(constraint, size, deviation, fill)
 		baseCount * scaleByMapSize(13, 200)
 	];
 
-	// add small props
+	// Add small props
 	for (var i = 0; i < props.length; ++i)
 	{
 		var propCount = floor(counts[i] * fill);
@@ -678,17 +669,14 @@ function addProps(constraint, size, deviation, fill)
 		createObjectGroups(group, 0, constraint, propCount, 5);
 	}
 
-	// add decorative trees
+	// Add decorative trees
 	var trees = new SimpleObject(g_Decoratives.tree, 5 * offset, 30 * offset, 2, 3 * offset + 10);
 	createObjectGroups(new SimpleGroup([trees], true), 0, constraint, counts[0] * 5 * fill, 5);
 }
 
-// Function for creating rivers
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create rivers.
+ */
 function addRivers(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -725,12 +713,9 @@ function addRivers(constraint, size, deviation, fill)
 	}
 }
 
-// Function for creating valleys
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create valleys.
+ */
 function addValleys(constraint, size, deviation, fill)
 {
 	if (g_MapInfo.mapHeight < 6)
@@ -786,12 +771,9 @@ function addValleys(constraint, size, deviation, fill)
 	});
 }
 
-// Function for creating animals
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create huntable animals.
+ */
 function addAnimals(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -814,10 +796,9 @@ function addAnimals(constraint, size, deviation, fill)
 	}
 }
 
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create fruits.
+ */
 function addBerries(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -836,12 +817,9 @@ function addBerries(constraint, size, deviation, fill)
 	}
 }
 
-// Function for creating fish
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create fish.
+ */
 function addFish(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -864,19 +842,16 @@ function addFish(constraint, size, deviation, fill)
 	}
 }
 
-// Function for creating forests
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create dense forests.
+ */
 function addForests(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
 	size = size || 1;
 	fill = fill || 1;
 
-	// no forests to render in the african biome
+	// No forests for the african biome
 	if (g_MapInfo.biome == 6)
 		return;
 
@@ -910,12 +885,9 @@ function addForests(constraint, size, deviation, fill)
 	}
 }
 
-// Function for creating metal mines
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create metal mines.
+ */
 function addMetal(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -933,12 +905,9 @@ function addMetal(constraint, size, deviation, fill)
 	}
 }
 
-// Function for creating stone mines
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create stone mines.
+ */
 function addStone(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
@@ -964,24 +933,20 @@ function addStone(constraint, size, deviation, fill)
 	}
 }
 
-// Function for creating straggler trees
-//
-// constraint: constraint classes
-// size: size of normal (1.2 would be 120% of normal)
-// deviation: degree of deviation from the defined size (0.2 would be 20% plus/minus deviation)
-// fill: size of map to fill (1.5 would be 150% of normal)
+/**
+ * Create straggler trees.
+ */
 function addStragglerTrees(constraint, size, deviation, fill)
 {
 	deviation = deviation || g_DefaultDeviation;
 	size = size || 1;
 	fill = fill || 1;
 
+	// Ensure minimum distribution on african biome
 	if (g_MapInfo.biome == 6)
 	{
-		if (fill < 2)
-			fill = 2;
-		if (size < 1)
-			size = 1;
+		fill = Math.max(fill, 2);
+		size = Math.max(size, 1);
 	}
 
 	var trees = [g_Gaia.tree1, g_Gaia.tree2, g_Gaia.tree3, g_Gaia.tree4];
@@ -999,7 +964,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	var minDist = 1 * offset;
 	var maxDist = 5 * offset;
 
-	// render more trees for the african biome
+	// More trees for the african biome
 	if (g_MapInfo.biome == 6)
 	{
 		min = 3 * offset;
@@ -1012,7 +977,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	{
 		var treesMax = max;
 
-		// don't clump fruit trees
+		// Don't clump fruit trees
 		if (i == 2 && (g_MapInfo.biome == 3 || g_MapInfo.biome == 5))
 			treesMax = 1;
 
@@ -1027,14 +992,16 @@ function addStragglerTrees(constraint, size, deviation, fill)
 // Terrain Helpers
 ///////////
 
-// determine if the endline of the bluff is within the tilemap
+/**
+ * Determine if the endline of the bluff is within the tilemap.
+ */
 function unreachableBluff(bb, corners, baseLine, endLine)
 {
-	// if we couldn't find a slope line
+	// If we couldn't find a slope line
 	if (typeof baseLine.midX === "undefined" || typeof endLine.midX === "undefined")
 		return 1;
 
-	// if the end points aren't on the tilemap
+	// If the end points aren't on the tilemap
 	if ((!g_Map.validT(endLine.x1, endLine.z1) || checkIfInClass(endLine.x1, endLine.z1, g_TileClasses.player)) &&
 		(!g_Map.validT(endLine.x2, endLine.z2) || checkIfInClass(endLine.x2, endLine.z2, g_TileClasses.player)))
 		return 2;
@@ -1043,7 +1010,7 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 	var insideBluff = false;
 	var outsideBluff = false;
 
-	// if there aren't enough points in each row
+	// If there aren't enough points in each row
 	for (var x = 0; x < bb.length; ++x)
 	{
 		var count = 0;
@@ -1064,7 +1031,7 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 				return 3;
 		}
 
-		// we're expecting the end of the bluff
+		// We're expecting the end of the bluff
 		if (insideBluff && count < minTilesInGroup)
 			outsideBluff = true;
 	}
@@ -1072,7 +1039,7 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 	var insideBluff = false;
 	var outsideBluff = false;
 
-	// if there aren't enough points in each column
+	// If there aren't enough points in each column
 	for (var z = 0; z < bb[0].length; ++z)
 	{
 		var count = 0;
@@ -1093,23 +1060,27 @@ function unreachableBluff(bb, corners, baseLine, endLine)
 				return 3;
 		}
 
-		// we're expecting the end of the bluff
+		// We're expecting the end of the bluff
 		if (insideBluff && count < minTilesInGroup)
 			outsideBluff = true;
 	}
 
-	// bluff is reachable
+	// Bluff is reachable
 	return 0;
 }
 
-// remove the bluff class and turn it into a plateau
+/**
+ * Remove the bluff class and turn it into a plateau.
+ */
 function removeBluff(points)
 {
 	for (var i = 0; i < points.length; ++i)
 		addToClass(points[i].x, points[i].z, g_TileClasses.mountain);
 }
 
-// create an array of points the fill a bounding box around a terrain feature
+/**
+ * Create an array of points the fill a bounding box around a terrain feature.
+ */
 function createBoundingBox(points, corners)
 {
 	var bb = [];
@@ -1128,7 +1099,7 @@ function createBoundingBox(points, corners)
 		}
 	}
 
-	// define the coordinates that represent the bluff
+	// Define the coordinates that represent the bluff
 	for (var p = 0; p < points.length; ++p)
 	{
 		var pt = points[p];
@@ -1138,7 +1109,9 @@ function createBoundingBox(points, corners)
 	return bb;
 }
 
-// flattens the ground touching a terrain feature
+/**
+ * Flattens the ground touching a terrain feature.
+ */
 function fadeToGround(bb, minX, minZ, elevation)
 {
 	var ground = createTerrain(g_Terrains.mainTerrain);
@@ -1155,10 +1128,12 @@ function fadeToGround(bb, minX, minZ, elevation)
 		}
 }
 
-// find a 45 degree line in a bounding box that does not intersect any terrain feature
+/**
+ * Find a 45 degree line in a bounding box that does not intersect any terrain feature.
+ */
 function findClearLine(bb, corners, angle)
 {
-	// angle - 0: northwest; 1: northeast; 2: southeast; 3: southwest
+	// Angle - 0: northwest; 1: northeast; 2: southeast; 3: southwest
 	var z = corners.maxZ;
 	var xOffset = -1;
 	var zOffset = -1;
@@ -1233,7 +1208,7 @@ function findClearLine(bb, corners, angle)
  */
 function findCorners(points)
 {
-	// find the bounding box of the terrain feature
+	// Find the bounding box of the terrain feature
 	var minX = g_MapInfo.mapSize + 1;
 	var minZ = g_MapInfo.mapSize + 1;
 	var maxX = -1;
@@ -1258,7 +1233,9 @@ function findCorners(points)
 	};
 }
 
-// finds the average elevation around a point
+/**
+ * Finds the average elevation around a point.
+ */
 function smoothElevation(x, z)
 {
 	var min = g_Map.getHeight(x, z);
@@ -1279,7 +1256,9 @@ function smoothElevation(x, z)
 	return min;
 }
 
-// determines if a point in a bounding box array is next to a terrain feature
+/**
+ * Determines if a point in a bounding box array is next to a terrain feature.
+ */
 function nextToFeature(bb, x, z)
 {
 	for (var xOffset = -1; xOffset <= 1; ++xOffset)

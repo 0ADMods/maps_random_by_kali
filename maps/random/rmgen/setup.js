@@ -193,7 +193,7 @@ function addBases(type, distance, groupedDistance)
  */ 
 function createBase(player, walls)
 {
-	// get the x and z in tiles
+	// Get the x and z in tiles
 	var fx = fractionToTiles(player.x);
 	var fz = fractionToTiles(player.z);
 	var ix = round(fx);
@@ -204,21 +204,21 @@ function createBase(player, walls)
 	addToClass(ix - 5, iz, g_TileClasses.player);
 	addToClass(ix, iz - 5, g_TileClasses.player);
 
-	// create starting units
+	// Create starting units
 	if ((walls || walls === undefined) && g_MapInfo.mapSize > 192)
 		placeCivDefaultEntities(fx, fz, player.id, g_MapInfo.mapRadius);
 	else
 		placeCivDefaultEntities(fx, fz, player.id, g_MapInfo.mapRadius, { 'iberWall': false });
 
-	// create the city patch
+	// Create the city patch
 	var cityRadius = scaleByMapSize(15, 25) / 3;
 	var placer = new ClumpPlacer(PI * cityRadius * cityRadius, 0.6, 0.3, 10, ix, iz);
 	var painter = new LayeredPainter([g_Terrains.roadWild, g_Terrains.road], [1]);
 	createArea(placer, painter, null);
 
-	// custom base terrain function
+	// Custom base terrain function
 
-	// create animals
+	// Create animals
 	for (var j = 0; j < 2; ++j)
 	{
 		var aAngle = randFloat(0, TWO_PI);
@@ -232,7 +232,7 @@ function createBase(player, walls)
 		createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 	}
 
-	// create berry bushes
+	// Create berry bushes
 	var bbAngle = randFloat(0, TWO_PI);
 	var bbDist = 12;
 	var bbX = round(fx + bbDist * cos(bbAngle));
@@ -243,7 +243,7 @@ function createBase(player, walls)
 	);
 	createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 
-	// create metal mine
+	// Create metal mine
 	var mAngle = bbAngle;
 	while(abs(mAngle - bbAngle) < PI / 3)
 		mAngle = randFloat(0, TWO_PI);
@@ -257,7 +257,7 @@ function createBase(player, walls)
 	);
 	createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 
-	// create stone mines
+	// Create stone mines
 	mAngle += randFloat(PI / 8, PI / 4);
 	mX = round(fx + mDist * cos(mAngle));
 	mZ = round(fz + mDist * sin(mAngle));
@@ -269,7 +269,7 @@ function createBase(player, walls)
 
 	var hillSize = PI * g_MapInfo.mapRadius * g_MapInfo.mapRadius;
 
-	// create starting trees
+	// Create starting trees
 	var num = 5;
 	var tAngle = randFloat(0, TWO_PI);
 	var tDist = randFloat(12, 13);
@@ -282,7 +282,7 @@ function createBase(player, walls)
 	);
 	createObjectGroup(group, 0, avoidClasses(g_TileClasses.baseResource, 2));
 
-	// create grass tufts
+	// Create grass tufts
 	var num = hillSize / 250;
 	for (var j = 0; j < num; ++j)
 	{
@@ -333,15 +333,15 @@ function getStartingPositions()
 {
 	var formats = ["radial"];
 
-	// enable stronghold if we have a few teams and a big enough map
+	// Enable stronghold if we have a few teams and a big enough map
 	if (g_MapInfo.teams.length >= 2 && g_MapInfo.numPlayers >= 4 && g_MapInfo.mapSize >= 256)
 		formats.push("stronghold");
 
-	// enable random if we have enough teams or enough players on a big enough map
+	// Enable random if we have enough teams or enough players on a big enough map
 	if (g_MapInfo.mapSize >= 256 && (g_MapInfo.teams.length >= 3 || g_MapInfo.numPlayers > 4))
 		formats.push("random");
 
-	// enable line if we have enough teams and players on a big enough map
+	// Enable line if we have enough teams and players on a big enough map
 	if (g_MapInfo.teams.length >= 2 && g_MapInfo.numPlayers >= 4 && g_MapInfo.mapSize >= 384)
 		formats.push("line");
 
@@ -384,7 +384,7 @@ function placeLine(playerIDs, distance, groupedDistance)
 
 		var teamAngle = g_MapInfo.startAngle + (i + 1) * TWO_PI / g_MapInfo.teams.length;
 
-		// create player base
+		// Create player base
 		for (var p = 0; p < g_MapInfo.teams[i].length; ++p)
 		{
 			players[g_MapInfo.teams[i][p]] = {
@@ -456,7 +456,7 @@ function placeRandom(playerIDs)
 			--i;
 			++attempts;
 
-			// reset if we're in what looks like an infinite loop
+			// Reset if we're in what looks like an infinite loop
 			if (attempts > 100)
 			{
 				players = [];
@@ -478,7 +478,7 @@ function placeRandom(playerIDs)
 		placed.push(players[i]);
 	}
 
-	// create the bases
+	// Create the bases
 	for (var i = 0; i < g_MapInfo.numPlayers; ++i)
 		createBase(players[i]);
 
@@ -501,19 +501,19 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 		var fractionX = 0.5 + distance * cos(teamAngle);
 		var fractionZ = 0.5 + distance * sin(teamAngle);
 
-		// if we have a team of above average size, make sure they're spread out
+		// If we have a team of above average size, make sure they're spread out
 		if (g_MapInfo.teams[i].length > 4)
 			groupedDistance = randFloat(0.08, 0.12);
 
-		// if we have a team of below average size, make sure they're together
+		// If we have a team of below average size, make sure they're together
 		if (g_MapInfo.teams[i].length < 3)
 			groupedDistance = randFloat(0.04, 0.06);
 
-		// if we have a solo player, place them on the center of the team's location
+		// If we have a solo player, place them on the center of the team's location
 		if (g_MapInfo.teams[i].length == 1)
 			groupedDistance = 0;
 
-		// create player base
+		// Create player base
 		for (var p = 0; p < g_MapInfo.teams[i].length; ++p)
 		{
 			var angle = g_MapInfo.startAngle + (p + 1) * TWO_PI / g_MapInfo.teams[i].length;
