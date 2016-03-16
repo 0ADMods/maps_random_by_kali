@@ -1,3 +1,31 @@
+const g_Amounts = {
+	"scarce": 0.2,
+	"few": 0.5,
+	"normal": 1,
+	"many": 1.75,
+	"tons": 3
+};
+
+const g_Mixes = {
+	"same": 0,
+	"similar": 0.1,
+	"normal": 0.25,
+	"varied": 0.5,
+	"unique": 0.75
+};
+
+const g_Sizes = {
+	"tiny": 0.5,
+	"small": 0.75,
+	"normal": 1,
+	"big": 1.25,
+	"huge": 1.5,
+};
+
+const g_AllAmounts = Object.keys(g_Amounts);
+const g_AllMixes = Object.keys(g_Mixes);
+const g_AllSizes = Object.keys(g_Sizes);
+
 const g_DefaultTileClasses = [
 	"animals",
 	"baseResource",
@@ -67,20 +95,12 @@ function addElements(els)
  */
 function pickAmount(amounts)
 {
-	var amount = randInt(amounts.length);
-	switch(amounts[amount])
-	{
-		case "scarce":
-			return 0.2;
-		case "few":
-			return 0.5;
-		case "many":
-			return 1.75;
-		case "tons":
-			return 3;
-	}
+	var amount = amounts[randInt(amounts.length)];
 
-	return 1;
+	if (amount in g_Amounts)
+		return g_Amounts[amount];
+
+	return g_Mixes.normal;
 }
 
 /**
@@ -88,20 +108,12 @@ function pickAmount(amounts)
  */
 function pickMix(mixes)
 {
-	var mix = randInt(mixes.length);
-	switch(mixes[mix])
-	{
-		case "same":
-			return 0;
-		case "similar":
-			return 0.1;
-		case "varied":
-			return 0.5;
-		case "unique":
-			return 0.75;
-	}
+	var mix = mixes[randInt(mixes.length)];
 
-	return 0.25;
+	if (mix in g_Mixes)
+		return g_Mixes[mix];
+
+	return g_Mixes.normal;
 }
 
 /**
@@ -109,20 +121,12 @@ function pickMix(mixes)
  */
 function pickSize(sizes)
 {
-	var size = randInt(sizes.length);
-	switch(sizes[size])
-	{
-		case "tiny":
-			return 0.5;
-		case "small":
-			return 0.75;
-		case "big":
-			return 1.25;
-		case "huge":
-			return 1.5;
-	}
+	var size = sizes[randInt(sizes.length)];
 
-	return 1;
+	if (size in g_Sizes)
+		return g_Sizes[size];
+
+	return g_Sizes.normal;
 }
 
 /**

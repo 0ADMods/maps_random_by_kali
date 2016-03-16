@@ -1,9 +1,5 @@
 const g_DefaultDeviation = 0.1;
 
-const g_AllSizes = ["tiny", "small", "normal", "big", "huge"];
-const g_AllMixes = ["same", "similar", "normal", "varied", "unique"];
-const g_AllAmounts = ["scarce", "few", "normal", "many", "tons"];
-
 /**
  * Create bluffs, i.e. a slope hill reachable from ground level.
  * Fill it with wood, mines, animals and decoratives.
