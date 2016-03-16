@@ -3,7 +3,7 @@ InitMap();
 
 randomizeBiome();
 mapSettings = getMapSettings();
-g_TileClasses = constTileClasses();
+g_TileClasses = createTileClasses();
 
 initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);

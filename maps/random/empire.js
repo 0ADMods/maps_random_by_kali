@@ -3,7 +3,7 @@ InitMap();
 
 randomizeBiome();
 mapSettings = getMapSettings();
-g_TileClasses = constTileClasses();
+g_TileClasses = createTileClasses();
 
 var randElevation = randInt(5);
 initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randElevation);

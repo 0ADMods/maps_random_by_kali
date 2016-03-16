@@ -3,7 +3,7 @@ InitMap();
 
 randomizeBiome();
 mapSettings = getMapSettings();
-g_TileClasses = constTileClasses();
+g_TileClasses = createTileClasses();
 
 // pick a random elevation with a bias towards lower elevations
 var randElevation = randInt(30);

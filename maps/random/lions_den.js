@@ -3,7 +3,7 @@ InitMap();
 
 randomizeBiome();
 mapSettings = getMapSettings();
-g_TileClasses = constTileClasses(["step"]);
+g_TileClasses = createTileClasses(["step"]);
 
 var topTerrain = g_Terrains.tier2Terrain;
 

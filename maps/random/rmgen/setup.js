@@ -486,7 +486,7 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 	return players;
 }
 
-function constTileClasses(newClasses)
+function createTileClasses(newClasses)
 {
 	var defaultClasses = [
 		"animals",
@@ -518,11 +518,11 @@ function constTileClasses(newClasses)
 	if (newClasses !== undefined)
 		classes = defaultClasses.concat(newClasses)
 
-	var tc = {};
-	for (var i = 0; i < classes.length; ++i)
-		tc[classes[i]] = createTileClass();
+	var tileClasses = {};
+	for (var className or classes)
+		tileClasses[className] = createTileClass();
 
-	return tc;
+	return tileClasses;
 }
 
 // put some useful map settings into an object
