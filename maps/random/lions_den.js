@@ -20,7 +20,6 @@ RMS.SetProgress(40);
 addElements([
 	{
 		"func": addLayeredPatches,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [
 			g_TileClasses.dirt, 5,
 			g_TileClasses.forest, 2,
@@ -35,7 +34,6 @@ addElements([
 	},
 	{
 		"func": addLayeredPatches,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [
 			g_TileClasses.dirt, 5,
 			g_TileClasses.forest, 2,
@@ -49,7 +47,6 @@ addElements([
 	},
 	{
 		"func": addLayeredPatches,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [
 			g_TileClasses.dirt, 5,
 			g_TileClasses.forest, 2
@@ -61,7 +58,6 @@ addElements([
 	},
 	{
 		"func": addDecoration,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [g_TileClasses.forest, 2],
 		"stay": [g_TileClasses.player, 1],
 		"sizes": ["normal"],
@@ -70,7 +66,6 @@ addElements([
 	},
 	{
 		"func": addDecoration,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [
 			g_TileClasses.forest, 2,
 			g_TileClasses.mountain, 2,
@@ -84,7 +79,6 @@ addElements([
 	},
 	{
 		"func": addDecoration,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [
 			g_TileClasses.forest, 2,
 			g_TileClasses.mountain, 2,
@@ -97,7 +91,6 @@ addElements([
 	},
 	{
 		"func": addDecoration,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [
 			g_TileClasses.forest, 2,
 			g_TileClasses.mountain, 2,
@@ -114,7 +107,6 @@ RMS.SetProgress(60);
 addElements(shuffleArray([
 	{
 		"func": addMetal,
-		"tile": "g_TileClasses.metal",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.player, 30, g_TileClasses.rock, 10, g_TileClasses.metal, 20],
 		"stay": [g_TileClasses.settlement, 7],
 		"sizes": ["normal"],
@@ -123,7 +115,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addMetal,
-		"tile": "g_TileClasses.metal",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.player, 10, g_TileClasses.rock, 10, g_TileClasses.metal, 20, g_TileClasses.mountain, 5, g_TileClasses.step, 5],
 		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal"],
@@ -132,7 +123,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addStone,
-		"tile": "g_TileClasses.stone",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.player, 30, g_TileClasses.rock, 20, g_TileClasses.metal, 10],
 		"stay": [g_TileClasses.settlement, 7],
 		"sizes": ["normal"],
@@ -141,7 +131,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addStone,
-		"tile": "g_TileClasses.stone",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.player, 10, g_TileClasses.rock, 20, g_TileClasses.metal, 10, g_TileClasses.mountain, 5, g_TileClasses.step, 5],
 		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal"],
@@ -150,7 +139,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addForests,
-		"tile": "g_TileClasses.forest",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 18, g_TileClasses.metal, 3, g_TileClasses.player, 20, g_TileClasses.rock, 3],
 		"stay": [g_TileClasses.settlement, 7],
 		"sizes": ["normal", "big"],
@@ -159,7 +147,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addForests,
-		"tile": "g_TileClasses.forest",
 		"avoid": [g_TileClasses.berries, 3, g_TileClasses.forest, 18, g_TileClasses.metal, 3, g_TileClasses.mountain, 5, g_TileClasses.player, 5, g_TileClasses.rock, 3, g_TileClasses.step, 1],
 		"stay": [g_TileClasses.valley, 7],
 		"sizes": ["normal", "big"],
@@ -172,7 +159,6 @@ RMS.SetProgress(70);
 addElements(shuffleArray([
 	{
 		"func": addBerries,
-		"tile": "g_TileClasses.berries",
 		"avoid": [g_TileClasses.berries, 30, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.player, 20, g_TileClasses.rock, 10],
 		"stay": [g_TileClasses.settlement, 7],
 		"sizes": allSizes,
@@ -181,7 +167,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addBerries,
-		"tile": "g_TileClasses.berries",
 		"avoid": [g_TileClasses.berries, 30, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.mountain, 5, g_TileClasses.player, 10, g_TileClasses.rock, 10, g_TileClasses.step, 5],
 		"stay": [g_TileClasses.valley, 7],
 		"sizes": allSizes,
@@ -190,7 +175,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addAnimals,
-		"tile": "g_TileClasses.animals",
 		"avoid": [g_TileClasses.animals, 20, g_TileClasses.forest, 0, g_TileClasses.metal, 1, g_TileClasses.player, 20, g_TileClasses.rock, 1],
 		"stay": [g_TileClasses.settlement, 7],
 		"sizes": allSizes,
@@ -199,7 +183,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addAnimals,
-		"tile": "g_TileClasses.animals",
 		"avoid": [g_TileClasses.animals, 20, g_TileClasses.forest, 0, g_TileClasses.metal, 1, g_TileClasses.mountain, 5, g_TileClasses.player, 10, g_TileClasses.rock, 1, g_TileClasses.step, 5],
 		"stay": [g_TileClasses.valley, 7],
 		"sizes": allSizes,
@@ -208,7 +191,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "g_TileClasses.forest",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 3, g_TileClasses.player, 12, g_TileClasses.rock, 3],
 		"stay": [g_TileClasses.settlement, 7],
 		"sizes": allSizes,
@@ -217,7 +199,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "g_TileClasses.forest",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 3, g_TileClasses.mountain, 5, g_TileClasses.player, 10, g_TileClasses.rock, 3, g_TileClasses.step, 5],
 		"stay": [g_TileClasses.valley, 7],
 		"sizes": allSizes,
@@ -226,7 +207,6 @@ addElements(shuffleArray([
 	},
 	{
 		"func": addStragglerTrees,
-		"tile": "g_TileClasses.forest",
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.forest, 3, g_TileClasses.metal, 5, g_TileClasses.rock, 5],
 		"stay": [g_TileClasses.player, 1],
 		"sizes": ["huge"],
@@ -239,7 +219,6 @@ RMS.SetProgress(90);
 addElements([
 	{
 		"func": addDecoration,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [g_TileClasses.valley, 4, g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
 		"stay": [g_TileClasses.land, 2],
 		"sizes": ["normal"],
@@ -251,7 +230,6 @@ addElements([
 addElements([
 	{
 		"func": addProps,
-		"tile": "g_TileClasses.prop",
 		"avoid": [g_TileClasses.valley, 4, g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
 		"stay": [g_TileClasses.land, 2],
 		"sizes": ["normal"],
@@ -263,7 +241,6 @@ addElements([
 addElements([
 	{
 		"func": addDecoration,
-		"tile": "g_TileClasses.dirt",
 		"avoid": [g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
 		"stay": [g_TileClasses.mountain, 2],
 		"sizes": ["normal"],
@@ -275,7 +252,6 @@ addElements([
 addElements([
 	{
 		"func": addProps,
-		"tile": "g_TileClasses.prop",
 		"avoid": [g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
 		"stay": [g_TileClasses.mountain, 2],
 		"sizes": ["normal"],

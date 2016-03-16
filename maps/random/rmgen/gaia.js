@@ -117,7 +117,6 @@ function addBluffs(constraint, size, deviation, fill)
 
 	addElements([{
 		"func": addHills,
-		"tile": "g_TileClasses.hill",
 		"avoid": [g_TileClasses.hill, 3, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
 		"stay": [g_TileClasses.bluff, 3],
 		"sizes": allSizes,
@@ -128,7 +127,6 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addLayeredPatches,
-			"tile": "g_TileClasses.dirt",
 			"avoid": [g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
 			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
@@ -140,7 +138,6 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addDecoration,
-			"tile": "g_TileClasses.dirt",
 			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
 			"stay": [g_TileClasses.bluff, 5],
 			"sizes": ["normal"],
@@ -152,7 +149,6 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addProps,
-			"tile": "g_TileClasses.prop",
 			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.prop, 40, g_TileClasses.water, 3],
 			"stay": [g_TileClasses.bluff, 7, g_TileClasses.mountain, 7],
 			"sizes": ["normal"],
@@ -164,7 +160,6 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements(shuffleArray([
 		{
 			"func": addForests,
-			"tile": "g_TileClasses.forest",
 			"avoid": [
 				g_TileClasses.berries, 5,
 				g_TileClasses.forest, 18,
@@ -181,7 +176,6 @@ function addBluffs(constraint, size, deviation, fill)
 		},
 		{
 			"func": addMetal,
-			"tile": "g_TileClasses.metal",
 			"avoid": [
 				g_TileClasses.berries, 5,
 				g_TileClasses.forest, 5,
@@ -198,7 +192,6 @@ function addBluffs(constraint, size, deviation, fill)
 		},
 		{
 			"func": addStone,
-			"tile": "g_TileClasses.stone",
 			"avoid": [
 				g_TileClasses.berries, 5,
 				g_TileClasses.forest, 5,
@@ -218,7 +211,6 @@ function addBluffs(constraint, size, deviation, fill)
 	addElements(shuffleArray([
 		{
 			"func": addStragglerTrees,
-			"tile": "g_TileClasses.forest",
 			"avoid": [
 				g_TileClasses.berries, 5,
 				g_TileClasses.forest, 10,
@@ -235,7 +227,6 @@ function addBluffs(constraint, size, deviation, fill)
 		},
 		{
 			"func": addAnimals,
-			"tile": "g_TileClasses.animals",
 			"avoid": [
 				g_TileClasses.animals, 20,
 				g_TileClasses.forest, 5,
@@ -252,7 +243,6 @@ function addBluffs(constraint, size, deviation, fill)
 		},
 		{
 			"func": addBerries,
-			"tile": "g_TileClasses.berries",
 			"avoid": [
 				g_TileClasses.berries, 50,
 				g_TileClasses.forest, 5,
@@ -466,7 +456,6 @@ function addLakes(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addFish,
-			"tile": "g_TileClasses.fish",
 			"avoid": [
 				g_TileClasses.fish, 12,
 				g_TileClasses.hill, 8,
@@ -614,7 +603,6 @@ function addPlateaus(constraint, size, deviation, fill)
 	addElements([
 		{
 			"func": addDecoration,
-			"tile": "g_TileClasses.dirt",
 			"avoid": [g_TileClasses.dirt, 15, g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
 			"stay": [g_TileClasses.plateau, 8],
 			"sizes": ["normal"],
@@ -623,7 +611,6 @@ function addPlateaus(constraint, size, deviation, fill)
 		},
 		{
 			"func": addProps,
-			"tile": "g_TileClasses.prop",
 			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 12, g_TileClasses.prop, 40, g_TileClasses.water, 3],
 			"stay": [g_TileClasses.plateau, 8],
 			"sizes": ["normal"],
