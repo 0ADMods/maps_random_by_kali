@@ -10,7 +10,7 @@ initTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 2);
 var players = addBases("radial", 0.38);
 RMS.SetProgress(20);
 
-addLake();
+addCenterLake();
 
 if (mapSettings.mapSize >= 192)
 	addHarbors(players);
@@ -21,21 +21,46 @@ RMS.SetProgress(40);
 addElements(shuffleArray([
 	{
 		"func": addHills,
-		"avoid": [g_TileClasses.bluff, 5, g_TileClasses.hill, 15, g_TileClasses.mountain, 2, g_TileClasses.plateau, 5, g_TileClasses.player, 20, g_TileClasses.spine, 5, g_TileClasses.valley, 2, g_TileClasses.water, 2],
+		"avoid": [
+			g_TileClasses.bluff, 5,
+			g_TileClasses.hill, 15,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.plateau, 5,
+			g_TileClasses.player, 20,
+			g_TileClasses.spine, 5,
+			g_TileClasses.valley, 2,
+			g_TileClasses.water, 2
+		],
 		"sizes": ["tiny", "small"],
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
 	{
 		"func": addMountains,
-		"avoid": [g_TileClasses.bluff, 20, g_TileClasses.mountain, 25, g_TileClasses.plateau, 20, g_TileClasses.player, 20, g_TileClasses.spine, 20, g_TileClasses.valley, 10, g_TileClasses.water, 15],
+		"avoid": [
+			g_TileClasses.bluff, 20,
+			g_TileClasses.mountain, 25,
+			g_TileClasses.plateau, 20,
+			g_TileClasses.player, 20,
+			g_TileClasses.spine, 20,
+			g_TileClasses.valley, 10,
+			g_TileClasses.water, 15
+		],
 		"sizes": ["small"],
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
 	{
 		"func": addPlateaus,
-		"avoid": [g_TileClasses.bluff, 20, g_TileClasses.mountain, 25, g_TileClasses.plateau, 20, g_TileClasses.player, 40, g_TileClasses.spine, 20, g_TileClasses.valley, 10, g_TileClasses.water, 15],
+		"avoid": [
+			g_TileClasses.bluff, 20,
+			g_TileClasses.mountain, 25,
+			g_TileClasses.plateau, 20,
+			g_TileClasses.player, 40,
+			g_TileClasses.spine, 20,
+			g_TileClasses.valley, 10,
+			g_TileClasses.water, 15
+		],
 		"sizes": ["small"],
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -46,14 +71,31 @@ RMS.SetProgress(60);
 addElements([
 	{
 		"func": addLayeredPatches,
-		"avoid": [g_TileClasses.bluff, 2, g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.plateau, 2, g_TileClasses.player, 12, g_TileClasses.spine, 5, g_TileClasses.water, 3],
+		"avoid": [
+			g_TileClasses.bluff, 2,
+			g_TileClasses.dirt, 5,
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.spine, 5,
+			g_TileClasses.water, 3
+		],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	},
 	{
 		"func": addDecoration,
-		"avoid": [g_TileClasses.bluff, 2, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.plateau, 2, g_TileClasses.player, 12, g_TileClasses.spine, 5, g_TileClasses.water, 3],
+		"avoid": [
+			g_TileClasses.bluff, 2,
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.spine, 5,
+			g_TileClasses.water, 3
+		],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
 		"amounts": ["normal"]
@@ -64,21 +106,54 @@ RMS.SetProgress(70);
 addElements(shuffleArray([
 	{
 		"func": addBerries,
-		"avoid": [g_TileClasses.berries, 30, g_TileClasses.bluff, 5, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.mountain, 2, g_TileClasses.plateau, 2, g_TileClasses.player, 20, g_TileClasses.rock, 10, g_TileClasses.spine, 2, g_TileClasses.water, 3],
+		"avoid": [
+			g_TileClasses.berries, 30,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 5,
+			g_TileClasses.metal, 10,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 20,
+			g_TileClasses.rock, 10,
+			g_TileClasses.spine, 2,
+			g_TileClasses.water, 3
+		],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
 	{
 		"func": addAnimals,
-		"avoid": [g_TileClasses.animals, 20, g_TileClasses.bluff, 5, g_TileClasses.forest, 2, g_TileClasses.metal, 2, g_TileClasses.mountain, 1, g_TileClasses.plateau, 2, g_TileClasses.player, 20, g_TileClasses.rock, 2, g_TileClasses.spine, 2, g_TileClasses.water, 3],
+		"avoid": [
+			g_TileClasses.animals, 20,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 2,
+			g_TileClasses.metal, 2,
+			g_TileClasses.mountain, 1,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 20,
+			g_TileClasses.rock, 2,
+			g_TileClasses.spine, 2,
+			g_TileClasses.water, 3
+		 ],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
 	{
 		"func": addStragglerTrees,
-		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 2, g_TileClasses.mountain, 1, g_TileClasses.plateau, 2, g_TileClasses.player, 12, g_TileClasses.rock, 2, g_TileClasses.spine, 2, g_TileClasses.water, 5],
+		"avoid": [
+			g_TileClasses.berries, 5,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 7,
+			g_TileClasses.metal, 2,
+			g_TileClasses.mountain, 1,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.rock, 2,
+			g_TileClasses.spine, 2,
+			g_TileClasses.water, 5
+		 ],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
@@ -89,21 +164,49 @@ RMS.SetProgress(80);
 addElements(shuffleArray([
 	{
 		"func": addBerries,
-		"avoid": [g_TileClasses.berries, 30, g_TileClasses.bluff, 5, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.rock, 10, g_TileClasses.spine, 2, g_TileClasses.water, 3],
+		"avoid": [
+			g_TileClasses.berries, 30,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 5,
+			g_TileClasses.metal, 10,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.player, 20,
+			g_TileClasses.rock, 10,
+			g_TileClasses.spine, 2,
+			g_TileClasses.water, 3
+		],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
 	{
 		"func": addAnimals,
-		"avoid": [g_TileClasses.animals, 20, g_TileClasses.bluff, 5, g_TileClasses.forest, 0, g_TileClasses.mountain, 1, g_TileClasses.player, 20, g_TileClasses.spine, 2, g_TileClasses.water, 3],
+		"avoid": [
+			g_TileClasses.animals, 20,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 0,
+			g_TileClasses.mountain, 1,
+			g_TileClasses.player, 20,
+			g_TileClasses.spine, 2,
+			g_TileClasses.water, 3
+		],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": allAmounts
 	},
 	{
 		"func": addStragglerTrees,
-		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 7, g_TileClasses.metal, 1, g_TileClasses.mountain, 1, g_TileClasses.player, 12, g_TileClasses.rock, 1, g_TileClasses.spine, 2, g_TileClasses.water, 5],
+		"avoid": [
+			g_TileClasses.berries, 5,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 7,
+			g_TileClasses.metal, 1,
+			g_TileClasses.mountain, 1,
+			g_TileClasses.player, 12,
+			g_TileClasses.rock, 1,
+			g_TileClasses.spine, 2,
+			g_TileClasses.water, 5
+		],
 		"sizes": allSizes,
 		"mixes": allMixes,
 		"amounts": ["normal", "many", "tons"]
@@ -113,7 +216,7 @@ RMS.SetProgress(90);
 
 ExportMap();
 
-function addLake()
+function addCenterLake()
 {
 	var lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
@@ -208,7 +311,13 @@ function addSpines()
 	addElements([
 		{
 			"func": addDecoration,
-			"avoid": [g_TileClasses.bluff, 2, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
+			"avoid": [
+				g_TileClasses.bluff, 2,
+				g_TileClasses.forest, 2,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 12,
+				g_TileClasses.water, 3
+			],
 			"stay": [g_TileClasses.spine, 5],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
@@ -219,7 +328,12 @@ function addSpines()
 	addElements([
 		{
 			"func": addProps,
-			"avoid": [g_TileClasses.forest, 2, g_TileClasses.player, 2, g_TileClasses.prop, 20, g_TileClasses.water, 3],
+			"avoid": [
+				g_TileClasses.forest, 2,
+				g_TileClasses.player, 2,
+				g_TileClasses.prop, 20,
+				g_TileClasses.water, 3
+			],
 			"stay": [g_TileClasses.spine, 8],
 			"sizes": ["normal"],
 			"mixes": ["normal"],

@@ -488,7 +488,7 @@ function placeStronghold(playerIDs, distance, groupedDistance)
 
 function createTileClasses(newClasses)
 {
-	var defaultClasses = [
+	var classNames = [
 		"animals",
 		"baseResource",
 		"berries",
@@ -514,12 +514,11 @@ function createTileClasses(newClasses)
 		"water"
 	];
 
-	var classes = defaultClasses;
 	if (newClasses !== undefined)
-		classes = defaultClasses.concat(newClasses)
+		classNames = classNames.concat(newClasses)
 
 	var tileClasses = {};
-	for (var className or classes)
+	for (var className of classNames)
 		tileClasses[className] = createTileClass();
 
 	return tileClasses;
