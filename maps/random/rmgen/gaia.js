@@ -25,10 +25,10 @@ function addBluffs(constraint, size, deviation, fill)
 	{
 		var offset = getRandomDeviation(size, deviation);
 
-		var pMinSize = floor(minSize * offset);
-		var pMaxSize = floor(maxSize * offset);
-		var pSpread = floor(spread * offset);
-		var pElevation = floor(elevation * offset);
+		var pMinSize = Math.floor(minSize * offset);
+		var pMaxSize = Math.floor(maxSize * offset);
+		var pSpread = Math.floor(spread * offset);
+		var pElevation = Math.floor(elevation * offset);
 
 		var placer = new ChainPlacer(pMinSize, pMaxSize, pSpread, 0.5);
 		var terrainPainter = new LayeredPainter([g_Terrains.cliff, g_Terrains.mainTerrain, g_Terrains.tier2Terrain], [2, 3]);
@@ -323,7 +323,7 @@ function addDecoration(constraint, size, deviation, fill)
 
 	for (var i = 0; i < decorations.length; ++i)
 	{
-		var decorCount = floor(counts[i] * fill);
+		var decorCount = Math.floor(counts[i] * fill);
 		var group = new SimpleGroup(decorations[i], true);
 		createObjectGroups(group, 0, constraint, decorCount, 5);
 	}
@@ -341,9 +341,9 @@ function addDecoration(constraint, size, deviation, fill)
  *	"deviation": 0.2,
  *	"fill": 1,
  *	"count": scaleByMapSize(8, 8),
- *	"minSize": floor(scaleByMapSize(5, 5)),
- *	"maxSize": floor(scaleByMapSize(8, 8)),
- *	"spread": floor(scaleByMapSize(20, 20)),
+ *	"minSize": Math.floor(scaleByMapSize(5, 5)),
+ *	"maxSize": Math.floor(scaleByMapSize(8, 8)),
+ *	"spread": Math.floor(scaleByMapSize(20, 20)),
  *	"minElevation": 6,
  *	"maxElevation": 12,
  *	"steepness": 1.5
@@ -373,14 +373,14 @@ function addElevation(constraint, el)
 	for (var i = 0; i < count; ++i)
 	{
 		var elevation = el.minElevation + randInt(el.maxElevation - el.minElevation);
-		var smooth = floor(elevation / el.steepness);
+		var smooth = Math.floor(elevation / el.steepness);
 
 		var offset = getRandomDeviation(size, el.deviation);
-		var pMinSize = floor(minSize * offset);
-		var pMaxSize = floor(maxSize * offset);
-		var pSpread = floor(spread * offset);
-		var pSmooth = Math.abs(floor(smooth * offset));
-		var pElevation = floor(elevation * offset);
+		var pMinSize = Math.floor(minSize * offset);
+		var pMaxSize = Math.floor(maxSize * offset);
+		var pSpread = Math.floor(spread * offset);
+		var pSmooth = Math.abs(Math.floor(smooth * offset));
+		var pElevation = Math.floor(elevation * offset);
 
 		pElevation = Math.max(el.minElevation, Math.min(pElevation, el.maxElevation));
 
@@ -411,9 +411,9 @@ function addHills(constraint, size, deviation, fill)
 		"deviation": deviation,
 		"fill": fill,
 		"count": scaleByMapSize(8, 8),
-		"minSize": floor(scaleByMapSize(5, 5)),
-		"maxSize": floor(scaleByMapSize(8, 8)),
-		"spread": floor(scaleByMapSize(20, 20)),
+		"minSize": Math.floor(scaleByMapSize(5, 5)),
+		"maxSize": Math.floor(scaleByMapSize(8, 8)),
+		"spread": Math.floor(scaleByMapSize(20, 20)),
 		"minElevation": 6,
 		"maxElevation": 12,
 		"steepness": 1.5
@@ -443,9 +443,9 @@ function addLakes(constraint, size, deviation, fill)
 		"deviation": deviation,
 		"fill": fill,
 		"count": scaleByMapSize(6, 6),
-		"minSize": floor(scaleByMapSize(7, 7)),
-		"maxSize": floor(scaleByMapSize(9, 9)),
-		"spread": floor(scaleByMapSize(70, 70)),
+		"minSize": Math.floor(scaleByMapSize(7, 7)),
+		"maxSize": Math.floor(scaleByMapSize(9, 9)),
+		"spread": Math.floor(scaleByMapSize(70, 70)),
 		"minElevation": -15,
 		"maxElevation": -2,
 		"steepness": 1.5
@@ -484,7 +484,7 @@ function addLayeredPatches(constraint, size, deviation, fill)
 	fill = fill || 1;
 
 	var minRadius = 1;
-	var maxRadius = floor(scaleByMapSize(3, 5));
+	var maxRadius = Math.floor(scaleByMapSize(3, 5));
 	var count = fill * scaleByMapSize(15, 45);
 
 	var sizes = [
@@ -496,9 +496,9 @@ function addLayeredPatches(constraint, size, deviation, fill)
 	for (var i = 0; i < sizes.length; ++i)
 	{
 		var offset = getRandomDeviation(size, deviation);
-		var patchMinRadius = floor(minRadius * offset);
-		var patchMaxRadius = floor(maxRadius * offset);
-		var patchSize = floor(sizes[i] * offset);
+		var patchMinRadius = Math.floor(minRadius * offset);
+		var patchMaxRadius = Math.floor(maxRadius * offset);
+		var patchSize = Math.floor(sizes[i] * offset);
 		var patchCount = count * offset;
 
 		if (patchMinRadius > patchMaxRadius)
@@ -530,9 +530,9 @@ function addMountains(constraint, size, deviation, fill)
 		"deviation": deviation,
 		"fill": fill,
 		"count": scaleByMapSize(8, 8),
-		"minSize": floor(scaleByMapSize(2, 2)),
-		"maxSize": floor(scaleByMapSize(4, 4)),
-		"spread": floor(scaleByMapSize(100, 100)),
+		"minSize": Math.floor(scaleByMapSize(2, 2)),
+		"maxSize": Math.floor(scaleByMapSize(4, 4)),
+		"spread": Math.floor(scaleByMapSize(100, 100)),
 		"minElevation": 100,
 		"maxElevation": 120,
 		"steepness": 4
@@ -562,9 +562,9 @@ function addPlateaus(constraint, size, deviation, fill)
 		"deviation": deviation,
 		"fill": fill,
 		"count": scaleByMapSize(15, 15),
-		"minSize": floor(scaleByMapSize(2, 2)),
-		"maxSize": floor(scaleByMapSize(4, 4)),
-		"spread": floor(scaleByMapSize(200, 200)),
+		"minSize": Math.floor(scaleByMapSize(2, 2)),
+		"maxSize": Math.floor(scaleByMapSize(4, 4)),
+		"spread": Math.floor(scaleByMapSize(200, 200)),
 		"minElevation": 20,
 		"maxElevation": 30,
 		"steepness": 8
@@ -660,7 +660,7 @@ function addProps(constraint, size, deviation, fill)
 	// Add small props
 	for (var i = 0; i < props.length; ++i)
 	{
-		var propCount = floor(counts[i] * fill);
+		var propCount = Math.floor(counts[i] * fill);
 		var group = new SimpleGroup(props[i], true);
 		createObjectGroups(group, 0, constraint, propCount, 5);
 	}
@@ -692,15 +692,15 @@ function addRivers(constraint, size, deviation, fill)
 		var startAngle = randFloat(0, 2 * PI);
 		var endAngle = startAngle + randFloat(PI * 0.5, PI * 1.5);
 
-		var startX = g_MapInfo.centerOfMap + floor(g_MapInfo.centerOfMap * Math.cos(startAngle));
-		var startZ = g_MapInfo.centerOfMap + floor(g_MapInfo.centerOfMap * Math.sin(startAngle));
+		var startX = g_MapInfo.centerOfMap + Math.floor(g_MapInfo.centerOfMap * Math.cos(startAngle));
+		var startZ = g_MapInfo.centerOfMap + Math.floor(g_MapInfo.centerOfMap * Math.sin(startAngle));
 
-		var endX = g_MapInfo.centerOfMap + floor(g_MapInfo.centerOfMap * Math.cos(endAngle));
-		var endZ = g_MapInfo.centerOfMap + floor(g_MapInfo.centerOfMap * Math.sin(endAngle));
+		var endX = g_MapInfo.centerOfMap + Math.floor(g_MapInfo.centerOfMap * Math.cos(endAngle));
+		var endZ = g_MapInfo.centerOfMap + Math.floor(g_MapInfo.centerOfMap * Math.sin(endAngle));
 
-		var pMinSize = floor(minSize * offset);
-		var pMaxSize = floor(maxSize * offset);
-		var pSpread = floor(spread * offset);
+		var pMinSize = Math.floor(minSize * offset);
+		var pMaxSize = Math.floor(maxSize * offset);
+		var pSpread = Math.floor(spread * offset);
 
 		var placer = new PathPlacer(startX, startZ, endX, endZ, 12, 0.25, 1, 0.05, 0.3);
 		var terrainPainter = new LayeredPainter([g_Terrains.water, g_Terrains.shore], [2]);
@@ -758,9 +758,9 @@ function addValleys(constraint, size, deviation, fill)
 		"deviation": deviation,
 		"fill": fill,
 		"count": scaleByMapSize(8, 8),
-		"minSize": floor(scaleByMapSize(5, 5)),
-		"maxSize": floor(scaleByMapSize(8, 8)),
-		"spread": floor(scaleByMapSize(30, 30)),
+		"minSize": Math.floor(scaleByMapSize(5, 5)),
+		"maxSize": Math.floor(scaleByMapSize(8, 8)),
+		"spread": Math.floor(scaleByMapSize(30, 30)),
 		"minElevation": minElevation,
 		"maxElevation": -2,
 		"steepness": 4
@@ -788,7 +788,7 @@ function addAnimals(constraint, size, deviation, fill)
 	for (var i = 0; i < animals.length; ++i)
 	{
 		var group = new SimpleGroup(animals[i], true, g_TileClasses.animals);
-		createObjectGroups(group, 0, constraint, floor(counts[i]), 50);
+		createObjectGroups(group, 0, constraint, Math.floor(counts[i]), 50);
 	}
 }
 
@@ -809,7 +809,7 @@ function addBerries(constraint, size, deviation, fill)
 	for (var i = 0; i < berries.length; ++i)
 	{
 		var group = new SimpleGroup(berries[i], true, g_TileClasses.berries);
-		createObjectGroups(group, 0, constraint, floor(count), 40);
+		createObjectGroups(group, 0, constraint, Math.floor(count), 40);
 	}
 }
 
@@ -872,7 +872,7 @@ function addForests(constraint, size, deviation, fill)
 	{
 		var offset = getRandomDeviation(size, deviation);
 		var minSize = floor(scaleByMapSize(3, 5) * offset);
-		var maxSize = floor(scaleByMapSize(50, 50) * offset);
+		var maxSize = Math.floor(scaleByMapSize(50, 50) * offset);
 		var forestCount = scaleByMapSize(10, 10) * fill;
 
 		var placer = new ChainPlacer(1, minSize, maxSize, 0.5);
@@ -954,7 +954,7 @@ function addStragglerTrees(constraint, size, deviation, fill)
 	var treeCount = treesPerPlayer * playerBonus * fill;
 	var totalTrees = scaleByMapSize(treeCount, treeCount);
 
-	var count = floor(totalTrees / trees.length) * fill;
+	var count = Math.floor(totalTrees / trees.length) * fill;
 	var min = 1 * offset;
 	var max = 4 * offset;
 	var minDist = 1 * offset;
@@ -1176,8 +1176,8 @@ function findClearLine(bb, corners, angle)
 		{
 			var lastX = x2 - xOffset;
 			var lastZ = z2 - zOffset;
-			var midX = floor((x + lastX) / 2);
-			var midZ = floor((z + lastZ) / 2);
+			var midX = Math.floor((x + lastX) / 2);
+			var midZ = Math.floor((z + lastZ) / 2);
 			clearLine = {
 				"x1": x,
 				"z1": z,

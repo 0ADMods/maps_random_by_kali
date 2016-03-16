@@ -220,7 +220,7 @@ function addCenterLake()
 {
 	var lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
-	var placer = new ChainPlacer(2, floor(scaleByMapSize(2, 12)), floor(scaleByMapSize(35, 160)), 1, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap, 0, [floor(g_MapInfo.mapSize * 0.17 * lSize)]);
+	var placer = new ChainPlacer(2, Math.floor(scaleByMapSize(2, 12)), Math.floor(scaleByMapSize(35, 160)), 1, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap, 0, [floor(g_MapInfo.mapSize * 0.17 * lSize)]);
 	var terrainPainter = new LayeredPainter([g_Terrains.shore, g_Terrains.water, g_Terrains.water], [1, 100]);
 	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, -18, 10);
 

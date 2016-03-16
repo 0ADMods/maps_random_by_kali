@@ -136,7 +136,7 @@ function resetTerrain(terrain, tc, elevation)
 {
 	g_MapInfo.mapSize = getMapSize();
 	g_MapInfo.mapArea = g_MapInfo.mapSize * g_MapInfo.mapSize;
-	g_MapInfo.centerOfMap = floor(g_MapInfo.mapSize / 2);
+	g_MapInfo.centerOfMap = Math.floor(g_MapInfo.mapSize / 2);
 	g_MapInfo.mapRadius = -PI / 4;
 
 	var placer = new ClumpPlacer(g_MapInfo.mapArea, 1, 1, 1, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap);

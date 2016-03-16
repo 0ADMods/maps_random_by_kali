@@ -109,7 +109,7 @@ iz = round(fz);
 const lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
 // create the plateau
-var placer = new ChainPlacer(2, 5, floor(scaleByMapSize(60, 700)), 1, ix, iz, 0, [floor(mapSize * 0.33)]);
+var placer = new ChainPlacer(2, 5, Math.floor(scaleByMapSize(60, 700)), 1, ix, iz, 0, [Math.floor(mapSize * 0.33)]);
 var terrainPainter = new LayeredPainter(
     [tCliff, tCliff, tTier2Terrain],       // terrains
     [1, 4]       // widths
@@ -123,59 +123,59 @@ createArea(placer, [terrainPainter, elevationPainter, paintClass(clForest)], avo
 
 // create plateau resources
 group = new SimpleGroup(
-	[new SimpleObject(oTree1,numPlayers*10,numPlayers*30,0,floor(mapSize * 0.33))],
+	[new SimpleObject(oTree1,numPlayers*10,numPlayers*30,0,Math.floor(mapSize * 0.33))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clPlayer, 5, clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oTree2,numPlayers*30,numPlayers*40,0,floor(mapSize * 0.03))],
+	[new SimpleObject(oTree2,numPlayers*30,numPlayers*40,0,Math.floor(mapSize * 0.03))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clPlayer, 5, clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oTree3,numPlayers*20,numPlayers*30,0,floor(mapSize * 0.13))],
+	[new SimpleObject(oTree3,numPlayers*20,numPlayers*30,0,Math.floor(mapSize * 0.13))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clPlayer, 5, clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oTree4,numPlayers*10,numPlayers*20,0,floor(mapSize * 0.23))],
+	[new SimpleObject(oTree4,numPlayers*10,numPlayers*20,0,Math.floor(mapSize * 0.23))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clPlayer, 5, clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oMainHuntableAnimal,numPlayers*20,numPlayers*30,0,floor(mapSize * 0.33))],
+	[new SimpleObject(oMainHuntableAnimal,numPlayers*20,numPlayers*30,0,Math.floor(mapSize * 0.33))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clPlayer, 5, clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oStoneLarge,1,3,0,floor(mapSize * 0.15))],
+	[new SimpleObject(oStoneLarge,1,3,0,Math.floor(mapSize * 0.15))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clPlayer, 5, clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oMetalLarge,1,3,0,floor(mapSize * 0.05))],
+	[new SimpleObject(oMetalLarge,1,3,0,Math.floor(mapSize * 0.05))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clPlayer, 5, clBaseResource, 5));
 
 // create lowland resources
 group = new SimpleGroup(
-	[new SimpleObject(oMetalLarge,numPlayers+1,numPlayers*2,floor(mapSize * 0.33),floor(mapSize * 0.5))],
+	[new SimpleObject(oMetalLarge,numPlayers+1,numPlayers*2,Math.floor(mapSize * 0.33),Math.floor(mapSize * 0.5))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oStoneSmall,numPlayers,numPlayers*2,floor(mapSize * 0.33),floor(mapSize * 0.5))],
+	[new SimpleObject(oStoneSmall,numPlayers,numPlayers*2,Math.floor(mapSize * 0.33),Math.floor(mapSize * 0.5))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oStoneLarge,2,floor(numPlayers/2),floor(mapSize * 0.33),floor(mapSize * 0.5))],
+	[new SimpleObject(oStoneLarge,2,Math.floor(numPlayers/2),Math.floor(mapSize * 0.33),Math.floor(mapSize * 0.5))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clBaseResource, 5));
 group = new SimpleGroup(
-	[new SimpleObject(oMainHuntableAnimal,numPlayers*20,numPlayers*30,floor(mapSize * 0.33),floor(mapSize * 0.5))],
+	[new SimpleObject(oMainHuntableAnimal,numPlayers*20,numPlayers*30,Math.floor(mapSize * 0.33),Math.floor(mapSize * 0.5))],
 	true, clBaseResource, centerOfMap, centerOfMap
 );
 createObjectGroup(group, 0, avoidClasses(clBaseResource, 5));

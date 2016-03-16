@@ -414,7 +414,7 @@ if (mapSize < 256)
 
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
- [avoidClasses(clPlayer, forestDist, clForest, forestDist, clHill, forestDist, clWater, 5), stayClasses(clLand, floor(forestDist/2))],
+ [avoidClasses(clPlayer, forestDist, clForest, forestDist, clHill, forestDist, clWater, 5), stayClasses(clLand, Math.floor(forestDist/2))],
  clForest,
  1.0,
  random_terrain
