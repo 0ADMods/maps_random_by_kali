@@ -333,7 +333,7 @@ function getTeams(numPlayers)
 /**
  * Chose a random pattern for placing the bases of the players.
  */ 
-function getStartingPositions()
+function randomStartingPositionPattern()
 {
 	var formats = ["radial"];
 

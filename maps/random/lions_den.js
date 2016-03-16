@@ -10,7 +10,7 @@ var topTerrain = g_Terrains.tier2Terrain;
 resetTerrain(topTerrain, g_TileClasses.land, 50);
 RMS.SetProgress(10);
 
-var pos = getStartingPositions();
+var pos = randomStartingPositionPattern();
 var players = addBases("radial", 0.4, pos.separation);
 RMS.SetProgress(20);
 

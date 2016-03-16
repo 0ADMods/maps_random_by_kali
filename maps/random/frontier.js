@@ -13,7 +13,7 @@ if (randElevation < 25)
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randElevation);
 RMS.SetProgress(20);
 
-var pos = getStartingPositions();
+var pos = randomStartingPositionPattern();
 addBases(pos.setup, pos.distance, pos.separation);
 RMS.SetProgress(40);
 
