@@ -24,7 +24,7 @@ mapSettings.startAngle = mapSettings.startAngle + rotation;
 addBases("stronghold", 0.15, 0.04);
 RMS.SetProgress(40);
 
-var terrain = shuffleArray([
+addElements(shuffleArray([
 	{
 		"func": addHills,
 		"avoid": [g_TileClasses.bluff, 5, g_TileClasses.hill, 15, g_TileClasses.mountain, 2, g_TileClasses.plateau, 5, g_TileClasses.player, 20, g_TileClasses.valley, 2, g_TileClasses.water, 2],
@@ -46,9 +46,10 @@ var terrain = shuffleArray([
 		"mixes": ["same", "similar"],
 		"amounts": ["tons"]
 	}
-]);
+]));
+RMS.SetProgress(50);
 
-var decoration = [
+addElements([
 	{
 		"func": addLayeredPatches,
 		"avoid": [g_TileClasses.bluff, 2, g_TileClasses.dirt, 5, g_TileClasses.forest, 2, g_TileClasses.mountain, 2, g_TileClasses.plateau, 2, g_TileClasses.player, 12, g_TileClasses.water, 3],
@@ -63,13 +64,10 @@ var decoration = [
 		"mixes": ["normal"],
 		"amounts": ["normal"]
 	}
-];
-
-// add decorative elements to the end of the terrain rendering
-addElements(terrain.concat(decoration));
+]);
 RMS.SetProgress(60);
 
-var primaryRes = shuffleArray([
+addElements(shuffleArray([
 	{
 		"func": addMetal,
 		"avoid": [g_TileClasses.berries, 5, g_TileClasses.bluff, 5, g_TileClasses.forest, 3, g_TileClasses.mountain, 2, g_TileClasses.player, 30, g_TileClasses.rock, 10, g_TileClasses.metal, 20, g_TileClasses.plateau, 2, g_TileClasses.water, 3],
@@ -91,9 +89,10 @@ var primaryRes = shuffleArray([
 		"mixes": allMixes,
 		"amounts": ["few", "normal", "many", "tons"]
 	}
-]);
+]));
+RMS.SetProgress(80);
 
-var secondaryRes = shuffleArray([
+addElements(shuffleArray([
 	{
 		"func": addBerries,
 		"avoid": [g_TileClasses.berries, 30, g_TileClasses.bluff, 5, g_TileClasses.forest, 5, g_TileClasses.metal, 10, g_TileClasses.mountain, 2, g_TileClasses.plateau, 2, g_TileClasses.player, 20, g_TileClasses.rock, 10, g_TileClasses.water, 3],
@@ -115,8 +114,7 @@ var secondaryRes = shuffleArray([
 		"mixes": allMixes,
 		"amounts": allAmounts
 	}
-]);
-
-addElements(primaryRes.concat(secondaryRes));
+]));
 RMS.SetProgress(90);
+
 ExportMap();

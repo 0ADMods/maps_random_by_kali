@@ -15,7 +15,7 @@ var players = addBases("radial", 0.4, pos.separation);
 RMS.SetProgress(20);
 
 createSunkenTerrain(players);
-RMS.SetProgress(40);
+RMS.SetProgress(30);
 
 addElements([
 	{
@@ -102,7 +102,7 @@ addElements([
 		"amounts": ["scarce"]
 	}
 ]);
-RMS.SetProgress(60);
+RMS.SetProgress(40);
 
 addElements(shuffleArray([
 	{
@@ -154,7 +154,7 @@ addElements(shuffleArray([
 		"amounts": ["tons"]
 	}
 ]));
-RMS.SetProgress(70);
+RMS.SetProgress(60);
 
 addElements(shuffleArray([
 	{
@@ -214,43 +214,46 @@ addElements(shuffleArray([
 		"amounts": ["tons"]
 	}
 ]));
+RMS.SetProgress(75);
+
+addElements([
+	{
+		"func": addDecoration,
+		"avoid": [g_TileClasses.valley, 4, g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
+		"stay": [g_TileClasses.land, 2],
+		"sizes": ["normal"],
+		"mixes": ["normal"],
+		"amounts": ["tons"]
+	}
+]);
+RMS.SetProgress(80);
+
+addElements([
+	{
+		"func": addProps,
+		"avoid": [g_TileClasses.valley, 4, g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
+		"stay": [g_TileClasses.land, 2],
+		"sizes": ["normal"],
+		"mixes": ["normal"],
+		"amounts": ["scarce"]
+	}
+]);
+RMS.SetProgress(85);
+
+addElements([
+	{
+		"func": addDecoration,
+		"avoid": [g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
+		"stay": [g_TileClasses.mountain, 2],
+		"sizes": ["normal"],
+		"mixes": ["normal"],
+		"amounts": ["tons"]
+	}
+]);
 RMS.SetProgress(90);
 
 addElements([
 	{
-		"func": addDecoration,
-		"avoid": [g_TileClasses.valley, 4, g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
-		"stay": [g_TileClasses.land, 2],
-		"sizes": ["normal"],
-		"mixes": ["normal"],
-		"amounts": ["tons"]
-	}
-]);
-
-addElements([
-	{
-		"func": addProps,
-		"avoid": [g_TileClasses.valley, 4, g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
-		"stay": [g_TileClasses.land, 2],
-		"sizes": ["normal"],
-		"mixes": ["normal"],
-		"amounts": ["scarce"]
-	}
-]);
-
-addElements([
-	{
-		"func": addDecoration,
-		"avoid": [g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
-		"stay": [g_TileClasses.mountain, 2],
-		"sizes": ["normal"],
-		"mixes": ["normal"],
-		"amounts": ["tons"]
-	}
-]);
-
-addElements([
-	{
 		"func": addProps,
 		"avoid": [g_TileClasses.player, 4, g_TileClasses.settlement, 4, g_TileClasses.step, 4],
 		"stay": [g_TileClasses.mountain, 2],
@@ -259,6 +262,7 @@ addElements([
 		"amounts": ["scarce"]
 	}
 ]);
+RMS.SetProgress(95);
 
 ExportMap();
 
