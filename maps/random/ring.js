@@ -228,9 +228,8 @@ for (var i = 0; i < numPlayers; ++i)
 	// create metal mine
 	var mAngle = bbAngle;
 	while(abs(mAngle - bbAngle) < PI/3)
-	{
 		mAngle = randFloat(0, TWO_PI);
-	}
+
 	var mDist = 12;
 	var mX = round(fx + mDist * cos(mAngle));
 	var mZ = round(fz + mDist * sin(mAngle));
@@ -263,7 +262,7 @@ for (var i = 0; i < numPlayers; ++i)
 			[new SimpleObject(oTree2, num, num, 0, 7)],
 			true, clBaseResource, tX, tZ
 		);
-		if( createObjectGroup(group, 0, [avoidClasses(clBaseResource, 6, clPlayer, 2), stayClasses(clLand, 4)]) )
+		if (createObjectGroup(group, 0, [avoidClasses(clBaseResource, 6, clPlayer, 2), stayClasses(clLand, 4)]))
 			break;
 	};
 

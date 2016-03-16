@@ -103,9 +103,8 @@ var centerOfMap = mapSize / 2;
 log ("Creating mountain ranges...");
 
 var split = 1;
-if(numPlayers <= 3 || (mapSize >= 320 && numPlayers <= 4)) {
+if (numPlayers <= 3 || (mapSize >= 320 && numPlayers <= 4))
 	split = 2;
-}
 
 for (var m = 0; m < numPlayers*split; m++)
 {
@@ -124,13 +123,11 @@ for (var m = 0; m < numPlayers*split; m++)
 	var mTaper = 0;
 
 	// make small mountain dividers if we're making expansion territories or if there are a lot of players
-	if(split == 2 && m%split == 0 || numPlayers >=7 && mapSize <= 384) {
+	if (split == 2 && m%split == 0 || numPlayers >=7 && mapSize <= 384)
 		var mSize = 7;
-	}
 
-	if(mapSize <= 192) {
+	if (mapSize <= 192)
 		var mSize = 0.02;
-	}
 
 	var placer = new PathPlacer(fractionToTiles(0.5 + mStartCo*cos(tang)), fractionToTiles(0.5 + mStartCo*sin(tang)), fractionToTiles(0.5 + mStopCo*cos(tang)), fractionToTiles(0.5 + mStopCo*sin(tang)), scaleByMapSize(14,mSize), mWaviness, 5, mOffset, mTaper);
 	var terrainPainter = new LayeredPainter(
@@ -208,9 +205,8 @@ for (var i = 0; i < numPlayers; i++)
 	// create metal mine
 	var mAngle = bbAngle;
 	while(abs(mAngle - bbAngle) < PI/3)
-	{
 		mAngle = randFloat(0, TWO_PI);
-	}
+
 	var mDist = 12;
 	var mX = round(fx + mDist * cos(mAngle));
 	var mZ = round(fz + mDist * sin(mAngle));

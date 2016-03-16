@@ -104,13 +104,17 @@ var numTeams = 0;
 for (var i = 0; i < numPlayers; i++)
 {
 	var team = getPlayerTeam(i);
-	if(team == -1) {
+	if (team == -1)
+	{
 		teams[8 - ffaPlayers] = new Array();
 		teams[8 - ffaPlayers].push(i+1);
 		ffaPlayers++;
 		numTeams++;
-	} else {
-		if(teams[team] == null) {
+	}
+	else
+	{
+		if (teams[team] == null)
+		{
 			teams[team] = new Array();
 			numTeams++;
 		}
@@ -135,9 +139,11 @@ createArea(placer, [terrainPainter, elevationPainter, paintClass(clLand)]);
 RMS.SetProgress(50);
 
 // place inner team members
-for(var i = 0; i < 9; i++) {
+for (var i = 0; i < 9; i++)
+{
 	// we found a team
-	if(teams[i] != null) {
+	if (teams[i] != null)
+	{
 		teamNo++;
 		var teamAngle = startAngle + teamNo*TWO_PI/numTeams;
 
@@ -220,28 +226,33 @@ for(var i = 0; i < 9; i++) {
 
 var rampOffset = 0;
 var rampLength = 27;
-if(mapSize < 256) {
+
+if (mapSize < 256)
 	rampLength = 15;
-}
-if(mapSize < 192) {
+
+if (mapSize < 192)
+{
 	rampLength = 11;
 	rampOffset = -3;
 }
-if(mapSize > 256) {
+
+if (mapSize > 256)
 	rampOffset = 12;
-}
-if(mapSize > 448) {
+
+if (mapSize > 448)
 	rampOffset = 18;
-}
 
 var outCount = 0;
 var numOuter = numPlayers - numTeams;
 
 // place outer team members
-for(var i = 0; i < 9; i++) {
+for (var i = 0; i < 9; i++)
+{
 	// we found a team
-	if(teams[i] != null && teams[i].length > 1) {
-		for(var p = 1; p < teams[i].length; p++) {
+	if (teams[i] != null && teams[i].length > 1)
+	{
+		for (var p = 1; p < teams[i].length; p++)
+		{
 			outCount++;
 			var teamAngle = startAngle + outCount*TWO_PI/numOuter;
 
@@ -396,12 +407,10 @@ createFood(
 );
 
 var forestDist = 20;
-if(mapSize < 192) {
+if (mapSize < 192)
 	forestDist = 6;
-}
-if(mapSize < 256) {
+if (mapSize < 256)
 	forestDist = 12;
-}
 
 createForests(
  [tMainTerrain, tForestFloor1, tForestFloor2, pForest1, pForest2],
