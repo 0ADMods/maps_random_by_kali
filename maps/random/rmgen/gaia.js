@@ -120,19 +120,21 @@ function addBluffs(constraint, size, deviation, fill)
 		fadeToGround(bb, corners.minX, corners.minZ, endLine.height);
 	}
 
-	addElements([{
-		"func": addHills,
-		"avoid": [
-			g_TileClasses.hill, 3,
-			g_TileClasses.player, 20,
-			g_TileClasses.valley, 2,
-			g_TileClasses.water, 2
-		],
-		"stay": [g_TileClasses.bluff, 3],
-		"sizes": g_AllSizes,
-		"mixes": g_AllMixes,
-		"amounts": g_AllAmounts
-	}]);
+	addElements([
+		{
+			"func": addHills,
+			"avoid": [
+				g_TileClasses.hill, 3,
+				g_TileClasses.player, 20,
+				g_TileClasses.valley, 2,
+				g_TileClasses.water, 2
+			],
+			"stay": [g_TileClasses.bluff, 3],
+			"sizes": g_AllSizes,
+			"mixes": g_AllMixes,
+			"amounts": g_AllAmounts
+		}
+	]);
 
 	addElements([
 		{
