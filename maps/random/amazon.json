@@ -1,0 +1,13 @@
+{
+	"settings" : {
+		"Name" : "Amazon",
+		"Script" : "amazon.js",
+		"Description" : "The Amazon river basin in northern Brazil.",
+		"BaseTerrain" : ["medit_sea_depths"],
+		"BaseHeight" : 1,
+		"Preview" : "amazon.png",
+		"CircularMap" : false,
+		"Coordinates" : "0.138050, -50.466245",
+		"KM" : "200"
+	}
+}
