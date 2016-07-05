@@ -112,7 +112,7 @@ var strongholdBases = [
 
 strongholdBases = shuffleArray(strongholdBases);
 
-if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length <= strongholdBases.length && g_MapInfo.mapSize >= 256) {
+if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length <= strongholdBases.length && randInt(2) == 1 && g_MapInfo.mapSize >= 256) {
 	for (var t = 0; t < g_MapInfo.teams.length; ++t) {
 		var team = [];
 		for (var p = 0; p < g_MapInfo.teams[t].length; ++p) {
