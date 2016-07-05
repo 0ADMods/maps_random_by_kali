@@ -98,12 +98,22 @@ var singleBases = [
 singleBases = shuffleArray(singleBases);
 
 var strongholdBases = [
-	[]
+	[80, 240],
+	[190, 60],
 ];
 
-if (g_MapInfo.teams.length == 2 && g_MapInfo.mapSize >= 256) {
-	g_MapInfo.startAngle = PI / 1.5;
-	addBases("stronghold", 0.33, randFloat(0.05, 0.1));
+if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length <= strongholdBases.length && randInt(2) == 1 && g_MapInfo.mapSize >= 256) {
+	for (var t = 0; t < g_MapInfo.teams.length; ++t) {
+		var team = [];
+		for (var p = 0; p < g_MapInfo.teams[t].length; ++p) {
+			var player = {"id": g_MapInfo.teams[t][p]}
+			team.push(player)
+		}
+		var base = strongholdBases[t];
+		var baseX = Math.floor(base[0] / offset) / mapSize;
+		var baseY = Math.floor(base[1] / offset) / mapSize;
+		placeStrongholdAt(team, baseX, baseY, 0.04);
+	}
 } else {
 	var players = randomizePlayers();
 
