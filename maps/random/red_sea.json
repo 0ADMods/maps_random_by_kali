@@ -1,0 +1,13 @@
+{
+  "settings" : {
+    "Name" : "Red Sea",
+    "Script" : "red_sea.js",
+    "Description" : "The Red Sea",
+    "BaseTerrain" : ["medit_sea_depths"],
+    "BaseHeight" : 1,
+    "Preview" : "red_sea.png",
+    "CircularMap" : false,
+	"Coordinates" : "21.824205, 40.289810",
+	"KM" : "2900"
+  }
+}
