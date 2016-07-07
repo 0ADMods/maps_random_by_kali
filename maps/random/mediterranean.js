@@ -417,9 +417,12 @@ for (var biome in biomes) {
 
 function renderLocalBiome(biome) {
 	var localAvoid = g_TileClasses.plateau;
-	if (biome == "temp") {
+	var treeCount = "tons";
+	if (biome == "temp")
 		localAvoid = g_TileClasses.autumn;
-	}
+
+	if (biome == "desert")
+		treeCount = "few";
 
 	addElements([
 		{
@@ -471,7 +474,7 @@ function renderLocalBiome(biome) {
 			"stay": [g_TileClasses[biome], 0],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
-			"amounts": ["normal"]
+			"amounts": [treeCount]
 		},
 		{
 			"func": addSmallMetal,
@@ -541,7 +544,7 @@ function renderLocalBiome(biome) {
 			"stay": [g_TileClasses[biome], 0],
 			"sizes": ["normal"],
 			"mixes": ["normal"],
-			"amounts": ["normal"]
+			"amounts": [treeCount]
 		},
 		{
 			"func": addDecoration,
