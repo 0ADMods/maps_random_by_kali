@@ -1,0 +1,13 @@
+{
+	"settings" : {
+		"Name" : "Mediterranean",
+		"Script" : "mediterranean.js",
+		"Description" : "The Mediterranean Sea",
+		"BaseTerrain" : ["medit_sea_depths"],
+		"BaseHeight" : 1,
+		"Preview" : "mediterranean.png",
+		"CircularMap" : false,
+		"Coordinates" : "49.665548, 10.541500",
+		"KM" : "5000"
+	}
+}
