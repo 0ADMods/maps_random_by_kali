@@ -30,6 +30,29 @@ setPPContrast(0.67);
 setPPSaturation(0.42);
 setPPBloom(0.23);
 
+g_Terrains.mainTerrain = "desert_dirt_rocks_2";
+g_Terrains.forestFloor1 = "desert_grass_a_sand";
+g_Terrains.forestFloor2 = "desert_grass_a_sand";
+g_Terrains.tier1Terrain = "desert_dirt_rocks_2";
+g_Terrains.tier2Terrain = "desert_dirt_rough";
+g_Terrains.tier3Terrain = "desert_dirt_rough";
+g_Terrains.tier4Terrain = "desert_sand_stones";
+g_Terrains.roadWild = "road2";
+g_Terrains.road = "road2";
+g_Gaia.tree1 = "gaia/flora_tree_date_palm";
+g_Gaia.tree2 = "gaia/flora_tree_senegal_date_palm";
+g_Gaia.tree3 = "gaia/flora_tree_fig";
+g_Gaia.tree4 = "gaia/flora_tree_cretan_date_palm_tall";
+g_Gaia.tree5 = "gaia/flora_tree_cretan_date_palm_short";
+g_Gaia.fruitBush = "gaia/flora_bush_grapes";
+g_Decoratives.grass = "actor|props/flora/grass_field_dry_tall_b.xml";
+g_Decoratives.grassShort = "actor|props/flora/grass_field_parched_short.xml";
+g_Decoratives.rockLarge = "actor|geology/stone_desert_med.xml";
+g_Decoratives.rockMedium = "actor|geology/stone_savanna_med.xml";
+g_Decoratives.bushMedium = "actor|props/flora/bush_desert_dry_a.xml";
+g_Decoratives.bushSmall = "actor|props/flora/bush_medit_sm_dry.xml";
+initBiome();
+
 var hm = getHeightMap();
 var tm = getTileMap();
 var pallet = getTilePallet();
@@ -138,49 +161,13 @@ if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length <= strongholdBases.len
 
 RMS.SetProgress(70);
 
-addElements([
-	{
-		"func": addLayeredPatches,
-		"avoid": [
-			g_TileClasses.bluff, 2,
-			g_TileClasses.dirt, 5,
-			g_TileClasses.forest, 2,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
-			g_TileClasses.player, 12,
-			g_TileClasses.water, 3
-		],
-		"sizes": ["normal"],
-		"mixes": ["normal"],
-		"amounts": ["many"]
-	},
-	{
-		"func": addDecoration,
-		"avoid": [
-			g_TileClasses.bluff, 2,
-			g_TileClasses.forest, 2,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
-			g_TileClasses.player, 12,
-			g_TileClasses.water, 3
-		],
-		"sizes": ["normal"],
-		"mixes": ["normal"],
-		"amounts": ["many"]
-	}
-]);
-
-RMS.SetProgress(80);
-
 addElements(shuffleArray([
 	{
 		"func": addMetal,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 3,
 			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 30,
 			g_TileClasses.rock, 10,
 			g_TileClasses.metal, 20,
@@ -194,10 +181,8 @@ addElements(shuffleArray([
 		"func": addStone,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 3,
 			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 30,
 			g_TileClasses.rock, 20,
 			g_TileClasses.metal, 10,
@@ -211,11 +196,9 @@ addElements(shuffleArray([
 		"func": addForests,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 18,
 			g_TileClasses.metal, 3,
 			g_TileClasses.mountain, 5,
-			g_TileClasses.plateau, 5,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 3,
 			g_TileClasses.water, 2
@@ -233,11 +216,9 @@ addElements(shuffleArray([
 		"func": addBerries,
 		"avoid": [
 			g_TileClasses.berries, 30,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 5,
 			g_TileClasses.metal, 10,
 			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 10,
 			g_TileClasses.water, 3
@@ -250,11 +231,9 @@ addElements(shuffleArray([
 		"func": addAnimals,
 		"avoid": [
 			g_TileClasses.animals, 20,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 2,
 			g_TileClasses.metal, 2,
 			g_TileClasses.mountain, 1,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 2,
 			g_TileClasses.water, 3
@@ -278,20 +257,46 @@ addElements(shuffleArray([
 		"func": addStragglerTrees,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 7,
 			g_TileClasses.metal, 2,
 			g_TileClasses.mountain, 1,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 12,
 			g_TileClasses.rock, 2,
 			g_TileClasses.water, 5
 		],
-		"sizes": ["normal"],
+		"sizes": ["big"],
 		"mixes": ["same"],
 		"amounts": ["many"]
 	}
 ]));
+
+addElements([
+	{
+		"func": addLayeredPatches,
+		"avoid": [
+			g_TileClasses.dirt, 5,
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.water, 3
+		],
+		"sizes": ["normal"],
+		"mixes": ["normal"],
+		"amounts": ["many"]
+	},
+	{
+		"func": addDecoration,
+		"avoid": [
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.water, 3
+		],
+		"sizes": ["normal"],
+		"mixes": ["similar"],
+		"amounts": ["many"]
+	}
+]);
 
 var group = new SimpleGroup([new SimpleObject(g_Decoratives.reeds, 5, 8, 1, 4), new SimpleObject(g_Decoratives.rockMedium, 1, 2, 1, 5)], true, g_TileClasses.dirt);
 createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 1), borderClasses(g_TileClasses.water, 2, 1)], 1000, 100);
