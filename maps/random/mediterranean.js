@@ -9,7 +9,7 @@ initTileClasses(["autumn", "desert", "medit", "polar", "steppe", "temp"]);
 
 setSunColor(0.733, 0.746, 0.574);
 
-setWindAngle(-0.43);
+setWindAngle(PI * 1.15);
 setWaterTint(.161,.286,.353);
 setWaterColor(.129,.176,.259);
 setWaterWaviness(8);
@@ -38,6 +38,177 @@ var mapSize = getMapSize();
 var hmSize = Math.sqrt(hm.length);
 var offset = hmSize / mapSize;
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
+
+var biomes = {
+	"autumn": {
+		// terrains
+		"mainTerrain": "temp_grass_d_aut",
+		"forestFloor1": "temp_grass_long_b_aut",
+		"forestFloor2": "temp_grass_long_b_aut",
+		"roadWild": "temp_overgrown_road_autumn",
+		"road": "temp_road_autumn",
+		// gaia
+		"tree1": "gaia/flora_tree_oak_aut_new",
+		"tree2": "gaia/flora_tree_oak_dead",
+		"tree3": "gaia/flora_tree_apple",
+		"tree4": "gaia/flora_tree_euro_beech_aut",
+		"tree5": "gaia/flora_tree_pine",
+		"fruitBush": "gaia/flora_bush_berry",
+		"mainHuntableAnimal": "gaia/fauna_sheep",
+		"secondaryHuntableAnimal": "gaia/fauna_wolf",
+		"stoneLarge": "gaia/geology_stonemine_temperate_quarry",
+		"stoneSmall": "gaia/geology_stone_temperate",
+		"metalLarge": "gaia/geology_metal_temperate_slabs",
+		"metalSmall": "gaia/geology_metal_temperate",
+		// decoratives
+		"grass": "actor|props/flora/grass_soft_dry_small.xml",
+		"grassShort": "actor|props/flora/grass_soft_dry_tuft_a.xml",
+		"rockLarge": "actor|geology/stone_granite_med.xml",
+		"rockMedium": "actor|geology/stone_granite_small.xml",
+		"bushMedium": "actor|props/flora/bush_medit_me_dry.xml",
+		"bushSmall": "actor|props/flora/bush_medit_sm_dry.xml",
+	},
+	"desert": {
+		// terrains
+		"mainTerrain": "sand_scrub_100",
+		"forestFloor1": "sand_scrub_25",
+		"forestFloor2": "sand_scrub_25",
+		"roadWild": "desert_city_tile_pers",
+		"road": "desert_city_tile_pers_dirt",
+		// gaia
+		"tree1": "gaia/flora_tree_cretan_date_palm_short",
+		"tree2": "gaia/flora_tree_senegal_date_palm",
+		"tree3": "gaia/flora_tree_date_palm",
+		"tree4": "gaia/flora_tree_cretan_date_palm_tall",
+		"tree5": "gaia/flora_tree_date_palm",
+		"fruitBush": "gaia/flora_bush_berry",
+		"mainHuntableAnimal": "gaia/fauna_camel",
+		"secondaryHuntableAnimal": "gaia/fauna_gazelle",
+		"stoneLarge": "gaia/geology_stonemine_desert_quarry",
+		"stoneSmall": "gaia/geology_stone_desert_small",
+		"metalLarge": "gaia/geology_metal_desert_slabs",
+		"metalSmall": "gaia/geology_metal_desert_small",
+		// decoratives
+		"grass": "actor|props/flora/grass_field_parched_tall.xml",
+		"grassShort": "actor|props/flora/grass_soft_dry_tuft_a.xml",
+		"rockLarge": "actor|structures/gravestone.xml",
+		"rockMedium": "actor|geology/stone_desert_med.xml",
+		"bushMedium": "actor|props/flora/bush_desert_dry_a.xml",
+		"bushSmall": "actor|props/flora/plant_desert_a.xml",
+	},
+	"medit": {
+		// terrains
+		"mainTerrain": "medit_grass_field_a",
+		"forestFloor1": "medit_grass_wild",
+		"forestFloor2": "medit_grass_wild",
+		"roadWild": "road_rome_a",
+		"road": "road_muddy",
+		// gaia
+		"tree1": "gaia/flora_tree_poplar_lombardy",
+		"tree2": "gaia/flora_tree_cypress",
+		"tree3": "gaia/flora_tree_olive",
+		"tree4": "gaia/flora_tree_carob",
+		"tree5": "gaia/flora_tree_tamarix",
+		"fruitBush": "gaia/flora_bush_grapes",
+		"mainHuntableAnimal": "gaia/fauna_goat",
+		"secondaryHuntableAnimal": "gaia/fauna_chicken",
+		"stoneLarge": "gaia/geology_stonemine_medit_quarry",
+		"stoneSmall": "gaia/geology_stone_mediterranean",
+		"metalLarge": "gaia/geology_metal_mediterranean_slabs",
+		"metalSmall": "gaia/geology_metal_greek",
+		// decoratives
+		"grass": "actor|props/flora/grass_soft_small_tall.xml",
+		"grassShort": "actor|props/flora/grass_soft_small.xml",
+		"rockLarge": "actor|geology/stone_granite_greek_large.xml",
+		"rockMedium": "actor|geology/stone_granite_greek_med.xml",
+		"bushMedium": "actor|props/flora/bush_medit_underbrush.xml",
+		"bushSmall": "actor|props/flora/bush_medit_me_lush.xml",
+	},
+	"polar": {
+		// terrains
+		"mainTerrain": "polar_tundra_snow",
+		"forestFloor1": "ice_dirt",
+		"forestFloor2": "ice_dirt",
+		"roadWild": "road_flat",
+		"road": "road1",
+		// gaia
+		"tree1": "gaia/flora_tree_pine_w",
+		"tree2": "gaia/flora_tree_dead",
+		"tree3": "gaia/flora_tree_dead",
+		"tree4": "gaia/flora_tree_pine_w",
+		"tree5": "gaia/flora_tree_pine_w",
+		"fruitBush": "gaia/fauna_wolf_snow",
+		"mainHuntableAnimal": "gaia/fauna_muskox",
+		"secondaryHuntableAnimal": "gaia/fauna_walrus",
+		"stoneLarge": "gaia/geology_stonemine_alpine_quarry",
+		"stoneSmall": "gaia/geology_stone_alpine_a",
+		"metalLarge": "gaia/geology_metal_alpine_slabs",
+		"metalSmall": "gaia/geology_metal_alpine",
+		// decoratives
+		"grass": "actor|props/flora/grass_field_parched_short.xml",
+		"grassShort": "actor|props/flora/grass_soft_dry_tuft_a.xml",
+		"rockLarge": "actor|geology/stone_granite_med.xml",
+		"rockMedium": "actor|geology/stone_granite_small.xml",
+		"bushMedium": "actor|props/flora/bush_highlands.xml",
+		"bushSmall": "actor|props/flora/bush_medit_sm.xml",
+	},
+	"steppe": {
+		// terrains
+		"mainTerrain": "steppe_grass_a",
+		"forestFloor1": "steppe_grass_c",
+		"forestFloor2": "steppe_grass_c",
+		"roadWild": "road2",
+		"road": "medit_city_tile_dirt",
+		// gaia
+		"tree1": "gaia/flora_tree_poplar",
+		"tree2": "gaia/flora_tree_toona",
+		"tree3": "gaia/flora_tree_dead",
+		"tree4": "gaia/flora_tree_acacia",
+		"tree5": "gaia/flora_tree_poplar_lombardy",
+		"fruitBush": "gaia/flora_bush_grapes",
+		"mainHuntableAnimal": "gaia/fauna_horse",
+		"secondaryHuntableAnimal": "gaia/fauna_deer",
+		"stoneLarge": "gaia/geology_stonemine_alpine_quarry",
+		"stoneSmall": "gaia/geology_stone_alpine_a",
+		"metalLarge": "gaia/geology_metal_alpine_slabs",
+		"metalSmall": "gaia/geology_metal_alpine",
+		// decoratives
+		"grass": "actor|props/flora/grass_medit_flowering_tall.xml",
+		"grassShort": "actor|props/flora/grass_field_bloom_short.xml",
+		"rockLarge": "actor|geology/stone_granite_greek_med.xml",
+		"rockMedium": "actor|geology/stone_granite_greek_small.xml",
+		"bushMedium": "actor|props/flora/bush_dry_a.xml",
+		"bushSmall": "actor|props/flora/bush_highlands.xml",
+	},
+	"temp": {
+		// terrains
+		"mainTerrain": "temp_grass_long",
+		"forestFloor1": "temp_grass_clovers_2",
+		"forestFloor2": "temp_grass_clovers_2",
+		"roadWild": "temp_road_overgrown",
+		"road": "temp_road",
+		// gaia
+		"tree1": "gaia/flora_tree_oak_new",
+		"tree2": "gaia/flora_tree_oak_dead",
+		"tree3": "gaia/flora_tree_apple",
+		"tree4": "gaia/flora_tree_euro_beech",
+		"tree5": "gaia/flora_tree_oak_large",
+		"fruitBush": "gaia/flora_bush_berry",
+		"mainHuntableAnimal": "gaia/fauna_pig",
+		"secondaryHuntableAnimal": "gaia/fauna_boar",
+		"stoneLarge": "gaia/geology_stonemine_temperate_quarry",
+		"stoneSmall": "gaia/geology_stone_temperate",
+		"metalLarge": "gaia/geology_metal_temperate_slabs",
+		"metalSmall": "gaia/geology_metal_temperate",
+		// decoratives
+		"grass": "actor|props/flora/grass_soft_large_tall.xml",
+		"grassShort": "actor|props/flora/grass_soft_large.xml",
+		"rockLarge": "actor|geology/stone_granite_large.xml",
+		"rockMedium": "actor|geology/stone_granite_med.xml",
+		"bushMedium": "actor|props/flora/bush_tempe_b.xml",
+		"bushSmall": "actor|props/flora/bush_tempe_underbrush.xml",
+	}
+}
 
 var lastI = -1;
 
@@ -159,10 +330,16 @@ if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length < g_MapInfo.numPlayers
 
 	for (var p = 0; p < players.length; ++p) {
 		var base = singleBases[p];
-		var baseX = Math.floor(base[0] / offset);
-		var baseY = Math.floor(base[1] / offset);
-		placeCivDefaultEntities(baseX, baseY, players[p]);
-		addToClass(baseX, baseY, g_TileClasses.player);
+		var baseX = Math.floor(base[0] / offset) / mapSize;
+		var baseY = Math.floor(base[1] / offset) / mapSize;
+		var player = {"x": baseX, "z": baseY, "id": players[p]};
+		for (var biome in biomes) {
+		  var classTiles = checkIfInClass(Math.floor(base[0] / offset), Math.floor(base[1] / offset), g_TileClasses[biome]);
+		  if (classTiles > 0) {
+		  	setLocalBiome(biomes[biome]);
+		  }
+		}
+		createBase(player);
 	}
 }
 
@@ -173,352 +350,237 @@ var forest;
 var forestFloor;
 var forestFloorAlt;
 
-/*
+function setLocalBiome(b) {
+	g_Terrains.mainTerrain = b.mainTerrain;
+	g_Terrains.forestFloor1 = b.forestFloor1;
+	g_Terrains.forestFloor2 = b.forestFloor2;
+	g_Terrains.roadWild = b.roadWild;
+	g_Terrains.road = b.road;
+	g_Gaia.tree1 = b.tree1;
+	g_Gaia.tree2 = b.tree2;
+	g_Gaia.tree3 = b.tree3;
+	g_Gaia.tree4 = b.tree4;
+	g_Gaia.tree5 = b.tree5;
+	g_Gaia.fruitBush = b.fruitBush;
+	g_Gaia.mainHuntableAnimal = b.mainHuntableAnimal;
+	g_Gaia.secondaryHuntableAnimal = b.secondaryHuntableAnimal;
+	g_Gaia.stoneLarge = b.stoneLarge;
+	g_Gaia.stoneSmall = b.stoneSmall;
+	g_Gaia.metalLarge = b.metalLarge;
+	g_Gaia.metalSmall = b.metalSmall;
+	g_Decoratives.grass = b.grass;
+	g_Decoratives.grassShort = b.grassShort;
+	g_Decoratives.rockLarge = b.rockLarge;
+	g_Decoratives.rockMedium = b.rockMedium;
+	g_Decoratives.bushMedium = b.bushMedium;
+	g_Decoratives.bushSmall = b.bushSmall;
+	initBiome();
+}
 
-Food
-
-fox_red
-
-fish / fish_tilapia / fish_tuna
-shark
-whale_fin / whale_humback
-
-*/
-
-// Desert
-g_Terrains.mainTerrain = "sand_scrub_100";
-g_Terrains.forestFloor1 = "sand_scrub_25";
-g_Terrains.forestFloor2 = "sand_scrub_25";
-
-g_Gaia = {
-	"tree1": "gaia/flora_tree_cretan_date_palm_short",
-	"tree2": "gaia/flora_tree_senegal_date_palm",
-	"tree3": "gaia/flora_tree_date_palm",
-	"tree4": "gaia/flora_tree_cretan_date_palm_tall",
-	"tree5": "gaia/flora_tree_date_palm",
-	"fruitBush": "gaia/flora_bush_berry",
-	"chicken": "gaia/fauna_chicken",
-	"fish": "gaia/fauna_fish",
-	"mainHuntableAnimal": "gaia/fauna_camel",
-	"secondaryHuntableAnimal": "gaia/fauna_gazelle",
-	"stoneLarge": "gaia/geology_stonemine_desert_quarry",
-	"stoneSmall": "gaia/geology_stone_desert_small",
-	"metalLarge": "gaia/geology_metal_desert_slabs"
-};
-
-g_Decoratives = {
-	"grass": "actor|props/flora/grass_field_parched_tall.xml",
-	"grassShort": "actor|props/flora/grass_soft_dry_tuft_a.xml",
-	"rockLarge": "actor|structures/gravestone.xml",
-	"rockMedium": "actor|geology/stone_desert_med.xml",
-	"bushMedium": "actor|props/flora/bush_desert_dry_a.xml",
-	"bushSmall": "actor|props/flora/plant_desert_a.xml",
-};
-
-initBiome();
-
-addElements(shuffleArray([
+// Add fish
+g_Gaia.fish = "gaia/fauna_fish";
+addElements([
 	{
-		"func": addMetal,
+		"func": addFish,
 		"avoid": [
-			g_TileClasses.berries, 5,
-			g_TileClasses.forest, 3,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.player, 30,
-			g_TileClasses.rock, 10,
-			g_TileClasses.metal, 20,
-			g_TileClasses.water, 3
+			g_TileClasses.fish, 10,
 		],
-		"stay": [g_TileClasses.desert, 0],
-		"sizes": ["normal"],
-		"mixes": ["same"],
-		"amounts": ["normal", "many"]
-	},
-	{
-		"func": addStone,
-		"avoid": [
-			g_TileClasses.berries, 5,
-			g_TileClasses.forest, 3,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.player, 30,
-			g_TileClasses.rock, 20,
-			g_TileClasses.metal, 10,
-			g_TileClasses.water, 3
-		],
-		"stay": [g_TileClasses.desert, 0],
-		"sizes": ["normal"],
-		"mixes": ["same"],
-		"amounts": ["normal", "many"]
-	},
-	{
-		"func": addForests,
-		"avoid": [
-			g_TileClasses.berries, 5,
-			g_TileClasses.forest, 18,
-			g_TileClasses.metal, 3,
-			g_TileClasses.mountain, 5,
-			g_TileClasses.player, 20,
-			g_TileClasses.rock, 3,
-			g_TileClasses.water, 2
-		],
-		"stay": [g_TileClasses.desert, 0],
+		"stay": [g_TileClasses.water, 4],
 		"sizes": ["normal"],
 		"mixes": ["similar"],
-		"amounts": ["tons"]
-	},
-		{
-		"func": addBerries,
-		"avoid": [
-			g_TileClasses.berries, 30,
-			g_TileClasses.bluff, 5,
-			g_TileClasses.forest, 5,
-			g_TileClasses.metal, 10,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
-			g_TileClasses.player, 20,
-			g_TileClasses.rock, 10,
-			g_TileClasses.water, 3
-		],
-		"stay": [g_TileClasses.desert, 0],
-		"sizes": ["normal"],
-		"mixes": ["same"],
-		"amounts": ["normal", "many"]
-	},
-	{
-		"func": addAnimals,
-		"avoid": [
-			g_TileClasses.animals, 20,
-			g_TileClasses.forest, 2,
-			g_TileClasses.metal, 2,
-			g_TileClasses.mountain, 1,
-			g_TileClasses.player, 20,
-			g_TileClasses.rock, 2,
-			g_TileClasses.water, 3
-		],
-		"stay": [g_TileClasses.desert, 0],
-		"sizes": ["normal"],
-		"mixes": ["same"],
 		"amounts": ["many"]
-	},
-	{
-		"func": addStragglerTrees,
-		"avoid": [
-			g_TileClasses.berries, 5,
-			g_TileClasses.forest, 7,
-			g_TileClasses.metal, 2,
-			g_TileClasses.mountain, 1,
-			g_TileClasses.player, 12,
-			g_TileClasses.rock, 2,
-			g_TileClasses.water, 5
-		],
-		"stay": [g_TileClasses.desert, 0],
-		"sizes": ["normal"],
-		"mixes": ["same"],
-		"amounts": ["many"]
-	},
-	{
-		"func": addDecoration,
-		"avoid": [
-			g_TileClasses.forest, 2,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.player, 12,
-			g_TileClasses.water, 3
-		],
-		"stay": [g_TileClasses.desert, 0],
-		"sizes": ["small"],
-		"mixes": ["same"],
-		"amounts": ["few"]
 	}
-]));
+]);
 
-// Mediterranean
-forestFloor = "medit_grass_wild";
-forestFloorAlt = "medit_grass_field_a";
-forest = [forestFloor, forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_poplar_lombardy", forestFloorAlt + TERRAIN_SEPARATOR + "gaia/flora_tree_cypress", forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_carob", forestFloor];
-createForests(
- [forestFloor, forestFloorAlt, forestFloorAlt, forest, forest],
- [avoidClasses(g_TileClasses.player, 20, g_TileClasses.mountain, 3, g_TileClasses.forest, 17, g_TileClasses.water, 2, g_TileClasses.baseResource, 3),
- stayClasses(g_TileClasses.medit, 0)],
- g_TileClasses.forest
-);
+g_Gaia.fish = "gaia/fauna_whale_fin";
+addElements([
+	{
+		"func": addFish,
+		"avoid": [
+			g_TileClasses.fish, 2,
+			g_TileClasses.desert, 50,
+			g_TileClasses.steppe, 50
+		],
+		"stay": [g_TileClasses.water, 7],
+		"sizes": ["normal"],
+		"mixes": ["same"],
+		"amounts": ["scarce"]
+	}
+])
 
-createStragglerTrees(["gaia/flora_tree_poplar_lombardy", "gaia/flora_tree_cypress", "gaia/flora_tree_carob"],
-	[avoidClasses(g_TileClasses.forest, 0, g_TileClasses.water, 2, g_TileClasses.player, 15, g_TileClasses.mountain, 2, g_TileClasses.baseResource, 3),
-	stayClasses(g_TileClasses.medit, 0)],
-	g_TileClasses.forest
-);
 
-group = new SimpleGroup([new SimpleObject("gaia/fauna_horse", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.medit, 0)],
-	30, 50
-);
+// Set local resources
+for (var biome in biomes) {
+  setLocalBiome(biomes[biome]);
+  renderLocalBiome(biome);
+}
 
-group = new SimpleGroup([new SimpleObject("gaia/fauna_goat", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.medit, 0)],
-	30, 50
-);
+function renderLocalBiome(biome) {
+	var localAvoid = g_TileClasses.plateau;
+	if (biome == "temp") {
+		localAvoid = g_TileClasses.autumn;
+	}
 
-group = new SimpleGroup([new SimpleObject("gaia/fauna_wolf", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.medit, 0)],
-	30, 50
-);
+	addElements([
+		{
+			"func": addMetal,
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 3,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 30,
+				g_TileClasses.rock, 10,
+				g_TileClasses.metal, 20,
+				g_TileClasses.water, 4,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["normal"],
+			"mixes": ["same"],
+			"amounts": ["few", "normal", "many"]
+		},
+		{
+			"func": addStone,
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 3,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 30,
+				g_TileClasses.rock, 20,
+				g_TileClasses.metal, 10,
+				g_TileClasses.water, 4,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["normal"],
+			"mixes": ["same"],
+			"amounts": ["few", "normal", "many"]
+		},
+		{
+			"func": addForests,
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 5,
+				g_TileClasses.metal, 3,
+				g_TileClasses.mountain, 3,
+				g_TileClasses.player, 20,
+				g_TileClasses.rock, 3,
+				g_TileClasses.water, 3,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["normal"]
+		},
+		{
+			"func": addSmallMetal,
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 3,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 30,
+				g_TileClasses.rock, 10,
+				g_TileClasses.metal, 15,
+				g_TileClasses.water, 4,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["normal"],
+			"mixes": ["same"],
+			"amounts": ["few", "normal", "many"]
+		},
+		{
+			"func": addBerries,
+			"avoid": [
+				g_TileClasses.berries, 30,
+				g_TileClasses.bluff, 5,
+				g_TileClasses.forest, 5,
+				g_TileClasses.metal, 10,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.plateau, 2,
+				g_TileClasses.player, 20,
+				g_TileClasses.rock, 10,
+				g_TileClasses.water, 4,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["normal"],
+			"mixes": ["same"],
+			"amounts": ["normal", "many"]
+		},
+		{
+			"func": addAnimals,
+			"avoid": [
+				g_TileClasses.animals, 20,
+				g_TileClasses.forest, 2,
+				g_TileClasses.metal, 2,
+				g_TileClasses.mountain, 1,
+				g_TileClasses.player, 20,
+				g_TileClasses.rock, 2,
+				g_TileClasses.water, 3,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["normal"],
+			"mixes": ["same"],
+			"amounts": ["many"]
+		},
+		{
+			"func": addStragglerTrees,
+			"avoid": [
+				g_TileClasses.berries, 5,
+				g_TileClasses.forest, 5,
+				g_TileClasses.metal, 2,
+				g_TileClasses.mountain, 1,
+				g_TileClasses.player, 12,
+				g_TileClasses.rock, 2,
+				g_TileClasses.water, 3,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["normal"],
+			"mixes": ["normal"],
+			"amounts": ["normal"]
+		},
+		{
+			"func": addDecoration,
+			"avoid": [
+				g_TileClasses.forest, 2,
+				g_TileClasses.mountain, 2,
+				g_TileClasses.player, 12,
+				g_TileClasses.water, 4,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["small"],
+			"mixes": ["same"],
+			"amounts": ["normal"]
+		}
+	]);
+}
 
-// Polar
-forestFloor = "ice_dirt";
-forestFloorAlt = "polar_tundra_snow";
-forest = [forestFloor, forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_pine_w", forestFloorAlt + TERRAIN_SEPARATOR + "gaia/flora_tree_pine_w", forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_dead", forestFloor];
-createForests(
- [forestFloor, forestFloorAlt, forestFloorAlt, forest, forest],
- [avoidClasses(g_TileClasses.player, 20, g_TileClasses.mountain, 3, g_TileClasses.forest, 17, g_TileClasses.water, 2, g_TileClasses.baseResource, 3),
- stayClasses(g_TileClasses.polar, 0)],
- g_TileClasses.forest
-);
-createForests(
- [forestFloor, forestFloorAlt, forestFloorAlt, forest, forest],
- [avoidClasses(g_TileClasses.player, 20, g_TileClasses.mountain, 3, g_TileClasses.forest, 17, g_TileClasses.water, 2, g_TileClasses.baseResource, 3),
- stayClasses(g_TileClasses.polar, 0)],
- g_TileClasses.forest
-);
 
-createStragglerTrees(["gaia/flora_tree_pine_w", "gaia/flora_tree_dead"],
-	[avoidClasses(g_TileClasses.forest, 0, g_TileClasses.water, 2, g_TileClasses.player, 15, g_TileClasses.mountain, 2, g_TileClasses.baseResource, 3),
-	stayClasses(g_TileClasses.polar, 0)],
-	g_TileClasses.forest
-);
-createStragglerTrees(["gaia/flora_tree_pine_w", "gaia/flora_tree_dead"],
-	[avoidClasses(g_TileClasses.forest, 0, g_TileClasses.water, 2, g_TileClasses.player, 15, g_TileClasses.mountain, 2, g_TileClasses.baseResource, 3),
-	stayClasses(g_TileClasses.polar, 0)],
-	g_TileClasses.forest
-);
+function addSmallMetal(constraint, size, deviation, fill)
+{
+	deviation = deviation || g_DefaultDeviation;
+	size = size || 1;
+	fill = fill || 1;
 
-group = new SimpleGroup([new SimpleObject("gaia/fauna_walrus", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.polar, 0)],
-	30, 50
-);
+	var offset = getRandomDeviation(size, deviation);
+	var count = 1 + scaleByMapSize(20, 20) * fill;
+	var mines = [
+		[
+			new SimpleObject(g_Gaia.metalSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)
+		]
+	];
 
-group = new SimpleGroup([new SimpleObject("gaia/fauna_muskox", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.polar, 0)],
-	30, 50
-);
-
-group = new SimpleGroup([new SimpleObject("gaia/fauna_wolf_snow", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.polar, 0)],
-	30, 50
-);
-
-// Steppe
-forestFloor = "steppe_grass_c";
-forestFloorAlt = "steppe_grass_a";
-forest = [forestFloor, forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_poplar", forestFloorAlt + TERRAIN_SEPARATOR + "gaia/flora_tree_acacia", forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_toona", forestFloor];
-createForests(
- [forestFloor, forestFloorAlt, forestFloorAlt, forest, forest],
- [avoidClasses(g_TileClasses.player, 20, g_TileClasses.mountain, 3, g_TileClasses.forest, 17, g_TileClasses.water, 2, g_TileClasses.baseResource, 3),
- stayClasses(g_TileClasses.steppe, 0)],
- g_TileClasses.forest
-);
-createForests(
- [forestFloor, forestFloorAlt, forestFloorAlt, forest, forest],
- [avoidClasses(g_TileClasses.player, 20, g_TileClasses.mountain, 3, g_TileClasses.forest, 17, g_TileClasses.water, 2, g_TileClasses.baseResource, 3),
- stayClasses(g_TileClasses.steppe, 0)],
- g_TileClasses.forest
-);
-
-createStragglerTrees(["gaia/flora_tree_poplar", "gaia/flora_tree_acacia", "gaia/flora_tree_toona"],
-	[avoidClasses(g_TileClasses.forest, 0, g_TileClasses.water, 2, g_TileClasses.player, 15, g_TileClasses.mountain, 2, g_TileClasses.baseResource, 3),
-	stayClasses(g_TileClasses.steppe, 0)],
-	g_TileClasses.forest
-);
-createStragglerTrees(["gaia/flora_tree_poplar", "gaia/flora_tree_acacia", "gaia/flora_tree_toona"],
-	[avoidClasses(g_TileClasses.forest, 0, g_TileClasses.water, 2, g_TileClasses.player, 15, g_TileClasses.mountain, 2, g_TileClasses.baseResource, 3),
-	stayClasses(g_TileClasses.steppe, 0)],
-	g_TileClasses.forest
-);
-
-group = new SimpleGroup([new SimpleObject("gaia/fauna_boar", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.steppe, 0)],
-	30, 50
-);
-
-group = new SimpleGroup([new SimpleObject("gaia/fauna_deer", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.steppe, 0)],
-	30, 50
-);
-
-// Temperate
-forestFloor = "temp_grass_clovers_2";
-forestFloorAlt = "temp_grass_long";
-forest = [forestFloor, forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_oak_new", forestFloorAlt + TERRAIN_SEPARATOR + "gaia/flora_tree_oak_dead", forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_pine", forestFloor];
-createForests(
- [forestFloor, forestFloorAlt, forestFloorAlt, forest, forest],
- [avoidClasses(g_TileClasses.player, 20, g_TileClasses.mountain, 3, g_TileClasses.forest, 17, g_TileClasses.water, 2, g_TileClasses.baseResource, 3, g_TileClasses.autumn, 2),
- stayClasses(g_TileClasses.temp, 0)],
- g_TileClasses.forest
-);
-createForests(
- [forestFloor, forestFloorAlt, forestFloorAlt, forest, forest],
- [avoidClasses(g_TileClasses.player, 20, g_TileClasses.mountain, 3, g_TileClasses.forest, 17, g_TileClasses.water, 2, g_TileClasses.baseResource, 3, g_TileClasses.autumn, 2),
- stayClasses(g_TileClasses.temp, 0)],
- g_TileClasses.forest
-);
-
-createStragglerTrees(["gaia/flora_tree_oak_new", "gaia/flora_tree_oak_dead", "gaia/flora_tree_pine"],
-	[avoidClasses(g_TileClasses.forest, 0, g_TileClasses.water, 2, g_TileClasses.player, 15, g_TileClasses.mountain, 2, g_TileClasses.baseResource, 3, g_TileClasses.autumn, 2),
-	stayClasses(g_TileClasses.temp, 0)],
-	g_TileClasses.forest
-);
-createStragglerTrees(["gaia/flora_tree_oak_new", "gaia/flora_tree_oak_dead", "gaia/flora_tree_pine"],
-	[avoidClasses(g_TileClasses.forest, 0, g_TileClasses.water, 2, g_TileClasses.player, 15, g_TileClasses.mountain, 2, g_TileClasses.baseResource, 3, g_TileClasses.autumn, 2),
-	stayClasses(g_TileClasses.temp, 0)],
-	g_TileClasses.forest
-);
-
-group = new SimpleGroup([new SimpleObject("gaia/fauna_pig", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.temp, 0)],
-	30, 50
-);
-
-group = new SimpleGroup([new SimpleObject("gaia/fauna_sheep", 5,7, 0,4)], true, g_TileClasses.food);
-createObjectGroups(group, 0,
-	[avoidClasses(g_TileClasses.food, 10, g_TileClasses.mountain, 2, g_TileClasses.player, 20, g_TileClasses.water, 2),
-	stayClasses(g_TileClasses.temp, 0)],
-	30, 50
-);
-
-// Autumn
-forestFloor = "temp_grass_long_b_aut";
-forestFloorAlt = "temp_grass_d_aut";
-forest = [forestFloor, forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_oak_aut_new", forestFloorAlt + TERRAIN_SEPARATOR + "gaia/flora_tree_oak_dead", forestFloor + TERRAIN_SEPARATOR + "gaia/flora_tree_euro_beech_aut", forestFloor];
-createForests(
- [forestFloor, forestFloorAlt, forestFloorAlt, forest, forest],
- [avoidClasses(g_TileClasses.player, 20, g_TileClasses.mountain, 3, g_TileClasses.forest, 17, g_TileClasses.water, 2, g_TileClasses.baseResource, 3),
- stayClasses(g_TileClasses.autumn, 0)],
- g_TileClasses.forest
-);
-
-createStragglerTrees(["gaia/flora_tree_oak_aut_new", "gaia/flora_tree_oak_dead", "gaia/flora_tree_euro_beech_aut"],
-	[avoidClasses(g_TileClasses.forest, 0, g_TileClasses.water, 2, g_TileClasses.player, 15, g_TileClasses.mountain, 2, g_TileClasses.baseResource, 3),
-	stayClasses(g_TileClasses.autumn, 0)],
-	g_TileClasses.forest
-);
-
+	for (var i = 0; i < mines.length; ++i)
+	{
+		var group = new SimpleGroup(mines[i], true, g_TileClasses.metal);
+		createObjectGroups(group, 0, constraint, count, 100);
+	}
+}
 
 ExportMap();
 
