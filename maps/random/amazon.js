@@ -112,7 +112,7 @@ if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length <= strongholdBases.len
 		var base = strongholdBases[t];
 		var baseX = Math.floor(base[0] / offset) / mapSize;
 		var baseY = Math.floor(base[1] / offset) / mapSize;
-		placeStrongholdAt(team, baseX, baseY, 0.04);
+		placeStrongholdAt(team, baseX, baseY, 0.06);
 	}
 } else {
 	var players = randomizePlayers();
