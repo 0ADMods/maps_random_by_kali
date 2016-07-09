@@ -9,18 +9,19 @@ initTileClasses(["autumn", "desert", "medit", "polar", "steppe", "temp"]);
 
 setSunColor(0.733, 0.746, 0.574);
 
-setWindAngle(PI * 1.15);
-setWaterTint(.161,.286,.353);
-setWaterColor(.129,.176,.259);
+setWindAngle(-0.589049);
+setWaterTint(.556863,.615686,.643137);
+setWaterColor(.494118,.639216,.713726);
 setWaterWaviness(8);
 setWaterMurkiness(0.87);
-setWaterType("lake");
+setWaterType("ocean");
 
 setTerrainAmbientColor(.72,.72,.82);
 
 setSunRotation(PI * 0.95);
 setSunElevation(PI / 6);
 
+setSkySet("cumulus");
 setFogFactor(0);
 setFogThickness(0);
 setFogColor(.69,.616,.541);

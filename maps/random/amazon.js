@@ -132,7 +132,7 @@ var strongholdBases = [
 	[190, 60],
 ];
 
-if (g_MapInfo.teams.length >= 2& & g_MapInfo.teams.length < g_MapInfo.numPlayers && g_MapInfo.teams.length <= strongholdBases.length && randInt(2) == 1 && g_MapInfo.mapSize >= 256)
+if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length < g_MapInfo.numPlayers && g_MapInfo.teams.length <= strongholdBases.length && randInt(2) == 1 && g_MapInfo.mapSize >= 256)
 {
 	for (var t = 0; t < g_MapInfo.teams.length; ++t)
 	{
@@ -333,5 +333,5 @@ function getTileMap()
 
 function getTilePallet()
 {
-	return ["tropic_plants_b","tropic_plants","tropic_grass_c","tropic_grass_plants","tropic_dirt_a","tropic_beach_dry","tropic_dirt_a_plants","tropic_cliff_a",];
+	return ["tropic_cliff_grass","tropic_plants","tropic_grass_c","tropic_grass_plants","tropic_dirt_a","tropic_beach_dry","tropic_dirt_a_plants","tropic_cliff_a",];
 }
