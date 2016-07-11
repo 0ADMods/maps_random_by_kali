@@ -82,7 +82,7 @@ var biomes = {
 		"tree3": "gaia/flora_tree_date_palm",
 		"tree4": "gaia/flora_tree_cretan_date_palm_tall",
 		"tree5": "gaia/flora_tree_date_palm",
-		"fruitBush": "gaia/flora_bush_berry",
+		"fruitBush": "gaia/flora_bush_grapes",
 		"mainHuntableAnimal": "gaia/fauna_camel",
 		"secondaryHuntableAnimal": "gaia/fauna_gazelle",
 		"stoneLarge": "gaia/geology_stonemine_desert_quarry",
@@ -498,37 +498,52 @@ function renderLocalBiome(biome)
 			"func": addBerries,
 			"avoid": [
 				g_TileClasses.berries, 30,
-				g_TileClasses.bluff, 5,
-				g_TileClasses.forest, 5,
-				g_TileClasses.metal, 10,
+				g_TileClasses.forest, 2,
+				g_TileClasses.metal, 4,
 				g_TileClasses.mountain, 2,
-				g_TileClasses.plateau, 2,
 				g_TileClasses.player, 20,
-				g_TileClasses.rock, 10,
-				g_TileClasses.water, 4,
+				g_TileClasses.rock, 4,
+				g_TileClasses.water, 2,
 				localAvoid, 2
 			],
 			"stay": [g_TileClasses[biome], 0],
 			"sizes": ["normal"],
-			"mixes": ["same"],
-			"amounts": ["normal", "many"]
+			"mixes": ["normal"],
+			"amounts": ["tons"]
 		},
 		{
 			"func": addAnimals,
 			"avoid": [
-				g_TileClasses.animals, 20,
-				g_TileClasses.forest, 2,
+				g_TileClasses.animals, 10,
+				g_TileClasses.forest, 1,
 				g_TileClasses.metal, 2,
 				g_TileClasses.mountain, 1,
-				g_TileClasses.player, 20,
+				g_TileClasses.player, 15,
 				g_TileClasses.rock, 2,
-				g_TileClasses.water, 3,
+				g_TileClasses.water, 1,
 				localAvoid, 2
 			],
 			"stay": [g_TileClasses[biome], 0],
 			"sizes": ["normal"],
-			"mixes": ["same"],
-			"amounts": ["many"]
+			"mixes": ["normal"],
+			"amounts": ["tons"]
+		},
+				{
+			"func": addAnimals,
+			"avoid": [
+				g_TileClasses.animals, 10,
+				g_TileClasses.forest, 1,
+				g_TileClasses.metal, 2,
+				g_TileClasses.mountain, 1,
+				g_TileClasses.player, 15,
+				g_TileClasses.rock, 2,
+				g_TileClasses.water, 1,
+				localAvoid, 2
+			],
+			"stay": [g_TileClasses[biome], 0],
+			"sizes": ["small"],
+			"mixes": ["normal"],
+			"amounts": ["tons"]
 		},
 		{
 			"func": addStragglerTrees,
