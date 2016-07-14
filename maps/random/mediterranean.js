@@ -1,3 +1,6 @@
+// Coordinates: 49.665548, 10.541500
+// Map Width: 5000km
+		
 RMS.LoadLibrary("rmgen");
 RMS.LoadLibrary("rmgen2");
 
