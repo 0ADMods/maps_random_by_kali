@@ -55,13 +55,14 @@ g_Decoratives.bushMedium = "actor|props/flora/bush_tropic_a.xml";
 g_Decoratives.bushSmall = "actor|props/flora/bush_tropic_b.xml";
 initBiome();
 
-var hm = getHeightMap();
-var tm = getTileMap();
+var heightmap = getHeightMap();
+var tilemap = getTileMap();
 var pallet = getTilePallet();
 var mapSize = getMapSize();
-var hmSize = Math.sqrt(hm.length);
+var hmSize = Math.sqrt(heightmap.length);
 var offset = hmSize / mapSize;
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
+RMS.SetProgress(10);
 
 var lastI = -1;
 
@@ -73,13 +74,13 @@ for (var y = 0; y < mapSize; ++y)
 	{
 		var xScaled = Math.floor(x * offset);
 		var i = xScaled * hmSize + yScaled;
-		var height = hm[i];
-		var tile = pallet[tm[i]];
+		var height = heightmap[i];
+		var tile = pallet[tilemap[i]];
 
 		if (i == lastI)
 		{
 			var nearby = getNearby(i);
-			tile = pallet[tm[nearby[randInt(0, nearby.length - 1)]]];
+			tile = pallet[tilemap[nearby[randInt(0, nearby.length - 1)]]];
 			height = getAvgHeight(nearby);
 		}
 
@@ -95,7 +96,7 @@ function getAvgHeight(nearby)
 	var totalHeight = 0;
 
 	for (var z = 0; z < nearby.length; ++z)
-		totalHeight += hm[nearby[z]];
+		totalHeight += heightmap[nearby[z]];
 
 	return totalHeight / nearby.length;
 }
@@ -103,7 +104,7 @@ function getAvgHeight(nearby)
 function getNearby(i) {
 	var nearby = [i];
 
-	if (i + hmSize < hm.length)
+	if (i + hmSize < heightmap.length)
 		nearby.push(i + hmSize);
 
 	return nearby;
@@ -114,7 +115,7 @@ RMS.SetProgress(30);
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 
 // Place players
-var singleBases = [
+var singleBases = shuffleArray([
 	[90, 115],
 	[240, 157],
 	[35, 155],
@@ -122,43 +123,38 @@ var singleBases = [
 	[260, 75],
 	[160, 285],
 	[105, 220],
-	[185, 90],
-];
-
-singleBases = shuffleArray(singleBases);
+	[185, 90]
+]);
 
 var strongholdBases = [
 	[80, 240],
-	[190, 60],
+	[190, 60]
 ];
 
-if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length < g_MapInfo.numPlayers && g_MapInfo.teams.length <= strongholdBases.length && randInt(2) == 1 && g_MapInfo.mapSize >= 256)
+if (randInt(2) == 1 &&
+    g_MapInfo.mapSize >= 256 &&
+    g_MapInfo.teams.length >= 2 &&
+    g_MapInfo.teams.length < g_MapInfo.numPlayers &&
+    g_MapInfo.teams.length <= strongholdBases.length)
 {
 	for (var t = 0; t < g_MapInfo.teams.length; ++t)
-	{
-		var team = [];
-		for (var p = 0; p < g_MapInfo.teams[t].length; ++p)
-		{
-			var player = {"id": g_MapInfo.teams[t][p]}
-			team.push(player)
-		}
-		var base = strongholdBases[t];
-		var baseX = Math.floor(base[0] / offset) / mapSize;
-		var baseY = Math.floor(base[1] / offset) / mapSize;
-		placeStrongholdAt(team, baseX, baseY, 0.06);
-	}
-} else
+		placeStrongholdAt(
+			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
+			Math.floor(strongholdBases[t][0] / offset) / mapSize,
+			Math.floor(strongholdBases[t][1] / offset) / mapSize,
+			0.06
+		);
+}
+else
 {
 	var players = randomizePlayers();
 
 	for (var p = 0; p < players.length; ++p)
-	{
-		var base = singleBases[p];
-		var baseX = Math.floor(base[0] / offset) / mapSize;
-		var baseY = Math.floor(base[1] / offset) / mapSize;
-		var player = {"x": baseX, "z": baseY, "id": players[p]};
-		createBase(player);
-	}
+		createBase({
+			"id": players[p],
+			"x": Math.floor(singleBases[p][0] / offset) / mapSize,
+			"z": Math.floor(singleBases[p][1] / offset) / mapSize
+		});
 }
 
 RMS.SetProgress(70);
