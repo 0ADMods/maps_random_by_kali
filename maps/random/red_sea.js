@@ -119,7 +119,7 @@ paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 // Place players
 //TODO: remove bottom right placement if mapsize is too small
 var singleBases = shuffleArray([
-	[260, 20],
+	[175, 30],
 	[45, 210],
 	[280, 180],
 	[180, 180],
