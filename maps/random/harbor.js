@@ -1,4 +1,5 @@
 RMS.LoadLibrary("rmgen");
+RMS.LoadLibrary("rmgen2");
 
 InitMap();
 
@@ -70,43 +71,82 @@ addElements(shuffleArray([
 		"sizes": ["small"],
 		"mixes": g_AllMixes,
 		"amounts": g_AllAmounts
+	},
+	{
+		"func": addBluffs,
+		"avoid": [
+			g_TileClasses.bluff, 20,
+			g_TileClasses.mountain, 25,
+			g_TileClasses.plateau, 20,
+			g_TileClasses.player, 40,
+			g_TileClasses.spine, 20,
+			g_TileClasses.valley, 10,
+			g_TileClasses.water, 15
+		],
+		"sizes": ["normal"],
+		"mixes": g_AllMixes,
+		"amounts": g_AllAmounts
 	}
 ]));
 RMS.SetProgress(60);
 
-addElements([
+addElements(shuffleArray([
 	{
-		"func": addLayeredPatches,
+		"func": addMetal,
 		"avoid": [
-			g_TileClasses.bluff, 2,
-			g_TileClasses.dirt, 5,
-			g_TileClasses.forest, 2,
+			g_TileClasses.berries, 5,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 3,
 			g_TileClasses.mountain, 2,
 			g_TileClasses.plateau, 2,
-			g_TileClasses.player, 12,
+			g_TileClasses.player, 30,
+			g_TileClasses.rock, 10,
 			g_TileClasses.spine, 5,
+			g_TileClasses.metal, 20,
 			g_TileClasses.water, 3
 		],
 		"sizes": ["normal"],
-		"mixes": ["normal"],
-		"amounts": ["normal"]
+		"mixes": ["same"],
+		"amounts": ["normal", "many"]
 	},
 	{
-		"func": addDecoration,
+		"func": addStone,
 		"avoid": [
-			g_TileClasses.bluff, 2,
-			g_TileClasses.forest, 2,
+			g_TileClasses.berries, 5,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 3,
 			g_TileClasses.mountain, 2,
 			g_TileClasses.plateau, 2,
-			g_TileClasses.player, 12,
+			g_TileClasses.player, 30,
+			g_TileClasses.rock, 20,
 			g_TileClasses.spine, 5,
+			g_TileClasses.metal, 10,
 			g_TileClasses.water, 3
 		],
 		"sizes": ["normal"],
-		"mixes": ["normal"],
-		"amounts": ["normal"]
+		"mixes": ["same"],
+		"amounts": ["normal", "many"]
+	},
+	{
+		"func": addForests,
+		"avoid": [
+			g_TileClasses.berries, 5,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 8,
+			g_TileClasses.metal, 3,
+			g_TileClasses.mountain, 5,
+			g_TileClasses.plateau, 5,
+			g_TileClasses.player, 20,
+			g_TileClasses.rock, 3,
+			g_TileClasses.spine, 5,
+			g_TileClasses.water, 2
+		],
+		"sizes": ["normal"],
+		"mixes": ["similar"],
+		"amounts": ["many"]
 	}
-]);
+]));
+
 RMS.SetProgress(70);
 
 addElements(shuffleArray([
@@ -165,6 +205,42 @@ addElements(shuffleArray([
 		"amounts": g_AllAmounts
 	}
 ]));
+
+RMS.SetProgress(80);
+
+addElements([
+	{
+		"func": addLayeredPatches,
+		"avoid": [
+			g_TileClasses.bluff, 2,
+			g_TileClasses.dirt, 5,
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.spine, 5,
+			g_TileClasses.water, 3
+		],
+		"sizes": ["normal"],
+		"mixes": ["normal"],
+		"amounts": ["normal"]
+	},
+	{
+		"func": addDecoration,
+		"avoid": [
+			g_TileClasses.bluff, 2,
+			g_TileClasses.forest, 2,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 12,
+			g_TileClasses.spine, 5,
+			g_TileClasses.water, 3
+		],
+		"sizes": ["normal"],
+		"mixes": ["normal"],
+		"amounts": ["normal"]
+	}
+]);
 
 RMS.SetProgress(90);
 
