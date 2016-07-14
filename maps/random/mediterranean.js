@@ -31,12 +31,11 @@ setPPContrast(0.67);
 setPPSaturation(0.42);
 setPPBloom(0.23);
 
-var numPlayers = getNumPlayers();
-var hm = getHeightMap();
-var tm = getTileMap();
+var heightmap = getHeightMap();
+var tilemap = getTileMap();
 var pallet = getTilePallet();
 var mapSize = getMapSize();
-var hmSize = Math.sqrt(hm.length);
+var hmSize = Math.sqrt(heightmap.length);
 var offset = hmSize / mapSize;
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 
@@ -209,25 +208,25 @@ var biomes = {
 		"bushMedium": "actor|props/flora/bush_tempe_b.xml",
 		"bushSmall": "actor|props/flora/bush_tempe_underbrush.xml",
 	}
-}
+};
 
 var lastI = -1;
 
-for (var y = 0; y < mapSize; ++y)
+for (let y = 0; y < mapSize; ++y)
 {
-	var yScaled = Math.floor(y * offset);
+	let yScaled = Math.floor(y * offset);
 
-	for (var x = 0; x < mapSize; ++x)
+	for (let x = 0; x < mapSize; ++x)
 	{
-		var xScaled = Math.floor(x * offset);
-		var i = xScaled * hmSize + yScaled;
-		var height = hm[i];
-		var tile = pallet[tm[i]];
+		let xScaled = Math.floor(x * offset);
+		let i = xScaled * hmSize + yScaled;
+		let height = heightmap[i];
+		let tile = pallet[tilemap[i]];
 
 		if (i == lastI)
 		{
-			var nearby = getNearby(i);
-			tile = pallet[tm[nearby[randInt(0, nearby.length - 1)]]];
+			let nearby = getNearby(i);
+			tile = pallet[tilemap[nearby[randInt(0, nearby.length - 1)]]];
 			height = getAvgHeight(nearby);
 		}
 
@@ -261,19 +260,19 @@ for (var y = 0; y < mapSize; ++y)
 
 function getAvgHeight(nearby)
 {
-	var totalHeight = 0;
+	let totalHeight = 0;
 
-	for (var z = 0; z < nearby.length; ++z)
-		totalHeight += hm[nearby[z]];
+	for (let z = 0; z < nearby.length; ++z)
+		totalHeight += heightmap[nearby[z]];
 
 	return totalHeight / nearby.length;
 }
 
 function getNearby(i)
 {
-	var nearby = [i];
+	let nearby = [i];
 
-	if (i + hmSize < hm.length)
+	if (i + hmSize < heightmap.length)
 		nearby.push(i + hmSize);
 
 	return nearby;
@@ -289,10 +288,10 @@ var singleBases = [
 	[90,180],
 	[270,75],
 	[240,280],
-	[160,180],
+	[160,180]
 ];
 
-if (g_MapInfo.mapSize >= 320 || g_MapInfo.numPlayers > singleBases.length) {
+if (g_MapInfo.mapSize >= 320 || g_MapInfo.numPlayers > singleBases.length)
 	singleBases.push(
 		[140,60],
 		[170,250],
@@ -300,50 +299,52 @@ if (g_MapInfo.mapSize >= 320 || g_MapInfo.numPlayers > singleBases.length) {
 		[300,155],
 		[50,105]
 	);
-}
 
 singleBases = shuffleArray(singleBases);
 
-var strongholdBases = [
+var strongholdBases = shuffleArray([
 	[110,50],
 	[180,260],
-	[260,55],
-];
+	[260,55]
+]);
 
-strongholdBases = shuffleArray(strongholdBases);
-
-if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length < g_MapInfo.numPlayers && g_MapInfo.teams.length <= strongholdBases.length && randInt(2) == 1 && g_MapInfo.mapSize >= 256)
+if (randInt(2) == 1 &&
+    g_MapInfo.mapSize >= 256 &&
+    g_MapInfo.teams.length >= 2 &&
+    g_MapInfo.teams.length < g_MapInfo.numPlayers &&
+    g_MapInfo.teams.length <= strongholdBases.length)
 {
-	for (var t = 0; t < g_MapInfo.teams.length; ++t)
-	{
-		var team = [];
-		for (var p = 0; p < g_MapInfo.teams[t].length; ++p)
-		{
-			var player = {"id": g_MapInfo.teams[t][p]}
-			team.push(player)
-		}
-		var base = strongholdBases[t];
-		var baseX = Math.floor(base[0] / offset) / mapSize;
-		var baseY = Math.floor(base[1] / offset) / mapSize;
-		placeStrongholdAt(team, baseX, baseY, 0.06);
-	}
-} else
+	for (let t = 0; t < g_MapInfo.teams.length; ++t)
+		placeStrongholdAt(
+			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
+			Math.floor(strongholdBases[t][0] / offset) / mapSize,
+			Math.floor(strongholdBases[t][1] / offset) / mapSize,
+			0.06
+		);
+}
+else
 {
-	var players = randomizePlayers();
+	let players = randomizePlayers();
 
-	for (var p = 0; p < players.length; ++p)
+	for (let p = 0; p < players.length; ++p)
 	{
-		var base = singleBases[p];
-		var baseX = Math.floor(base[0] / offset) / mapSize;
-		var baseY = Math.floor(base[1] / offset) / mapSize;
-		var player = {"x": baseX, "z": baseY, "id": players[p]};
-		for (var biome in biomes)
+		for (let biome in biomes)
 		{
-		  var classTiles = checkIfInClass(Math.floor(base[0] / offset), Math.floor(base[1] / offset), g_TileClasses[biome]);
-		  if (classTiles > 0)
-		  	setLocalBiome(biomes[biome]);
+			let classTiles = checkIfInClass(
+				Math.floor(singleBases[p][0] / offset),
+				Math.floor(singleBases[p][1] / offset),
+				g_TileClasses[biome]
+			);
+
+			if (classTiles > 0)
+				setLocalBiome(biomes[biome]);
 		}
-		createBase(player);
+
+		createBase({
+			"x": Math.floor(singleBases[p][0] / offset) / mapSize,
+			"z": Math.floor(singleBases[p][1] / offset) / mapSize,
+			"id": players[p]
+		});
 	}
 }
 
@@ -377,7 +378,6 @@ function setLocalBiome(b)
 	initBiome();
 }
 
-// Add fish
 g_Gaia.fish = "gaia/fauna_fish";
 addElements([
 	{
@@ -406,22 +406,23 @@ addElements([
 		"mixes": ["same"],
 		"amounts": ["scarce"]
 	}
-])
+]);
 
 
 // Set local resources
-for (var biome in biomes) {
+for (let biome in biomes)
+{
   setLocalBiome(biomes[biome]);
   renderLocalBiome(biome);
 }
 
 function renderLocalBiome(biome)
 {
-	var localAvoid = g_TileClasses.plateau;
-	var treeCount = "tons";
+	let localAvoid = g_TileClasses.plateau;
 	if (biome == "temp")
 		localAvoid = g_TileClasses.autumn;
 
+	let treeCount = "tons";
 	if (biome == "desert")
 		treeCount = "normal";
 
@@ -579,20 +580,19 @@ function renderLocalBiome(biome)
 	]);
 }
 
-
-function addSmallMetal(constraint, size, deviation, fill)
+function addSmallMetal(constraint, size, mixes, amounts)
 {
-	deviation = deviation || g_DefaultDeviation;
 	size = size || 1;
-	fill = fill || 1;
+	mixes = mixes || g_DefaultDeviation;
+	amounts = amounts || 1;
 
-	var offset = getRandomDeviation(size, deviation);
-	var count = 1 + scaleByMapSize(20, 20) * fill;
-	var mines = [[new SimpleObject(g_Gaia.metalSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)]];
+	let offset = getRandomDeviation(size, mixes);
+	let count = 1 + scaleByMapSize(20, 20) * amounts;
+	let mines = [[new SimpleObject(g_Gaia.metalSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)]];
 
-	for (var i = 0; i < mines.length; ++i)
+	for (let i = 0; i < mines.length; ++i)
 	{
-		var group = new SimpleGroup(mines[i], true, g_TileClasses.metal);
+		let group = new SimpleGroup(mines[i], true, g_TileClasses.metal);
 		createObjectGroups(group, 0, constraint, count, 100);
 	}
 }

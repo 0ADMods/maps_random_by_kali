@@ -66,43 +66,42 @@ RMS.SetProgress(10);
 
 var lastI = -1;
 
-for (var y = 0; y < mapSize; ++y)
+for (let y = 0; y < mapSize; ++y)
 {
-	var yScaled = Math.floor(y * offset);
+	let yScaled = Math.floor(y * offset);
 
-	for (var x = 0; x < mapSize; ++x)
+	for (let x = 0; x < mapSize; ++x)
 	{
-		var xScaled = Math.floor(x * offset);
-		var i = xScaled * hmSize + yScaled;
-		var height = heightmap[i];
-		var tile = pallet[tilemap[i]];
+		let xScaled = Math.floor(x * offset);
+		let i = xScaled * hmSize + yScaled;
+		let height = heightmap[i];
+		let tile = pallet[tilemap[i]];
 
 		if (i == lastI)
 		{
-			var nearby = getNearby(i);
+			let nearby = getNearby(i);
 			tile = pallet[tilemap[nearby[randInt(0, nearby.length - 1)]]];
 			height = getAvgHeight(nearby);
 		}
 
 		setHeight(x, y, height);
 		placeTerrain(x, y, tile);
-
 		lastI = i;
 	}
 }
 
 function getAvgHeight(nearby)
 {
-	var totalHeight = 0;
+	let totalHeight = 0;
 
-	for (var z = 0; z < nearby.length; ++z)
+	for (let z = 0; z < nearby.length; ++z)
 		totalHeight += heightmap[nearby[z]];
 
 	return totalHeight / nearby.length;
 }
 
 function getNearby(i) {
-	var nearby = [i];
+	let nearby = [i];
 
 	if (i + hmSize < heightmap.length)
 		nearby.push(i + hmSize);
@@ -137,7 +136,7 @@ if (randInt(2) == 1 &&
     g_MapInfo.teams.length < g_MapInfo.numPlayers &&
     g_MapInfo.teams.length <= strongholdBases.length)
 {
-	for (var t = 0; t < g_MapInfo.teams.length; ++t)
+	for (let t = 0; t < g_MapInfo.teams.length; ++t)
 		placeStrongholdAt(
 			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
 			Math.floor(strongholdBases[t][0] / offset) / mapSize,
@@ -147,9 +146,8 @@ if (randInt(2) == 1 &&
 }
 else
 {
-	var players = randomizePlayers();
-
-	for (var p = 0; p < players.length; ++p)
+	let players = randomizePlayers();
+	for (let p = 0; p < players.length; ++p)
 		createBase({
 			"id": players[p],
 			"x": Math.floor(singleBases[p][0] / offset) / mapSize,
