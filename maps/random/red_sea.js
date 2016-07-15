@@ -304,8 +304,23 @@ addElements([
 	}
 ]);
 
-var group = new SimpleGroup([new SimpleObject(g_Decoratives.reeds, 5, 8, 1, 4), new SimpleObject(g_Decoratives.rockMedium, 1, 2, 1, 5)], true, g_TileClasses.dirt);
-createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 1), borderClasses(g_TileClasses.water, 2, 1)], 1000, 100);
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject(g_Decoratives.reeds, 5, 8, 1, 4),
+			new SimpleObject(g_Decoratives.rockMedium, 1, 2, 1, 5)
+		],
+		true,
+		g_TileClasses.dirt
+	),
+	0,
+	[
+		stayClasses(g_TileClasses.water, 1),
+		borderClasses(g_TileClasses.water, 2, 1)
+	],
+	1000,
+	100
+);
 
 ExportMap();
 

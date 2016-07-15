@@ -315,8 +315,23 @@ addElements(shuffleArray([
 	}
 ]));
 
-var group = new SimpleGroup([new SimpleObject(g_Decoratives.lillies, 5, 12, 1, 4), new SimpleObject(g_Decoratives.rockMedium, 1, 2, 1, 5)], true, g_TileClasses.dirt);
-createObjectGroups(group, 0, [stayClasses(g_TileClasses.water, 1), borderClasses(g_TileClasses.water, scaleByMapSize(2,8), scaleByMapSize(2,5))], scaleByMapSize(100, 5000), 500);
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject(g_Decoratives.lillies, 5, 12, 1, 4),
+			new SimpleObject(g_Decoratives.rockMedium, 1, 2, 1, 5)
+		],
+		true,
+		g_TileClasses.dirt
+	),
+	0,
+	[
+		stayClasses(g_TileClasses.water, 1),
+		borderClasses(g_TileClasses.water, scaleByMapSize(2,8), scaleByMapSize(2,5))
+	],
+	scaleByMapSize(100, 5000),
+	500
+);
 
 ExportMap();
 

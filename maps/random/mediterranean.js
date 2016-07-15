@@ -214,7 +214,6 @@ var biomes = {
 };
 
 var lastI = -1;
-
 for (let y = 0; y < mapSize; ++y)
 {
 	let yScaled = Math.floor(y * offset);
