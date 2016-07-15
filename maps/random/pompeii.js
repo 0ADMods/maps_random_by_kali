@@ -12,23 +12,23 @@ initMapSettings();
 initTileClasses();
 
 log("Initializing environment...");
-setSunColor(0.8,.8,.8);
+setSunColor(0.8, 0.8, 0.8);
 
-setWaterTint(.5,.5,.5);
-setWaterColor(.3,.3,.3);
+setWaterTint(0.5, 0.5, 0.5);
+setWaterColor(0.3, 0.3, 0.3);
 setWaterWaviness(8);
 setWaterMurkiness(0.87);
 setWaterType("lake");
 
-setTerrainAmbientColor(.3,.3,.3);
-setUnitsAmbientColor(.3,.3,.3);
+setTerrainAmbientColor(0.3, 0.3, 0.3);
+setUnitsAmbientColor(0.3, 0.3, 0.3);
 
 setSunRotation(-1 * PI);
 setSunElevation(PI / 6.25);
 
 setFogFactor(0);
 setFogThickness(0);
-setFogColor(.69,.616,.541);
+setFogColor(0.69, 0.616, 0.541);
 
 setSkySet("stormy");
 
@@ -237,7 +237,13 @@ createObjectGroups(
 		g_TileClasses.rock
 	),
 	0,
-	avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 30, g_TileClasses.mountain, 3, g_TileClasses.forest, 2, g_TileClasses.rock, 2),
+	avoidClasses(
+		g_TileClasses.water, 2,
+		g_TileClasses.player, 30,
+		g_TileClasses.mountain, 3,
+		g_TileClasses.forest, 2,
+		g_TileClasses.rock, 2
+	),
 	20,
 	50
 );
@@ -253,7 +259,12 @@ createObjectGroups(
 		g_TileClasses.dirt
 	),
 	0,
-	avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 20, g_TileClasses.mountain, 2, g_TileClasses.forest, 2),
+	avoidClasses(
+			g_TileClasses.water, 2,
+			g_TileClasses.player, 20,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.forest, 2
+	),
 	100,
 	100
 );
