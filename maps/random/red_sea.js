@@ -13,20 +13,20 @@ initTileClasses();
 setSunColor(0.733, 0.746, 0.574);
 
 setWindAngle(-0.43);
-setWaterTint(.161,.286,.353);
-setWaterColor(.129,.176,.259);
+setWaterTint(0.161, 0.286, 0.353);
+setWaterColor(0.129, 0.176, 0.259);
 setWaterWaviness(8);
 setWaterMurkiness(0.87);
 setWaterType("lake");
 
-setTerrainAmbientColor(.58,.443,.353);
+setTerrainAmbientColor(0.58, 0.443, 0.353);
 
 setSunRotation(PI * 1.1);
 setSunElevation(PI / 7);
 
 setFogFactor(0);
 setFogThickness(0);
-setFogColor(.69,.616,.541);
+setFogColor(0.69, 0.616, 0.541);
 
 setPPEffect("hdr");
 setPPContrast(0.67);
@@ -72,6 +72,7 @@ paintHeightmap(heightmap, tilemap, (tile, x, y) => {
 RMS.SetProgress(30);
 
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
+RMS.SetProgress(40);
 
 // Place players
 var singleBases = shuffleArray([
@@ -117,7 +118,7 @@ else
 			"z": Math.floor(singleBases[p][1] / scale) / mapSize
 		});
 }
-RMS.SetProgress(70);
+RMS.SetProgress(50);
 
 addElements(shuffleArray([
 	{
@@ -166,7 +167,7 @@ addElements(shuffleArray([
 		"amounts": ["few"]
 	}
 ]));
-RMS.SetProgress(90);
+RMS.SetProgress(60);
 
 addElements(shuffleArray([
 	{
@@ -226,6 +227,7 @@ addElements(shuffleArray([
 		"amounts": ["many"]
 	}
 ]));
+RMS.SetProgress(70);
 
 addElements([
 	{
@@ -254,6 +256,7 @@ addElements([
 		"amounts": ["many"]
 	}
 ]);
+RMS.SetProgress(80);
 
 createObjectGroups(
 	new SimpleGroup(
@@ -272,6 +275,7 @@ createObjectGroups(
 	1000,
 	100
 );
+RMS.SetProgress(90);
 
 ExportMap();
 
