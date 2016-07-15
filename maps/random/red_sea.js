@@ -62,18 +62,19 @@ resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
 
 log("Copying heightmap...");
-paintHeightmap(getHeightMap(), getTileMap(), getTilePallet(), (tile, x, y) => {
+var scale = paintHeightmap(getHeightMap(), getTileMap(), getTilePallet(), (tile, x, y) => {
 	if (tile.indexOf("cliff") >= 0)
 		addToClass(x, y, g_TileClasses.mountain);
 });
 RMS.SetProgress(30);
 
 log("Rendering water...");
-var scale = paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
+paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 RMS.SetProgress(40);
 
 log("Placing players...");
-var singleBases = shuffleArray([
+// Coordinate system of the heightmap
+var singleBases = [
 	[175, 30],
 	[45, 210],
 	[280, 180],
@@ -83,39 +84,14 @@ var singleBases = shuffleArray([
 	[200, 253],
 	[90, 115],
 	[45, 45]
-]);
-
-var strongholdBases = shuffleArray([
+];
+var strongholdBases = [
 	[50, 160],
 	[100, 50],
 	[170, 260],
 	[260, 160]
-]);
-
-if (randInt(2) == 1 &&
-    g_MapInfo.mapSize >= 256 &&
-    g_MapInfo.teams.length >= 2 &&
-    g_MapInfo.teams.length < g_MapInfo.numPlayers &&
-    g_MapInfo.teams.length <= strongholdBases.length)
-{
-	for (let t = 0; t < g_MapInfo.teams.length; ++t)
-		placeStrongholdAt(
-			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
-			Math.floor(strongholdBases[t][0] / scale) / g_MapInfo.mapSize,
-			Math.floor(strongholdBases[t][1] / scale) / g_MapInfo.mapSize,
-			0.04
-		);
-}
-else
-{
-	let players = randomizePlayers();
-	for (let p = 0; p < players.length; ++p)
-		createBase({
-			"id": players[p],
-			"x": Math.floor(singleBases[p][0] / scale) / g_MapInfo.mapSize,
-			"z": Math.floor(singleBases[p][1] / scale) / g_MapInfo.mapSize
-		});
-}
+];
+randomPlayerPlacementAt(singleBases, strongholdBases, scale, 0.04);
 RMS.SetProgress(50);
 
 log("Adding mines and forests...");

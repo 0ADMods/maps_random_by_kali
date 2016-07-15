@@ -75,7 +75,8 @@ paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 RMS.SetProgress(40);
 
 log("Playing players...");
-var singleBases = shuffleArray([
+//Coordinate system of the heightmap
+var singleBases = [
 	[90, 115],
 	[240, 157],
 	[35, 155],
@@ -84,37 +85,12 @@ var singleBases = shuffleArray([
 	[160, 285],
 	[105, 220],
 	[185, 90]
-]);
-
+];
 var strongholdBases = [
 	[80, 240],
 	[190, 60]
 ];
-
-if (randInt(2) == 1 &&
-    g_MapInfo.mapSize >= 256 &&
-    g_MapInfo.teams.length >= 2 &&
-    g_MapInfo.teams.length < g_MapInfo.numPlayers &&
-    g_MapInfo.teams.length <= strongholdBases.length)
-{
-	for (let t = 0; t < g_MapInfo.teams.length; ++t)
-		placeStrongholdAt(
-			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
-			Math.floor(strongholdBases[t][0] / scale) / g_MapInfo.mapSize,
-			Math.floor(strongholdBases[t][1] / scale) / g_MapInfo.mapSize,
-			0.06
-		);
-}
-else
-{
-	let players = randomizePlayers();
-	for (let p = 0; p < players.length; ++p)
-		createBase({
-			"id": players[p],
-			"x": Math.floor(singleBases[p][0] / scale) / g_MapInfo.mapSize,
-			"z": Math.floor(singleBases[p][1] / scale) / g_MapInfo.mapSize
-		});
-}
+randomPlayerPlacementAt(singleBases, strongholdBases, scale, 0.06);
 RMS.SetProgress(50);
 
 addElements([
@@ -272,6 +248,7 @@ addElements(shuffleArray([
 ]));
 RMS.SetProgress(80);
 
+log("Adding lillies...");
 createObjectGroups(
 	new SimpleGroup(
 		[

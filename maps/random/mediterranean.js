@@ -241,6 +241,7 @@ paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 RMS.SetProgress(40);
 
 log("Placing player bases...");
+// Coordinate system of the heightmap
 var singleBases = [
 	[70,30],
 	[90,180],
@@ -258,53 +259,25 @@ if (g_MapInfo.mapSize >= 320 || g_MapInfo.numPlayers > singleBases.length)
 		[50,105]
 	);
 
-singleBases = shuffleArray(singleBases);
-
-var strongholdBases = shuffleArray([
+var strongholdBases = [
 	[110,50],
 	[180,260],
 	[260,55]
-]);
+];
 
-if (randInt(2) == 1 &&
-    g_MapInfo.mapSize >= 256 &&
-    g_MapInfo.teams.length >= 2 &&
-    g_MapInfo.teams.length < g_MapInfo.numPlayers &&
-    g_MapInfo.teams.length <= strongholdBases.length)
-{
-	for (let t = 0; t < g_MapInfo.teams.length; ++t)
-		placeStrongholdAt(
-			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
-			Math.floor(strongholdBases[t][0] / scale) / g_MapInfo.mapSize,
-			Math.floor(strongholdBases[t][1] / scale) / g_MapInfo.mapSize,
-			0.06
-		);
-}
-else
-{
-	let players = randomizePlayers();
-
-	for (let p = 0; p < players.length; ++p)
+randomPlayerPlacementAt(singleBases, strongholdBases, scale, 0.06, (singleBase) => {
+	for (let biome in biomes)
 	{
-		for (let biome in biomes)
-		{
-			let classTiles = checkIfInClass(
-				Math.floor(singleBases[p][0] / scale),
-				Math.floor(singleBases[p][1] / scale),
-				g_TileClasses[biome]
-			);
+		let classTiles = checkIfInClass(
+			Math.floor(singleBase[0] / scale),
+			Math.floor(singleBase[1] / scale),
+			g_TileClasses[biome]
+		);
 
-			if (classTiles > 0)
-				setLocalBiome(biomes[biome]);
-		}
-
-		createBase({
-			"x": Math.floor(singleBases[p][0] / scale) / g_MapInfo.mapSize,
-			"z": Math.floor(singleBases[p][1] / scale) / g_MapInfo.mapSize,
-			"id": players[p]
-		});
+		if (classTiles > 0)
+			setLocalBiome(biomes[biome]);
 	}
-}
+});
 RMS.SetProgress(50);
 
 function setLocalBiome(b)
@@ -534,23 +507,6 @@ function renderLocalBiome(biome)
 			"amounts": ["normal"]
 		}
 	]);
-}
-
-function addSmallMetal(constraint, size, mixes, amounts)
-{
-	size = size || 1;
-	mixes = mixes || g_DefaultDeviation;
-	amounts = amounts || 1;
-
-	let offset = getRandomDeviation(size, mixes);
-	let count = 1 + scaleByMapSize(20, 20) * amounts;
-	let mines = [[new SimpleObject(g_Gaia.metalSmall, 2 * offset, 5 * offset, 1 * offset, 3 * offset)]];
-
-	for (let i = 0; i < mines.length; ++i)
-	{
-		let group = new SimpleGroup(mines[i], true, g_TileClasses.metal);
-		createObjectGroups(group, 0, constraint, count, 100);
-	}
 }
 
 ExportMap();
