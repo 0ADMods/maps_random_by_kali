@@ -6,10 +6,12 @@ RMS.LoadLibrary("rmgen2");
 
 InitMap();
 
+log("Initializing tile classes...");
 setBiome(5);
 initMapSettings();
 initTileClasses();
 
+log("Initializing environment...");
 setSunColor(0.8,.8,.8);
 
 setWaterTint(.5,.5,.5);
@@ -28,11 +30,14 @@ setFogFactor(0);
 setFogThickness(0);
 setFogColor(.69,.616,.541);
 
+setSkySet("stormy");
+
 setPPEffect("hdr");
 setPPContrast(0.67);
 setPPSaturation(0.42);
 setPPBloom(0.23);
 
+log("Initializing biome...");
 g_Terrains.mainTerrain = "ocean_rock_a";
 g_Terrains.forestFloor1 = "dirt_burned";
 g_Terrains.forestFloor2 = "shoreline_stoney_a";
@@ -40,10 +45,11 @@ g_Terrains.tier1Terrain = "rock_metamorphic";
 g_Terrains.tier2Terrain = "fissures";
 g_Terrains.tier3Terrain = "LavaTest06";
 g_Terrains.tier4Terrain = "ocean_rock_b";
-g_Terrains.roadWild = "road_flat";
+g_Terrains.roadWild = "road1";
 g_Terrains.road = "road1";
 g_Gaia.mainHuntableAnimal = "gaia/fauna_goat";
 g_Gaia.secondaryHuntableAnimal =  "gaia/fauna_hawk";
+g_Gaia.fruitBush = "gaia/fauna_chicken";
 g_Gaia.fish = "gaia/fauna_fish";
 g_Gaia.tree1 = "gaia/flora_tree_dead";
 g_Gaia.tree2 = "gaia/flora_tree_oak_dead";
@@ -58,70 +64,24 @@ g_Decoratives.rockMedium = "gaia/special_ruins_column_doric";
 g_Decoratives.bushMedium = "actor|props/special/eyecandy/barrels_buried.xml";
 g_Decoratives.bushSmall = "actor|props/special/eyecandy/handcart_1_broken.xml";
 initBiome();
+RMS.SetProgress(5);
 
-var hm = getHeightMap();
-var tm = getTileMap();
-var pallet = getTilePallet();
-var mapSize = getMapSize();
-var hmSize = Math.sqrt(hm.length);
-var offset = hmSize / mapSize;
+log("Resetting terrain...");
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
+RMS.SetProgress(10);
 
-var lastI = -1;
+log("Copying heightmap...");
+var scale = paintHeightmap(getHeightMap(), getTileMap(), getTilePallet(), (tile, x, y) => {
+	if (tile.indexOf("mud_slide") >= 0 || tile.indexOf("Lava") >= 0)
+		addToClass(x, y, g_TileClasses.mountain);
+});
 
-for (var y = 0; y < mapSize; ++y)
-{
-	var yScaled = Math.floor(y * offset);
-
-	for (var x = 0; x < mapSize; ++x)
-	{
-		var xScaled = Math.floor(x * offset);
-		var i = xScaled * hmSize + yScaled;
-		var height = hm[i];
-		var tile = pallet[tm[i]];
-
-		if (i == lastI)
-		{
-			var nearby = getNearby(i);
-			tile = pallet[tm[nearby[randInt(0, nearby.length - 1)]]];
-			height = getAvgHeight(nearby);
-		}
-
-		setHeight(x, y, height);
-		placeTerrain(x, y, tile);
-
-		if (tile.indexOf("mud_slide") >= 0)
-			addToClass(x, y, g_TileClasses.mountain);
-
-		lastI = i;
-	}
-}
-
-function getAvgHeight(nearby)
-{
-	var totalHeight = 0;
-
-	for (var z = 0; z < nearby.length; ++z)
-		totalHeight += hm[nearby[z]];
-
-	return totalHeight / nearby.length;
-}
-
-function getNearby(i)
-{
-	var nearby = [i];
-
-	if (i + hmSize < hm.length)
-		nearby.push(i + hmSize);
-
-	return nearby;
-}
-
-RMS.SetProgress(30);
-
+log("Paint tile classes...");
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
+RMS.SetProgress(40);
 
-// Place players
+log("Playing players...");
+//Coordinate system of the heightmap
 var singleBases = [
 	[220,80],
 	[70,140],
@@ -137,20 +97,8 @@ if (g_MapInfo.mapSize >= 320 || g_MapInfo.numPlayers > singleBases.length)
 		[180,140]
 	);
 
-singleBases = shuffleArray(singleBases);
-
-var players = randomizePlayers();
-
-for (var p = 0; p < players.length; ++p)
-{
-	var base = singleBases[p];
-	var baseX = Math.floor(base[0] / offset) / mapSize;
-	var baseY = Math.floor(base[1] / offset) / mapSize;
-	var player = {"x": baseX, "z": baseY, "id": players[p]};
-	createBase(player);
-}
-
-RMS.SetProgress(70);
+randomPlayerPlacementAt(singleBases, [], scale, 0.06);
+RMS.SetProgress(50);
 
 addElements([
 	{
@@ -180,7 +128,7 @@ addElements([
 	}
 ]);
 
-RMS.SetProgress(80);
+RMS.SetProgress(60);
 
 addElements(shuffleArray([
 	{
@@ -230,7 +178,7 @@ addElements(shuffleArray([
 	}
 ]));
 
-RMS.SetProgress(90);
+RMS.SetProgress(70);
 
 addElements(shuffleArray([
 	{
@@ -276,8 +224,40 @@ addElements(shuffleArray([
 	}
 ]));
 
-var group = new SimpleGroup([new SimpleObject("other/unfinished_greek_temple", 0, 1, 1, 4), new SimpleObject("gaia/special_ruins_column_doric", 1, 3, 1, 4)], true, g_TileClasses.rock);
-createObjectGroups(group, 0, avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 30, g_TileClasses.mountain, 3, g_TileClasses.forest, 2), 20, 50);
+RMS.SetProgress(80);
+
+log("Adding stone ruins...");
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject("other/unfinished_greek_temple", 0, 1, 1, 4),
+			new SimpleObject("gaia/special_ruins_column_doric", 1, 3, 1, 4)
+		],
+		true,
+		g_TileClasses.rock
+	),
+	0,
+	avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 30, g_TileClasses.mountain, 3, g_TileClasses.forest, 2, g_TileClasses.rock, 2),
+	20,
+	50
+);
+RMS.SetProgress(85);
+
+log("Adding bodies...");
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject("actor|props/special/eyecandy/skeleton.xml", 3, 10, 1, 7)
+		],
+		true,
+		g_TileClasses.dirt
+	),
+	0,
+	avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 20, g_TileClasses.mountain, 2, g_TileClasses.forest, 2),
+	100,
+	100
+);
+RMS.SetProgress(90);
 
 ExportMap();
 
