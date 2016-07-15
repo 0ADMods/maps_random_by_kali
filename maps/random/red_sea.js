@@ -235,11 +235,11 @@ addElements([
 ]);
 RMS.SetProgress(80);
 
-log("Adding lillies...");
+log("Adding reeds...");
 createObjectGroups(
 	new SimpleGroup(
 		[
-			new SimpleObject(g_Decoratives.reeds, 5, 8, 1, 4),
+			new SimpleObject(g_Decoratives.reeds, 5, 12, 1, 4),
 			new SimpleObject(g_Decoratives.rockMedium, 1, 2, 1, 5)
 		],
 		true,
@@ -248,10 +248,10 @@ createObjectGroups(
 	0,
 	[
 		stayClasses(g_TileClasses.water, 1),
-		borderClasses(g_TileClasses.water, 2, 1)
+		borderClasses(g_TileClasses.water, scaleByMapSize(2,8), scaleByMapSize(2,5))
 	],
-	1000,
-	100
+	scaleByMapSize(100, 1000),
+	500
 );
 RMS.SetProgress(90);
 
@@ -269,5 +269,4 @@ function getTileMap()
 
 function getTilePallet()
 {
-	return ["desert_dirt_rough_2","desert_dirt_rough","desert_sand_dunes_50","desert_sand_wet","desert_dirt_persia_1","desert_dirt_persia_rocks","desert_dirt_rocks_1","desert_sand_stones","desert_dirt_rocks_2","desert_dirt_rocks_3","desert_sand_scrub","desert_plants_b","desert_dirt_rocks_3_scrub","desert_cliff_3_dirty","desert_cliff_4","forestfloor_dirty","desert_cliff_2","desert_cliff_1","desert_cliff_5","desert_sand_dunes_rocks","desert_cliff_3","desert_cliff_egypt_2"];
-}
+	return ["desert_dirt_rough_2","desert_dirt_rough","desert_sand_dunes_50","desert_sand_wet","desert_dirt_persia_1","desert_dirt_persia_rocks","desert_dirt_rocks_1","desert_sand_stones","desert_dirt_rocks_2","desert_dirt_rocks_3","desert_sand_scrub","desert_plants_b","desert_dirt_rocks_3_scrub","desert_cliff_3_dirty","desert_cliff_4","forestfloor_dirty","desert_cliff_2","desert_cliff_1","desert_cliff_5","desert_sand_dunes_rocks","desert_cliff_3","desert_cliff_egypt_2",];}
