@@ -227,7 +227,7 @@ for (let y = 0; y < mapSize; ++y)
 
 		if (i == lastI)
 		{
-			let nearby = getNearby(i);
+			let nearby = getNearby(heightmap, i);
 			tile = pallet[tilemap[nearby[randInt(0, nearby.length - 1)]]];
 			height = getAvgHeight(nearby);
 		}
@@ -258,26 +258,6 @@ for (let y = 0; y < mapSize; ++y)
 
 		lastI = i;
 	}
-}
-
-function getAvgHeight(nearby)
-{
-	let totalHeight = 0;
-
-	for (let z = 0; z < nearby.length; ++z)
-		totalHeight += heightmap[nearby[z]];
-
-	return totalHeight / nearby.length;
-}
-
-function getNearby(i)
-{
-	let nearby = [i];
-
-	if (i + hmSize < heightmap.length)
-		nearby.push(i + hmSize);
-
-	return nearby;
 }
 
 RMS.SetProgress(30);

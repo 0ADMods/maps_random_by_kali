@@ -56,11 +56,11 @@ g_Decoratives.bushMedium = "actor|props/flora/bush_desert_dry_a.xml";
 g_Decoratives.bushSmall = "actor|props/flora/bush_medit_sm_dry.xml";
 initBiome();
 
-var hm = getHeightMap();
-var tm = getTileMap();
+var heightmap = getHeightMap();
+var tilemap = getTileMap();
 var pallet = getTilePallet();
 var mapSize = getMapSize();
-var hmSize = Math.sqrt(hm.length);
+var hmSize = Math.sqrt(heightmap.length);
 var offset = hmSize / mapSize;
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
@@ -75,14 +75,14 @@ for (let y = 0; y < mapSize; ++y)
 	{
 		let xScaled = Math.floor(x * offset);
 		let i = xScaled * hmSize + yScaled;
-		let height = hm[i];
-		let tile = pallet[tm[i]];
+		let height = heightmap[i];
+		let tile = pallet[tilemap[i]];
 
 		if (i == lastI)
 		{
-			let nearby = getNearby(i);
-			tile = pallet[tm[nearby[randInt(0, nearby.length - 1)]]];
-			height = getAvgHeight(nearby);
+			let nearby = getNearby(heightmap, i);
+			tile = pallet[tilemap[nearby[randInt(0, nearby.length - 1)]]];
+			height = getAvgHeight(heightmap, nearby);
 		}
 
 		setHeight(x, y, height);
@@ -93,26 +93,6 @@ for (let y = 0; y < mapSize; ++y)
 
 		lastI = i;
 	}
-}
-
-function getAvgHeight(nearby)
-{
-	let totalHeight = 0;
-
-	for (let z = 0; z < nearby.length; ++z)
-		totalHeight += hm[nearby[z]];
-
-	return totalHeight / nearby.length;
-}
-
-function getNearby(i)
-{
-	let nearby = [i];
-
-	if (i + hmSize < hm.length)
-		nearby.push(i + hmSize);
-
-	return nearby;
 }
 
 RMS.SetProgress(30);
