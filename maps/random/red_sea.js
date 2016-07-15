@@ -120,7 +120,6 @@ RMS.SetProgress(30);
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 
 // Place players
-//TODO: remove bottom right placement if mapsize is too small
 var singleBases = shuffleArray([
 	[175, 30],
 	[45, 210],
