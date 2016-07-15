@@ -442,7 +442,7 @@ function renderLocalBiome(biome)
 			"stay": [g_TileClasses[biome], 0],
 			"sizes": ["normal"],
 			"mixes": ["same"],
-			"amounts": ["few", "normal", "many"]
+			"amounts": ["many"]
 		},
 		{
 			"func": addStone,
@@ -459,7 +459,7 @@ function renderLocalBiome(biome)
 			"stay": [g_TileClasses[biome], 0],
 			"sizes": ["normal"],
 			"mixes": ["same"],
-			"amounts": ["few", "normal", "many"]
+			"amounts": ["many"]
 		},
 		{
 			"func": addForests,
