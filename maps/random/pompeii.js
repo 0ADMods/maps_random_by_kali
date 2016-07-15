@@ -124,49 +124,30 @@ paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 // Place players
 var singleBases = [
 	[220,80],
-	[50,200],
 	[70,140],
-	[180,140],
-	[125,190],
 	[180,270],
 	[280,280],
-	[50,270],
+	[50,270]
 ];
+
+if (g_MapInfo.mapSize >= 320 || g_MapInfo.numPlayers > singleBases.length)
+	singleBases.push(
+		[50,200],
+		[125,190],
+		[180,140]
+	);
 
 singleBases = shuffleArray(singleBases);
 
-var strongholdBases = [
-];
+var players = randomizePlayers();
 
-strongholdBases = shuffleArray(strongholdBases);
-
-if (g_MapInfo.teams.length >= 2 && g_MapInfo.teams.length < g_MapInfo.numPlayers && g_MapInfo.teams.length <= strongholdBases.length && randInt(2) == 1 && g_MapInfo.mapSize >= 256)
+for (var p = 0; p < players.length; ++p)
 {
-	for (var t = 0; t < g_MapInfo.teams.length; ++t)
-	{
-		var team = [];
-		for (var p = 0; p < g_MapInfo.teams[t].length; ++p)
-		{
-			var player = {"id": g_MapInfo.teams[t][p]}
-			team.push(player)
-		}
-		var base = strongholdBases[t];
-		var baseX = Math.floor(base[0] / offset) / mapSize;
-		var baseY = Math.floor(base[1] / offset) / mapSize;
-		placeStrongholdAt(team, baseX, baseY, 0.04);
-	}
-} else
-{
-	var players = randomizePlayers();
-
-	for (var p = 0; p < players.length; ++p)
-	{
-		var base = singleBases[p];
-		var baseX = Math.floor(base[0] / offset) / mapSize;
-		var baseY = Math.floor(base[1] / offset) / mapSize;
-		var player = {"x": baseX, "z": baseY, "id": players[p]};
-		createBase(player);
-	}
+	var base = singleBases[p];
+	var baseX = Math.floor(base[0] / offset) / mapSize;
+	var baseY = Math.floor(base[1] / offset) / mapSize;
+	var player = {"x": baseX, "z": baseY, "id": players[p]};
+	createBase(player);
 }
 
 RMS.SetProgress(70);
