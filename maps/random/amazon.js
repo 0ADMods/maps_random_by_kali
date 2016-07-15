@@ -6,10 +6,12 @@ RMS.LoadLibrary("rmgen2");
 
 InitMap();
 
+log("Initializing tile classes...");
 setBiome(7);
 initMapSettings();
 initTileClasses();
 
+log("Initializing environment...");
 setSunColor(0.733, 0.746, 0.574);
 
 setWaterTint(0.576, 0.541, 0.322);
@@ -32,6 +34,7 @@ setPPContrast(0.67);
 setPPSaturation(0.42);
 setPPBloom(0.23);
 
+log("Initializing biome...");
 g_Terrains.mainTerrain = "tropic_dirt_a_plants";
 g_Terrains.forestFloor1 = "tropic_grass_c";
 g_Terrains.forestFloor2 = "tropic_grass_c";
@@ -57,23 +60,21 @@ g_Decoratives.rockMedium = "actor|geology/stone_savanna_med.xml";
 g_Decoratives.bushMedium = "actor|props/flora/bush_tropic_a.xml";
 g_Decoratives.bushSmall = "actor|props/flora/bush_tropic_b.xml";
 initBiome();
+RMS.SetProgress(5);
 
-var heightmap = getHeightMap();
-var tilemap = getTileMap();
-var pallet = getTilePallet();
-var mapSize = getMapSize();
-var hmSize = Math.sqrt(heightmap.length);
-var offset = hmSize / mapSize;
+log("Resetting terrain...");
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
 
-paintHeightmap(heightmap, tilemap);
+log("Copying heightmap...");
+var scale = paintHeightmap(getHeightMap(), getTileMap(), getTilePallet());
 RMS.SetProgress(30);
 
+log("Paint tile classes...");
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 RMS.SetProgress(40);
 
-// Place players
+log("Playing players...");
 var singleBases = shuffleArray([
 	[90, 115],
 	[240, 157],
@@ -99,8 +100,8 @@ if (randInt(2) == 1 &&
 	for (let t = 0; t < g_MapInfo.teams.length; ++t)
 		placeStrongholdAt(
 			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
-			Math.floor(strongholdBases[t][0] / offset) / mapSize,
-			Math.floor(strongholdBases[t][1] / offset) / mapSize,
+			Math.floor(strongholdBases[t][0] / scale) / g_MapInfo.mapSize,
+			Math.floor(strongholdBases[t][1] / scale) / g_MapInfo.mapSize,
 			0.06
 		);
 }
@@ -110,8 +111,8 @@ else
 	for (let p = 0; p < players.length; ++p)
 		createBase({
 			"id": players[p],
-			"x": Math.floor(singleBases[p][0] / offset) / mapSize,
-			"z": Math.floor(singleBases[p][1] / offset) / mapSize
+			"x": Math.floor(singleBases[p][0] / scale) / g_MapInfo.mapSize,
+			"z": Math.floor(singleBases[p][1] / scale) / g_MapInfo.mapSize
 		});
 }
 RMS.SetProgress(50);

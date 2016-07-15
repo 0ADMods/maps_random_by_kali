@@ -6,6 +6,7 @@ RMS.LoadLibrary("rmgen2");
 
 InitMap();
 
+log("Initializing biome...");
 setBiome(3);
 initMapSettings();
 initTileClasses();
@@ -56,25 +57,22 @@ g_Decoratives.bushMedium = "actor|props/flora/bush_desert_dry_a.xml";
 g_Decoratives.bushSmall = "actor|props/flora/bush_medit_sm_dry.xml";
 initBiome();
 
-var heightmap = getHeightMap();
-var tilemap = getTileMap();
-var pallet = getTilePallet();
-var mapSize = getMapSize();
-var hmSize = Math.sqrt(heightmap.length);
-var scale = hmSize / mapSize;
+log("Resetting terrain...");
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
 
-paintHeightmap(heightmap, tilemap, (tile, x, y) => {
+log("Copying heightmap...");
+paintHeightmap(getHeightMap(), getTileMap(), getTilePallet(), (tile, x, y) => {
 	if (tile.indexOf("cliff") >= 0)
 		addToClass(x, y, g_TileClasses.mountain);
 });
 RMS.SetProgress(30);
 
-paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
+log("Rendering water...");
+var scale = paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 RMS.SetProgress(40);
 
-// Place players
+log("Placing players...");
 var singleBases = shuffleArray([
 	[175, 30],
 	[45, 210],
@@ -103,8 +101,8 @@ if (randInt(2) == 1 &&
 	for (let t = 0; t < g_MapInfo.teams.length; ++t)
 		placeStrongholdAt(
 			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
-			Math.floor(strongholdBases[t][0] / scale) / mapSize,
-			Math.floor(strongholdBases[t][1] / scale) / mapSize,
+			Math.floor(strongholdBases[t][0] / scale) / g_MapInfo.mapSize,
+			Math.floor(strongholdBases[t][1] / scale) / g_MapInfo.mapSize,
 			0.04
 		);
 }
@@ -114,12 +112,13 @@ else
 	for (let p = 0; p < players.length; ++p)
 		createBase({
 			"id": players[p],
-			"x": Math.floor(singleBases[p][0] / scale) / mapSize,
-			"z": Math.floor(singleBases[p][1] / scale) / mapSize
+			"x": Math.floor(singleBases[p][0] / scale) / g_MapInfo.mapSize,
+			"z": Math.floor(singleBases[p][1] / scale) / g_MapInfo.mapSize
 		});
 }
 RMS.SetProgress(50);
 
+log("Adding mines and forests...");
 addElements(shuffleArray([
 	{
 		"func": addMetal,
@@ -169,6 +168,7 @@ addElements(shuffleArray([
 ]));
 RMS.SetProgress(60);
 
+log("Adding berries and animals...");
 addElements(shuffleArray([
 	{
 		"func": addBerries,
@@ -229,6 +229,7 @@ addElements(shuffleArray([
 ]));
 RMS.SetProgress(70);
 
+log("Adding decoration...");
 addElements([
 	{
 		"func": addLayeredPatches,
@@ -258,6 +259,7 @@ addElements([
 ]);
 RMS.SetProgress(80);
 
+log("Adding lillies...");
 createObjectGroups(
 	new SimpleGroup(
 		[
