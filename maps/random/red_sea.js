@@ -61,40 +61,14 @@ var tilemap = getTileMap();
 var pallet = getTilePallet();
 var mapSize = getMapSize();
 var hmSize = Math.sqrt(heightmap.length);
-var offset = hmSize / mapSize;
+var scale = hmSize / mapSize;
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
 
-var lastI = -1;
-
-for (let y = 0; y < mapSize; ++y)
-{
-	let yScaled = Math.floor(y * offset);
-
-	for (let x = 0; x < mapSize; ++x)
-	{
-		let xScaled = Math.floor(x * offset);
-		let i = xScaled * hmSize + yScaled;
-		let height = heightmap[i];
-		let tile = pallet[tilemap[i]];
-
-		if (i == lastI)
-		{
-			let nearby = getNearby(heightmap, i);
-			tile = pallet[tilemap[nearby[randInt(0, nearby.length - 1)]]];
-			height = getAvgHeight(heightmap, nearby);
-		}
-
-		setHeight(x, y, height);
-		placeTerrain(x, y, tile);
-
-		if (tile.indexOf("cliff") >= 0)
-			addToClass(x, y, g_TileClasses.mountain);
-
-		lastI = i;
-	}
-}
-
+paintHeightmap(heightmap, tilemap, (tile, x, y) => {
+	if (tile.indexOf("cliff") >= 0)
+		addToClass(x, y, g_TileClasses.mountain);
+});
 RMS.SetProgress(30);
 
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
@@ -128,8 +102,8 @@ if (randInt(2) == 1 &&
 	for (let t = 0; t < g_MapInfo.teams.length; ++t)
 		placeStrongholdAt(
 			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
-			Math.floor(strongholdBases[t][0] / offset) / mapSize,
-			Math.floor(strongholdBases[t][1] / offset) / mapSize,
+			Math.floor(strongholdBases[t][0] / scale) / mapSize,
+			Math.floor(strongholdBases[t][1] / scale) / mapSize,
 			0.04
 		);
 }
@@ -139,11 +113,10 @@ else
 	for (let p = 0; p < players.length; ++p)
 		createBase({
 			"id": players[p],
-			"x": Math.floor(singleBases[p][0] / offset) / mapSize,
-			"z": Math.floor(singleBases[p][1] / offset) / mapSize
+			"x": Math.floor(singleBases[p][0] / scale) / mapSize,
+			"z": Math.floor(singleBases[p][1] / scale) / mapSize
 		});
 }
-
 RMS.SetProgress(70);
 
 addElements(shuffleArray([
@@ -193,7 +166,6 @@ addElements(shuffleArray([
 		"amounts": ["few"]
 	}
 ]));
-
 RMS.SetProgress(90);
 
 addElements(shuffleArray([

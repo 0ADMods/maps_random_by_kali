@@ -39,8 +39,9 @@ var tilemap = getTileMap();
 var pallet = getTilePallet();
 var mapSize = getMapSize();
 var hmSize = Math.sqrt(heightmap.length);
-var offset = hmSize / mapSize;
+var scale = hmSize / mapSize;
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
+RMS.SetProgress(10);
 
 var biomes = {
 	"autumn": {
@@ -213,56 +214,33 @@ var biomes = {
 	}
 };
 
-var lastI = -1;
-for (let y = 0; y < mapSize; ++y)
-{
-	let yScaled = Math.floor(y * offset);
+paintHeightmap(heightmap, tilemap, (tile, x, y) => {
 
-	for (let x = 0; x < mapSize; ++x)
-	{
-		let xScaled = Math.floor(x * offset);
-		let i = xScaled * hmSize + yScaled;
-		let height = heightmap[i];
-		let tile = pallet[tilemap[i]];
+	if (tile.indexOf("cliff") >= 0)
+		addToClass(x, y, g_TileClasses.mountain);
 
-		if (i == lastI)
-		{
-			let nearby = getNearby(heightmap, i);
-			tile = pallet[tilemap[nearby[randInt(0, nearby.length - 1)]]];
-			height = getAvgHeight(nearby);
-		}
+	if (tile.indexOf("desert") >= 0)
+		addToClass(x, y, g_TileClasses.desert);
 
-		setHeight(x, y, height);
-		placeTerrain(x, y, tile);
+	if (tile.indexOf("medit") >= 0 && tile.indexOf("sand") < 0)
+		addToClass(x, y, g_TileClasses.medit);
 
-		if (tile.indexOf("cliff") >= 0)
-			addToClass(x, y, g_TileClasses.mountain);
+	if (tile.indexOf("polar") >= 0)
+		addToClass(x, y, g_TileClasses.polar);
 
-		if (tile.indexOf("desert") >= 0)
-			addToClass(x, y, g_TileClasses.desert);
+	if (tile.indexOf("steppe") >= 0)
+		addToClass(x, y, g_TileClasses.steppe);
 
-		if (tile.indexOf("medit") >= 0 && tile.indexOf("sand") < 0)
-			addToClass(x, y, g_TileClasses.medit);
+	if (tile.indexOf("temp") >= 0)
+		addToClass(x, y, g_TileClasses.temp);
 
-		if (tile.indexOf("polar") >= 0)
-			addToClass(x, y, g_TileClasses.polar);
-
-		if (tile.indexOf("steppe") >= 0)
-			addToClass(x, y, g_TileClasses.steppe);
-
-		if (tile.indexOf("temp") >= 0)
-			addToClass(x, y, g_TileClasses.temp);
-
-		if (tile.indexOf("aut") >= 0)
-			addToClass(x, y, g_TileClasses.autumn);
-
-		lastI = i;
-	}
-}
-
+	if (tile.indexOf("aut") >= 0)
+		addToClass(x, y, g_TileClasses.autumn);
+});
 RMS.SetProgress(30);
 
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
+RMS.SetProgress(40);
 
 // Place players
 var singleBases = [
@@ -299,8 +277,8 @@ if (randInt(2) == 1 &&
 	for (let t = 0; t < g_MapInfo.teams.length; ++t)
 		placeStrongholdAt(
 			g_MapInfo.teams[t].map(playerID => ({ "id": playerID })),
-			Math.floor(strongholdBases[t][0] / offset) / mapSize,
-			Math.floor(strongholdBases[t][1] / offset) / mapSize,
+			Math.floor(strongholdBases[t][0] / scale) / mapSize,
+			Math.floor(strongholdBases[t][1] / scale) / mapSize,
 			0.06
 		);
 }
@@ -313,8 +291,8 @@ else
 		for (let biome in biomes)
 		{
 			let classTiles = checkIfInClass(
-				Math.floor(singleBases[p][0] / offset),
-				Math.floor(singleBases[p][1] / offset),
+				Math.floor(singleBases[p][0] / scale),
+				Math.floor(singleBases[p][1] / scale),
 				g_TileClasses[biome]
 			);
 
@@ -323,14 +301,13 @@ else
 		}
 
 		createBase({
-			"x": Math.floor(singleBases[p][0] / offset) / mapSize,
-			"z": Math.floor(singleBases[p][1] / offset) / mapSize,
+			"x": Math.floor(singleBases[p][0] / scale) / mapSize,
+			"z": Math.floor(singleBases[p][1] / scale) / mapSize,
 			"id": players[p]
 		});
 	}
 }
-
-RMS.SetProgress(70);
+RMS.SetProgress(50);
 
 function setLocalBiome(b)
 {
@@ -373,6 +350,7 @@ addElements([
 		"amounts": ["many"]
 	}
 ]);
+RMS.SetProgress(60);
 
 g_Gaia.fish = "gaia/fauna_whale_fin";
 addElements([
@@ -389,7 +367,7 @@ addElements([
 		"amounts": ["scarce"]
 	}
 ]);
-
+RMS.SetProgress(70);
 
 // Set local resources
 for (let biome in biomes)
@@ -397,16 +375,12 @@ for (let biome in biomes)
   setLocalBiome(biomes[biome]);
   renderLocalBiome(biome);
 }
+RMS.SetProgress(90);
 
 function renderLocalBiome(biome)
 {
-	let localAvoid = g_TileClasses.plateau;
-	if (biome == "temp")
-		localAvoid = g_TileClasses.autumn;
-
-	let treeCount = "tons";
-	if (biome == "desert")
-		treeCount = "normal";
+	let localAvoid = g_TileClasses[biome == "temp" ? "plateau" : "autumn"];
+	let treeCount = biome == "desert" ? "normal" : "tons";
 
 	addElements([
 		{

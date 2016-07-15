@@ -67,35 +67,11 @@ var offset = hmSize / mapSize;
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
 
-var lastI = -1;
-
-for (let y = 0; y < mapSize; ++y)
-{
-	let yScaled = Math.floor(y * offset);
-
-	for (let x = 0; x < mapSize; ++x)
-	{
-		let xScaled = Math.floor(x * offset);
-		let i = xScaled * hmSize + yScaled;
-		let height = heightmap[i];
-		let tile = pallet[tilemap[i]];
-
-		if (i == lastI)
-		{
-			let nearby = getNearby(heightmap, i);
-			tile = pallet[tilemap[nearby[randInt(0, nearby.length - 1)]]];
-			height = getAvgHeight(nearby);
-		}
-
-		setHeight(x, y, height);
-		placeTerrain(x, y, tile);
-		lastI = i;
-	}
-}
-
+paintHeightmap(heightmap, tilemap);
 RMS.SetProgress(30);
 
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
+RMS.SetProgress(40);
 
 // Place players
 var singleBases = shuffleArray([
@@ -138,8 +114,7 @@ else
 			"z": Math.floor(singleBases[p][1] / offset) / mapSize
 		});
 }
-
-RMS.SetProgress(70);
+RMS.SetProgress(50);
 
 addElements([
 	{
@@ -173,7 +148,7 @@ addElements([
 	}
 ]);
 
-RMS.SetProgress(80);
+RMS.SetProgress(60);
 
 addElements(shuffleArray([
 	{
@@ -228,8 +203,7 @@ addElements(shuffleArray([
 		"amounts": ["tons"]
 	}
 ]));
-
-RMS.SetProgress(90);
+RMS.SetProgress(70);
 
 addElements(shuffleArray([
 	{
@@ -295,6 +269,7 @@ addElements(shuffleArray([
 		"amounts": ["many"]
 	}
 ]));
+RMS.SetProgress(80);
 
 createObjectGroups(
 	new SimpleGroup(
@@ -313,6 +288,7 @@ createObjectGroups(
 	scaleByMapSize(100, 5000),
 	500
 );
+RMS.SetProgress(90);
 
 ExportMap();
 
