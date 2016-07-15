@@ -345,13 +345,8 @@ RMS.SetProgress(70);
 log("Rendering local biomes...");
 for (let biome in biomes)
 {
-  setLocalBiome(biomes[biome]);
-  renderLocalBiome(biome);
-}
-RMS.SetProgress(90);
+	setLocalBiome(biomes[biome]);
 
-function renderLocalBiome(biome)
-{
 	let localAvoid = g_TileClasses[biome == "temp" ? "plateau" : "autumn"];
 	let treeCount = biome == "desert" ? "normal" : "tons";
 
@@ -508,6 +503,7 @@ function renderLocalBiome(biome)
 		}
 	]);
 }
+RMS.SetProgress(90);
 
 ExportMap();
 
