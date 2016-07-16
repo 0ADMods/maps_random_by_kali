@@ -285,4 +285,5 @@ function getTileMap()
 
 function getTilePallet()
 {
-	return ["ocean_rock_a","ocean_rock_b","mud_slide","LavaTest06","LavaTest05",];}
+	return ["ocean_rock_a","ocean_rock_b","mud_slide","LavaTest06","LavaTest05"];
+}
