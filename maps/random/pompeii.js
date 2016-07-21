@@ -12,23 +12,23 @@ initMapSettings();
 initTileClasses();
 
 log("Initializing environment...");
-setSunColor(0.8, 0.8, 0.8);
+setSunColor(0.8,.8,.8);
 
-setWaterTint(0.5, 0.5, 0.5);
-setWaterColor(0.3, 0.3, 0.3);
+setWaterTint(.5,.5,.5);
+setWaterColor(.3,.3,.3);
 setWaterWaviness(8);
 setWaterMurkiness(0.87);
 setWaterType("lake");
 
-setTerrainAmbientColor(0.3, 0.3, 0.3);
-setUnitsAmbientColor(0.3, 0.3, 0.3);
+setTerrainAmbientColor(.3,.3,.3);
+setUnitsAmbientColor(.3,.3,.3);
 
 setSunRotation(-1 * PI);
 setSunElevation(PI / 6.25);
 
 setFogFactor(0);
 setFogThickness(0);
-setFogColor(0.69, 0.616, 0.541);
+setFogColor(.69,.616,.541);
 
 setSkySet("stormy");
 
@@ -237,16 +237,26 @@ createObjectGroups(
 		g_TileClasses.rock
 	),
 	0,
-	avoidClasses(
-		g_TileClasses.water, 2,
-		g_TileClasses.player, 30,
-		g_TileClasses.mountain, 3,
-		g_TileClasses.forest, 2,
-		g_TileClasses.rock, 2
-	),
+	avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 30, g_TileClasses.mountain, 3, g_TileClasses.forest, 2, g_TileClasses.rock, 2),
 	20,
 	50
 );
+
+log("Adding smoke...");
+var smoke = [
+	new Entity("actor|particle/smoke_volcano.xml", 0, 178, 112, 0),
+	new Entity("actor|particle/smoke_volcano.xml", 0, 179, 112, 0),
+	new Entity("actor|particle/smoke_volcano.xml", 0, 180, 111, 0),
+	new Entity("actor|particle/smoke_volcano.xml", 0, 177, 111, 0),
+	new Entity("actor|particle/smoke_curved.xml", 0, 176, 111, 0),
+	new Entity("actor|particle/smoke_volcano.xml", 0, 177, 112, 0),
+	new Entity("actor|particle/smoke_curved.xml", 0, 181, 111, 0),
+	new Entity("actor|particle/smoke_volcano.xml", 0, 180, 112, 0),
+];
+
+for (var s=0; s<smoke.length; ++s)
+	g_Map.addObject(smoke[s]);
+
 RMS.SetProgress(85);
 
 log("Adding bodies...");
@@ -259,14 +269,28 @@ createObjectGroups(
 		g_TileClasses.dirt
 	),
 	0,
-	avoidClasses(
-			g_TileClasses.water, 2,
-			g_TileClasses.player, 20,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.forest, 2
-	),
+	avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 20, g_TileClasses.mountain, 2, g_TileClasses.forest, 2),
 	100,
 	100
+);
+RMS.SetProgress(90);
+
+log("Adding shipwrecks...");
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject("actor|props/special/eyecandy/shipwreck_hull.xml", 0, 2, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/shipwreck_ram_side.xml", 0, 2, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/shipwreck_sail_boat_cut.xml", 0, 2, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/barrels_floating.xml", 0, 2, 1, 20)
+		],
+		true,
+		g_TileClasses.dirt
+	),
+	0,
+	[avoidClasses(g_TileClasses.dirt, 10),stayClasses(g_TileClasses.water, 0)],
+	15,
+	200
 );
 RMS.SetProgress(90);
 
@@ -285,5 +309,5 @@ function getTileMap()
 
 function getTilePallet()
 {
-	return ["ocean_rock_a","ocean_rock_b","mud_slide","LavaTest06","LavaTest05"];
+	return ["ocean_rock_a","ocean_rock_b","mud_slide","LavaTest06","LavaTest05",];
 }
