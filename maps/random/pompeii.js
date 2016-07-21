@@ -255,7 +255,11 @@ var smoke = [
 ];
 
 for (var s=0; s<smoke.length; ++s)
+{
+	smoke[s].position.x = Math.floor(smoke[s].position.x / scale);
+	smoke[s].position.z = Math.floor(smoke[s].position.z / scale);
 	g_Map.addObject(smoke[s]);
+}
 
 RMS.SetProgress(85);
 
