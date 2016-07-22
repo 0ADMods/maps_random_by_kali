@@ -286,6 +286,32 @@ createObjectGroups(
 	200
 );
 
+log("Adding ruins...");
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject("actor|props/special/eyecandy/statue_aphrodite_huge.xml", 0, 1, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/statue_aphrodite_small.xml", 0, 1, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/sele_colonnade.xml", 0, 1, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/well_1_b.xml", 0, 1, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/anvil.xml", 0, 1, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/wheel_laying.xml", 0, 2, 1, 20),
+			new SimpleObject("actor|props/special/eyecandy/vase_rome_a.xml", 0, 2, 1, 20)
+		],
+		true,
+		g_TileClasses.dirt
+	),
+	0,
+	avoidClasses(
+			g_TileClasses.water, 2,
+			g_TileClasses.player, 20,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.forest, 2
+	),
+	10,
+	200
+);
+
 log("Adding bodies...");
 createObjectGroups(
 	new SimpleGroup(
