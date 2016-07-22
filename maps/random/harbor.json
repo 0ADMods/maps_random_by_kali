@@ -6,7 +6,6 @@
 		"BaseTerrain" : ["medit_sea_depths"],
 		"BaseHeight" : 2,
 		"Preview" : "harbor.png",
-		"Keywords": ["naval"],
 		"CircularMap" : true
 	}
 }
