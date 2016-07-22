@@ -12,23 +12,23 @@ initMapSettings();
 initTileClasses();
 
 log("Initializing environment...");
-setSunColor(0.8,.8,.8);
+setSunColor(0.8, 0.8, 0.8);
 
-setWaterTint(.5,.5,.5);
-setWaterColor(.3,.3,.3);
+setWaterTint(0.5, 0.5, 0.5);
+setWaterColor(0.3, 0.3, 0.3);
 setWaterWaviness(8);
 setWaterMurkiness(0.87);
 setWaterType("lake");
 
-setTerrainAmbientColor(.3,.3,.3);
-setUnitsAmbientColor(.3,.3,.3);
+setTerrainAmbientColor(0.3, 0.3, 0.3);
+setUnitsAmbientColor(0.3, 0.3, 0.3);
 
 setSunRotation(-1 * PI);
 setSunElevation(PI / 6.25);
 
 setFogFactor(0);
 setFogThickness(0);
-setFogColor(.69,.616,.541);
+setFogColor(0.69, 0.616, 0.541);
 
 setSkySet("stormy");
 
@@ -226,22 +226,6 @@ addElements(shuffleArray([
 
 RMS.SetProgress(80);
 
-log("Adding stone ruins...");
-createObjectGroups(
-	new SimpleGroup(
-		[
-			new SimpleObject("other/unfinished_greek_temple", 0, 1, 1, 4),
-			new SimpleObject("gaia/special_ruins_column_doric", 1, 3, 1, 4)
-		],
-		true,
-		g_TileClasses.rock
-	),
-	0,
-	avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 30, g_TileClasses.mountain, 3, g_TileClasses.forest, 2, g_TileClasses.rock, 2),
-	20,
-	50
-);
-
 log("Adding smoke...");
 var smoke = [
 	new Entity("actor|particle/smoke_volcano.xml", 0, 178, 112, 0),
@@ -261,23 +245,28 @@ for (var s=0; s<smoke.length; ++s)
 	g_Map.addObject(smoke[s]);
 }
 
-RMS.SetProgress(85);
-
-log("Adding bodies...");
+log("Adding stone ruins...");
 createObjectGroups(
 	new SimpleGroup(
 		[
-			new SimpleObject("actor|props/special/eyecandy/skeleton.xml", 3, 10, 1, 7)
+			new SimpleObject("other/unfinished_greek_temple", 0, 1, 1, 4),
+			new SimpleObject("gaia/special_ruins_column_doric", 1, 3, 1, 4)
 		],
 		true,
-		g_TileClasses.dirt
+		g_TileClasses.rock
 	),
 	0,
-	avoidClasses(g_TileClasses.water, 2, g_TileClasses.player, 20, g_TileClasses.mountain, 2, g_TileClasses.forest, 2),
-	100,
-	100
+	avoidClasses(
+		g_TileClasses.water, 2,
+		g_TileClasses.player, 30,
+		g_TileClasses.mountain, 3,
+		g_TileClasses.forest, 2,
+		g_TileClasses.rock, 2
+	),
+	20,
+	50
 );
-RMS.SetProgress(90);
+RMS.SetProgress(85);
 
 log("Adding shipwrecks...");
 createObjectGroups(
@@ -296,6 +285,26 @@ createObjectGroups(
 	15,
 	200
 );
+
+log("Adding bodies...");
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject("actor|props/special/eyecandy/skeleton.xml", 3, 10, 1, 7)
+		],
+		true,
+		g_TileClasses.dirt
+	),
+	0,
+	avoidClasses(
+			g_TileClasses.water, 2,
+			g_TileClasses.player, 20,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.forest, 2
+	),
+	100,
+	100
+);
 RMS.SetProgress(90);
 
 ExportMap();
@@ -313,5 +322,5 @@ function getTileMap()
 
 function getTilePallet()
 {
-	return ["ocean_rock_a","ocean_rock_b","mud_slide","LavaTest06","LavaTest05",];
+	return ["ocean_rock_a","ocean_rock_b","mud_slide","LavaTest06","LavaTest05"];
 }
