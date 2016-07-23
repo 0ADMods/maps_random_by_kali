@@ -25,11 +25,25 @@ var randElevation = randInt(4);
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, randElevation);
 RMS.SetProgress(20);
 
-// TODO: add stronghold and line formations
-addBases("radial", (randInt(0,10) + 30) / 100);
+// Find the starting locations
+let playerDist = (randInt(0,10) + 30) / 100;
+var players = getRadial(randomizePlayers(), playerDist)
+for (let p = 0; p < players.length; ++p)
+{
+	var fx = fractionToTiles(players[p].x);
+	var fz = fractionToTiles(players[p].z);
+	var ix = round(fx);
+	var iz = round(fz);
+	addToClass(ix, iz, g_TileClasses.player);
+	addToClass(ix + 5, iz, g_TileClasses.player);
+	addToClass(ix, iz + 5, g_TileClasses.player);
+	addToClass(ix - 5, iz, g_TileClasses.player);
+	addToClass(ix, iz - 5, g_TileClasses.player);
+}
+
 RMS.SetProgress(40);
 
-var features = [
+addElements(shuffleArray([
 	{
 		"func": addBluffs,
 		"avoid": [
@@ -90,13 +104,11 @@ var features = [
 		"mixes": ["similar"],
 		"amounts": ["few"]
 	}
-];
+]));
 
-
-addElements(shuffleArray(features));
 RMS.SetProgress(50);
 
-addElements([
+addElements(shuffleArray([
 	{
 		"func": addForests,
 		"avoid": [
@@ -132,6 +144,51 @@ addElements([
 		"amounts": ["normal"]
 	},
 	{
+		"func": addBerries,
+		"avoid": [
+			g_TileClasses.berries, 30,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 5,
+			g_TileClasses.metal, 10,
+			g_TileClasses.mountain, 2,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 20,
+			g_TileClasses.rock, 10,
+			g_TileClasses.water, 3
+		],
+		"sizes": ["normal"],
+		"mixes": ["same"],
+		"amounts": ["normal", "many"]
+	},
+	{
+		"func": addAnimals,
+		"avoid": [
+			g_TileClasses.animals, 20,
+			g_TileClasses.bluff, 5,
+			g_TileClasses.forest, 2,
+			g_TileClasses.metal, 2,
+			g_TileClasses.mountain, 1,
+			g_TileClasses.plateau, 2,
+			g_TileClasses.player, 20,
+			g_TileClasses.rock, 2,
+			g_TileClasses.water, 3
+		],
+		"sizes": ["normal"],
+		"mixes": ["same"],
+		"amounts": ["many"]
+	},
+	{
+		"func": addFish,
+		"avoid": [
+			g_TileClasses.fish, 12,
+			g_TileClasses.player, 8
+		],
+		"stay": [g_TileClasses.water, 4],
+		"sizes": ["normal"],
+		"mixes": ["same"],
+		"amounts": ["many"]
+	},
+	{
 		"func": addMetal,
 		"avoid": [
 			g_TileClasses.berries, 5,
@@ -165,7 +222,7 @@ addElements([
 		"mixes": ["same"],
 		"amounts": ["tons"]
 	}
-]);
+]));
 RMS.SetProgress(60);
 
 addElements([
@@ -200,9 +257,6 @@ addElements([
 	}
 ]);
 RMS.SetProgress(70);
-
-// TODO: Delay adding civ centers
-// Currently player civ centers are replicated, but shouldn't be
 
 // Find all entities placed on the map
 var templateObjects = {};
@@ -280,6 +334,9 @@ for (let x = 0; x < mapSize; ++x)
 			}
 		}
 	}
+
+// Place the players
+addBases("radial", playerDist);
 
 RMS.SetProgress(90);
 
