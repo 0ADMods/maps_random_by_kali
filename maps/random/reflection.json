@@ -1,0 +1,11 @@
+{
+	"settings" : {
+		"Name" : "Reflection",
+		"Script" : "reflection.js",
+		"Description" : "Players battle on a symmetrical battlefield.",
+		"BaseTerrain" : ["medit_sea_depths"],
+		"BaseHeight" : 1,
+		"Preview" : "reflection.png",
+		"CircularMap" : true
+	}
+}
