@@ -62,6 +62,7 @@ g_Decoratives.rockLarge = "actor|geology/stone_savanna_med.xml";
 g_Decoratives.rockMedium = "actor|geology/stone_granite_small.xml";
 g_Decoratives.bushMedium = "actor|props/flora/bush_medit_me_dry.xml";
 g_Decoratives.bushSmall = "actor|props/flora/bush_medit_sm_dry.xml";
+g_Decoratives.reeds = "actor|props/flora/reeds_pond_lush_a.xml"
 
 initBiome();
 RMS.SetProgress(5);
@@ -277,6 +278,26 @@ addElements(shuffleArray([
 	}
 ]));
 RMS.SetProgress(80);
+
+log("Adding reeds...");
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject(g_Decoratives.reeds, 5, 12, 1, 2),
+			new SimpleObject(g_Decoratives.rockMedium, 1, 2, 1, 3)
+		],
+		true,
+		g_TileClasses.dirt
+	),
+	0,
+	[
+		stayClasses(g_TileClasses.water, 0),
+		borderClasses(g_TileClasses.water, scaleByMapSize(2,8), scaleByMapSize(2,8))
+	],
+	scaleByMapSize(1000, 4000),
+	500
+);
+RMS.SetProgress(85);
 
 ExportMap();
 
