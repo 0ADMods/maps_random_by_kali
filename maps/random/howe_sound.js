@@ -14,11 +14,12 @@ initTileClasses(["island"]);
 log("Initializing environment...");
 
 setSunColor(0.733, 0.746, 0.574);
+setSkySet("stratus");
 
 setWaterTint(0.388, 0.650, 0.661);
 setWaterColor(0.388, 0.650, 0.661);
 setWaterWaviness(8);
-setWaterMurkiness(0.74);
+setWaterMurkiness(0.8);
 setWaterType("lake");
 
 setTerrainAmbientColor(0.349, 0.514, 0.671);
@@ -26,9 +27,9 @@ setTerrainAmbientColor(0.349, 0.514, 0.671);
 setSunRotation(PI * -0.5);
 setSunElevation(PI/9);
 
-setFogFactor(0);
+setFogFactor(0.15);
 setFogThickness(0);
-setFogColor(0.69, 0.616, 0.541);
+setFogColor(0.75, 0.75, 0.75);
 
 setPPEffect("hdr");
 setPPContrast(0.67);

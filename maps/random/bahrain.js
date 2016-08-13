@@ -14,11 +14,12 @@ initTileClasses(["island"]);
 log("Initializing environment...");
 
 setSunColor(0.733, 0.746, 0.574);
+setSkySet("cloudless");
 
-setWaterTint(0.196, 0.424, 0.396);
-setWaterColor(0.196, 0.424, 0.396);
-setWaterWaviness(8);
-setWaterMurkiness(0.87);
+setWaterTint(0.37, 0.67, 0.73);
+setWaterColor(0.24, 0.44, 0.56);
+setWaterWaviness(9);
+setWaterMurkiness(0.8);
 setWaterType("lake");
 
 setTerrainAmbientColor(0.521, 0.475, 0.322);
@@ -37,7 +38,7 @@ setPPBloom(0.23);
 
 log("Initializing biome...");
 
-g_Terrains.mainTerrain = "desert_sand_smooth";
+g_Terrains.mainTerrain = "desert_dirt_rough_2";
 g_Terrains.forestFloor1 = "grass_dead";
 g_Terrains.forestFloor2 = "desert_dirt_persia_1";
 g_Terrains.tier1Terrain = "desert_sand_dunes_stones";
@@ -448,5 +449,5 @@ function getTileMap()
 
 function getTilePallet()
 {
-	return ["desert_sand_smooth","desert_sand_smooth_b","desert_sand_dunes_100","desert_sand_stones","sand",];
+	return ["desert_dirt_rough_2","desert_dirt_rocks_3","desert_dirt_rocks_3_scrub","desert_sand_stones","sand",];
 }

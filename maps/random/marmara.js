@@ -14,9 +14,10 @@ initTileClasses();
 log("Initializing environment...");
 
 setSunColor(0.753, 0.586, 0.584);
+setSkySet("sunset");
 
-setWaterTint(0.035, 0.146, 0.159);
-setWaterColor(0.035, 0.146, 0.159);
+setWaterTint(0.25, 0.67, 0.65);
+setWaterColor(0.18, 0.36, 0.39);
 setWaterWaviness(8);
 setWaterMurkiness(0.99);
 setWaterType("lake");
@@ -26,9 +27,9 @@ setTerrainAmbientColor(0.521, 0.475, 0.322);
 setSunRotation(PI * .85);
 setSunElevation(PI / 14);
 
-setFogFactor(0);
+setFogFactor(0.15);
 setFogThickness(0);
-setFogColor(0.69, 0.616, 0.541);
+setFogColor(0.64, 0.5, 0.35);
 
 setPPEffect("hdr");
 setPPContrast(0.67);
