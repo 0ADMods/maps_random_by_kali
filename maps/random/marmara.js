@@ -84,7 +84,7 @@ paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 RMS.SetProgress(40);
 
 log("Playing players...");
-//Coordinate system of the heightmap
+// Coordinate system of the heightmap
 var singleBases = [
 	[40, 175],
 	[80, 280],
@@ -102,7 +102,7 @@ if (g_MapInfo.mapSize >= 320 || g_MapInfo.numPlayers > singleBases.length)
 
 var strongholdBases = [
 	[265, 65],
-	//[60, 220],
+	[60, 220],
 	[105, 60]
 ];
 randomPlayerPlacementAt(singleBases, strongholdBases, scale, 0.06);
@@ -139,7 +139,6 @@ addElements([
 		"amounts": ["many"]
 	}
 ]);
-
 RMS.SetProgress(60);
 
 addElements(shuffleArray([
