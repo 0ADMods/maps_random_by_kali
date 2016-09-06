@@ -67,7 +67,7 @@ g_Decoratives.bushSmall = "actor|props/flora/bush_medit_sm_dry.xml";
 initBiome();
 RMS.SetProgress(5);
 
-log("Resetting terrain...");
+log("Reseting terrain...");
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
 
@@ -81,7 +81,7 @@ log("Paint tile classes...");
 paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
 RMS.SetProgress(40);
 
-log("Playing players...");
+log("Placing players...");
 //Coordinate system of the heightmap
 var singleBases = [
 	[40, 85],
@@ -245,7 +245,7 @@ addElements(shuffleArray([
 		],
 		"sizes": ["normal"],
 		"mixes": ["similar"],
-		"amounts": ["tons"]
+		"amounts": ["many"]
 	},
 	{
 		"func": addFish,
@@ -256,7 +256,7 @@ addElements(shuffleArray([
 		"stay": [g_TileClasses.water, 4],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": ["tons"]
+		"amounts": ["many"]
 	},
 	{
 		"func": addStragglerTrees,
@@ -300,7 +300,7 @@ addElements(shuffleArray([
 		"stay": [g_TileClasses.island, 2],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": ["tons"]
+		"amounts": ["many"]
 	},
 	{
 		"func": addSmallMetal,
@@ -336,7 +336,7 @@ addElements(shuffleArray([
 		"stay": [g_TileClasses.island, 2],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": ["tons"]
+		"amounts": ["many"]
 	}
 ]));
 
@@ -357,7 +357,7 @@ addElements(shuffleArray([
 		"stay": [g_TileClasses.island, 2],
 		"sizes": ["huge"],
 		"mixes": ["similar"],
-		"amounts": ["tons"]
+		"amounts": ["many"]
 	},
 	{
 		"func": addForests,
