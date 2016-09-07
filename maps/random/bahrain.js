@@ -270,7 +270,6 @@ addElements(shuffleArray([
 		"amounts": ["normal"]
 	}
 ]));
-
 RMS.SetProgress(65);
 
 g_Terrains.mainTerrain = "sand";
@@ -399,7 +398,40 @@ createObjectGroups(
 	2 * scaleByMapSize(1, 4),
 	200
 );
+RMS.SetProgress(85);
+
+log("Creating food treasures...");
+for (let treasure of ["wood", "food_bin"])
+{
+	createObjectGroups(
+		new SimpleGroup(
+			[new SimpleObject("gaia/special_treasure_" + treasure, 1, 1, 0, 2)],
+			true
+		),
+		0,
+		avoidClasses(
+			g_TileClasses.water, 2,
+			g_TileClasses.player, 25,
+			g_TileClasses.forest, 2
+		),
+		3 * g_MapInfo.numPlayers,
+		200
+	);
+}
 RMS.SetProgress(90);
+
+log("Creating shipwrecks...");
+createObjectGroups(
+	new SimpleGroup(
+		[new SimpleObject("other/special_treasure_shipwreck_sail_boat_cut", 1, 1, 0, 1)],
+		true
+	),
+	0,
+	stayClasses(g_TileClasses.water, 2),
+	g_MapInfo.numPlayers,
+	200
+);
+RMS.SetProgress(95);
 
 ExportMap();
 
