@@ -138,9 +138,9 @@ addElements([
 			g_TileClasses.water, 3,
 			g_TileClasses.island, 2
 		],
-		"sizes": ["tiny"],
+		"sizes": ["small"],
 		"mixes": ["same"],
-		"amounts": ["scarce"]
+		"amounts": ["many"]
 	}
 ]);
 
@@ -183,7 +183,7 @@ addElements([
 		"func": addForests,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.forest, 20,
+			g_TileClasses.forest, 35,
 			g_TileClasses.metal, 3,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 3,
@@ -191,14 +191,14 @@ addElements([
 			g_TileClasses.island, 2
 		],
 		"sizes": ["big"],
-		"mixes": ["varied"],
+		"mixes": ["similar"],
 		"amounts": ["few"]
 	},
 	{
 		"func": addForests,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.forest, 20,
+			g_TileClasses.forest, 18,
 			g_TileClasses.metal, 3,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 3,
@@ -225,7 +225,7 @@ addElements(shuffleArray([
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
-		"amounts": ["scarce"]
+		"amounts": ["few"]
 	},
 	{
 		"func": addAnimals,
@@ -265,9 +265,9 @@ addElements(shuffleArray([
 			g_TileClasses.water, 5,
 			g_TileClasses.island, 2
 		],
-		"sizes": ["normal"],
+		"sizes": ["small"],
 		"mixes": ["same"],
-		"amounts": ["many"]
+		"amounts": ["normal"]
 	}
 ]));
 
@@ -358,7 +358,7 @@ addElements(shuffleArray([
 		"stay": [g_TileClasses.island, 2],
 		"sizes": ["normal"],
 		"mixes": ["similar"],
-		"amounts": ["many"]
+		"amounts": ["normal"]
 	},
 	{
 		"func": addStragglerTrees,
