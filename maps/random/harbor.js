@@ -250,7 +250,7 @@ ExportMap();
 
 function addCenterLake()
 {
-	var lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
+	let lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
 	createArea(
 		new ChainPlacer(
@@ -278,7 +278,7 @@ function addCenterLake()
 		avoidClasses(g_TileClasses.player, 20)
 	);
 
-	var fDist = 50;
+	let fDist = 50;
 	if (g_MapInfo.mapSize <= 192)
 		fDist = 20;
 
@@ -301,14 +301,14 @@ function addCenterLake()
 
 function addHarbors(players)
 {
-	for (var i = 0; i < players.length; ++i)
+	for (let i = 0; i < players.length; ++i)
 	{
-		var ix = round(fractionToTiles(players[i].x));
-		var iz = round(fractionToTiles(players[i].z));
-		var playerDistX = g_MapInfo.centerOfMap - ix;
-		var playerDistZ = g_MapInfo.centerOfMap - iz;
-		var offsetX = round(playerDistX / 2.5);
-		var offsetZ = round(playerDistZ / 2.5);
+		let ix = round(fractionToTiles(players[i].x));
+		let iz = round(fractionToTiles(players[i].z));
+		let playerDistX = g_MapInfo.centerOfMap - ix;
+		let playerDistZ = g_MapInfo.centerOfMap - iz;
+		let offsetX = round(playerDistX / 2.5);
+		let offsetZ = round(playerDistZ / 2.5);
 
 		createArea(
 			new ClumpPlacer(scaleByMapSize(1200, 1200), 0.5, 0.5, 1, ix + offsetX, iz + offsetZ),
@@ -343,8 +343,8 @@ function addHarbors(players)
 
 function addSpines()
 {
-	var spineTile = g_Terrains.dirt;
-	var elevation = 35;
+	let spineTile = g_Terrains.dirt;
+	let elevation = 35;
 
 	if (g_MapInfo.biome == 2)
 		spineTile = g_Terrains.tier1Terrain;
@@ -355,25 +355,25 @@ function addSpines()
 	if (g_MapInfo.biome == 8)
 		spineTile = g_Terrains.tier4Terrain;
 
-	var split = 1;
+	let split = 1;
 	if (g_MapInfo.numPlayers <= 3 || (g_MapInfo.mapSize >= 320 && g_MapInfo.numPlayers <= 4))
 		split = 2;
 
-	for (var i = 0; i < g_MapInfo.numPlayers * split; ++i)
+	for (let i = 0; i < g_MapInfo.numPlayers * split; ++i)
 	{
-		var tang = g_MapInfo.startAngle + (i + 0.5) * TWO_PI / (g_MapInfo.numPlayers * split);
+		let tang = g_MapInfo.startAngle + (i + 0.5) * TWO_PI / (g_MapInfo.numPlayers * split);
 
-		var fx = fractionToTiles(0.5);
-		var fz = fractionToTiles(0.5);
-		var ix = round(fx);
-		var iz = round(fz);
+		let fx = fractionToTiles(0.5);
+		let fz = fractionToTiles(0.5);
+		let ix = round(fx);
+		let iz = round(fz);
 
-		var mStartCo = 0.12;
-		var mStopCo = 0.40;
-		var mSize = 0.5;
-		var mWaviness = 0.6;
-		var mOffset = 0.4;
-		var mTaper = -1.4;
+		let mStartCo = 0.12;
+		let mStopCo = 0.40;
+		let mSize = 0.5;
+		let mWaviness = 0.6;
+		let mOffset = 0.4;
+		let mTaper = -1.4;
 
 		// make small mountain dividers if we're on a small map
 		if (g_MapInfo.mapSize <= 192)
