@@ -285,14 +285,14 @@ function addHarbors(players)
 		createArea(
 			placer,
 			[
-		        terrainPainter,
-		        elevationPainter,
-		        paintClass(g_TileClasses.water)
-	        ],
-	        avoidClasses(
-        		g_TileClasses.player, 15,
-        		g_TileClasses.hill, 1
-            )
+				terrainPainter,
+				elevationPainter,
+				paintClass(g_TileClasses.water)
+			],
+			avoidClasses(
+				g_TileClasses.player, 15,
+				g_TileClasses.hill, 1
+			)
 		);
 
 		// create fish in harbor
