@@ -9,7 +9,7 @@ InitMap();
 log("Initializing tile classes...");
 setBiome(4);
 initMapSettings();
-initTileClasses();
+initTileClasses(["shallowWater"]);
 
 log("Initializing environment...");
 
@@ -62,6 +62,8 @@ g_Decoratives.rockMedium = "actor|geology/stone_granite_small.xml";
 g_Decoratives.bushMedium = "actor|props/flora/bush_tempe_a.xml";
 g_Decoratives.bushSmall = "actor|props/flora/bush_tempe_b.xml";
 g_Decoratives.reeds = "actor|props/flora/reeds_pond_lush_a.xml";
+g_Decoratives.lillies = "actor|props/flora/water_lillies.xml";
+
 initBiome();
 RMS.SetProgress(5);
 
@@ -77,7 +79,8 @@ var scale = paintHeightmap(getHeightMap(), getTileMap(), getTilePallet(), (tile,
 RMS.SetProgress(30);
 
 log("Paint tile classes...");
-paintTileClassBasedOnHeight(-100, -1, 3, g_TileClasses.water);
+paintTileClassBasedOnHeight(-3, -1, 3, g_TileClasses.shallowWater);
+paintTileClassBasedOnHeight(-100, -3, 3, g_TileClasses.water);
 RMS.SetProgress(40);
 
 log("Placing players...");
@@ -111,7 +114,8 @@ addElements([
 			g_TileClasses.forest, 2,
 			g_TileClasses.mountain, 2,
 			g_TileClasses.player, 12,
-			g_TileClasses.water, 3
+			g_TileClasses.water, 3,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
@@ -123,7 +127,8 @@ addElements([
 			g_TileClasses.forest, 2,
 			g_TileClasses.mountain, 2,
 			g_TileClasses.player, 12,
-			g_TileClasses.water, 3
+			g_TileClasses.water, 3,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["normal"],
 		"mixes": ["normal"],
@@ -141,8 +146,8 @@ addElements(shuffleArray([
 			g_TileClasses.player, 30,
 			g_TileClasses.rock, 20,
 			g_TileClasses.metal, 30,
-			g_TileClasses.water, 3
-
+			g_TileClasses.water, 3,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
@@ -157,7 +162,8 @@ addElements(shuffleArray([
 			g_TileClasses.player, 30,
 			g_TileClasses.rock, 30,
 			g_TileClasses.metal, 20,
-			g_TileClasses.water, 3
+			g_TileClasses.water, 3,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
@@ -172,7 +178,8 @@ addElements(shuffleArray([
 			g_TileClasses.player, 30,
 			g_TileClasses.rock, 30,
 			g_TileClasses.metal, 20,
-			g_TileClasses.water, 3
+			g_TileClasses.water, 3,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
@@ -187,7 +194,8 @@ addElements(shuffleArray([
 			g_TileClasses.mountain, 6,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 3,
-			g_TileClasses.water, 2
+			g_TileClasses.water, 2,
+			g_TileClasses.shallowWater, 2
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
@@ -205,7 +213,8 @@ addElements(shuffleArray([
 			g_TileClasses.mountain, 6,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 2,
-			g_TileClasses.water, 3
+			g_TileClasses.water, 3,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["huge"],
 		"mixes": ["similar"],
@@ -220,7 +229,8 @@ addElements(shuffleArray([
 			g_TileClasses.mountain, 6,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 2,
-			g_TileClasses.water, 3
+			g_TileClasses.water, 3,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["huge"],
 		"mixes": ["similar"],
@@ -235,7 +245,8 @@ addElements(shuffleArray([
 			g_TileClasses.mountain, 2,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 10,
-			g_TileClasses.water, 3
+			g_TileClasses.water, 3,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
@@ -250,7 +261,8 @@ addElements(shuffleArray([
 			g_TileClasses.mountain, 6,
 			g_TileClasses.player, 12,
 			g_TileClasses.rock, 2,
-			g_TileClasses.water, 5
+			g_TileClasses.water, 5,
+			g_TileClasses.shallowWater, 3
 		],
 		"sizes": ["normal"],
 		"mixes": ["same"],
@@ -259,25 +271,19 @@ addElements(shuffleArray([
 ]));
 RMS.SetProgress(80);
 
-log("Adding reeds...");
-createObjectGroups(
-	new SimpleGroup(
-		[
-			new SimpleObject(g_Decoratives.reeds, 5, 12, 1, 4),
-			new SimpleObject(g_Decoratives.rockMedium, 1, 2, 1, 5)
-		],
-		true,
-		g_TileClasses.dirt
-	),
-	0,
+log("Adding lillies...");
+createDecoration(
 	[
-		stayClasses(g_TileClasses.water, 1),
-		borderClasses(g_TileClasses.water, scaleByMapSize(2,4), scaleByMapSize(2,5))
+		[new SimpleObject(g_Decoratives.reeds, 1,3, 0,1)],
+		[new SimpleObject(g_Decoratives.lillies, 1,2, 0,1)]
 	],
-	scaleByMapSize(400, 2000),
-	500
+	[
+		200 * Math.pow(scaleByMapSize(3, 12), 2),
+		100 * Math.pow(scaleByMapSize(3, 12), 2)
+	],
+	stayClasses(g_TileClasses.shallowWater, 0)
 );
-RMS.SetProgress(85);
+RMS.SetProgress(90);
 
 ExportMap();
 
