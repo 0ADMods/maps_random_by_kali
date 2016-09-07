@@ -67,7 +67,7 @@ g_Decoratives.bushSmall = "actor|props/flora/bush_medit_sm_dry.xml";
 initBiome();
 RMS.SetProgress(5);
 
-log("Reseting terrain...");
+log("Resetting terrain...");
 resetTerrain(g_Terrains.mainTerrain, g_TileClasses.land, 1);
 RMS.SetProgress(10);
 
