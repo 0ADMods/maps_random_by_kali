@@ -252,19 +252,51 @@ function addCenterLake()
 {
 	var lSize = sqrt(sqrt(sqrt(scaleByMapSize(1, 6))));
 
-	var placer = new ChainPlacer(2, Math.floor(scaleByMapSize(2, 12)), Math.floor(scaleByMapSize(35, 160)), 1, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap, 0, [floor(g_MapInfo.mapSize * 0.17 * lSize)]);
-	var terrainPainter = new LayeredPainter([g_Terrains.shore, g_Terrains.water, g_Terrains.water], [1, 100]);
-	var elevationPainter = new SmoothElevationPainter(ELEVATION_SET, -18, 10);
-
-	createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.water)], avoidClasses(g_TileClasses.player, 20));
+	createArea(
+		new ChainPlacer(
+			2,
+			Math.floor(scaleByMapSize(2, 12)),
+			Math.floor(scaleByMapSize(35, 160)),
+			1,
+			g_MapInfo.centerOfMap,
+			g_MapInfo.centerOfMap,
+			0,
+			[floor(g_MapInfo.mapSize * 0.17 * lSize)]
+		),
+		[
+			new LayeredPainter(
+				[
+					g_Terrains.shore,
+					g_Terrains.water,
+					g_Terrains.water
+				],
+				[1, 100]
+			),
+			new SmoothElevationPainter(ELEVATION_SET, -18, 10),
+			paintClass(g_TileClasses.water)
+		],
+		avoidClasses(g_TileClasses.player, 20)
+	);
 
 	var fDist = 50;
 	if (g_MapInfo.mapSize <= 192)
 		fDist = 20;
 
 	// create a bunch of fish
-	var group = new SimpleGroup([new SimpleObject(g_Gaia.fish, 20, 30, 0, fDist)], true, g_TileClasses.baseResource, g_MapInfo.centerOfMap, g_MapInfo.centerOfMap);
-	createObjectGroup(group, 0, [avoidClasses(g_TileClasses.player, 5, g_TileClasses.hill, 3, g_TileClasses.mountain, 3), stayClasses(g_TileClasses.water, 5)]);
+	createObjectGroup(
+		new SimpleGroup(
+			[new SimpleObject(g_Gaia.fish, 20, 30, 0, fDist)],
+			true,
+			g_TileClasses.baseResource,
+			g_MapInfo.centerOfMap,
+			g_MapInfo.centerOfMap
+		),
+		0,
+		[
+			avoidClasses(g_TileClasses.player, 5, g_TileClasses.hill, 3, g_TileClasses.mountain, 3),
+			stayClasses(g_TileClasses.water, 5)
+		]
+	);
 }
 
 function addHarbors(players)
@@ -278,15 +310,11 @@ function addHarbors(players)
 		var offsetX = round(playerDistX / 2.5);
 		var offsetZ = round(playerDistZ / 2.5);
 
-		var placer = new ClumpPlacer(scaleByMapSize(1200, 1200), 0.5, 0.5, 1, ix + offsetX, iz + offsetZ);
-		var terrainPainter = new LayeredPainter([g_Terrains.shore, g_Terrains.water], [2]);
-		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, -11, 3);
-
 		createArea(
-			placer,
+			new ClumpPlacer(scaleByMapSize(1200, 1200), 0.5, 0.5, 1, ix + offsetX, iz + offsetZ),
 			[
-				terrainPainter,
-				elevationPainter,
+				new LayeredPainter([g_Terrains.shore, g_Terrains.water], [2]),
+				new SmoothElevationPainter(ELEVATION_MODIFY, -11, 3),
 				paintClass(g_TileClasses.water)
 			],
 			avoidClasses(
@@ -296,18 +324,20 @@ function addHarbors(players)
 		);
 
 		// create fish in harbor
-		var group = new SimpleGroup(
-			[new SimpleObject(g_Gaia.fish, 6, 6, 1, 20)],
-			true, g_TileClasses.baseResource, ix + offsetX, iz + offsetZ
-		);
-
-		createObjectGroup(group, 0, [
-			avoidClasses(
-				g_TileClasses.hill, 3,
-				g_TileClasses.mountain, 3
+		createObjectGroup(
+			new SimpleGroup(
+				[new SimpleObject(g_Gaia.fish, 6, 6, 1, 20)],
+				true, g_TileClasses.baseResource, ix + offsetX, iz + offsetZ
 			),
-			stayClasses(g_TileClasses.water, 5)
-		]);
+			0,
+			[
+				avoidClasses(
+					g_TileClasses.hill, 3,
+					g_TileClasses.mountain, 3
+				),
+				stayClasses(g_TileClasses.water, 5)
+			]
+		);
 	}
 }
 
@@ -353,10 +383,25 @@ function addSpines()
 			elevation = 20;
 		}
 
-		var placer = new PathPlacer(fractionToTiles(0.5 + mStartCo * cos(tang)), fractionToTiles(0.5 + mStartCo * sin(tang)), fractionToTiles(0.5 + mStopCo * cos(tang)), fractionToTiles(0.5 + mStopCo * sin(tang)), scaleByMapSize(14, mSize), mWaviness, 0.1, mOffset, mTaper);
-		var terrainPainter = new LayeredPainter([g_Terrains.cliff, spineTile], [3]);
-		var elevationPainter = new SmoothElevationPainter(ELEVATION_MODIFY, elevation, 3);
-		createArea(placer, [terrainPainter, elevationPainter, paintClass(g_TileClasses.spine)], avoidClasses(g_TileClasses.player, 5));
+		createArea(
+			new PathPlacer(
+					fractionToTiles(0.5 + mStartCo * cos(tang)),
+				fractionToTiles(0.5 + mStartCo * sin(tang)),
+				fractionToTiles(0.5 + mStopCo * cos(tang)),
+				fractionToTiles(0.5 + mStopCo * sin(tang)),
+				scaleByMapSize(14, mSize),
+				mWaviness,
+				0.1,
+				mOffset,
+				mTaper
+			),
+			[
+				new LayeredPainter([g_Terrains.cliff, spineTile], [3]),
+				new SmoothElevationPainter(ELEVATION_MODIFY, elevation, 3),
+				paintClass(g_TileClasses.spine)
+			],
+			avoidClasses(g_TileClasses.player, 5)
+		);
 	}
 
 	addElements([
