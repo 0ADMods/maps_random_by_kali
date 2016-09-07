@@ -107,11 +107,9 @@ addElements([
 	{
 		"func": addLayeredPatches,
 		"avoid": [
-			g_TileClasses.bluff, 2,
 			g_TileClasses.dirt, 5,
 			g_TileClasses.forest, 2,
 			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 12,
 			g_TileClasses.water, 3
 		],
@@ -122,10 +120,8 @@ addElements([
 	{
 		"func": addDecoration,
 		"avoid": [
-			g_TileClasses.bluff, 2,
 			g_TileClasses.forest, 2,
 			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 12,
 			g_TileClasses.water, 3
 		],
@@ -140,10 +136,8 @@ addElements(shuffleArray([
 		"func": addSmallMetal,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 3,
 			g_TileClasses.mountain, 6,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 30,
 			g_TileClasses.rock, 20,
 			g_TileClasses.metal, 30,
@@ -158,10 +152,8 @@ addElements(shuffleArray([
 		"func": addMetal,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 3,
 			g_TileClasses.mountain, 6,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 30,
 			g_TileClasses.rock, 30,
 			g_TileClasses.metal, 20,
@@ -175,10 +167,8 @@ addElements(shuffleArray([
 		"func": addStone,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 3,
 			g_TileClasses.mountain, 6,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 30,
 			g_TileClasses.rock, 30,
 			g_TileClasses.metal, 20,
@@ -192,11 +182,9 @@ addElements(shuffleArray([
 		"func": addForests,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 8,
 			g_TileClasses.metal, 3,
 			g_TileClasses.mountain, 6,
-			g_TileClasses.plateau, 5,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 3,
 			g_TileClasses.water, 2
@@ -212,11 +200,9 @@ addElements(shuffleArray([
 		"func": addAnimals,
 		"avoid": [
 			g_TileClasses.animals, 20,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 2,
 			g_TileClasses.metal, 2,
 			g_TileClasses.mountain, 6,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 2,
 			g_TileClasses.water, 3
@@ -229,11 +215,9 @@ addElements(shuffleArray([
 		"func": addAnimals,
 		"avoid": [
 			g_TileClasses.animals, 20,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 2,
 			g_TileClasses.metal, 2,
 			g_TileClasses.mountain, 6,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 2,
 			g_TileClasses.water, 3
@@ -246,11 +230,9 @@ addElements(shuffleArray([
 		"func": addBerries,
 		"avoid": [
 			g_TileClasses.berries, 30,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 5,
 			g_TileClasses.metal, 10,
 			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 20,
 			g_TileClasses.rock, 10,
 			g_TileClasses.water, 3
@@ -263,11 +245,9 @@ addElements(shuffleArray([
 		"func": addStragglerTrees,
 		"avoid": [
 			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
 			g_TileClasses.forest, 4,
 			g_TileClasses.metal, 2,
 			g_TileClasses.mountain, 6,
-			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 12,
 			g_TileClasses.rock, 2,
 			g_TileClasses.water, 5
