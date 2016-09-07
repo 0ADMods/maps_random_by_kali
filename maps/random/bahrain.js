@@ -60,8 +60,8 @@ g_Decoratives.grass = "actor|props/flora/grass_field_parched_short.xml";
 g_Decoratives.grassShort = "actor|props/flora/grass_field_parched_short.xml";
 g_Decoratives.rockLarge = "actor|geology/stone_savanna_med.xml";
 g_Decoratives.rockMedium = "actor|geology/stone_granite_greek_small.xml";
-g_Decoratives.bushMedium = "actor|props/special/eyecandy/awning_wood_small.xml";
-g_Decoratives.bushSmall = "actor|props/special/eyecandy/barrels_buried.xml";
+g_Decoratives.bushMedium = "actor|props/flora/bush_desert_dry_a.xml";
+g_Decoratives.bushSmall = "actor|props/flora/bush_medit_la_dry";
 
 initBiome();
 RMS.SetProgress(5);
@@ -75,6 +75,7 @@ var scale = paintHeightmap(getHeightMap(), getTileMap(), getTilePallet(), (tile,
 	if (tile == "sand")
 		addToClass(x, y, g_TileClasses.island);
 });
+RMS.SetProgress(20);
 
 
 log("Paint tile classes...");
@@ -377,6 +378,28 @@ addElements(shuffleArray([
 ]));
 
 RMS.SetProgress(80);
+
+log("Adding more decoratives...");
+createObjectGroups(
+	new SimpleGroup(
+		[
+			new SimpleObject("actor|props/special/eyecandy/awning_wood_small.xml", 1, 1, 1, 7),
+			new SimpleObject("actor|props/special/eyecandy/barrels_buried.xml", 1, 2, 1, 7)
+		],
+		true,
+		g_TileClasses.dirt
+	),
+	0,
+	avoidClasses(
+		g_TileClasses.water, 2,
+		g_TileClasses.player, 10,
+		g_TileClasses.mountain, 2,
+		g_TileClasses.forest, 2
+	),
+	2 * scaleByMapSize(1, 4),
+	200
+);
+RMS.SetProgress(90);
 
 ExportMap();
 
