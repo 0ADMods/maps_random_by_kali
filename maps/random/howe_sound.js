@@ -27,7 +27,7 @@ setTerrainAmbientColor(0.349, 0.514, 0.671);
 setSunRotation(PI * -0.5);
 setSunElevation(PI/9);
 
-setFogFactor(0.15);
+setFogFactor(0.08);
 setFogThickness(0);
 setFogColor(0.75, 0.75, 0.75);
 
