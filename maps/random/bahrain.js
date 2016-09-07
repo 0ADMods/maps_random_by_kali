@@ -189,7 +189,7 @@ addElements(shuffleArray([
 		"avoid": [
 			g_TileClasses.berries, 5,
 			g_TileClasses.bluff, 5,
-			g_TileClasses.forest, 10,
+			g_TileClasses.forest, 20,
 			g_TileClasses.metal, 3,
 			g_TileClasses.mountain, 5,
 			g_TileClasses.plateau, 5,
@@ -200,7 +200,7 @@ addElements(shuffleArray([
 		],
 		"sizes": ["normal"],
 		"mixes": ["similar"],
-		"amounts": ["tons"]
+		"amounts": ["many"]
 	}
 ]));
 
@@ -410,7 +410,7 @@ addElements(shuffleArray([
 		"stay": [g_TileClasses.island, 2],
 		"sizes": ["normal"],
 		"mixes": ["similar"],
-		"amounts": ["tons"]
+		"amounts": ["many"]
 	},
 	{
 		"func": addStragglerTrees,
