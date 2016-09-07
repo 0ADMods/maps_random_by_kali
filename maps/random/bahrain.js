@@ -174,6 +174,24 @@ addElements(shuffleArray([
 		"sizes": ["normal"],
 		"mixes": ["same"],
 		"amounts": ["normal"]
+	}
+]));
+
+addElements([
+	{
+		"func": addForests,
+		"avoid": [
+			g_TileClasses.berries, 5,
+			g_TileClasses.forest, 20,
+			g_TileClasses.metal, 3,
+			g_TileClasses.player, 20,
+			g_TileClasses.rock, 3,
+			g_TileClasses.water, 2,
+			g_TileClasses.island, 2
+		],
+		"sizes": ["big"],
+		"mixes": ["varied"],
+		"amounts": ["few"]
 	},
 	{
 		"func": addForests,
