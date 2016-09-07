@@ -385,7 +385,7 @@ function addSpines()
 
 		createArea(
 			new PathPlacer(
-					fractionToTiles(0.5 + mStartCo * cos(tang)),
+				fractionToTiles(0.5 + mStartCo * cos(tang)),
 				fractionToTiles(0.5 + mStartCo * sin(tang)),
 				fractionToTiles(0.5 + mStopCo * cos(tang)),
 				fractionToTiles(0.5 + mStopCo * sin(tang)),
