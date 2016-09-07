@@ -328,8 +328,8 @@ addElements(shuffleArray([
 			g_TileClasses.mountain, 2,
 			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 30,
-			g_TileClasses.rock, 10,
-			g_TileClasses.metal, 15,
+			g_TileClasses.rock, 7,
+			g_TileClasses.metal, 7,
 			g_TileClasses.water, 3
 		],
 		"stay": [g_TileClasses.island, 2],
@@ -346,44 +346,8 @@ addElements(shuffleArray([
 			g_TileClasses.mountain, 2,
 			g_TileClasses.plateau, 2,
 			g_TileClasses.player, 30,
-			g_TileClasses.rock, 15,
-			g_TileClasses.metal, 10,
-			g_TileClasses.water, 3
-		],
-		"stay": [g_TileClasses.island, 2],
-		"sizes": ["normal"],
-		"mixes": ["same"],
-		"amounts": ["tons"]
-	},
-	{
-		"func": addMetal,
-		"avoid": [
-			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
-			g_TileClasses.forest, 3,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
-			g_TileClasses.player, 30,
-			g_TileClasses.rock, 10,
-			g_TileClasses.metal, 15,
-			g_TileClasses.water, 3
-		],
-		"stay": [g_TileClasses.island, 2],
-		"sizes": ["normal"],
-		"mixes": ["same"],
-		"amounts": ["tons"]
-	},
-	{
-		"func": addStone,
-		"avoid": [
-			g_TileClasses.berries, 5,
-			g_TileClasses.bluff, 5,
-			g_TileClasses.forest, 3,
-			g_TileClasses.mountain, 2,
-			g_TileClasses.plateau, 2,
-			g_TileClasses.player, 30,
-			g_TileClasses.rock, 15,
-			g_TileClasses.metal, 10,
+			g_TileClasses.rock, 7,
+			g_TileClasses.metal, 7,
 			g_TileClasses.water, 3
 		],
 		"stay": [g_TileClasses.island, 2],
