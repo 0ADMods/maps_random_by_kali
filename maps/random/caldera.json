@@ -1,0 +1,9 @@
+{
+    "settings": {
+        "Name": "Caldera",
+        "Script": "caldera.js",
+        "Description": "Players start surrounding an ancient, volcanic caldera.",
+        "Preview": "",
+        "CircularMap": true
+    }
+}
