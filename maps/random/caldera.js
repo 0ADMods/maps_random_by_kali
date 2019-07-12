@@ -6,22 +6,21 @@ Engine.LoadLibrary("rmgen");
 Engine.LoadLibrary("rmgen-common");
 
 const numPlayers = g_MapSettings.PlayerData.filter(Boolean).length;
-const mapRadius = g_MapSettings.Size / 2;
-const mapCenter = new Vector2D(mapRadius, mapRadius);
 
-let terrain = {
-    bump: ["dirt_rocks_a", "steppe_dirt_rocks_a", "dirt_broken_rocks"],
-    caldera: ["dirt_brown_d", "dirt_brown_e", "DirtTests4"],
-    calderaBump: ["dirt_brown_e"],
-    city: ["desert_dirt_persia_rocky"],
-    cityPlaza: ["desert_cliff_base"],
-    cliff: ["medit_cliff_italia", "medit_dirt_e"],
-    dirt: ["steppe_grass_dirt_66"],
-    forestFloor: ["steppe_grass_dirt_66", "forestfloor_dirty", "forestfloor_pine"],
-    primary: ["dirt_rocks_a", "steppe_dirt_rocks_a", "steppe_dirt_a", "steppe_dirt_b"],
-    rim: ["dirt_rocks_a", "steppe_dirt_rocks_a", "dirt_broken_rocks"],
-}
+var terrain = {
+    "bump": ["dirt_rocks_a", "steppe_dirt_rocks_a", "dirt_broken_rocks"],
+    "caldera": ["dirt_brown_d", "dirt_brown_e", "DirtTests4"],
+    "calderaBump": ["dirt_brown_e"],
+    "city": ["desert_dirt_persia_rocky"],
+    "cityPlaza": ["desert_cliff_base"],
+    "cliff": ["medit_cliff_italia", "medit_dirt_e"],
+    "dirt": ["steppe_grass_dirt_66"],
+    "forestFloor": ["steppe_grass_dirt_66", "forestfloor_dirty", "forestfloor_pine"],
+    "primary": ["dirt_rocks_a", "steppe_dirt_rocks_a", "steppe_dirt_a", "steppe_dirt_b"],
+    "rim": ["dirt_rocks_a", "steppe_dirt_rocks_a", "dirt_broken_rocks"],
+};
 
+// TODO: spaces, missing semicolon, var or const in global context
 let gaia = {
     berryBush: "gaia/flora_bush_berry",
     gameLarge: "gaia/fauna_deer",
