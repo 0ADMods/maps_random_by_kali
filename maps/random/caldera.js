@@ -53,7 +53,9 @@ const heightCaldera = 5;
 const heightRim = 16;
 
 // TODO: RandomMap creates a RandomMapLogger which references getNumPlayers() in rmgen-common
-let g_Map = new RandomMap(heightLand, terrain.primary);
+var g_Map = new RandomMap(heightLand, terrain.primary);
+const mapRadius = g_Map.getSize() / 2;
+const mapCenter = g_Map.getCenter();
 
 let tiles = {
     animals: g_Map.createTileClass(),
@@ -92,7 +94,9 @@ function playerTileClass(id) {
     return `player${id}`
 }
 
-// WedgePlacer - creates a triangular slice from a center point and two angles
+/**
+ * WedgePlacer - creates a triangular slice from a center point and two angles.
+ */
 function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100) {
     this.normalize = 0;
     this.centerPoint = centerPoint;
@@ -109,31 +113,35 @@ function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100) {
     this.failFraction = failFraction;
 }
 
-// WedgePlacer.place() - return points that fall between two angles
-WedgePlacer.prototype.place = function (constraint) {
+WedgePlacer.prototype.place = function (constraint)
+{
     let points = [];
     let count = 0;
     let failed = 0;
 
-    for (let x = 0; x < g_MapSettings.Size; ++x) {
-        for (let y = 0; y < g_MapSettings.Size; ++y) {
+    let point = new Vector2D(0, 0);
+
+    for (point.x = 0; point.x < g_Map.size; ++point.x)
+        for (point.y = 0; point.y < g_Map.size; ++point.y)
+        {
             ++count;
 
-            let point = new Vector2D(x, y);
-            let radians = Math.atan2(point.y - this.centerPoint.y, point.x - this.centerPoint.x) + this.normalize;
-
-            if (radians < 0) {
+            // TODO: Can't one simplify the + 2 * Math.PI part with a % modulo operator? same for the constructor
+            // Actually irrelevant if this is replaced with the PolygonPlacer
+            let radians = this.centerPoint.angleTo(point) + this.normalize;
+            if (radians < 0)
                 radians += 2 * Math.PI;
-            }
 
             // check if this angle is between the two angles (plus an optional full rotation)
-            if (g_Map.inMapBounds(point) && ((radians >= this.startAngle && radians < this.stopAngle) || (radians + 2 * Math.PI >= this.startAngle && radians + 2 * Math.PI < this.stopAngle)) && constraint.allows(point)) {
-                points.push(point);
-            } else {
+            if (g_Map.inMapBounds(point) &&
+                (radians >= this.startAngle && radians < this.stopAngle ||
+                radians + 2 * Math.PI >= this.startAngle && radians + 2 * Math.PI < this.stopAngle) &&
+                constraint.allows(point))
+
+                points.push(point.clone());
+            else
                 ++failed;
-            }
         }
-    }
 
     return failed <= this.failFraction * count ? points : undefined;
 }
@@ -257,6 +265,7 @@ let expMetal = Math.round(randIntInclusive(1, 4) / numTeams * mapScale);
 let expMetalPerGroup = 1;
 let expMetalGroupsPerTeam = Math.round(expMetal / expMetalPerGroup);
 
+// TODO: performance issue on giant map: Expansion Metal: 3 per expansion; groups: 3... 13.845s.
 g_Map.log(`Expansion Metal: ${expMetalPerGroup * expMetalGroupsPerTeam} per expansion; groups: ${expMetalGroupsPerTeam}`);
 
 // slope the map
@@ -308,6 +317,8 @@ Engine.SetProgress(30);
 let teamPoints = distributePointsOnCircle(numTeams, Math.random() * Math.PI, baseDistanceFromCenter, mapCenter);
 
 let teamIndex = 1;
+
+// TODO: It seems like this could call placePlayerBases? Mostly createFoods, createMines were the calls to be deprecated
 
 for (let key in teams) {
     g_Map.log(`Place team ${key}`);
