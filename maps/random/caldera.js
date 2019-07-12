@@ -7,7 +7,7 @@ Engine.LoadLibrary("rmgen-common");
 
 const numPlayers = g_MapSettings.PlayerData.filter(Boolean).length;
 
-var terrain = {
+const terrain = {
     "bump": ["dirt_rocks_a", "steppe_dirt_rocks_a", "dirt_broken_rocks"],
     "caldera": ["dirt_brown_d", "dirt_brown_e", "DirtTests4"],
     "calderaBump": ["dirt_brown_e"],
@@ -20,32 +20,31 @@ var terrain = {
     "rim": ["dirt_rocks_a", "steppe_dirt_rocks_a", "dirt_broken_rocks"],
 };
 
-// TODO: spaces, missing semicolon, var or const in global context
-let gaia = {
-    berryBush: "gaia/flora_bush_berry",
-    gameLarge: "gaia/fauna_deer",
-    gameMedium: "gaia/fauna_goat",
-    gameSmall: "gaia/fauna_chicken",
-    metal: "gaia/geology_metal_desert_badlands_slabs",
-    metalSmall: "gaia/geology_metal_alpine",
-    stone: "gaia/geology_stonemine_desert_badlands_quarry",
-    stoneSmall: "gaia/geology_stone_temperate",
-    treeLarge: "gaia/flora_tree_cedar_atlas_2_young",
-    treeMedium: "gaia/flora_tree_pine_black",
-    treeSmall: "gaia/flora_tree_cedar_atlas_1_sapling",
-    treeDeadLarge: "gaia/flora_tree_pine_black_dead"
-}
+const gaia = {
+    "berryBush": "gaia/flora_bush_berry",
+    "gameLarge": "gaia/fauna_deer",
+    "gameMedium": "gaia/fauna_goat",
+    "gameSmall": "gaia/fauna_chicken",
+    "metal": "gaia/geology_metal_desert_badlands_slabs",
+    "metalSmall": "gaia/geology_metal_alpine",
+    "stone": "gaia/geology_stonemine_desert_badlands_quarry",
+    "stoneSmall": "gaia/geology_stone_temperate",
+    "treeLarge": "gaia/flora_tree_cedar_atlas_2_young",
+    "treeMedium": "gaia/flora_tree_pine_black",
+    "treeSmall": "gaia/flora_tree_cedar_atlas_1_sapling",
+    "treeDeadLarge": "gaia/flora_tree_pine_black_dead"
+};
 
-let actors = {
-    bushLarge: "actor|props/flora/bush_desert_dry_a.xml",
-    bushMedium: "actor|props/flora/bush_highlands.xml",
-    bushSmall: "actor|props/flora/bush_medit_sm_dry.xml",
-    grassLarge: "actor|props/flora/grass_soft_dry_large.xml",
-    grassMedium: "actor|props/flora/grass_soft_tuft_a.xml",
-    grassSmall: "actor|props/flora/grass_field_parched_short.xml",
-    rockMedium: "actor|geology/stone_granite_med.xml",
-    rockSmall: "actor|geology/stone_granite_small.xml"
-}
+const actors = {
+    "bushLarge": "actor|props/flora/bush_desert_dry_a.xml",
+    "bushMedium": "actor|props/flora/bush_highlands.xml",
+    "bushSmall": "actor|props/flora/bush_medit_sm_dry.xml",
+    "grassLarge": "actor|props/flora/grass_soft_dry_large.xml",
+    "grassMedium": "actor|props/flora/grass_soft_tuft_a.xml",
+    "grassSmall": "actor|props/flora/grass_field_parched_short.xml",
+    "rockMedium": "actor|geology/stone_granite_med.xml",
+    "rockSmall": "actor|geology/stone_granite_small.xml"
+};
 
 const heightLand = 14;
 const heightSlope = 55;
@@ -57,25 +56,25 @@ var g_Map = new RandomMap(heightLand, terrain.primary);
 const mapRadius = g_Map.getSize() / 2;
 const mapCenter = g_Map.getCenter();
 
-let tiles = {
-    animals: g_Map.createTileClass(),
-    base: g_Map.createTileClass(),
-    baseResource: g_Map.createTileClass(),
-    berries: g_Map.createTileClass(),
-    caldera: g_Map.createTileClass(),
-    calderaGrass: g_Map.createTileClass(),
-    expansion: g_Map.createTileClass(),
-    forest: g_Map.createTileClass(),
-    grass: g_Map.createTileClass(),
-    grove: g_Map.createTileClass(),
-    metal: g_Map.createTileClass(),
-    metalSmall: g_Map.createTileClass(),
-    neutral: g_Map.createTileClass(),
-    props: g_Map.createTileClass(),
-    rim: g_Map.createTileClass(),
-    stone: g_Map.createTileClass(),
-    stoneSmall: g_Map.createTileClass(),
-    thicket: g_Map.createTileClass(),
+var tiles = {
+    "animals": g_Map.createTileClass(),
+    "base": g_Map.createTileClass(),
+    "baseResource": g_Map.createTileClass(),
+    "berries": g_Map.createTileClass(),
+    "caldera": g_Map.createTileClass(),
+    "calderaGrass": g_Map.createTileClass(),
+    "expansion": g_Map.createTileClass(),
+    "forest": g_Map.createTileClass(),
+    "grass": g_Map.createTileClass(),
+    "grove": g_Map.createTileClass(),
+    "metal": g_Map.createTileClass(),
+    "metalSmall": g_Map.createTileClass(),
+    "neutral": g_Map.createTileClass(),
+    "props": g_Map.createTileClass(),
+    "rim": g_Map.createTileClass(),
+    "stone": g_Map.createTileClass(),
+    "stoneSmall": g_Map.createTileClass(),
+    "thicket": g_Map.createTileClass(),
 };
 
 function teamTileClass(id) {
@@ -113,8 +112,7 @@ function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100) {
     this.failFraction = failFraction;
 }
 
-WedgePlacer.prototype.place = function (constraint)
-{
+WedgePlacer.prototype.place = function (constraint) {
     let points = [];
     let count = 0;
     let failed = 0;
@@ -122,12 +120,9 @@ WedgePlacer.prototype.place = function (constraint)
     let point = new Vector2D(0, 0);
 
     for (point.x = 0; point.x < g_Map.size; ++point.x)
-        for (point.y = 0; point.y < g_Map.size; ++point.y)
-        {
+        for (point.y = 0; point.y < g_Map.size; ++point.y) {
             ++count;
 
-            // TODO: Can't one simplify the + 2 * Math.PI part with a % modulo operator? same for the constructor
-            // Actually irrelevant if this is replaced with the PolygonPlacer
             let radians = this.centerPoint.angleTo(point) + this.normalize;
             if (radians < 0)
                 radians += 2 * Math.PI;
@@ -135,7 +130,7 @@ WedgePlacer.prototype.place = function (constraint)
             // check if this angle is between the two angles (plus an optional full rotation)
             if (g_Map.inMapBounds(point) &&
                 (radians >= this.startAngle && radians < this.stopAngle ||
-                radians + 2 * Math.PI >= this.startAngle && radians + 2 * Math.PI < this.stopAngle) &&
+                    radians + 2 * Math.PI >= this.startAngle && radians + 2 * Math.PI < this.stopAngle) &&
                 constraint.allows(point))
 
                 points.push(point.clone());
@@ -147,9 +142,9 @@ WedgePlacer.prototype.place = function (constraint)
 }
 
 // Create lookups to easily find a player's team and players on a team
-let ffaTeamID = 101;
-let players = {};
-let teams = {};
+var ffaTeamID = 101;
+var players = {};
+var teams = {};
 for (let playerID = 1; playerID <= numPlayers; ++playerID) {
     let teamID = g_MapSettings.PlayerData[playerID].Team === undefined || g_MapSettings.PlayerData[playerID].Team == -1 ? ffaTeamID++ : g_MapSettings.PlayerData[playerID].Team;
 
@@ -168,104 +163,103 @@ for (let playerID = 1; playerID <= numPlayers; ++playerID) {
     players[playerID] = teamID;
     tiles[playerTileClass(playerID)] = g_Map.createTileClass();
 }
-let numTeams = Object.keys(teams).length;
+var numTeams = Object.keys(teams).length;
 
-let resourceRetries = 500;
+const resourceRetries = 500;
 
-let radianTeamEdgePadding = Math.PI / (5 * numTeams);
-let radianNeutralEdgePadding = radianTeamEdgePadding / 3;
-let baseDistanceFromCenter = mapRadius * 0.7;
-let radiansPerTeam = 2 * Math.PI / numTeams - (2 * radianTeamEdgePadding);
+const radianTeamEdgePadding = Math.PI / (5 * numTeams);
+const radianNeutralEdgePadding = radianTeamEdgePadding / 3;
+const baseDistanceFromCenter = mapRadius * 0.7;
+const radiansPerTeam = 2 * Math.PI / numTeams - (2 * radianTeamEdgePadding);
 
-let mapScale = g_MapSettings.Size / 320;
-let teamScale = radiansPerTeam / (2 * Math.PI) * mapScale;
-let playerScale = radiansPerTeam * numTeams / numPlayers / (2 * Math.PI) * mapScale;
-let openSpaceScale = (mapScale - (teamScale * numTeams)) / numTeams;
+const mapScale = g_MapSettings.Size / 320;
+const teamScale = radiansPerTeam / (2 * Math.PI) * mapScale;
+const playerScale = radiansPerTeam * numTeams / numPlayers / (2 * Math.PI) * mapScale;
+const openSpaceScale = (mapScale - (teamScale * numTeams)) / numTeams;
 
 g_Map.log(`mapScale: ${mapScale}; teamScale: ${teamScale}; playerScale: ${playerScale}; openSpaceScale: ${openSpaceScale}`);
 
 // create random resource ranges
 
-let ratio1 = Math.random() * 0.6 + 0.2;
-let ratio2 = 1 - ratio1;
+const ratio1 = Math.random() * 0.6 + 0.2;
+const ratio2 = 1 - ratio1;
 
-let forestTrees = randIntInclusive(600, 1200) * mapScale;
-let forestTreesPerGroup = Math.ceil(randIntInclusive(20, 30) * mapScale);
-let forestGroupsPerPlayer = Math.round(playerScale * forestTrees / forestTreesPerGroup);
+const forestTrees = randIntInclusive(600, 1200) * mapScale;
+const forestTreesPerGroup = Math.ceil(randIntInclusive(20, 30) * mapScale);
+const forestGroupsPerPlayer = Math.round(playerScale * forestTrees / forestTreesPerGroup);
 
 g_Map.log(`Forest trees: ${forestTreesPerGroup * forestGroupsPerPlayer} per player; groups: ${forestGroupsPerPlayer}`);
 
-let groveTrees = randIntInclusive(400, 800) * mapScale;
-let groveTreesPerGroup = Math.ceil(randIntInclusive(12, 18) * mapScale);
-let groveGroupsPerPlayer = Math.round(playerScale * groveTrees / groveTreesPerGroup);
+const groveTrees = randIntInclusive(400, 800) * mapScale;
+const groveTreesPerGroup = Math.ceil(randIntInclusive(12, 18) * mapScale);
+const groveGroupsPerPlayer = Math.round(playerScale * groveTrees / groveTreesPerGroup);
 
 g_Map.log(`Grove trees: ${groveTreesPerGroup * groveGroupsPerPlayer} per player; groups: ${groveGroupsPerPlayer}`);
 
-let thicketTrees = randIntInclusive(150, 300) * mapScale;
-let thicketTreesPerGroup = Math.ceil(randIntInclusive(4, 6) * mapScale);
-let thicketGroupsPerPlayer = Math.round(playerScale * thicketTrees / thicketTreesPerGroup);
+const thicketTrees = randIntInclusive(150, 300) * mapScale;
+const thicketTreesPerGroup = Math.ceil(randIntInclusive(4, 6) * mapScale);
+const thicketGroupsPerPlayer = Math.round(playerScale * thicketTrees / thicketTreesPerGroup);
 
 g_Map.log(`Thicket trees: ${thicketTreesPerGroup * thicketGroupsPerPlayer} per player; groups: ${thicketGroupsPerPlayer}`);
 
-let stoneSmall = randIntInclusive(30, 60) * mapScale;
-let stoneSmallPerGroup = Math.ceil(randIntInclusive(2, 6) * mapScale);
-let stoneSmallGroupsPerPlayer = Math.round(playerScale * stoneSmall / stoneSmallPerGroup);
+const stoneSmall = randIntInclusive(30, 60) * mapScale;
+const stoneSmallPerGroup = Math.ceil(randIntInclusive(2, 6) * mapScale);
+const stoneSmallGroupsPerPlayer = Math.round(playerScale * stoneSmall / stoneSmallPerGroup);
 
 g_Map.log(`Small Stones: ${stoneSmallPerGroup * stoneSmallGroupsPerPlayer} per player; groups: ${stoneSmallGroupsPerPlayer}`);
 
-let metalSmall = randIntInclusive(30, 60) * mapScale;
-let metalSmallPerGroup = Math.ceil(randIntInclusive(2, 6) * mapScale);
-let metalSmallGroupsPerPlayer = Math.round(playerScale * metalSmall / metalSmallPerGroup);
+const metalSmall = randIntInclusive(30, 60) * mapScale;
+const metalSmallPerGroup = Math.ceil(randIntInclusive(2, 6) * mapScale);
+const metalSmallGroupsPerPlayer = Math.round(playerScale * metalSmall / metalSmallPerGroup);
 
 g_Map.log(`Small Metal: ${metalSmallPerGroup * metalSmallGroupsPerPlayer} per player; groups: ${metalSmallGroupsPerPlayer}`);
 
-let animals = randIntInclusive(60, 180) * mapScale;
-let animalsPerGroup = Math.ceil(randIntInclusive(4, 8) * mapScale);
-let animalGroupsPerPlayer = Math.round(playerScale * animals / animalsPerGroup);
+const animals = randIntInclusive(60, 180) * mapScale;
+const animalsPerGroup = Math.ceil(randIntInclusive(4, 8) * mapScale);
+const animalGroupsPerPlayer = Math.round(playerScale * animals / animalsPerGroup);
 
 g_Map.log(`Animals: ${animalsPerGroup * animalGroupsPerPlayer} per player; groups: ${animalGroupsPerPlayer}`);
 
-let berries = randIntInclusive(40, 100) * mapScale;
-let berriesPerGroup = Math.ceil(randIntInclusive(3, 6) * mapScale);
-let berryGroupsPerPlayer = Math.round(playerScale * berries / berriesPerGroup);
+const berries = randIntInclusive(40, 100) * mapScale;
+const berriesPerGroup = Math.ceil(randIntInclusive(3, 6) * mapScale);
+const berryGroupsPerPlayer = Math.round(playerScale * berries / berriesPerGroup);
 
 g_Map.log(`Berries: ${berriesPerGroup * berryGroupsPerPlayer} per player; groups: ${berryGroupsPerPlayer}`);
 
-let bonusStone = Math.round(randIntInclusive(1, 8) / numTeams * mapScale);
-let bonusStonePerGroup = 1;
-let bonusStoneGroupsPerTeam = Math.round(bonusStone / bonusStonePerGroup);
+const bonusStone = Math.round(randIntInclusive(1, 8) / numTeams * mapScale);
+const bonusStonePerGroup = 1;
+const bonusStoneGroupsPerTeam = Math.round(bonusStone / bonusStonePerGroup);
 
 g_Map.log(`Bonus Stone: ${bonusStonePerGroup * bonusStoneGroupsPerTeam} per team; groups: ${bonusStoneGroupsPerTeam}`);
 
-let bonusMetal = Math.round(randIntInclusive(1, 8) / numTeams * mapScale);
-let bonusMetalPerGroup = 1;
-let bonusMetalGroupsPerTeam = Math.round(bonusMetal / bonusMetalPerGroup);
+const bonusMetal = Math.round(randIntInclusive(1, 8) / numTeams * mapScale);
+const bonusMetalPerGroup = 1;
+const bonusMetalGroupsPerTeam = Math.round(bonusMetal / bonusMetalPerGroup);
 
 g_Map.log(`Bonus Metal: ${bonusMetalPerGroup * bonusMetalGroupsPerTeam} per team; groups: ${bonusMetalGroupsPerTeam}`);
 
-let expStoneSmall = Math.round(randIntInclusive(1, 16) / numTeams * mapScale);
-let expStoneSmallPerGroup = Math.ceil(randIntInclusive(2, 6) * mapScale);
-let expStoneSmallGroupsPerTeam = Math.round(expStoneSmall / expStoneSmallPerGroup);
+const expStoneSmall = Math.round(randIntInclusive(1, 16) / numTeams * mapScale);
+const expStoneSmallPerGroup = Math.ceil(randIntInclusive(2, 6) * mapScale);
+const expStoneSmallGroupsPerTeam = Math.round(expStoneSmall / expStoneSmallPerGroup);
 
 g_Map.log(`Expansion Stone Small: ${expStoneSmallPerGroup * expStoneSmallGroupsPerTeam} per expansion; groups: ${expStoneSmallGroupsPerTeam}`);
 
-let expMetalSmall = Math.round(randIntInclusive(1, 16) / numTeams * mapScale);
-let expMetalSmallPerGroup = Math.ceil(randIntInclusive(2, 6) * mapScale);
-let expMetalSmallGroupsPerTeam = Math.round(expMetalSmall / expMetalSmallPerGroup);
+const expMetalSmall = Math.round(randIntInclusive(1, 16) / numTeams * mapScale);
+const expMetalSmallPerGroup = Math.ceil(randIntInclusive(2, 6) * mapScale);
+const expMetalSmallGroupsPerTeam = Math.round(expMetalSmall / expMetalSmallPerGroup);
 
 g_Map.log(`Expansion Metal Small: ${expMetalSmallPerGroup * expMetalSmallGroupsPerTeam} per expansion; groups: ${expMetalSmallGroupsPerTeam}`);
 
-let expStone = Math.round(randIntInclusive(1, 4) / numTeams * mapScale);
-let expStonePerGroup = 1;
-let expStoneGroupsPerTeam = Math.round(expStone / expStonePerGroup);
+const expStone = Math.round(randIntInclusive(1, 4) / numTeams * mapScale);
+const expStonePerGroup = 1;
+const expStoneGroupsPerTeam = Math.round(expStone / expStonePerGroup);
 
 g_Map.log(`Expansion Stone: ${expStonePerGroup * expStoneGroupsPerTeam} per expansion; groups: ${expStoneGroupsPerTeam}`);
 
-let expMetal = Math.round(randIntInclusive(1, 4) / numTeams * mapScale);
-let expMetalPerGroup = 1;
-let expMetalGroupsPerTeam = Math.round(expMetal / expMetalPerGroup);
+const expMetal = Math.round(randIntInclusive(1, 4) / numTeams * mapScale);
+const expMetalPerGroup = 1;
+const expMetalGroupsPerTeam = Math.round(expMetal / expMetalPerGroup);
 
-// TODO: performance issue on giant map: Expansion Metal: 3 per expansion; groups: 3... 13.845s.
 g_Map.log(`Expansion Metal: ${expMetalPerGroup * expMetalGroupsPerTeam} per expansion; groups: ${expMetalGroupsPerTeam}`);
 
 // slope the map
