@@ -12,11 +12,12 @@ const mapCenter = new Vector2D(mapRadius, mapRadius);
 let terrain = {
     bump: ["dirt_rocks_a", "steppe_dirt_rocks_a", "dirt_broken_rocks"],
     caldera: ["dirt_brown_d", "dirt_brown_e", "DirtTests4"],
+    calderaBump: ["dirt_brown_e"],
     city: ["desert_dirt_persia_rocky"],
     cityPlaza: ["desert_cliff_base"],
     cliff: ["medit_cliff_italia", "medit_dirt_e"],
     dirt: ["steppe_grass_dirt_66"],
-    forestFloor: ["steppe_grass_dirt_66", "steppe_grass_dirt_33", "steppe_grass_d"],
+    forestFloor: ["steppe_grass_dirt_66", "forestfloor_dirty", "forestfloor_pine"],
     primary: ["dirt_rocks_a", "steppe_dirt_rocks_a", "steppe_dirt_a", "steppe_dirt_b"],
     rim: ["dirt_rocks_a", "steppe_dirt_rocks_a", "dirt_broken_rocks"],
 }
@@ -30,11 +31,10 @@ let gaia = {
     metalSmall: "gaia/geology_metal_alpine",
     stone: "gaia/geology_stonemine_desert_badlands_quarry",
     stoneSmall: "gaia/geology_stone_temperate",
-    treeLarge: "gaia/flora_tree_oak_new",
-    treeMedium: "gaia/flora_tree_oak_aut_new",
-    treeSmall: "gaia/flora_tree_pine",
-    treeDeadLarge: "gaia/flora_tree_oak_dead",
-    treeDeadMedium: "gaia/flora_tree_dead",
+    treeLarge: "gaia/flora_tree_cedar_atlas_2_young",
+    treeMedium: "gaia/flora_tree_pine_black",
+    treeSmall: "gaia/flora_tree_cedar_atlas_1_sapling",
+    treeDeadLarge: "gaia/flora_tree_pine_black_dead"
 }
 
 let actors = {
@@ -62,6 +62,7 @@ let tiles = {
     baseResource: g_Map.createTileClass(),
     berries: g_Map.createTileClass(),
     caldera: g_Map.createTileClass(),
+    calderaGrass: g_Map.createTileClass(),
     expansion: g_Map.createTileClass(),
     forest: g_Map.createTileClass(),
     grass: g_Map.createTileClass(),
@@ -143,7 +144,7 @@ let ffaTeamID = 101;
 let players = {};
 let teams = {};
 for (let playerID = 1; playerID <= numPlayers; ++playerID) {
-    let teamID = g_MapSettings.PlayerData[playerID].Team === undefined ? ffaTeamID++ : g_MapSettings.PlayerData[playerID].Team;
+    let teamID = g_MapSettings.PlayerData[playerID].Team === undefined || g_MapSettings.PlayerData[playerID].Team == -1 ? ffaTeamID++ : g_MapSettings.PlayerData[playerID].Team;
 
     // for new teams, initialize the array and create a new tile class
     if (teams[teamID] === undefined) {
@@ -885,11 +886,61 @@ createAreas(
     avoidClasses(tiles.caldera, 0, tiles.base, 1),
     bumpCount
 );
-Engine.SetProgress(70);
 
 g_Map.log(`Bumps: ${bumpCount}; size: ${bumpSize}; height: ${bumpHeight}`);
 
-// add vegetation
+// add caldera bumps
+
+let calderaBumpSize = Math.round(25 * mapScale);
+let calderaBumpHeight = Math.round(15 * mapScale);
+let calderaBumpCount = Math.round(25 * mapScale);
+
+// createAreas(centeredPlacer, painter, constraints, amount, retryFactor = 10)
+// ClumpPlacer(size, coherence, smoothness, failFraction, centerPosition)
+// scaleByMapSize(min, max, minMapSize = 128, maxMapSize = 512)
+// SmoothElevationPainter(type, elevation, blendRadius, randomElevation)
+// LayeredPainter(terrains, widths)
+createAreas(
+    new ClumpPlacer(calderaBumpSize, 0.2, 0.06, 0),
+    [
+        new SmoothElevationPainter(ELEVATION_MODIFY, calderaBumpHeight, calderaBumpHeight),
+        new LayeredPainter([terrain.calderaBump], [])
+    ],
+    stayClasses(tiles.caldera, 6),
+    calderaBumpCount
+);
+Engine.SetProgress(70);
+
+g_Map.log(`Caldera Bumps: ${calderaBumpCount}; size: ${calderaBumpSize}; height: ${calderaBumpHeight}`);
+
+// add caldera grass
+
+let calderaGrassCount = Math.round(50 * mapScale);
+
+g_Map.log(`Caldera grass patches: ${calderaGrassCount}`);
+
+// createObjectGroups(group, player, constraints, amount, retryFactor = 10, behaveDeprecated = false)
+// SimpleGroup(objects, avoidSelf = false, tileClass = undefined, centerPosition = undefined)
+// SimpleObject(templateName, minCount, maxCount, minDistance, maxDistance, minAngle = 0, maxAngle = 2 * Math.PI, avoidDistance = 1)
+createObjectGroups(
+    new SimpleGroup(
+        [
+            new SimpleObject(actors.grassSmall, 3, 3, 0, 10),
+            new SimpleObject(actors.bushSmall, 2, 2, 0, 10),
+            new SimpleObject(actors.bushLarge, 1, 1, 0, 10),
+            new SimpleObject(actors.rockMedium, 4, 4, 0, 5),
+            new SimpleObject(actors.rockSmall, 7, 7, 0, 7),
+        ],
+        false,
+        tiles.calderaGrass
+    ),
+    0,
+    stayClasses(tiles.caldera, 4),
+    calderaGrassCount
+);
+Engine.SetProgress(80);
+
+// add grass patches
 
 let grassCount = Math.round(randIntInclusive(150, 250) * mapScale);
 
