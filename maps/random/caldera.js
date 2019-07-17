@@ -77,33 +77,39 @@ var tiles = {
     "thicket": g_Map.createTileClass(),
 };
 
-function teamTileClass(id) {
+function teamTileClass(id)
+{
     return `team${id}`
 }
 
-function teamExpTileClass(id) {
+function teamExpTileClass(id)
+{
     return `exp${id}`
 }
 
-function teamNeutralTileClass(id) {
+function teamNeutralTileClass(id)
+{
     return `neutral${id}`
 }
 
-function playerTileClass(id) {
+function playerTileClass(id)
+{
     return `player${id}`
 }
 
 /**
  * WedgePlacer - creates a triangular slice from a center point and two angles.
  */
-function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100) {
+function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100)
+{
     this.normalize = 0;
     this.centerPoint = centerPoint;
     this.startAngle = startAngle;
     this.stopAngle = stopAngle;
 
     // add 2 * Math.PI to ensure a positive angle
-    if (this.startAngle < 0 || this.stopAngle < 0) {
+    if (this.startAngle < 0 || this.stopAngle < 0)
+    {
         this.normalize = 2 * Math.PI;
         this.startAngle = startAngle + this.normalize;
         this.stopAngle = stopAngle + this.normalize;
@@ -112,7 +118,8 @@ function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100) {
     this.failFraction = failFraction;
 }
 
-WedgePlacer.prototype.place = function (constraint) {
+WedgePlacer.prototype.place = function (constraint)
+{
     let points = [];
     let count = 0;
     let failed = 0;
@@ -120,7 +127,8 @@ WedgePlacer.prototype.place = function (constraint) {
     let point = new Vector2D(0, 0);
 
     for (point.x = 0; point.x < g_Map.size; ++point.x)
-        for (point.y = 0; point.y < g_Map.size; ++point.y) {
+        for (point.y = 0; point.y < g_Map.size; ++point.y)
+        {
             ++count;
 
             let radians = this.centerPoint.angleTo(point) + this.normalize;
@@ -145,11 +153,13 @@ WedgePlacer.prototype.place = function (constraint) {
 var ffaTeamID = 101;
 var players = {};
 var teams = {};
-for (let playerID = 1; playerID <= numPlayers; ++playerID) {
+for (let playerID = 1; playerID <= numPlayers; ++playerID)
+{
     let teamID = g_MapSettings.PlayerData[playerID].Team === undefined || g_MapSettings.PlayerData[playerID].Team == -1 ? ffaTeamID++ : g_MapSettings.PlayerData[playerID].Team;
 
     // for new teams, initialize the array and create a new tile class
-    if (teams[teamID] === undefined) {
+    if (teams[teamID] === undefined)
+    {
         teams[teamID] = [];
         tiles[teamTileClass(teamID)] = g_Map.createTileClass();
     }
