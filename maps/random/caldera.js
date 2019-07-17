@@ -274,7 +274,6 @@ g_Map.log(`Expansion Metal: ${expMetalPerGroup * expMetalGroupsPerTeam} per expa
 
 // slope the map
 
-// createArea(placer, painters, constraints)
 // DiskPlacer(radius, centerPosition = undefined)
 // SmoothElevationPainter(type, elevation, blendRadius, randomElevation)
 createArea(
@@ -285,7 +284,6 @@ Engine.SetProgress(10);
 
 // create the rim
 
-// createArea(placer, painters, constraints)
 // ClumpPlacer(size, coherence, smoothness, failFraction, centerPosition)
 // LayeredPainter(terrains, widths)
 // SmoothElevationPainter(type, elevation, blendRadius, randomElevation)
@@ -301,7 +299,6 @@ Engine.SetProgress(20);
 
 // create the caldera
 
-// createArea(placer, painters, constraints)
 // ClumpPlacer(size, coherence, smoothness, failFraction, centerPosition)
 // LayeredPainter(terrains, widths)
 // SmoothElevationPainter(type, elevation, blendRadius, randomElevation)
@@ -342,14 +339,12 @@ for (let key in teams) {
     let neutralStartAngle = teamPoints[1][teamIndex - 1] - radianTeamEdgePadding;
     let neutralStopAngle = teamPoints[1][teamIndex - 1] + radianTeamEdgePadding;
 
-    // createArea(placer, painters, constraints)
     // WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100)
     createArea(
         new WedgePlacer(mapCenter, expStartAngle, expStopAngle),
         new TileClassPainter(tiles[teamExpTileClass(key)])
     );
 
-    // createArea(placer, painters, constraints)
     // WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100)
     createArea(
         new WedgePlacer(mapCenter, neutralStartAngle, neutralStopAngle),
@@ -367,7 +362,6 @@ for (let key in teams) {
 
         // tile the area for placing team and player resources
 
-        // createArea(placer, painters, constraints)
         // WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100)
         createArea(
             new WedgePlacer(mapCenter, startPlayerAngle, stopPlayerAngle),
@@ -420,7 +414,6 @@ for (let key in teams) {
 
         // tile the base
 
-        // createArea(placer, painters, constraints)
         // DiskPlacer(radius, centerPosition = undefined)
         // LayeredPainter(terrains, widths)
         createArea(
@@ -984,7 +977,6 @@ Engine.SetProgress(80);
 
 // add terrain textures
 
-// createArea(placer, painters, constraints)
 // DiskPlacer(radius, centerPosition = undefined)
 createArea(
     new DiskPlacer(mapRadius, mapCenter),
@@ -992,7 +984,6 @@ createArea(
     borderClasses(tiles.grove, 0, 3)
 );
 
-// createArea(placer, painters, constraints)
 // DiskPlacer(radius, centerPosition = undefined)
 createArea(
     new DiskPlacer(mapRadius, mapCenter),
