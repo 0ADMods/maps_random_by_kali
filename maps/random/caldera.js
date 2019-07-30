@@ -77,39 +77,31 @@ var tiles = {
     "thicket": g_Map.createTileClass(),
 };
 
-function teamTileClass(id)
-{
+function teamTileClass(id) {
     return `team${id}`
 }
 
-function teamExpTileClass(id)
-{
+function teamExpTileClass(id) {
     return `exp${id}`
 }
 
-function teamNeutralTileClass(id)
-{
+function teamNeutralTileClass(id) {
     return `neutral${id}`
 }
 
-function playerTileClass(id)
-{
+function playerTileClass(id) {
     return `player${id}`
 }
 
-/**
- * WedgePlacer - creates a triangular slice from a center point and two angles.
- */
-function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100)
-{
+// WedgePlacer - creates a triangular slice from a center point and two angles
+function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100) {
     this.normalize = 0;
     this.centerPoint = centerPoint;
     this.startAngle = startAngle;
     this.stopAngle = stopAngle;
 
     // add 2 * Math.PI to ensure a positive angle
-    if (this.startAngle < 0 || this.stopAngle < 0)
-    {
+    if (this.startAngle < 0 || this.stopAngle < 0) {
         this.normalize = 2 * Math.PI;
         this.startAngle = startAngle + this.normalize;
         this.stopAngle = stopAngle + this.normalize;
@@ -118,33 +110,31 @@ function WedgePlacer(centerPoint, startAngle, stopAngle, failFraction = 100)
     this.failFraction = failFraction;
 }
 
-WedgePlacer.prototype.place = function (constraint)
-{
+// WedgePlacer.place() - return points that fall between two angles
+WedgePlacer.prototype.place = function (constraint) {
     let points = [];
     let count = 0;
     let failed = 0;
 
-    let point = new Vector2D(0, 0);
-
-    for (point.x = 0; point.x < g_Map.size; ++point.x)
-        for (point.y = 0; point.y < g_Map.size; ++point.y)
-        {
+    for (let x = 0; x < g_MapSettings.Size; ++x) {
+        for (let y = 0; y < g_MapSettings.Size; ++y) {
             ++count;
 
-            let radians = this.centerPoint.angleTo(point) + this.normalize;
-            if (radians < 0)
+            let point = new Vector2D(x, y);
+            let radians = Math.atan2(point.y - this.centerPoint.y, point.x - this.centerPoint.x) + this.normalize;
+
+            if (radians < 0) {
                 radians += 2 * Math.PI;
+            }
 
             // check if this angle is between the two angles (plus an optional full rotation)
-            if (g_Map.inMapBounds(point) &&
-                (radians >= this.startAngle && radians < this.stopAngle ||
-                    radians + 2 * Math.PI >= this.startAngle && radians + 2 * Math.PI < this.stopAngle) &&
-                constraint.allows(point))
-
-                points.push(point.clone());
-            else
+            if (g_Map.inMapBounds(point) && ((radians >= this.startAngle && radians < this.stopAngle) || (radians + 2 * Math.PI >= this.startAngle && radians + 2 * Math.PI < this.stopAngle)) && constraint.allows(point)) {
+                points.push(point);
+            } else {
                 ++failed;
+            }
         }
+    }
 
     return failed <= this.failFraction * count ? points : undefined;
 }
@@ -153,13 +143,11 @@ WedgePlacer.prototype.place = function (constraint)
 var ffaTeamID = 101;
 var players = {};
 var teams = {};
-for (let playerID = 1; playerID <= numPlayers; ++playerID)
-{
+for (let playerID = 1; playerID <= numPlayers; ++playerID) {
     let teamID = g_MapSettings.PlayerData[playerID].Team === undefined || g_MapSettings.PlayerData[playerID].Team == -1 ? ffaTeamID++ : g_MapSettings.PlayerData[playerID].Team;
 
     // for new teams, initialize the array and create a new tile class
-    if (teams[teamID] === undefined)
-    {
+    if (teams[teamID] === undefined) {
         teams[teamID] = [];
         tiles[teamTileClass(teamID)] = g_Map.createTileClass();
     }
@@ -194,13 +182,13 @@ g_Map.log(`mapScale: ${mapScale}; teamScale: ${teamScale}; playerScale: ${player
 const ratio1 = Math.random() * 0.6 + 0.2;
 const ratio2 = 1 - ratio1;
 
-const forestTrees = randIntInclusive(600, 1200) * mapScale;
+const forestTrees = randIntInclusive(800, 1600) * mapScale;
 const forestTreesPerGroup = Math.ceil(randIntInclusive(20, 30) * mapScale);
 const forestGroupsPerPlayer = Math.round(playerScale * forestTrees / forestTreesPerGroup);
 
 g_Map.log(`Forest trees: ${forestTreesPerGroup * forestGroupsPerPlayer} per player; groups: ${forestGroupsPerPlayer}`);
 
-const groveTrees = randIntInclusive(400, 800) * mapScale;
+const groveTrees = randIntInclusive(600, 1000) * mapScale;
 const groveTreesPerGroup = Math.ceil(randIntInclusive(12, 18) * mapScale);
 const groveGroupsPerPlayer = Math.round(playerScale * groveTrees / groveTreesPerGroup);
 
@@ -318,8 +306,6 @@ Engine.SetProgress(30);
 let teamPoints = distributePointsOnCircle(numTeams, Math.random() * Math.PI, baseDistanceFromCenter, mapCenter);
 
 let teamIndex = 1;
-
-// TODO: It seems like this could call placePlayerBases? Mostly createFoods, createMines were the calls to be deprecated
 
 for (let key in teams) {
     g_Map.log(`Place team ${key}`);
@@ -500,11 +486,13 @@ for (let key in teams) {
             0,
             [
                 stayClasses(tiles[playerTileClass(playerID)], 0),
-                avoidClasses(tiles.baseResource, 8, tiles.base, 8, tiles.forest, 4, tiles.rim, 15)
+                avoidClasses(tiles.baseResource, 10, tiles.base, 10, tiles.forest, 4, tiles.rim, 15)
             ],
             forestGroupsPerPlayer,
             resourceRetries
         );
+
+        // large, small
 
         // createObjectGroups(group, player, constraints, amount, retryFactor = 10, behaveDeprecated = false)
         // SimpleGroup(objects, avoidSelf = false, tileClass = undefined, centerPosition = undefined)
@@ -521,7 +509,7 @@ for (let key in teams) {
             0,
             [
                 stayClasses(tiles[playerTileClass(playerID)], 0),
-                avoidClasses(tiles.baseResource, 7, tiles.base, 6, tiles.forest, 7, tiles.grove, 4, tiles.rim, 6)
+                avoidClasses(tiles.baseResource, 8, tiles.base, 8, tiles.forest, 7, tiles.grove, 4, tiles.rim, 6)
             ],
             groveGroupsPerPlayer,
             resourceRetries
@@ -542,7 +530,7 @@ for (let key in teams) {
             0,
             [
                 stayClasses(tiles[playerTileClass(playerID)], 0),
-                avoidClasses(tiles.baseResource, 6, tiles.base, 3, tiles.forest, 7, tiles.grove, 7, tiles.thicket, 3, tiles.rim, 6)
+                avoidClasses(tiles.baseResource, 8, tiles.base, 8, tiles.forest, 7, tiles.grove, 7, tiles.thicket, 3, tiles.rim, 6)
             ],
             thicketGroupsPerPlayer,
             resourceRetries
@@ -672,7 +660,7 @@ for (let key in teams) {
         0,
         [
             stayClasses(tiles[teamNeutralTileClass(key)], 0),
-            avoidClasses(tiles.baseResource, 7, tiles.base, 6, tiles.forest, 7, tiles.grove, 4, tiles.rim, 6, tiles.metal, 5, tiles.metalSmall, 5, tiles.stone, 5, tiles.stoneSmall, 5, tiles.animals, 5, tiles.berries, 5)
+            avoidClasses(tiles.baseResource, 8, tiles.base, 8, tiles.forest, 7, tiles.grove, 4, tiles.rim, 6, tiles.metal, 5, tiles.metalSmall, 5, tiles.stone, 5, tiles.stoneSmall, 5, tiles.animals, 5, tiles.berries, 5)
         ],
         Math.round(openSpaceScale * groveTrees / groveTreesPerGroup),
         resourceRetries
@@ -693,7 +681,7 @@ for (let key in teams) {
         0,
         [
             stayClasses(tiles[teamNeutralTileClass(key)], 0),
-            avoidClasses(tiles.baseResource, 6, tiles.base, 3, tiles.forest, 7, tiles.grove, 7, tiles.thicket, 3, tiles.rim, 6, tiles.metal, 5, tiles.metalSmall, 5, tiles.stone, 5, tiles.stoneSmall, 5, tiles.animals, 5, tiles.berries, 5)
+            avoidClasses(tiles.baseResource, 8, tiles.base, 8, tiles.forest, 7, tiles.grove, 7, tiles.thicket, 3, tiles.rim, 6, tiles.metal, 5, tiles.metalSmall, 5, tiles.stone, 5, tiles.stoneSmall, 5, tiles.animals, 5, tiles.berries, 5)
         ],
         Math.round(openSpaceScale * thicketTrees / thicketTreesPerGroup),
         resourceRetries
@@ -713,7 +701,7 @@ for (let key in teams) {
         0,
         [
             stayClasses(tiles[teamExpTileClass(key)], 0),
-            avoidClasses(tiles.caldera, 7, tiles.metal, 25, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
+            avoidClasses(tiles.base, 15, tiles.baseResource, 15, tiles.caldera, 7, tiles.metal, 25, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
         ],
         expMetalGroupsPerTeam,
         resourceRetries
@@ -733,7 +721,7 @@ for (let key in teams) {
         0,
         [
             stayClasses(tiles[teamExpTileClass(key)], 0),
-            avoidClasses(tiles.caldera, 7, tiles.stone, 25, tiles.metal, 15, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
+            avoidClasses(tiles.base, 15, tiles.baseResource, 15, tiles.caldera, 7, tiles.stone, 25, tiles.metal, 15, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
         ],
         expStoneGroupsPerTeam,
         resourceRetries
@@ -753,7 +741,7 @@ for (let key in teams) {
         0,
         [
             stayClasses(tiles[teamExpTileClass(key)], 0),
-            avoidClasses(tiles.caldera, 7, tiles.metalSmall, 25, tiles.metal, 25, tiles.stone, 15, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
+            avoidClasses(tiles.base, 12, tiles.baseResource, 12, tiles.caldera, 7, tiles.metalSmall, 25, tiles.metal, 25, tiles.stone, 15, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
         ],
         expMetalSmallGroupsPerTeam,
         resourceRetries
@@ -773,7 +761,7 @@ for (let key in teams) {
         0,
         [
             stayClasses(tiles[teamExpTileClass(key)], 0),
-            avoidClasses(tiles.caldera, 7, tiles.stoneSmall, 25, tiles.metalSmall, 15, tiles.metal, 25, tiles.stone, 15, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
+            avoidClasses(tiles.base, 12, tiles.baseResource, 12, tiles.caldera, 7, tiles.stoneSmall, 25, tiles.metalSmall, 15, tiles.metal, 25, tiles.stone, 15, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
         ],
         expStoneSmallGroupsPerTeam,
         resourceRetries
@@ -796,7 +784,7 @@ for (let key in teams) {
         0,
         [
             stayClasses(tiles[teamExpTileClass(key)], 0),
-            avoidClasses(tiles.caldera, 7, tiles.stoneSmall, 5, tiles.metalSmall, 5, tiles.animals, 25, tiles.metal, 5, tiles.stone, 5, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
+            avoidClasses(tiles.base, 15, tiles.baseResource, 15, tiles.caldera, 7, tiles.stoneSmall, 5, tiles.metalSmall, 5, tiles.animals, 25, tiles.metal, 5, tiles.stone, 5, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3)
         ],
         Math.round(openSpaceScale * animals / animalsPerGroup),
         resourceRetries
@@ -816,7 +804,7 @@ for (let key in teams) {
         0,
         [
             stayClasses(tiles[teamExpTileClass(key)], 0),
-            avoidClasses(tiles.baseResource, 20, tiles.base, 20, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3, tiles.caldera, 15, tiles.stoneSmall, 5, tiles.metalSmall, 5, tiles.animals, 3, tiles.berries, 25, tiles.metal, 5, tiles.stone, 5)
+            avoidClasses(tiles.base, 20, tiles.baseResource, 20, tiles.forest, 5, tiles.grove, 4, tiles.thicket, 3, tiles.caldera, 15, tiles.stoneSmall, 5, tiles.metalSmall, 5, tiles.animals, 3, tiles.berries, 25, tiles.metal, 5, tiles.stone, 5)
         ],
         Math.round(openSpaceScale * berries / berriesPerGroup),
         resourceRetries
